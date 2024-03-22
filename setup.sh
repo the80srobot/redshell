@@ -11,7 +11,6 @@ popd
 echo "Installing rc files..."
 reinstall_file rc/bash_profile ~/.bash_profile
 reinstall_file rc/screenrc ~/.screenrc
-reinstall_file rc/gitconfig ~/.gitconfig
 
 echo "Installing src..."
 rm -rf ~/.redshell
