@@ -26,9 +26,7 @@ fi
 HISTSIZE=100000
 SAVEHIST=100000
 
-VISUAL="$(cat ${REAL_HOME}/.mconfig_visual | tr -d '\n')"
-
-source "${REAL_HOME}/.functions"
+VISUAL="$(cat ${REAL_HOME}/.redshell_visual | tr -d '\n')"
 
 __prompt_color() {
     case "$1" in
@@ -161,8 +159,6 @@ status() {
     vid
     echo "Local time: `date`"
     echo "This node: `hostname` (`uname -srm`)"
-    [[ -f ~/.mconfig_packs/installed ]] && echo "Configs: `cat ~/.mconfig_packs/installed | tr '\n' ' '`"
-    [[ -f ~/.mconfig_status ]] && source ~/.mconfig_status
     
     local wifi=`wifi_name 2> /dev/null`
     [[ -z "${wifi}" ]] || echo "Connected to ${wifi}"

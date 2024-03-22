@@ -1,6 +1,5 @@
 #!/bin/bash
 
-source ~/.functions
 
 bgc=$(($RANDOM % 256))
 fgc=$(($RANDOM % 256))

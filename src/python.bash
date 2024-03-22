@@ -87,7 +87,7 @@ function latest_python() {
 function python_func() {
     local function
     local json_out="False"
-    local path="${HOME}/.mconfig/functions.py"
+    local path="${HOME}/.redshell/functions.py"
     local args="["
     local kwargs="{"
 
