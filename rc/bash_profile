@@ -1,0 +1,175 @@
+alias l='ls -lh'
+alias la='ls -lha'
+
+BASH_PROFILE=`readlink -f ${BASH_SOURCE}`
+REAL_HOME=`dirname "${BASH_PROFILE}"`
+export EDITOR=`which vim`
+
+if [[ `uname -a` == *Darwin* ]]
+then
+    alias e='open -a "visual studio code"'
+    alias o='open .'
+    alias wget='curl -O --retry 999 --retry-max-time 0 -C -'
+    function nproc() {
+        sysctl -n hw.logicalcpu
+    }
+    PATH=/opt/local/bin:$HOME/go/bin:$PATH
+else
+    alias e='vim'
+fi
+
+if [[ `uname -a` == *debian* ]]
+then
+    PATH=/usr/sbin:/sbin:$PATH
+fi
+
+HISTSIZE=100000
+SAVEHIST=100000
+
+VISUAL="$(cat ${REAL_HOME}/.mconfig_visual | tr -d '\n')"
+
+source "${REAL_HOME}/.functions"
+
+__prompt_color() {
+    case "$1" in
+        bmo)
+            tput setaf "36"
+        ;;
+
+        lighthouse)
+            tput setaf "196"
+        ;;
+
+        astronaut)
+            tput setaf "205"
+        ;;
+
+        pacman)
+            tput setaf "226"
+            tput setab "16"
+        ;;
+
+        dachshund)
+            tput setaf "215"
+        ;;
+
+        saturn)
+            tput setaf "76"
+        ;;
+
+        drwho)
+            tput setaf "32"
+        ;;
+
+        snufkin)
+            tput setaf "106"
+        ;;
+
+        moose)
+            tput setaf "94"
+        ;;
+
+        bessy)
+            tput setab 160
+            tput setaf 15
+        ;;
+    esac
+}
+
+__prompt_escape() {
+    echo -n "\[$(tput bold)\]"
+    [[ -z "$VISUAL" ]] || echo -e "\[$(__prompt_color $VISUAL)\]"
+}
+
+__git_info() {
+    git rev-parse --is-inside-work-tree 2> /dev/null > /dev/null
+    ret=$?
+    if [[ $ret -eq 0 ]]; then
+        c=$(git status -s | wc -l | tr -d ' ')
+        b=$(git branch --show-current | tr -d '* \n')
+        h=`git rev-parse --short HEAD`
+        echo -n "(git ${b}:${h}"
+        if [[ "$c" -ne "0" ]]; then
+            echo -n "+${c}"
+        fi
+        echo -n ") "
+        return
+    fi
+}
+
+__error_info() {
+    ret=$?
+    case "$ret" in
+        "0")
+        ;;
+        "126")
+            echo -n "(EPERM [${ret}]) "
+        ;;
+        "127")
+            echo -n "(ENOENT [${ret}]) "
+        ;;
+        "130")
+            echo -n "(EINT [${ret}]) "
+        ;;
+        *)
+            echo -n "(E [${ret}]) "
+        ;;
+    esac
+}
+
+__screen_info() {
+    if [[ "$STY" != "" ]]; then
+        echo "(s:${WINDOW}) "
+    fi
+}
+
+__addr() {
+    ips="`ip4`" || return 1
+    n=`wc -l <<< "$ips"`
+    if [[ n -eq 1 ]]; then
+        echo "${ips}"
+    else
+        first=`head -n1 <<< "$ips"`
+        k=`bc -l <<< "$n - 1"`
+        echo "${first} + $k"
+    fi
+}
+
+__addr_info() {
+    a=`__addr` || return 1
+    echo "(${a}) "
+}
+
+__time_info() {
+    t=`date +%T` || return 1
+    echo "(${t}) "
+}
+
+PS1="┌─|\[$(tput sgr0)\]\u@$(__prompt_escape)\h\[$(tput sgr0)\] \w "
+PS1+="\[$(tput setaf 196)\]\$(__error_info)" # Has to be first
+PS1+="\[$(tput setaf 2)\]\$(__time_info)"
+PS1+="\[$(tput setaf 26)\]\$(__git_info)"
+PS1+="\[$(tput setaf 33)\]\$(__screen_info)"
+PS1+="\[$(tput setaf 214)\]\$(__addr_info)"
+PS1+="\[$(tput sgr0)\]\n└─> "
+
+vid() {
+    [[ -z "$VISUAL" ]] || "${REAL_HOME}/mbin/${VISUAL}.sh"
+}
+
+status() {
+    vid
+    echo "Local time: `date`"
+    echo "This node: `hostname` (`uname -srm`)"
+    [[ -f ~/.mconfig_packs/installed ]] && echo "Configs: `cat ~/.mconfig_packs/installed | tr '\n' ' '`"
+    [[ -f ~/.mconfig_status ]] && source ~/.mconfig_status
+    
+    local wifi=`wifi_name 2> /dev/null`
+    [[ -z "${wifi}" ]] || echo "Connected to ${wifi}"
+    return 0
+}
+
+export PATH=$HOME/bin:$PATH
+export PATH=$HOME/mbin:$PATH
+
+[[ -z "${MCONFIG_SILENT}" ]] && status || true

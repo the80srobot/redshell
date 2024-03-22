@@ -1,0 +1,26 @@
+" Syntax
+syntax on
+filetype plugin indent on
+let python_highlight_all=1
+set foldlevel=20
+
+" Miscellany
+set nocompatible
+set ruler
+set background=light
+set hlsearch
+set history=300
+set ai
+set wrap
+set linebreak
+
+" Indent
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set smarttab
+
+" Colors
+colorscheme BusyBee
+
+set t_Co=256

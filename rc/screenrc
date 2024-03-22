@@ -1,0 +1,13 @@
+attrcolor b ".I"
+defbce "on"
+termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+term xterm-256color
+defscrollback 5000
+termcapinfo xterm* ti@:te@
+shell -$SHELL
+startup_message off
+altscreen on
+
+hardstatus on
+hardstatus alwayslastline
+hardstatus string "%{.1099} %-w%{.bg}%n %t%{-}%+w %=%H %c:%s "
