@@ -5,19 +5,6 @@ BASH_PROFILE=`readlink -f ${BASH_SOURCE}`
 REAL_HOME=`dirname "${BASH_PROFILE}"`
 export EDITOR=`which vim`
 
-if [[ `uname -a` == *Darwin* ]]
-then
-    alias e='open -a "visual studio code"'
-    alias o='open .'
-    alias wget='curl -O --retry 999 --retry-max-time 0 -C -'
-    function nproc() {
-        sysctl -n hw.logicalcpu
-    }
-    PATH=/opt/local/bin:$HOME/go/bin:$PATH
-else
-    alias e='vim'
-fi
-
 if [[ `uname -a` == *debian* ]]
 then
     PATH=/usr/sbin:/sbin:$PATH
@@ -27,6 +14,12 @@ HISTSIZE=100000
 SAVEHIST=100000
 
 VISUAL="$(cat ${REAL_HOME}/.redshell_visual | tr -d '\n')"
+
+pushd "${REAL_HOME}/.redshell/src" > /dev/null
+for f in ./*.bash; do
+    source $f
+done
+popd > /dev/null
 
 __prompt_color() {
     case "$1" in
@@ -152,7 +145,7 @@ PS1+="\[$(tput setaf 214)\]\$(__addr_info)"
 PS1+="\[$(tput sgr0)\]\n└─> "
 
 vid() {
-    [[ -z "$VISUAL" ]] || "${REAL_HOME}/mbin/${VISUAL}.sh"
+    [[ -z "$VISUAL" ]] || "${REAL_HOME}/.redshell/asciiart/${VISUAL}.sh"
 }
 
 status() {
@@ -166,6 +159,5 @@ status() {
 }
 
 export PATH=$HOME/bin:$PATH
-export PATH=$HOME/mbin:$PATH
 
 [[ -z "${MCONFIG_SILENT}" ]] && status || true
