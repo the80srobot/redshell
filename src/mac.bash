@@ -64,7 +64,7 @@ function brew_install_or_skip() {
 }
 
 function mac_install_devtools() {
-    if [[ $(which xcodes > /dev/null && xcodes installed | wc -l) -eq 1 ]]; then
+    if [[ $(which xcodes > /dev/null && xcodes installed | wc -l) -ge 1 ]]; then
         echo "Xcode is already installed."
     else
         echo "Installing Xcode..."
