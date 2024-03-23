@@ -33,7 +33,7 @@ function venv() {
         || "${pythonpath}" -m ensurepip --upgrade
     
     "${pythonpath}" -m virtualenv --help 2> /dev/null > /dev/null \
-        || "${pythonpath}" -m pip install virtualenv
+        || "${pythonpath}" -m pip install virtualenv --break-system-packages
 
     if [[ -d "./.venv" ]]; then
         source ./.venv/bin/activate
