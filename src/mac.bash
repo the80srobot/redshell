@@ -63,6 +63,17 @@ function brew_install_or_skip() {
     done
 }
 
+function mac_install_miniconda() {
+    if which conda > /dev/null; then
+        echo "Miniconda is already installed."
+    else
+        echo "Installing Miniconda..."
+        curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh
+        sh Miniconda3-latest-MacOSX-arm64.sh
+        rm Miniconda3-latest-MacOSX-arm64.sh
+    fi
+}
+
 function mac_install_devtools() {
     if [[ $(which xcodes > /dev/null && xcodes installed | wc -l) -ge 1 ]]; then
         echo "Xcode is already installed."
@@ -81,15 +92,6 @@ function mac_install_devtools() {
         unzip vscode.zip
         mv "Visual Studio Code.app" /Applications
         popd
-    fi
-
-    if which conda > /dev/null; then
-        echo "Miniconda is already installed."
-    else
-        echo "Installing Miniconda..."
-        curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh
-        sh Miniconda3-latest-MacOSX-arm64.sh
-        rm Miniconda3-latest-MacOSX-arm64.sh
     fi
 
     echo "Installing other devtools..."
