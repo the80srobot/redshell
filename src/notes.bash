@@ -668,7 +668,7 @@ Edit the file $(tput setaf 6)${path}$(tput sgr0)" -m "Select operation" -a "xXde
 function napi_git() {
     local old=`pwd`
     cd "${NOTES_REPO}"
-    GIT_SSH_COMMAND="ssh -i $(keys_priv_path notes_github)" git "$@"
+    GIT_SSH_COMMAND="ssh -i $(keys_path notes)" git "$@"
     local status=$?
     cd "${old}"
 
@@ -681,7 +681,7 @@ function napi_clone() {
     local old=`pwd`
     cd "${NOTES_ROOT}"
     # TODO(adam): Make the URL configurable
-    GIT_SSH_COMMAND="ssh -i $(keys_priv_path notes_github)" git clone git@github.com:the80srobot/notes.git
+    GIT_SSH_COMMAND="ssh -i $(keys_path notes)" git clone git@github.com:the80srobot/notes.git
     cd "${old}"
 }
 

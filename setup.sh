@@ -30,6 +30,7 @@ fi
 if [[ -f ~/.redshell_visual ]]; then
     echo "Visual identity already set."
 else
+    echo "Setting default visual identity. Run select_visual to change."
     echo "bmo" > ~/.redshell_visual
 fi
 

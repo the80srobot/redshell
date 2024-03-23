@@ -156,7 +156,7 @@ function select_visual() {
         1) echo "" > "$VISUAL_CONFIG_PATH" ;;
         2) echo "bmo" > "$VISUAL_CONFIG_PATH" ;;
         3) echo "lighthouse" > "$VISUAL_CONFIG_PATH";;
-        4) echo "astronaut" > "$VIS UAL_CONFIG_PATH";;
+        4) echo "astronaut" > "$VISUAL_CONFIG_PATH";;
         5) echo "pacman" > "$VISUAL_CONFIG_PATH";;
         6) echo "dachshund" > "$VISUAL_CONFIG_PATH";;
         7) echo "saturn" > "$VISUAL_CONFIG_PATH";;
