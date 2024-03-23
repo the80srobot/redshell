@@ -5,7 +5,7 @@ if [[ -z "${_REDSHELL_UTIL}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_UTIL=1
 
 function sud() {
-    sudo bash -c "MCONFIG_SILENT=1 source ${HOME}/.bash_profile && $*"
+    sudo bash -c "REDSHELL_SILENT=1 source ${HOME}/.bash_profile && $*"
 }
 
 

@@ -160,4 +160,4 @@ status() {
 
 export PATH=$HOME/bin:$PATH
 
-[[ -z "${MCONFIG_SILENT}" ]] && status || true
+[[ -z "${REDSHELL_SILENT}" ]] && status || true

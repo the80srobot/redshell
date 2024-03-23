@@ -680,6 +680,7 @@ function napi_clone() {
     mkdir -p "${NOTES_ROOT}"
     local old=`pwd`
     cd "${NOTES_ROOT}"
+    # TODO(adam): Make the URL configurable
     GIT_SSH_COMMAND="ssh -i $(keys_priv_path notes_github)" git clone git@github.com:the80srobot/notes.git
     cd "${old}"
 }
