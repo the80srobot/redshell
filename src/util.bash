@@ -54,7 +54,7 @@ function h() {
 function reload() {
     tput reset
     if [[ "$1" == "-h" ]]; then
-        exec /bin/bash -l
+        exec $(which bash) -l
     else
         _REDSHELL_RELOAD=1 source ~/.bash_profile
     fi
