@@ -17,6 +17,7 @@ function keys_path() {
 
     mkdir -p "${REAL_HOME}/.redshell_keys"
     chmod 700 "${REAL_HOME}/.redshell_keys"
+    mkdir -p "${REAL_HOME}/.redshell_keys/$(dirname "${1}")"
     pass "Redshell/${1}.key" > "${path}"
     chmod 600 "${path}"
     echo "${path}"
