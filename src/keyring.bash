@@ -9,11 +9,21 @@ function keys_git() {
 }
 
 function keys_path() {
+    local path="${REAL_HOME}/.redshell_keys/${1}.key"
+    if [[ -f "${path}" ]]; then
+        echo "${path}"
+        return 0
+    fi
+
     mkdir -p "${REAL_HOME}/.redshell_keys"
     chmod 700 "${REAL_HOME}/.redshell_keys"
-    pass "Redshell/${1}.key" > "${REAL_HOME}/.redshell_keys/${1}.key"
-    chmod 600 "${REAL_HOME}/.redshell_keys/${1}.key"
-    echo "${REAL_HOME}/.redshell_keys/${1}.key"
+    pass "Redshell/${1}.key" > "${path}"
+    chmod 600 "${path}"
+    echo "${path}"
+}
+
+function keys_var() {
+    pass "Redshell/${1}.var"
 }
 
 fi # _REDSHELL_KEYRING

@@ -681,7 +681,7 @@ function napi_clone() {
     local old=`pwd`
     cd "${NOTES_ROOT}"
     # TODO(adam): Make the URL configurable
-    GIT_SSH_COMMAND="ssh -i $(keys_path notes)" git clone git@github.com:the80srobot/notes.git
+    GIT_SSH_COMMAND="ssh -i $(keys_path notes)" git clone $(keys_var notes_repo)
     cd "${old}"
 }
 
