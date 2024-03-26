@@ -9,7 +9,16 @@ function keys_git() {
 }
 
 function keys_path() {
+    local force
+    if [[ "$1" == "-f" ]]; then
+        force=1
+        shift
+    fi
+
     local path="${REAL_HOME}/.redshell_keys/${1}.key"
+    if [[ -n "${force}" ]]; then
+        rm -f "${path}"
+    fi
     if [[ -f "${path}" ]]; then
         echo "${path}"
         return 0

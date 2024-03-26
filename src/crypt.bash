@@ -20,4 +20,8 @@ function decrypt_symmetric() {
     echo "$1 -> $(basename "$1" .tgz.gpg)"
 }
 
+function gen_github_keypair() {
+    ssh-keygen -t ed25519 -C "$1"
+}
+
 fi # _REDSHELL_CRYPT
