@@ -24,4 +24,32 @@ function gen_github_keypair() {
     ssh-keygen -t ed25519 -C "$1"
 }
 
+function payloadify() {
+    local payload="$1"
+    gpg --symmetric --output "${payload}.gpg" "${payload}"
+    {
+        echo "export GPG_TTY=\`tty\`"
+        echo "echo '"
+        cat "${payload}.gpg" | base64
+        echo "' | cat | base64 -d > _tmp_decrypt.gpg"
+        echo "gpg --pinentry loopback --decrypt --output _tmp_decrypt _tmp_decrypt.gpg"
+        echo "source _tmp_decrypt"
+        echo "rm -f _tmp_decrypt _tmp_decrypt.gpg"
+    } > "${payload}.packed"
+    rm -f "${payload}.gpg"
+}
+
+function downloadify() {
+    local payload="$1"
+    gpg --symmetric --output "${payload}.gpg" "${payload}"
+    {
+        echo "echo '"
+        cat "${payload}.gpg" | base64
+        echo "' | cat | base64 -d > _tmp_decrypt.gpg"
+        echo "gpg --pinentry loopback --decrypt --output ${payload} _tmp_decrypt.gpg"
+        echo "rm -f _tmp_decrypt.gpg"
+    } > "${payload}.packed"
+    rm -f "${payload}.gpg"
+}
+
 fi # _REDSHELL_CRYPT
