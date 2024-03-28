@@ -206,4 +206,33 @@ function jup() {
     docker run -it --rm -p 10000:8888 -v "${PWD}":/home/jovyan/work quay.io/jupyter/datascience-notebook:latest
 }
 
+function wait_for_file() {
+    local path
+    local timeout=60
+    while [[ "$#" -gt 0 ]]; do
+        case "$1" in
+            -t)
+                timeout="$2"
+                shift
+                ;;
+            *)
+                path="$1"
+                ;;
+        esac
+        shift
+    done
+
+    local deadline
+    deadline="$(date +%s)"
+    (( deadline += timeout ))
+    while [[ "$(date +%s)" -lt "${deadline}" ]]; do
+        if [[ -f "${path}" ]]; then
+            return 0
+        fi
+        sleep 1
+    done
+    echo "Timed out waiting for ${path} after ${timeout} s." >&2
+    return 1
+}
+
 fi # _REDSHELL_UTIL
