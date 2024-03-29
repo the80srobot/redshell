@@ -152,26 +152,31 @@ json_out = ${json_out}
 def __convert_arg(
     arg: str, arg_type: typing.Any
 ) -> typing.Any:
-    if arg_type is None:
-        return arg
-    if arg_type == bool:
-        return arg.lower() == 'true'
-    if arg_type == int:
-        return int(arg)
-    if arg_type == float:
-        return float(arg)
-    if arg_type == str:
-        return arg
-    if arg_type == datetime.date:
-        return datetime.date.fromisoformat(arg)
-    if typing.get_origin(arg_type) == typing.Union:
-        type_args = typing.get_args(arg_type)
-        if len(type_args) == 2 and type_args[1] == type(None):
-            return __convert_arg(arg, type_args[0])
-        elif len(type_args) == 2 and type_args[0] == type(None):
-            return __convert_arg(arg, type_args[1])
+    try:
+        if arg_type is None:
+            return arg
+        if arg_type == bool:
+            return arg.lower() == 'true'
+        if arg_type == int:
+            return int(arg)
+        if arg_type == float:
+            return float(arg)
+        if arg_type == str:
+            return arg
+        if arg_type == datetime.date:
+            return datetime.date.fromisoformat(arg)
+        if typing.get_origin(arg_type) == typing.Union:
+            type_args = typing.get_args(arg_type)
+            if len(type_args) == 2 and type_args[1] == type(None):
+                return __convert_arg(arg, type_args[0])
+            elif len(type_args) == 2 and type_args[0] == type(None):
+                return __convert_arg(arg, type_args[1])
+        if isinstance(arg_type, Callable):
+            return eval(arg)
+    except Exception as e:
+        raise TypeError('Cannot parse {} of type {}: {}'.format(arg, arg_type, e))
     
-    raise Exception('Unknown type: {}'.format(arg_type))
+    raise ValueError('Unknown type: {}'.format(arg_type))
 
 def __json_default(obj: typing.Any) -> typing.Any:
     serializer = getattr(obj, 'toJSON', None)
