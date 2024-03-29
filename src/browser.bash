@@ -61,6 +61,11 @@ function browser_dl() {
     done
     # TODO(adam): What if there are multiple?
     echo "${downloads}/${new_files:2}"
+    
+    # On Darwin, try to switch back to the terminal.
+    if [[ `uname -a` == *Darwin* ]]; then
+        osascript -e 'tell application "Terminal" to activate'
+    fi
 }
 
 fi # _REDSHELL_BROWSER
