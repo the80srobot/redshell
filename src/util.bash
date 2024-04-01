@@ -163,13 +163,6 @@ function install_heroku_cli() {
 
 alias heroku_install_cli=install_heroku_cli
 
-alias yt-dl='docker run \
-                --rm -i \
-                -e PGID=$(id -g) \
-                -e PUID=$(id -u) \
-                -v "$(pwd)":/workdir:rw \
-                mikenye/youtube-dl'
-
 function bazel() {
     which bazel > /dev/null || {
         >&2 echo "No bazel installation - downloading bazelisk..."
