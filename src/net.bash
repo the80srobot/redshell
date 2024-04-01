@@ -99,4 +99,17 @@ function wiki() {
     "${viewer}" "${url}"
 }
 
+function wifi_device() {
+    uname -a | grep -q "Darwin" || return 1
+    networksetup -listnetworkserviceorder \
+        | grep -A1 Wi-Fi \
+        | tail -n+2 \
+        | head -1 \
+        | perl -pe 's/.*Device: (\w+).*/$1/'
+}
+
+function wifi_name() {
+    networksetup -getairportnetwork "$(wifi_device)" | perl -pe 's/.*Network: //'
+}
+
 fi # _REDSHELL_NET
