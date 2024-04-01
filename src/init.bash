@@ -28,7 +28,7 @@ then
 
     function wget() {
         if which wget; then
-            wget "${@}"
+            "$(which wget)" "${@}"
         else
             curl -O --retry 999 --retry-max-time 0 -C - "${@}"
         fi
