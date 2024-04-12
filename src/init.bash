@@ -9,9 +9,6 @@ alias la='ls -lha'
 
 # Set the editor to vim by default, vscode if available.
 EDITOR=`which vim`
-if which code; then
-    EDITOR=`which code`
-fi
 export EDITOR
 
 if [[ `uname -a` == *Darwin* ]]
