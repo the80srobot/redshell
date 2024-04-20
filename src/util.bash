@@ -163,6 +163,19 @@ function install_heroku_cli() {
 
 alias heroku_install_cli=install_heroku_cli
 
+function yt-dl() {
+    local YTDL_DIR="$HOME/.redshell/yt-dl"
+    mkdir -p "${YTDL_DIR}" && pushd "${YTDL_DIR}"
+    {
+        echo "ffmpeg-python>=0.2.0"
+        echo "yt-dlp>=2023.11.16"
+    } > requirements.txt
+    venv
+    popd
+    yt-dlp "${@}"
+    deactivate
+}
+
 function bazel() {
     which bazel > /dev/null || {
         >&2 echo "No bazel installation - downloading bazelisk..."
