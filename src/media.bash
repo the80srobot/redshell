@@ -5,16 +5,17 @@ if [[ -z "${_REDSHELL_MEDIA}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_MEDIA=1
 
 function yt-dl() {
-    local path="${HOME}/.readshell/yt-dl-env"
     pkg_install_or_skip python ffmpeg
-    mkdir -p "${path}"
-    pushd "${path}"
+    local YTDL_DIR="$HOME/.redshell/yt-dl"
+    mkdir -p "${YTDL_DIR}" && pushd "${YTDL_DIR}"
+    {
+        echo "ffmpeg-python>=0.2.0"
+        echo "yt-dlp>=2023.11.16"
+    } > requirements.txt
     venv
-    pip install yt-dlp
     popd
     yt-dlp "${@}"
     deactivate
 }
-
 
 fi # _REDSHELL_MEDIA
