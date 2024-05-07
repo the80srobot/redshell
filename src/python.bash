@@ -28,14 +28,12 @@ function venv() {
         shift
     done
 
-    # Ensure PIP and virtualenv are installed.
+    # Ensure PIP is installed.
     "${pythonpath}" -m pip --help 2> /dev/null > /dev/null \
-        || "${pythonpath}" -m ensurepip --upgrade
+        || "${pythonpath}" -m ensurepip --upgrade --break-system-packages
     
-    "${pythonpath}" -m virtualenv --help 2> /dev/null > /dev/null \
-        || "${pythonpath}" -m pip install virtualenv --break-system-packages
-
     if [[ -d "./.venv" ]]; then
+        echo "Activating existing environment" >&2
         source ./.venv/bin/activate
         if [[ -n "${install_reqs}" ]]; then
             pip install --upgrade -r "${install_reqs}"
@@ -43,10 +41,11 @@ function venv() {
         return 0
     fi
 
+    echo "Creating a new virtualenv..."
     "${pythonpath}" -m virtualenv --help 2> /dev/null > /dev/null
     if [[ "$?" -ne 0 ]]; then
         >&2 echo "Installing virtualenv..."
-        python3 -m pip install virtualenv || return 2
+        python3 -m pip install virtualenv --break-system-packages || return 2
     fi
 
     "${pythonpath}" -m virtualenv .venv || return 3

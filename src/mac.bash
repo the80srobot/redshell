@@ -88,14 +88,14 @@ function mac_install_devtools() {
     else
         echo "Installing Visual Studio Code..."
         pushd ~/Downloads
-        curl -L https://update.code.visualstudio.com/latest/darwin-arm64/stable -O vscode.zip
+        curl -L https://update.code.visualstudio.com/latest/darwin-arm64/stable -o vscode.zip
         unzip vscode.zip
         mv "Visual Studio Code.app" /Applications
         popd
     fi
 
     echo "Installing other devtools..."
-    brew_install_or_skip python virtualenv git buildifier clang-format ffmpeg rsync gpg orbstack gh pass
+    brew_install_or_skip python virtualenv git buildifier clang-format ffmpeg rsync gpg orbstack gh pass watch
 }
 
 fi # _REDSHELL_MAC
