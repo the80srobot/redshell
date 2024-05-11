@@ -228,4 +228,93 @@ function wait_for_file() {
     return 1
 }
 
+function forex() {
+    local from
+    local to
+    local date="today"
+    local amount=
+    local verbose
+    while [[ "$#" -gt 0 ]]; do
+        case "$1" in
+            -f|--from)
+                from="$2"
+                shift
+                ;;
+            -t|--to)
+                to="$2"
+                shift
+                ;;
+            -d|--date)
+                date="$2"
+                shift
+                ;;
+            -a|--amount)
+                amount="$2"
+                shift
+                ;;
+            -v|--verbose)
+                verbose=1
+                ;;
+            -h|--help)
+                echo "Usage: forex [-f] <from> [-t] <to> [-d <date>] [[-a] <amount>] [-v]"
+                return 0
+                ;;
+            *)
+                # Positional argument?
+                if [[ -z "${from}" ]]; then
+                    from="$1"
+                elif [[ -z "${to}" ]]; then
+                    to="$1"
+                elif [[ -z "${amount}" ]]; then
+                    amount="$1"
+                else
+                    echo "Unknown argument: $1" >&2
+                    return 1
+                fi
+                ;;
+        esac
+        shift
+    done
+
+    if [[ -z "${from}" || -z "${to}" ]]; then
+        echo "Usage: forex [-f] <from> [-t] <to> [-d <date>] [[-a] <amount>] [-v]" >&2
+        return 2
+    fi
+
+    local output
+    local answer
+    if [[ -n "${verbose}" ]]; then
+        output="$(go_pkg_do \
+            wowsignal-io/go-forex \
+            go run cmd/forex-convert/forex-convert.go \
+            -from "${from}" \
+            -date "${date}" \
+            -to "${to}" \
+            -v)" || return "$?"
+        answer="$(echo "${output}" | tail -1 | sed 's/Computed rate: //')"
+    else
+        output="$(go_pkg_do \
+            wowsignal-io/go-forex \
+            go run cmd/forex-convert/forex-convert.go \
+            -from "${from}" \
+            -date "${date}" \
+            -to "${to}" 2>/dev/null )" || return "$?"
+        answer="${output}"
+    fi
+
+    if [[ -n "${amount}" ]]; then
+        local result
+        result="$(echo "${amount} * ${answer}" | bc)"
+        if [[ -n "${verbose}" ]]; then
+            echo "${output}"
+            echo "Converted amount: ${result}"
+        else
+            echo "${result}"
+        fi
+    else
+        echo "${output}"
+    fi
+    
+}
+
 fi # _REDSHELL_UTIL
