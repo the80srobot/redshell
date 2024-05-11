@@ -16,7 +16,13 @@ function go_pkg_do() {
 
     mkdir -p "${HOME}/.redshell/go"
     pushd "${HOME}/.redshell/go" > /dev/null
-    [[ -d "$(basename "${pkg}")" ]] || gh repo clone "${pkg}"
+    if [[ -d "$(basename "${pkg}")" ]]; then
+        pushd "$(basename "${pkg}")" > /dev/null
+        git pull > /dev/null
+        popd > /dev/null
+    else
+        gh repo clone "${pkg}"
+    fi
     pushd "$(basename "${pkg}")" > /dev/null
     "${cmd}" "${@}"
     local err="${?}"
