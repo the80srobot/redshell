@@ -51,6 +51,20 @@ ${erase_cmd}
     tput -S <<< "${cmd}"
 }
 
+function cursor_position() {
+    local pos
+    read -sdR -p $'\E[6n' pos
+    pos=${pos#*[} # Strip decoration characters <ESC>[
+    echo "${pos}" # Return position in "row;col" format
+}
+
+function cursor_row() {
+    local row
+    local col
+    IFS=';' read -sdR -p $'\E[6n' row col
+    echo "${row#*[}"
+}
+
 # echo -e "${bg}     ._________          `clr`" 
 # echo -e "${bg}    /_________/|         `clr`" 
 # echo -e "${bg}    |`light`.-------.`dark`||         `clr`" 
