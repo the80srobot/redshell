@@ -956,9 +956,9 @@ function nlog() {
     napi_git log --name-status
 }
 
-alias nnn='nn -"quick todo"'
+alias nnn='nn ~"quick todo"'
 alias na='nn -a'
-alias nna='nn -a -"quick todo"'
+alias nna='nn -a ~"quick todo"'
 
 function nn() {
     __preamble
@@ -1007,11 +1007,12 @@ function nn() {
         text+=" ${_SGR0}${attribute_color}${archived} ${_DISABLED_COLOR}${cols[1]} ${_TIME_COLOR}${age} ago ${_EXTRA_COLOR}${lines} lines ${_PATH_COLOR}@${cols[9]}${_SGR0}"$'\n'
 
         [[ -z "${grep_needle}" ]] && continue
-
+        local grep_lines="$(grep --color=always -"${grep_flags}" "${grep_needle}" "${cols[5]}")"
+        [[ -z "${grep_lines}" ]] && continue
         while IFS= read grep_line; do
             grep_line="$(perl -pe "s/^(\\d+):/${_PATH_COLOR}Line \\1: ${_SGR0}/" <<< "${grep_line}")"
             text+=$'\t'"${grep_line}"$'\n'
-        done <<< "$(grep --color=always -"${grep_flags}" "${grep_needle}" "${cols[5]}")"
+        done <<< "${grep_lines}"
     done <<< "${data}"
     
     text="${text:0:-1}" # trailing \n
