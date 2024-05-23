@@ -10,12 +10,6 @@ function __prompt() {
     local alphabet="${3}"
     local controls="${4}"
     local control_alphabet="${5}"
-    local term_row="${6}"
-    local new_term_row
-    new_term_row="$(cursor_row)"
-    local delta=$(( new_term_row - term_row ))
-    # Disabled because it doesn't work properly yet.
-    # erase_lines "${delta}"
 
     local per_page="${#alphabet}"
     local offset=$(( page * per_page ))
@@ -69,7 +63,6 @@ function __multiple_choice() {
     local alphabet="${4}"
     local controls="${5}"
     local control_alphabet="${6}"
-    local term_row="${7}"
     
     [[ -z "${page}" ]] && page=0
     [[ -z "${msg}" ]] && msg="Pick one"
@@ -80,7 +73,7 @@ function __multiple_choice() {
     local per_page="${#alphabet}"
     local max_page=$(( (count - 1) / per_page ))
 
-    local prompt=`__prompt "${input}" "${page}" "${alphabet}" "${controls}" "${control_alphabet}" "${term_row}"`
+    local prompt=`__prompt "${input}" "${page}" "${alphabet}" "${controls}" "${control_alphabet}"`
     prompt+="
 Page $(( page + 1 ))/$(( max_page + 1 )) ${msg}: "
 
@@ -92,15 +85,15 @@ Page $(( page + 1 ))/$(( max_page + 1 )) ${msg}: "
         return 3
     elif [[ "${x}" == "p" ]]; then
         if [[ "${page}" -eq 0 ]]; then
-            __multiple_choice "${mode}" "${input}" "${max_page}" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}" "${term_row}"
+            __multiple_choice "${mode}" "${input}" "${max_page}" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
         else
-            __multiple_choice "${mode}" "${input}" $(( page - 1 )) "${msg}" "${alphabet}" "${controls}" "${control_alphabet}" "${term_row}"
+            __multiple_choice "${mode}" "${input}" $(( page - 1 )) "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
         fi
     elif [[ "${x}" == "n" ]]; then
         if [[ "${page}" == "${max_page}" ]]; then
-            __multiple_choice "${mode}" "${input}" "0" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}" "${term_row}"
+            __multiple_choice "${mode}" "${input}" "0" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
         else
-            __multiple_choice "${mode}" "${input}" $(( page + 1 )) "${msg}" "${alphabet}" "${controls}" "${control_alphabet}" "${term_row}"
+            __multiple_choice "${mode}" "${input}" $(( page + 1 )) "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
         fi
     elif [[ "${control_alphabet}" == *"${x}"* ]]; then
         echo "${x}"
@@ -130,7 +123,6 @@ function multiple_choice() {
     local alphabet
     local controls
     local control_alphabet
-    local term_row
 
     while [[ "${#}" -ne 0 ]]; do
         if [[ "${1:0:1}" != "-" ]]; then
@@ -184,8 +176,7 @@ function multiple_choice() {
         esac
     done
 
-    term_row="$(cursor_row)"
-    __multiple_choice "${mode}" "${input}" "${max_page}" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}" "${term_row}"
+    __multiple_choice "${mode}" "${input}" "${max_page}" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
 }
 
 fi # _REDSHELL_MULTIPLE_CHOICE
