@@ -10,8 +10,12 @@ then
     PATH=/usr/sbin:/sbin:$PATH
 fi
 
-HISTSIZE=100000
-SAVEHIST=100000
+export HISTCONTROL=ignoredups:erasedups
+export HISTSIZE=100000
+export SAVEHIST=100000
+# This is necessary on macOS, otherwise they overwrite HISTFILE with something
+# weird.
+shopt -s histappend
 
 VISUAL="$(cat ${REAL_HOME}/.redshell_visual | tr -d '\n')"
 
