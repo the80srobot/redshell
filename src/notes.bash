@@ -1237,7 +1237,7 @@ function nls() {
         [[ "${len}" -gt "${width}" ]] && width="${len}"
     done <<< "${notes}"
 
-    echo "${notes}" | sort -id \
+    echo "${notes}" | sort \
     | while IFS= read line; do
         # 1. relative path
         # 2. mtime
