@@ -95,7 +95,25 @@ function mac_install_devtools() {
     fi
 
     echo "Installing other devtools..."
-    brew_install_or_skip python virtualenv git buildifier clang-format ffmpeg rsync gpg orbstack gh pass watch go diffutils
+    brew_install_or_skip \
+        python \
+        virtualenv \
+        git \
+        buildifier \
+        clang-format \
+        ffmpeg \
+        rsync \
+        gpg \
+        orbstack \
+        gh \
+        pass \
+        watch \
+        go \
+        diffutils \
+        bash-completion \
+        launchctl-completion \
+        pip-completion \
+        rustc-completion
 }
 
 fi # _REDSHELL_MAC

@@ -165,3 +165,10 @@ status() {
 export PATH=$HOME/bin:$PATH
 
 [[ -z "${REDSHELL_SILENT}" ]] && status || true
+
+ [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
+
+# bind 'TAB:menu-complete'
+# bind '"\e[Z":menu-complete-backward'
+bind 'set colored-completion-prefix on'
+bind 'set show-all-if-ambiguous on'
