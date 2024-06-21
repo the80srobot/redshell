@@ -64,4 +64,11 @@ function faidl() {
         -exec grep --color -B 2 -A 4 "${args[1]}" "${args[2]}" {} \+
 }
 
+function fd() {
+    local needle="$1"
+    local path
+    path="$(find "." -ipath "*${1}*" | head -1)"
+    [[ -n "${path}" ]] && pushd "$(dirname "${path}")"
+}
+
 fi # _REDSHELL_FIND
