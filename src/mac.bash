@@ -113,7 +113,8 @@ function mac_install_devtools() {
         bash-completion \
         launchctl-completion \
         pip-completion \
-        rustc-completion
+        rustc-completion \
+        swiftdefaultappsprefpane
 }
 
 fi # _REDSHELL_MAC
