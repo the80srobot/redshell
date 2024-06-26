@@ -2,8 +2,11 @@
 
 set -e
 
+echo "Starting redshell setup..."
+
 pushd ./src
 for f in ./*.bash; do
+    echo "Sourcing $f..."
     source $f
 done
 popd
