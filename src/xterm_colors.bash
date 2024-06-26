@@ -8,7 +8,8 @@ source "python.bash"
 if [[ -z "${_REDSHELL_XTERM_COLORS}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_XTERM_COLORS=1
 
-CLR="$(tput sgr0)"
+# CLR="$(tput sgr0)"
+CLR="\033[0;10m"
 
 # The first 16 colors have special values.
 XTERM16=(
