@@ -168,7 +168,11 @@ export PATH=$HOME/bin:$PATH
 
  [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
-# bind 'TAB:menu-complete'
-# bind '"\e[Z":menu-complete-backward'
-bind 'set colored-completion-prefix on'
-bind 'set show-all-if-ambiguous on'
+if [[ `uname -a` == *Darwin* ]]
+then
+    # bind 'TAB:menu-complete'
+    # bind '"\e[Z":menu-complete-backward'
+    bind 'set colored-completion-prefix on'
+    bind 'set show-all-if-ambiguous on'
+fi
+
