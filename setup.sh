@@ -4,6 +4,7 @@ set -e
 
 echo "Starting redshell setup..."
 
+[[ -z "${TERM}" ]] && export TERM=xterm
 pushd ./src
 for f in ./*.bash; do
     echo "Sourcing $f..."

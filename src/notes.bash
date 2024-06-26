@@ -31,6 +31,7 @@ _REDSHELL_NOTES=1
 NOTES_ROOT="${HOME}/.mnotes"
 NOTES_REPO="${NOTES_ROOT}/notes"
 
+[[ -z "${TERM}" ]] && TERM=xterm
 _SGR0=$(tput sgr0)
 _BOLD=$(tput bold)
 _PATH_COLOR=$(tput setaf 6)
