@@ -1,3 +1,5 @@
+[[ -z "${TERM}" ]] && export TERM=xterm
+
 alias l='ls -lh'
 alias la='ls -lha'
 
