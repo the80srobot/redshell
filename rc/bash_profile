@@ -142,13 +142,16 @@ __time_info() {
     echo "(${t}) "
 }
 
-PS1="┌─|\[$(tput sgr0)\]\u@$(__prompt_escape)\h\[$(tput sgr0)\] \w "
-PS1+="\[$(tput setaf 196)\]\$(__error_info)" # Has to be first
-PS1+="\[$(tput setaf 2)\]\$(__time_info)"
-PS1+="\[$(tput setaf 26)\]\$(__git_info)"
-PS1+="\[$(tput setaf 33)\]\$(__screen_info)"
-PS1+="\[$(tput setaf 214)\]\$(__addr_info)"
-PS1+="\[$(tput sgr0)\]\n└─> "
+PS1_PREFIX="┌─|\[$(tput sgr0)\]\u@$(__prompt_escape)\h\[$(tput sgr0)\] \w "
+PS1_WIDGETS="\[$(tput setaf 196)\]\$(__error_info)" # Has to be first
+PS1_WIDGETS+="\[$(tput setaf 2)\]\$(__time_info)"
+PS1_WIDGETS+="\[$(tput setaf 26)\]\$(__git_info)"
+PS1_WIDGETS+="\[$(tput setaf 33)\]\$(__screen_info)"
+PS1_WIDGETS+="\[$(tput setaf 214)\]\$(__addr_info)"
+PS1_SUFFIX="\[$(tput sgr0)\]\n└─> "
+
+PS1="${PS1_PREFIX}${PS1_WIDGETS}${PS1_SUFFIX}"
+
 
 vid() {
     [[ -z "$VISUAL" ]] || "${REAL_HOME}/.redshell/asciiart/${VISUAL}.sh"
