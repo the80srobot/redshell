@@ -53,7 +53,7 @@ function fgo() {
 function fjava() {
     IFS=$'\t' read -r -a args <<< "$(__f_args "${@}")"
     find "${args[0]}" \
-        -iname "*.java" \
+        -iname "*.java" -or -iname "*.kt" \
         -exec grep --color -B 2 -A 4 "${args[1]}" "${args[2]}" {} \+
 }
 
