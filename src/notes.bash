@@ -1367,7 +1367,7 @@ function ngc() {
         rm -f "${NOTES_REPO}/${line}"
         napi_git add "${line}"
     done
-    napi_git commit -m "Deleted empty notes"
+    napi_git commit -m "Deleted empty notes" || true
 }
 
 function napi_update_note() {
