@@ -115,6 +115,12 @@ Page $(( page + 1 ))/$(( max_page + 1 )) ${msg}: "
 
 # -n: return the number of the selected option
 # -L: return the string of the selected option
+# -p: page number to show
+# -m: prompt message
+# -a: alphabet
+# -I: control options
+# -A: control alphabet
+# -i: input (options to pick from)
 function multiple_choice() {
     local mode="-L"
     local input
