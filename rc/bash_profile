@@ -94,6 +94,14 @@ __git_info() {
     fi
 }
 
+__hg_info() {
+    local root="$(pwd -P)"
+    while [[ $root && ! -d $root/.hg ]]; do
+        root="${root%/*}"
+    done
+    [[ -z "${root}" ]] && return 0
+}
+
 __error_info() {
     ret=$?
     case "$ret" in

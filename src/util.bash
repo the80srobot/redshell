@@ -314,4 +314,16 @@ function forex() {
     
 }
 
+
+trim() {
+    local var="$*"
+    [[ -z "${var}" ]] && var="$(cat)"
+    # remove leading whitespace characters
+    var="${var#"${var%%[![:space:]]*}"}"
+    # remove trailing whitespace characters
+    var="${var%"${var##*[![:space:]]}"}"
+    printf '%s' "$var"
+}
+
+
 fi # _REDSHELL_UTIL

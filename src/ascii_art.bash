@@ -151,6 +151,12 @@ function select_visual() {
     VISUAL_CONFIG_PATH="$HOME/.redshell_visual"
     echo "" > "$VISUAL_CONFIG_PATH"
 
+    if [[ -n "${1}" ]]; then
+        echo "${1}" > "$VISUAL_CONFIG_PATH"
+        source ~/.bash_profile
+        return
+    fi
+
     echo "Select visual identity"
     echo "(1)   None (DEFAULT)"
     echo -e "(2)   $(__prompt_color bmo)BMO$(tput sgr0)"
@@ -188,4 +194,3 @@ function select_visual() {
 }
 
 fi # _REDSHELL_ASCII_ART
-
