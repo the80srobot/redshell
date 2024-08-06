@@ -14,6 +14,7 @@ from typing import Iterable, Generator
 from enum import Enum
 import re
 import sys
+import shlex
 
 
 @dataclass
@@ -60,6 +61,9 @@ class Module:
 FNAME_TYPE_A = re.compile(r"(\w+)\s*\(\)\s")
 FNAME_TYPE_B = re.compile(r"function\s+(\w+)[\s(]")
 
+
+def _escape_comment(comment: list[str]) -> Generator[str, None, None]:
+    return (shlex.quote(line)[1:-1] for line in comment)
 
 def _accept_fname(line: str) -> tuple[str, tuple[int, int]] | None:
     # Bash supports two variants of declaration syntax:
@@ -287,7 +291,10 @@ def gen_switch(modules: Iterable[Module]) -> Generator[str, None, None]:
             yield f'      {function.name.value} "$@"'
             yield f"      ;;"
         yield f"    *)"
-        yield f'      echo "Module {module.name} has no function ${1}"'
+        yield f'      if [ -n "$1" ]; then'
+        yield f'        echo "Module {module.name} has no function ${1}"'
+        yield f"      fi"
+        yield f"      __q_help {module.name}"
         yield f"      return 1"
         yield f"      ;;"
         yield f"    esac"
@@ -313,14 +320,15 @@ def gen_help(modules: Iterable[Module]) -> Generator[str, None, None]:
         if not module.functions:
             continue
         doc = module.comment if module.comment else ["(no description)"]
+        doc = list(_escape_comment(doc))
         pad = column - len(module.name) - 2
         if pad < 0:
             raise ValueError(
                 f"Module name {module.name} is too long for the help output"
             )
-        yield f'    echo "  {module.name}{" ":{pad}}{doc[0]}"'
+        yield f"    echo '  {module.name}{" ":{pad}}{doc[0]}'"
         for line in doc[1:]:
-            yield f'    echo "{" ":{column}}{line}"'
+            yield f"    echo '{" ":{column}}{line}'"
     yield "    return 0"
     yield "  fi"
     yield '  if [ "$#" -eq 1 ]; then'
@@ -339,8 +347,8 @@ def gen_help(modules: Iterable[Module]) -> Generator[str, None, None]:
             if usage.startswith(function.name.value):
                 usage = usage[len(function.name.value) :].strip()
             yield f'      echo "  q {module.name} {_local_name(function.name.value, module.name)} {usage}"'
-            for line in function.comment:
-                yield f'      echo "    {line}"'
+            for line in _escape_comment(function.comment):
+                yield f"      echo '    {line}'"
         yield f"      ;;"
     yield f'    *)'
     yield f'      echo "Unknown module $1"'

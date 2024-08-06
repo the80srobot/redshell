@@ -41,7 +41,10 @@ function __q() {
       browser_dl "$@"
       ;;
     *)
-      echo "Module browser has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module browser has no function $1"
+      fi
+      __q_help browser
       return 1
       ;;
     esac
@@ -74,7 +77,10 @@ function __q() {
       python_func "$@"
       ;;
     *)
-      echo "Module python has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module python has no function $1"
+      fi
+      __q_help python
       return 1
       ;;
     esac
@@ -95,7 +101,10 @@ function __q() {
       q "$@"
       ;;
     *)
-      echo "Module quick has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module quick has no function $1"
+      fi
+      __q_help quick
       return 1
       ;;
     esac
@@ -112,7 +121,10 @@ function __q() {
       mkproject "$@"
       ;;
     *)
-      echo "Module git has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module git has no function $1"
+      fi
+      __q_help git
       return 1
       ;;
     esac
@@ -129,7 +141,10 @@ function __q() {
       get_bash_functions "$@"
       ;;
     *)
-      echo "Module bash has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module bash has no function $1"
+      fi
+      __q_help bash
       return 1
       ;;
     esac
@@ -178,7 +193,10 @@ function __q() {
       wifi_name "$@"
       ;;
     *)
-      echo "Module net has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module net has no function $1"
+      fi
+      __q_help net
       return 1
       ;;
     esac
@@ -203,7 +221,10 @@ function __q() {
       uninstall_file "$@"
       ;;
     *)
-      echo "Module install has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module install has no function $1"
+      fi
+      __q_help install
       return 1
       ;;
     esac
@@ -248,7 +269,10 @@ function __q() {
       select_visual "$@"
       ;;
     *)
-      echo "Module ascii_art has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module ascii_art has no function $1"
+      fi
+      __q_help ascii_art
       return 1
       ;;
     esac
@@ -261,7 +285,10 @@ function __q() {
       __q_help "init" "$@"
       ;;
     *)
-      echo "Module init has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module init has no function $1"
+      fi
+      __q_help init
       return 1
       ;;
     esac
@@ -298,7 +325,10 @@ function __q() {
       downloadify "$@"
       ;;
     *)
-      echo "Module crypt has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module crypt has no function $1"
+      fi
+      __q_help crypt
       return 1
       ;;
     esac
@@ -355,7 +385,10 @@ function __q() {
       trim "$@"
       ;;
     *)
-      echo "Module util has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module util has no function $1"
+      fi
+      __q_help util
       return 1
       ;;
     esac
@@ -376,7 +409,10 @@ function __q() {
       rust_install_goodies "$@"
       ;;
     *)
-      echo "Module rust has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module rust has no function $1"
+      fi
+      __q_help rust
       return 1
       ;;
     esac
@@ -397,7 +433,10 @@ function __q() {
       repeat "$@"
       ;;
     *)
-      echo "Module strings has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module strings has no function $1"
+      fi
+      __q_help strings
       return 1
       ;;
     esac
@@ -450,7 +489,10 @@ function __q() {
       mac_install_devtools "$@"
       ;;
     *)
-      echo "Module mac has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module mac has no function $1"
+      fi
+      __q_help mac
       return 1
       ;;
     esac
@@ -463,7 +505,10 @@ function __q() {
       __q_help "media" "$@"
       ;;
     *)
-      echo "Module media has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module media has no function $1"
+      fi
+      __q_help media
       return 1
       ;;
     esac
@@ -584,7 +629,10 @@ function __q() {
       n "$@"
       ;;
     *)
-      echo "Module notes has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module notes has no function $1"
+      fi
+      __q_help notes
       return 1
       ;;
     esac
@@ -605,7 +653,10 @@ function __q() {
       file_age "$@"
       ;;
     *)
-      echo "Module time has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module time has no function $1"
+      fi
+      __q_help time
       return 1
       ;;
     esac
@@ -642,7 +693,10 @@ function __q() {
       fd "$@"
       ;;
     *)
-      echo "Module find has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module find has no function $1"
+      fi
+      __q_help find
       return 1
       ;;
     esac
@@ -659,7 +713,10 @@ function __q() {
       is_dir_hg "$@"
       ;;
     *)
-      echo "Module hg has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module hg has no function $1"
+      fi
+      __q_help hg
       return 1
       ;;
     esac
@@ -724,7 +781,10 @@ function __q() {
       colors "$@"
       ;;
     *)
-      echo "Module xterm_colors has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module xterm_colors has no function $1"
+      fi
+      __q_help xterm_colors
       return 1
       ;;
     esac
@@ -741,7 +801,10 @@ function __q() {
       go_pkg_do "$@"
       ;;
     *)
-      echo "Module go has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module go has no function $1"
+      fi
+      __q_help go
       return 1
       ;;
     esac
@@ -762,7 +825,10 @@ function __q() {
       dnf_install_or_skip "$@"
       ;;
     *)
-      echo "Module fedora has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module fedora has no function $1"
+      fi
+      __q_help fedora
       return 1
       ;;
     esac
@@ -779,7 +845,10 @@ function __q() {
       multiple_choice "$@"
       ;;
     *)
-      echo "Module multiple_choice has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module multiple_choice has no function $1"
+      fi
+      __q_help multiple_choice
       return 1
       ;;
     esac
@@ -820,7 +889,10 @@ function __q() {
       proc_stats "$@"
       ;;
     *)
-      echo "Module monitor has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module monitor has no function $1"
+      fi
+      __q_help monitor
       return 1
       ;;
     esac
@@ -845,7 +917,10 @@ function __q() {
       keys_var "$@"
       ;;
     *)
-      echo "Module keyring has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module keyring has no function $1"
+      fi
+      __q_help keyring
       return 1
       ;;
     esac
@@ -862,7 +937,10 @@ function __q() {
       pkg_install_or_skip "$@"
       ;;
     *)
-      echo "Module pkg has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module pkg has no function $1"
+      fi
+      __q_help pkg
       return 1
       ;;
     esac
@@ -875,7 +953,10 @@ function __q() {
       __q_help "quick.gen" "$@"
       ;;
     *)
-      echo "Module quick.gen has no function $1"
+      if [ -n "$1" ]; then
+        echo "Module quick.gen has no function $1"
+      fi
+      __q_help quick.gen
       return 1
       ;;
     esac
@@ -894,37 +975,37 @@ function __q_help() {
     echo "Run q --help MODULE for more information on a module."
     echo
     echo "Available modules:"
-    echo "  browser         (no description)"
-    echo "  python          This file provides functions to manage python environments, and quickly launch"
-    echo "                  python code in various ways. It includes a Bash-Python FFI bridge, in"
-    echo "                  python_func."
-    echo "  quick           (no description)"
-    echo "  git             (no description)"
-    echo "  bash            (no description)"
-    echo "  net             (no description)"
-    echo "  install         Install a file into another file, optionally with a keyword."
-    echo "  ascii_art       (no description)"
-    echo "  crypt           (no description)"
-    echo "  util            (no description)"
-    echo "  rust            (no description)"
-    echo "  strings         This file provides various terminal string helpers."
-    echo "  mac             (no description)"
-    echo "  notes           This file implements a command-line note management system based on git and"
-    echo "                  markdown. It's evolved over the years to be incredibly ergonomic for me, its"
-    echo "                  only user and developer. The madness of doing all this in bash is not lost on"
-    echo "                  me - I can only say that it started quite simple and grew features and use"
-    echo "                  cases over time, and I know better than to rewrite something that works fine."
-    echo "  time            (no description)"
-    echo "  find            (no description)"
-    echo "  hg              (no description)"
-    echo "  xterm_colors    This file contains functions for working with xterm color codes."
-    echo "  go              (no description)"
-    echo "  fedora          (no description)"
-    echo "  multiple_choice (no description)"
-    echo "  monitor         This file provides functions to monitor system stats and write them to a log."
-    echo "  keyring         (no description)"
-    echo "  pkg             (no description)"
-    echo "  quick.gen       (no description)"
+    echo '  browser         (no description)'
+    echo '  python          This file provides functions to manage python environments, and quickly launch'
+    echo '                  python code in various ways. It includes a Bash-Python FFI bridge, in'
+    echo '                  ython_func'
+    echo '  quick           (no description)'
+    echo '  git             (no description)'
+    echo '  bash            (no description)'
+    echo '  net             (no description)'
+    echo '  install         Install a file into another file, optionally with a keyword.'
+    echo '  ascii_art       (no description)'
+    echo '  crypt           (no description)'
+    echo '  util            (no description)'
+    echo '  rust            (no description)'
+    echo '  strings         This file provides various terminal string helpers.'
+    echo '  mac             (no description)'
+    echo '  notes           This file implements a command-line note management system based on git and'
+    echo '                  markdown. It'"'"'s evolved over the years to be incredibly ergonomic for me, its'
+    echo '                  only user and developer. The madness of doing all this in bash is not lost on'
+    echo '                  me - I can only say that it started quite simple and grew features and use'
+    echo '                  cases over time, and I know better than to rewrite something that works fine.'
+    echo '  time            (no description)'
+    echo '  find            (no description)'
+    echo '  hg              (no description)'
+    echo '  xterm_colors    This file contains functions for working with xterm color codes.'
+    echo '  go              (no description)'
+    echo '  fedora          (no description)'
+    echo '  multiple_choice (no description)'
+    echo '  monitor         This file provides functions to monitor system stats and write them to a log.'
+    echo '  keyring         (no description)'
+    echo '  pkg             (no description)'
+    echo '  quick.gen       (no description)'
     return 0
   fi
   if [ "$#" -eq 1 ]; then
@@ -938,10 +1019,10 @@ function __q_help() {
       echo "  q browser chrome_path [ARG...]"
       echo "  q browser downloads_path [ARG...]"
       echo "  q browser dl [ARG...]"
-      echo "    Downloads a URL with the browser and returns the path to the downloaded file."
-      echo "    This is finnicky and relies on the browser downloading to the default"
-      echo "    Downloads folder. If multiple new files are created around the same time, this"
-      echo "    might behave in unpredictable ways. You've been warned."
+      echo '    Downloads a URL with the browser and returns the path to the downloaded file.'
+      echo '    This is finnicky and relies on the browser downloading to the default'
+      echo '    Downloads folder. If multiple new files are created around the same time, this'
+      echo '    might behave in unpredictable ways. You'"'"'ve been warned.'
       ;;
     python)
       echo "Usage: q python FUNCTION [ARG...]"
@@ -980,11 +1061,11 @@ function __q_help() {
       echo
       echo "Available functions:"
       echo "  q net dataurl [ARG...]"
-      echo "    Create a data URL from a file"
+      echo '    Create a data URL from a file'
       echo "  q net rtt [ARG...]"
-      echo "    Average round-trip time to the specified host."
+      echo '    Average round-trip time to the specified host.'
       echo "  q net ip4 [ARG...]"
-      echo "    Print the non-localhost IPv4 addresses of this machine. One address per line."
+      echo '    Print the non-localhost IPv4 addresses of this machine. One address per line.'
       echo "  q net ip4gw [ARG...]"
       echo "  q net serve [ARG...]"
       echo "  q net dump_url [ARG...]"
@@ -1037,12 +1118,12 @@ function __q_help() {
       echo "Available functions:"
       echo "  q util sud [ARG...]"
       echo "  q util h ALGO [INPUT]"
-      echo "    Print a cryptographic hash of the input."
-      echo "    "
-      echo "    If no INPUT is provided, read from stdin."
-      echo "    "
-      echo "    h 256 foo -> b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c"
-      echo "    h md5 foo -> d3b07384d113edec49eaa6238ad5ff00"
+      echo '    Print a cryptographic hash of the input.'
+      echo '    '
+      echo '    If no INPUT is provided, read from stdin.'
+      echo '    '
+      echo '    h 256 foo -> b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c'
+      echo '    h md5 foo -> d3b07384d113edec49eaa6238ad5ff00'
       echo "  q util reload [ARG...]"
       echo "  q util markdown [ARG...]"
       echo "  q util human_size [ARG...]"
@@ -1066,9 +1147,9 @@ function __q_help() {
       echo
       echo "Available functions:"
       echo "  q strings strip_control [ARG...]"
-      echo "    Strips terminal escape sequences from the input."
+      echo '    Strips terminal escape sequences from the input.'
       echo "  q strings repeat [ARG...]"
-      echo "    repeat CHAR COUNT: prints CHAR COUNT times."
+      echo '    repeat CHAR COUNT: prints CHAR COUNT times.'
       ;;
     mac)
       echo "Usage: q mac FUNCTION [ARG...]"
@@ -1100,70 +1181,70 @@ function __q_help() {
       echo
       echo "Available functions:"
       echo "  q notes napi_list_notes [ARG...]"
-      echo "    Outputs:"
-      echo "    "
-      echo "    1. relative path"
-      echo "    2. mtime"
-      echo "    3. age"
-      echo "    4. line count"
-      echo "    5. depth"
-      echo "    6. absolute path"
-      echo "    7. type (f or d)"
-      echo "    8. title"
-      echo "    9. location (g=git or l=local)"
-      echo "    10. base path"
-      echo "    11. Quick-TODO-aware title"
-      echo "    12. Archived (A if archived - if not)"
+      echo '    utputs'
+      echo '    '
+      echo '    1. relative path'
+      echo '    2. mtime'
+      echo '    3. age'
+      echo '    4. line count'
+      echo '    5. depth'
+      echo '    6. absolute path'
+      echo '    7. type (f or d)'
+      echo '    8. title'
+      echo '    9. location (g=git or l=local)'
+      echo '    10. base path'
+      echo '    11. Quick-TODO-aware title'
+      echo '    12. Archived (A if archived - if not)'
       echo "  q notes nbck [ARG...]"
       echo "  q notes napi_empty_notes [ARG...]"
       echo "  q notes napi_list_todos [ARG...]"
-      echo "    Output:"
-      echo "    "
-      echo "    1. Path"
-      echo "    2. Line number"
-      echo "    3. State (TODO or DONE)"
-      echo "    4. Text of the TODO"
-      echo "    5. Absolute path"
-      echo "    6. File age"
-      echo "    7. File mtime"
-      echo "    8. Current state: TODO|DONE|LATER|OVERDUE|SOON"
-      echo "    9. Earliest date (if any)"
-      echo "    10. Due date (if any)"
-      echo "    11. Context (one letter)"
+      echo '    utput'
+      echo '    '
+      echo '    1. Path'
+      echo '    2. Line number'
+      echo '    3. State (TODO or DONE)'
+      echo '    4. Text of the TODO'
+      echo '    5. Absolute path'
+      echo '    6. File age'
+      echo '    7. File mtime'
+      echo '    8. Current state: TODO|DONE|LATER|OVERDUE|SOON'
+      echo '    9. Earliest date (if any)'
+      echo '    10. Due date (if any)'
+      echo '    11. Context (one letter)'
       echo "  q notes ntodo_help [ARG...]"
       echo "  q notes ntodo [ARG...]"
       echo "  q notes napi_git [ARG...]"
-      echo "    Forwards its args to git running with the correct key and in the notes root."
+      echo '    Forwards its args to git running with the correct key and in the notes root.'
       echo "  q notes napi_clone [ARG...]"
-      echo "    Clones the git reposity."
+      echo '    Clones the git reposity.'
       echo "  q notes nfsck [ARG...]"
-      echo "    Resets the mtime of notes files from git."
+      echo '    Resets the mtime of notes files from git.'
       echo "  q notes nw [ARG...]"
       echo "  q notes nwin [ARG...]"
       echo "  q notes napi_find [ARG...]"
-      echo "    Runs find automatically scoped to the right mtime by the NEND and NSTART env"
-      echo "    variables."
+      echo '    Runs find automatically scoped to the right mtime by the NEND and NSTART env'
+      echo '    ariables'
       echo "  q notes napi_quick_title [ARG...]"
       echo "  q notes nlog [ARG...]"
       echo "  q notes nn [ARG...]"
       echo "  q notes nsync [ARG...]"
       echo "  q notes napi_match_files [ARG...]"
-      echo "    Returns a list of files, as absolute paths, that match a search query. The"
-      echo "    query is a list of terms, separated by spaces. Each term is either a"
-      echo "    pro-pattern, or an anti-pattern:"
-      echo "    "
-      echo "    Pro-pattern terms are regular words (e.g. 'foo') that MUST appear in the file."
-      echo "    If there are multiple pro-pattern terms, then they all must appear for a file"
-      echo "    to match (match all)."
-      echo "    "
-      echo "    Anti-pattern terms start with a tilde `~` (e.g. `~bar`). Any file containing"
-      echo "    even one of the anti-pattern terms is excluded from the results."
-      echo "    "
-      echo "    Without any pro-patterns, starts with matching all files."
-      echo "    "
-      echo "    Additional flags start with a dash '-', to be supplied in any position:"
-      echo "    "
-      echo "    -w match only complete words (DEFAULT) -W match substrings"
+      echo '    Returns a list of files, as absolute paths, that match a search query. The'
+      echo '    query is a list of terms, separated by spaces. Each term is either a'
+      echo '    pro-pattern, or an anti-pattern:'
+      echo '    '
+      echo '    Pro-pattern terms are regular words (e.g. '"'"'foo'"'"') that MUST appear in the file.'
+      echo '    If there are multiple pro-pattern terms, then they all must appear for a file'
+      echo '    to match (match all).'
+      echo '    '
+      echo '    Anti-pattern terms start with a tilde `~` (e.g. `~bar`). Any file containing'
+      echo '    even one of the anti-pattern terms is excluded from the results.'
+      echo '    '
+      echo '    Without any pro-patterns, starts with matching all files.'
+      echo '    '
+      echo '    Additional flags start with a dash '"'"'-'"'"', to be supplied in any position:'
+      echo '    '
+      echo '    -w match only complete words (DEFAULT) -W match substrings'
       echo "  q notes nls [ARG...]"
       echo "  q notes nhist [ARG...]"
       echo "  q notes nundo [ARG...]"
@@ -1171,8 +1252,8 @@ function __q_help() {
       echo "  q notes ngc [ARG...]"
       echo "  q notes napi_update_note [ARG...]"
       echo "  q notes napi_edit_note [ARG...]"
-      echo "    Opens vim for the given relative note path, then updates the notes tree using"
-      echo "    the result. Optional second argument is the line number to open vim at."
+      echo '    Opens vim for the given relative note path, then updates the notes tree using'
+      echo '    the result. Optional second argument is the line number to open vim at.'
       echo "  q notes napi_perl_preview [ARG...]"
       echo "  q notes nperl [ARG...]"
       echo "  q notes n [ARG...]"
@@ -1189,7 +1270,7 @@ function __q_help() {
       echo
       echo "Available functions:"
       echo "  q find f [ARG...]"
-      echo "    Shorthand for find"
+      echo '    Shorthand for find'
       echo "  q find fcc [ARG...]"
       echo "  q find fgo [ARG...]"
       echo "  q find fjava [ARG...]"
@@ -1201,7 +1282,7 @@ function __q_help() {
       echo
       echo "Available functions:"
       echo "  q hg is_dir_hg [ARG...]"
-      echo "    Is the current directory a mercurial repo? Fast check."
+      echo '    Is the current directory a mercurial repo? Fast check.'
       ;;
     xterm_colors)
       echo "Usage: q xterm_colors FUNCTION [ARG...]"
@@ -1209,28 +1290,28 @@ function __q_help() {
       echo
       echo "Available functions:"
       echo "  q xterm_colors channel_step [ARG...]"
-      echo "    Takes one RGB channel value as a 2-byte hex string and returns a decimal"
-      echo "    number representing the step in XTERM_CHANNEL_STEPS that's the closest."
+      echo '    Takes one RGB channel value as a 2-byte hex string and returns a decimal'
+      echo '    number representing the step in XTERM_CHANNEL_STEPS that'"'"'s the closest.'
       echo "  q xterm_colors greyscale_step [ARG...]"
-      echo "    As channel_step, but for greyscale."
+      echo '    As channel_step, but for greyscale.'
       echo "  q xterm_colors rgb_to_xterm [ARG...]"
-      echo "    Takes an RGB color as a 6-byte hex string and returns the closest xterm color."
+      echo '    Takes an RGB color as a 6-byte hex string and returns the closest xterm color.'
       echo "  q xterm_colors hue_diff [ARG...]"
-      echo "    Computes the hue difference between two RGB colors passed as 6-byte hex"
-      echo "    strings. Result is in the interval [0; 765]. Contrast values greater than ~400"
-      echo "    are usually legible for text, if sufficient brightness contrast also exists."
-      echo "    (Depends on terminal.)"
+      echo '    Computes the hue difference between two RGB colors passed as 6-byte hex'
+      echo '    strings. Result is in the interval [0; 765]. Contrast values greater than ~400'
+      echo '    are usually legible for text, if sufficient brightness contrast also exists.'
+      echo '    (Depends on terminal.)'
       echo "  q xterm_colors brightness [ARG...]"
-      echo "    Computes the brightness of an RGB color passed as a 6-byte hex string. Result"
-      echo "    is in the interval [0; 255]. Brightness contrast of ~100 is usually legible if"
-      echo "    sufficient hue contrast also exists. (Depends on terminal.)"
+      echo '    Computes the brightness of an RGB color passed as a 6-byte hex string. Result'
+      echo '    is in the interval [0; 255]. Brightness contrast of ~100 is usually legible if'
+      echo '    sufficient hue contrast also exists. (Depends on terminal.)'
       echo "  q xterm_colors contrast [ARG...]"
-      echo "    Computes a contrast value between two RGB colors passed as 6-byte hex strings."
-      echo "    Result is in the interval [0; 192]. Combines hue and brightness information."
-      echo "    Contrast values over 80 are usually legible, depending on terminal."
+      echo '    Computes a contrast value between two RGB colors passed as 6-byte hex strings.'
+      echo '    Result is in the interval [0; 192]. Combines hue and brightness information.'
+      echo '    Contrast values over 80 are usually legible, depending on terminal.'
       echo "  q xterm_colors xterm_to_rgb [ARG...]"
-      echo "    Takes an xterm color number as a decimal integer and returns a 6-byte hex of"
-      echo "    the RGB color."
+      echo '    Takes an xterm color number as a decimal integer and returns a 6-byte hex of'
+      echo '    the RGB color.'
       echo "  q xterm_colors xterm_to_fg [ARG...]"
       echo "  q xterm_colors xterm_to_bg [ARG...]"
       echo "  q xterm_colors tfmt [ARG...]"
@@ -1250,23 +1331,23 @@ function __q_help() {
       echo "Available functions:"
       echo "  q fedora setup [ARG...]"
       echo "  q fedora dnf_install_or_skip package1 package2 ..."
-      echo "    Install a package with dnf if it's not already installed."
+      echo '    Install a package with dnf if it'"'"'s not already installed.'
       ;;
     multiple_choice)
       echo "Usage: q multiple_choice FUNCTION [ARG...]"
       echo
       echo "Available functions:"
       echo "  q multiple_choice multiple_choice [-n|-L] [-i INPUT] [-p PAGE] [-m MSG] [-a ALPHABET] [-I CONTROLS] [-A CONTROL_ALPHABET]"
-      echo "    Display an interactive menu with multiple choices, and then print the selected option to stdout."
-      echo "    "
-      echo "    -n: return the number of the selected option"
-      echo "    -L: return the string of the selected option"
-      echo "    -p: page number to show"
-      echo "    -m: prompt message"
-      echo "    -a: alphabet"
-      echo "    -I: control options"
-      echo "    -A: control alphabet"
-      echo "    -i: input (options to pick from)"
+      echo '    Display an interactive menu with multiple choices, and then print the selected option to stdout.'
+      echo '    '
+      echo '    -n: return the number of the selected option'
+      echo '    -L: return the string of the selected option'
+      echo '    -p: page number to show'
+      echo '    -m: prompt message'
+      echo '    -a: alphabet'
+      echo '    -I: control options'
+      echo '    -A: control alphabet'
+      echo '    -i: input (options to pick from)'
       ;;
     monitor)
       echo "Usage: q monitor FUNCTION [ARG...]"
@@ -1280,18 +1361,18 @@ function __q_help() {
       echo "  q monitor stream_top_stats [ARG...]"
       echo "  q monitor stream_net_stats [ARG...]"
       echo "  q monitor proc_stats [ARG...]"
-      echo "    Outputs:"
-      echo "    1. CPU util"
-      echo "    2. Physical RAM util"
-      echo "    3. Total RSS"
-      echo "    4. User time total"
-      echo "    5. System time total"
-      echo "    6. PID with the highest CPU util"
-      echo "    7. Comm with the highest CPU util"
-      echo "    8. CPU util of the proc with the highest CPU util"
-      echo "    9. PID with the highest RSS"
-      echo "    10. Comm with the highest RSS"
-      echo "    11. RSS of the proc with the highest RSS"
+      echo '    utputs'
+      echo '    1. CPU util'
+      echo '    2. Physical RAM util'
+      echo '    3. Total RSS'
+      echo '    4. User time total'
+      echo '    5. System time total'
+      echo '    6. PID with the highest CPU util'
+      echo '    7. Comm with the highest CPU util'
+      echo '    8. CPU util of the proc with the highest CPU util'
+      echo '    9. PID with the highest RSS'
+      echo '    10. Comm with the highest RSS'
+      echo '    11. RSS of the proc with the highest RSS'
       ;;
     keyring)
       echo "Usage: q keyring FUNCTION [ARG...]"
@@ -1306,8 +1387,8 @@ function __q_help() {
       echo
       echo "Available functions:"
       echo "  q pkg install_or_skip [PACKAGE...]"
-      echo "    Install packages using the system package manager, or skip, if the package is"
-      echo "    already installed."
+      echo '    Install packages using the system package manager, or skip, if the package is'
+      echo '    already installed.'
       ;;
     quick.gen)
       echo "Usage: q quick.gen FUNCTION [ARG...]"
