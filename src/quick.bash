@@ -3,6 +3,7 @@
 
 
 source "python.bash"
+source "quick.gen.bash"
 
 if [[ -z "${_REDSHELL_QUICK}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_QUICK=1

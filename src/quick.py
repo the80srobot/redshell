@@ -359,10 +359,33 @@ def gen_help(modules: Iterable[Module]) -> Generator[str, None, None]:
     yield "}"
 
 def gen_bash_complete(modules: Iterable[Module]) -> Generator[str, None, None]:
-    yield "__q_complete() {"
-    yield "  # TODO"
-    yield "  return 1"
+    yield "function __q_compgen() {"
+    yield f'  local modules="{" ".join(module.name for module in modules)}"'
+    yield '  case "${COMP_CWORD}" in'
+    yield '  1)'
+    yield '    COMPREPLY=($(compgen -W "help ${modules}" -- ${COMP_WORDS[COMP_CWORD]}))'
+    yield "    return 0"
+    yield "  ;;"
+    yield '  2)'
+    yield '    case "${COMP_WORDS[1]}" in'
+    for module in modules:
+        yield f"    {module.name})"
+        yield f'      COMPREPLY=($(compgen -W "help {" ".join(
+            _local_name(function.name.value, module.name) for function in module.functions
+            if not function.name.value.startswith("_")
+        )}" -- ${{COMP_WORDS[COMP_CWORD]}}))'
+        yield f"      return 0"
+        yield f"      ;;"
+    yield '    esac'
+    yield '    ;;'
+    yield '    *)'
+    yield '      COMPREPLY=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))'
+    yield '      return 0'
+    yield '      ;;'
+    yield '  esac'
     yield "}"
+    yield ""
+    yield "complete -F __q_compgen q"
 
 
 def path_to_package(path: str, root: str) -> str:
@@ -374,6 +397,8 @@ def gen_all(path: str, output: str) -> None:
     for root, dirs, files in os.walk(path):
         for file in files:
             if not file.endswith(".bash"):
+                continue
+            if ".gen." in file:
                 continue
             with open(os.path.join(root, file), "r") as f:
                 modules.append(

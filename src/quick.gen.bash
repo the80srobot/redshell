@@ -945,22 +945,6 @@ function __q() {
       ;;
     esac
     ;;
-  quick.gen)
-    shift
-    case "$1" in
-    help|h|-h|--help|?)
-      shift
-      __q_help "quick.gen" "$@"
-      ;;
-    *)
-      if [ -n "$1" ]; then
-        echo "Module quick.gen has no function $1"
-      fi
-      __q_help quick.gen
-      return 1
-      ;;
-    esac
-    ;;
   *)
     echo "Unknown module $1"
     return 1
@@ -1005,7 +989,6 @@ function __q_help() {
     echo '  monitor         This file provides functions to monitor system stats and write them to a log.'
     echo '  keyring         (no description)'
     echo '  pkg             (no description)'
-    echo '  quick.gen       (no description)'
     return 0
   fi
   if [ "$#" -eq 1 ]; then
@@ -1390,11 +1373,6 @@ function __q_help() {
       echo '    Install packages using the system package manager, or skip, if the package is'
       echo '    already installed.'
       ;;
-    quick.gen)
-      echo "Usage: q quick.gen FUNCTION [ARG...]"
-      echo
-      echo "Available functions:"
-      ;;
     *)
       echo "Unknown module $1"
       return 1
@@ -1403,9 +1381,128 @@ function __q_help() {
   fi
 }
 
-__q_complete() {
-  # TODO
-  return 1
+function __q_compgen() {
+  local modules="browser python quick git bash net install ascii_art init crypt util rust strings mac media notes time find hg xterm_colors go fedora multiple_choice monitor keyring pkg"
+  case "${COMP_CWORD}" in
+  1)
+    COMPREPLY=($(compgen -W "help ${modules}" -- ${COMP_WORDS[COMP_CWORD]}))
+    return 0
+  ;;
+  2)
+    case "${COMP_WORDS[1]}" in
+    browser)
+      COMPREPLY=($(compgen -W "help gdocs_id sheets_dl_link chrome_path downloads_path dl" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    python)
+      COMPREPLY=($(compgen -W "help venv ipynb detect_python latest_python func" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    quick)
+      COMPREPLY=($(compgen -W "help rebuild q" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    git)
+      COMPREPLY=($(compgen -W "help mkproject" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    bash)
+      COMPREPLY=($(compgen -W "help get_bash_functions" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    net)
+      COMPREPLY=($(compgen -W "help dataurl rtt ip4 ip4gw serve dump_url wiki wifi_device wifi_name" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    install)
+      COMPREPLY=($(compgen -W "help reinstall_file file uninstall_file" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    ascii_art)
+      COMPREPLY=($(compgen -W "help print_speech_bubble erase_lines cursor_position cursor_row print_bmo print_pedro scroll_output_pedro select_visual" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    init)
+      COMPREPLY=($(compgen -W "help " -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    crypt)
+      COMPREPLY=($(compgen -W "help encrypt_symmetric decrypt_symmetric gen_github_keypair package payloadify downloadify" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    util)
+      COMPREPLY=($(compgen -W "help sud h reload markdown human_size install_heroku_cli bazel jup wait_for_file forex trim" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    rust)
+      COMPREPLY=($(compgen -W "help rustup install_goodies" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    strings)
+      COMPREPLY=($(compgen -W "help strip_control repeat" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    mac)
+      COMPREPLY=($(compgen -W "help setup brew get_user_shell brew_bash_path switch_to_bash icloud icloud_evict brew_install_or_skip install_miniconda install_devtools" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    media)
+      COMPREPLY=($(compgen -W "help " -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    notes)
+      COMPREPLY=($(compgen -W "help napi_list_notes nbck napi_empty_notes napi_list_todos ntodo_help ntodo napi_git napi_clone nfsck nw nwin napi_find napi_quick_title nlog nn nsync napi_match_files nls nhist nundo napi_drop_note ngc napi_update_note napi_edit_note napi_perl_preview nperl n" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    time)
+      COMPREPLY=($(compgen -W "help file_mtime file_age" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    find)
+      COMPREPLY=($(compgen -W "help f fcc fgo fjava faidl fd" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    hg)
+      COMPREPLY=($(compgen -W "help is_dir_hg" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    xterm_colors)
+      COMPREPLY=($(compgen -W "help channel_step greyscale_step rgb_to_xterm hue_diff brightness contrast xterm_to_rgb xterm_to_fg xterm_to_bg tfmt color shades colors" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    go)
+      COMPREPLY=($(compgen -W "help pkg_do" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    fedora)
+      COMPREPLY=($(compgen -W "help setup dnf_install_or_skip" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    multiple_choice)
+      COMPREPLY=($(compgen -W "help multiple_choice" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    monitor)
+      COMPREPLY=($(compgen -W "help stream_load_stats load_hist latest_load_stats write_load_stats stream_top_stats stream_net_stats proc_stats" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    keyring)
+      COMPREPLY=($(compgen -W "help keys_git keys_path keys_var" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    pkg)
+      COMPREPLY=($(compgen -W "help install_or_skip" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    esac
+    ;;
+    *)
+      COMPREPLY=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+  esac
 }
+
+complete -F __q_compgen q
 
 fi
