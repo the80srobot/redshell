@@ -58,12 +58,18 @@ class Module:
     comment: list[str]
 
 
-FNAME_TYPE_A = re.compile(r"(\w+)\s*\(\)\s")
-FNAME_TYPE_B = re.compile(r"function\s+(\w+)[\s(]")
+FNAME_TYPE_A = re.compile(r"([\w\-_]+)\s*\(\)\s")
+FNAME_TYPE_B = re.compile(r"function\s+([\w\-_]+)[\s(]")
 
 
 def _escape_comment(comment: list[str]) -> Generator[str, None, None]:
-    return (shlex.quote(line)[1:-1] for line in comment)
+    for line in comment:
+        quoted = shlex.quote(line)
+        if quoted.startswith("'") and quoted.endswith("'"):
+            yield quoted[1:-1]
+        else:
+            yield quoted
+    # return (shlex.quote(line)[1:-1] for line in comment)
 
 def _accept_fname(line: str) -> tuple[str, tuple[int, int]] | None:
     # Bash supports two variants of declaration syntax:
@@ -266,7 +272,7 @@ def gen_switch(modules: Iterable[Module]) -> Generator[str, None, None]:
     yield "    return 0"
     yield "  fi"
     yield '  case "$1" in'
-    yield "  help|h|-h|--help|?)"
+    yield "  help|-h|--help|?)"
     yield "    shift"
     yield '    __q_help "$@"'
     yield "    ;;"
@@ -274,7 +280,7 @@ def gen_switch(modules: Iterable[Module]) -> Generator[str, None, None]:
         yield f"  {module.name})"
         yield f"    shift"
         yield f'    case "$1" in'
-        yield f"    help|h|-h|--help|?)"
+        yield f"    help|-h|--help|?)"
         yield f"      shift"
         yield f'      __q_help "{module.name}" "$@"'
         yield f"      ;;"
@@ -346,7 +352,9 @@ def gen_help(modules: Iterable[Module]) -> Generator[str, None, None]:
             usage = function.usage
             if usage.startswith(function.name.value):
                 usage = usage[len(function.name.value) :].strip()
+            yield f'      tput bold'
             yield f'      echo "  q {module.name} {_local_name(function.name.value, module.name)} {usage}"'
+            yield f'      tput sgr0'
             for line in _escape_comment(function.comment):
                 yield f"      echo '    {line}'"
         yield f"      ;;"

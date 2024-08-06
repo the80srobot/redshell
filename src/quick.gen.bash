@@ -9,14 +9,14 @@ function __q() {
     return 0
   fi
   case "$1" in
-  help|h|-h|--help|?)
+  help|-h|--help|?)
     shift
     __q_help "$@"
     ;;
   browser)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "browser" "$@"
       ;;
@@ -52,7 +52,7 @@ function __q() {
   python)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "python" "$@"
       ;;
@@ -88,7 +88,7 @@ function __q() {
   quick)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "quick" "$@"
       ;;
@@ -112,13 +112,17 @@ function __q() {
   git)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "git" "$@"
       ;;
     mkproject)
       shift
       mkproject "$@"
+      ;;
+    git-ssh-init)
+      shift
+      git-ssh-init "$@"
       ;;
     *)
       if [ -n "$1" ]; then
@@ -132,7 +136,7 @@ function __q() {
   bash)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "bash" "$@"
       ;;
@@ -152,7 +156,7 @@ function __q() {
   net)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "net" "$@"
       ;;
@@ -204,7 +208,7 @@ function __q() {
   install)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "install" "$@"
       ;;
@@ -232,7 +236,7 @@ function __q() {
   ascii_art)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "ascii_art" "$@"
       ;;
@@ -280,7 +284,7 @@ function __q() {
   init)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "init" "$@"
       ;;
@@ -296,7 +300,7 @@ function __q() {
   crypt)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "crypt" "$@"
       ;;
@@ -336,7 +340,7 @@ function __q() {
   util)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "util" "$@"
       ;;
@@ -396,7 +400,7 @@ function __q() {
   rust)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "rust" "$@"
       ;;
@@ -420,7 +424,7 @@ function __q() {
   strings)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "strings" "$@"
       ;;
@@ -444,7 +448,7 @@ function __q() {
   mac)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "mac" "$@"
       ;;
@@ -500,9 +504,13 @@ function __q() {
   media)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "media" "$@"
+      ;;
+    yt-dl)
+      shift
+      yt-dl "$@"
       ;;
     *)
       if [ -n "$1" ]; then
@@ -516,7 +524,7 @@ function __q() {
   notes)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "notes" "$@"
       ;;
@@ -640,7 +648,7 @@ function __q() {
   time)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "time" "$@"
       ;;
@@ -664,7 +672,7 @@ function __q() {
   find)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "find" "$@"
       ;;
@@ -704,7 +712,7 @@ function __q() {
   hg)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "hg" "$@"
       ;;
@@ -724,7 +732,7 @@ function __q() {
   xterm_colors)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "xterm_colors" "$@"
       ;;
@@ -792,7 +800,7 @@ function __q() {
   go)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "go" "$@"
       ;;
@@ -812,7 +820,7 @@ function __q() {
   fedora)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "fedora" "$@"
       ;;
@@ -836,7 +844,7 @@ function __q() {
   multiple_choice)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "multiple_choice" "$@"
       ;;
@@ -856,7 +864,7 @@ function __q() {
   monitor)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "monitor" "$@"
       ;;
@@ -900,7 +908,7 @@ function __q() {
   keyring)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "keyring" "$@"
       ;;
@@ -928,7 +936,7 @@ function __q() {
   pkg)
     shift
     case "$1" in
-    help|h|-h|--help|?)
+    help|-h|--help|?)
       shift
       __q_help "pkg" "$@"
       ;;
@@ -962,7 +970,7 @@ function __q_help() {
     echo '  browser         (no description)'
     echo '  python          This file provides functions to manage python environments, and quickly launch'
     echo '                  python code in various ways. It includes a Bash-Python FFI bridge, in'
-    echo '                  ython_func'
+    echo '                  python_func.'
     echo '  quick           (no description)'
     echo '  git             (no description)'
     echo '  bash            (no description)'
@@ -974,6 +982,7 @@ function __q_help() {
     echo '  rust            (no description)'
     echo '  strings         This file provides various terminal string helpers.'
     echo '  mac             (no description)'
+    echo '  media           (no description)'
     echo '  notes           This file implements a command-line note management system based on git and'
     echo '                  markdown. It'"'"'s evolved over the years to be incredibly ergonomic for me, its'
     echo '                  only user and developer. The madness of doing all this in bash is not lost on'
@@ -997,11 +1006,21 @@ function __q_help() {
       echo "Usage: q browser FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q browser gdocs_id [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q browser sheets_dl_link [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q browser chrome_path [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q browser downloads_path [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q browser dl [ARG...]"
+      tput sgr0
       echo '    Downloads a URL with the browser and returns the path to the downloaded file.'
       echo '    This is finnicky and relies on the browser downloading to the default'
       echo '    Downloads folder. If multiple new files are created around the same time, this'
@@ -1014,69 +1033,130 @@ function __q_help() {
       echo "python_func."
       echo
       echo "Available functions:"
+      tput bold
       echo "  q python venv [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q python ipynb [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q python detect_python [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q python latest_python [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q python func [ARG...]"
+      tput sgr0
       ;;
     quick)
       echo "Usage: q quick FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q quick rebuild [PATH]"
+      tput sgr0
+      tput bold
       echo "  q quick q [ARG...]"
+      tput sgr0
       ;;
     git)
       echo "Usage: q git FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q git mkproject [ARG...]"
+      tput sgr0
+      tput bold
+      echo "  q git git-ssh-init [ARG...]"
+      tput sgr0
       ;;
     bash)
       echo "Usage: q bash FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q bash get_bash_functions [ARG...]"
+      tput sgr0
       ;;
     net)
       echo "Usage: q net FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q net dataurl [ARG...]"
+      tput sgr0
       echo '    Create a data URL from a file'
+      tput bold
       echo "  q net rtt [ARG...]"
+      tput sgr0
       echo '    Average round-trip time to the specified host.'
+      tput bold
       echo "  q net ip4 [ARG...]"
+      tput sgr0
       echo '    Print the non-localhost IPv4 addresses of this machine. One address per line.'
+      tput bold
       echo "  q net ip4gw [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q net serve [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q net dump_url [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q net wiki [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q net wifi_device [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q net wifi_name [ARG...]"
+      tput sgr0
       ;;
     install)
       echo "Usage: q install FUNCTION [ARG...]"
       echo "Install a file into another file, optionally with a keyword."
       echo
       echo "Available functions:"
+      tput bold
       echo "  q install reinstall_file [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q install file [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q install uninstall_file [ARG...]"
+      tput sgr0
       ;;
     ascii_art)
       echo "Usage: q ascii_art FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q ascii_art print_speech_bubble [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q ascii_art erase_lines [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q ascii_art cursor_position [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q ascii_art cursor_row [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q ascii_art print_bmo [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q ascii_art print_pedro [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q ascii_art scroll_output_pedro [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q ascii_art select_visual [ARG...]"
+      tput sgr0
       ;;
     init)
       echo "Usage: q init FUNCTION [ARG...]"
@@ -1088,71 +1168,136 @@ function __q_help() {
       echo "Usage: q crypt FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q crypt encrypt_symmetric [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q crypt decrypt_symmetric [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q crypt gen_github_keypair [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q crypt package [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q crypt payloadify [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q crypt downloadify [ARG...]"
+      tput sgr0
       ;;
     util)
       echo "Usage: q util FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q util sud [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q util h ALGO [INPUT]"
+      tput sgr0
       echo '    Print a cryptographic hash of the input.'
       echo '    '
       echo '    If no INPUT is provided, read from stdin.'
       echo '    '
       echo '    h 256 foo -> b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c'
       echo '    h md5 foo -> d3b07384d113edec49eaa6238ad5ff00'
+      tput bold
       echo "  q util reload [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q util markdown [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q util human_size [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q util install_heroku_cli [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q util bazel [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q util jup [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q util wait_for_file [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q util forex [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q util trim [ARG...]"
+      tput sgr0
       ;;
     rust)
       echo "Usage: q rust FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q rust rustup [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q rust install_goodies [ARG...]"
+      tput sgr0
       ;;
     strings)
       echo "Usage: q strings FUNCTION [ARG...]"
       echo "This file provides various terminal string helpers."
       echo
       echo "Available functions:"
+      tput bold
       echo "  q strings strip_control [ARG...]"
+      tput sgr0
       echo '    Strips terminal escape sequences from the input.'
+      tput bold
       echo "  q strings repeat [ARG...]"
+      tput sgr0
       echo '    repeat CHAR COUNT: prints CHAR COUNT times.'
       ;;
     mac)
       echo "Usage: q mac FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q mac setup [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q mac brew [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q mac get_user_shell [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q mac brew_bash_path [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q mac switch_to_bash [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q mac icloud [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q mac icloud_evict [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q mac brew_install_or_skip [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q mac install_miniconda [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q mac install_devtools [ARG...]"
+      tput sgr0
       ;;
     media)
       echo "Usage: q media FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
+      echo "  q media yt-dl [ARG...]"
+      tput sgr0
       ;;
     notes)
       echo "Usage: q notes FUNCTION [ARG...]"
@@ -1163,8 +1308,10 @@ function __q_help() {
       echo "cases over time, and I know better than to rewrite something that works fine."
       echo
       echo "Available functions:"
+      tput bold
       echo "  q notes napi_list_notes [ARG...]"
-      echo '    utputs'
+      tput sgr0
+      echo '    Outputs:'
       echo '    '
       echo '    1. relative path'
       echo '    2. mtime'
@@ -1178,10 +1325,16 @@ function __q_help() {
       echo '    10. base path'
       echo '    11. Quick-TODO-aware title'
       echo '    12. Archived (A if archived - if not)'
+      tput bold
       echo "  q notes nbck [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes napi_empty_notes [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes napi_list_todos [ARG...]"
-      echo '    utput'
+      tput sgr0
+      echo '    Output:'
       echo '    '
       echo '    1. Path'
       echo '    2. Line number'
@@ -1194,24 +1347,50 @@ function __q_help() {
       echo '    9. Earliest date (if any)'
       echo '    10. Due date (if any)'
       echo '    11. Context (one letter)'
+      tput bold
       echo "  q notes ntodo_help [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes ntodo [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes napi_git [ARG...]"
+      tput sgr0
       echo '    Forwards its args to git running with the correct key and in the notes root.'
+      tput bold
       echo "  q notes napi_clone [ARG...]"
+      tput sgr0
       echo '    Clones the git reposity.'
+      tput bold
       echo "  q notes nfsck [ARG...]"
+      tput sgr0
       echo '    Resets the mtime of notes files from git.'
+      tput bold
       echo "  q notes nw [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes nwin [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes napi_find [ARG...]"
+      tput sgr0
       echo '    Runs find automatically scoped to the right mtime by the NEND and NSTART env'
-      echo '    ariables'
+      echo '    variables.'
+      tput bold
       echo "  q notes napi_quick_title [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes nlog [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes nn [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes nsync [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes napi_match_files [ARG...]"
+      tput sgr0
       echo '    Returns a list of files, as absolute paths, that match a search query. The'
       echo '    query is a list of terms, separated by spaces. Each term is either a'
       echo '    pro-pattern, or an anti-pattern:'
@@ -1228,43 +1407,81 @@ function __q_help() {
       echo '    Additional flags start with a dash '"'"'-'"'"', to be supplied in any position:'
       echo '    '
       echo '    -w match only complete words (DEFAULT) -W match substrings'
+      tput bold
       echo "  q notes nls [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes nhist [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes nundo [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes napi_drop_note [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes ngc [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes napi_update_note [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes napi_edit_note [ARG...]"
+      tput sgr0
       echo '    Opens vim for the given relative note path, then updates the notes tree using'
       echo '    the result. Optional second argument is the line number to open vim at.'
+      tput bold
       echo "  q notes napi_perl_preview [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes nperl [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q notes n [ARG...]"
+      tput sgr0
       ;;
     time)
       echo "Usage: q time FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q time file_mtime [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q time file_age [ARG...]"
+      tput sgr0
       ;;
     find)
       echo "Usage: q find FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q find f [ARG...]"
+      tput sgr0
       echo '    Shorthand for find'
+      tput bold
       echo "  q find fcc [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q find fgo [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q find fjava [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q find faidl [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q find fd [ARG...]"
+      tput sgr0
       ;;
     hg)
       echo "Usage: q hg FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q hg is_dir_hg [ARG...]"
+      tput sgr0
       echo '    Is the current directory a mercurial repo? Fast check.'
       ;;
     xterm_colors)
@@ -1272,55 +1489,89 @@ function __q_help() {
       echo "This file contains functions for working with xterm color codes."
       echo
       echo "Available functions:"
+      tput bold
       echo "  q xterm_colors channel_step [ARG...]"
+      tput sgr0
       echo '    Takes one RGB channel value as a 2-byte hex string and returns a decimal'
       echo '    number representing the step in XTERM_CHANNEL_STEPS that'"'"'s the closest.'
+      tput bold
       echo "  q xterm_colors greyscale_step [ARG...]"
+      tput sgr0
       echo '    As channel_step, but for greyscale.'
+      tput bold
       echo "  q xterm_colors rgb_to_xterm [ARG...]"
+      tput sgr0
       echo '    Takes an RGB color as a 6-byte hex string and returns the closest xterm color.'
+      tput bold
       echo "  q xterm_colors hue_diff [ARG...]"
+      tput sgr0
       echo '    Computes the hue difference between two RGB colors passed as 6-byte hex'
       echo '    strings. Result is in the interval [0; 765]. Contrast values greater than ~400'
       echo '    are usually legible for text, if sufficient brightness contrast also exists.'
       echo '    (Depends on terminal.)'
+      tput bold
       echo "  q xterm_colors brightness [ARG...]"
+      tput sgr0
       echo '    Computes the brightness of an RGB color passed as a 6-byte hex string. Result'
       echo '    is in the interval [0; 255]. Brightness contrast of ~100 is usually legible if'
       echo '    sufficient hue contrast also exists. (Depends on terminal.)'
+      tput bold
       echo "  q xterm_colors contrast [ARG...]"
+      tput sgr0
       echo '    Computes a contrast value between two RGB colors passed as 6-byte hex strings.'
       echo '    Result is in the interval [0; 192]. Combines hue and brightness information.'
       echo '    Contrast values over 80 are usually legible, depending on terminal.'
+      tput bold
       echo "  q xterm_colors xterm_to_rgb [ARG...]"
+      tput sgr0
       echo '    Takes an xterm color number as a decimal integer and returns a 6-byte hex of'
       echo '    the RGB color.'
+      tput bold
       echo "  q xterm_colors xterm_to_fg [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q xterm_colors xterm_to_bg [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q xterm_colors tfmt [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q xterm_colors color [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q xterm_colors shades [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q xterm_colors colors [ARG...]"
+      tput sgr0
       ;;
     go)
       echo "Usage: q go FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q go pkg_do [ARG...]"
+      tput sgr0
       ;;
     fedora)
       echo "Usage: q fedora FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q fedora setup [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q fedora dnf_install_or_skip package1 package2 ..."
+      tput sgr0
       echo '    Install a package with dnf if it'"'"'s not already installed.'
       ;;
     multiple_choice)
       echo "Usage: q multiple_choice FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q multiple_choice multiple_choice [-n|-L] [-i INPUT] [-p PAGE] [-m MSG] [-a ALPHABET] [-I CONTROLS] [-A CONTROL_ALPHABET]"
+      tput sgr0
       echo '    Display an interactive menu with multiple choices, and then print the selected option to stdout.'
       echo '    '
       echo '    -n: return the number of the selected option'
@@ -1337,14 +1588,28 @@ function __q_help() {
       echo "This file provides functions to monitor system stats and write them to a log."
       echo
       echo "Available functions:"
+      tput bold
       echo "  q monitor stream_load_stats [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q monitor load_hist [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q monitor latest_load_stats [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q monitor write_load_stats [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q monitor stream_top_stats [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q monitor stream_net_stats [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q monitor proc_stats [ARG...]"
-      echo '    utputs'
+      tput sgr0
+      echo '    Outputs:'
       echo '    1. CPU util'
       echo '    2. Physical RAM util'
       echo '    3. Total RSS'
@@ -1361,15 +1626,23 @@ function __q_help() {
       echo "Usage: q keyring FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q keyring keys_git [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q keyring keys_path [ARG...]"
+      tput sgr0
+      tput bold
       echo "  q keyring keys_var [ARG...]"
+      tput sgr0
       ;;
     pkg)
       echo "Usage: q pkg FUNCTION [ARG...]"
       echo
       echo "Available functions:"
+      tput bold
       echo "  q pkg install_or_skip [PACKAGE...]"
+      tput sgr0
       echo '    Install packages using the system package manager, or skip, if the package is'
       echo '    already installed.'
       ;;
@@ -1403,7 +1676,7 @@ function __q_compgen() {
       return 0
       ;;
     git)
-      COMPREPLY=($(compgen -W "help mkproject" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help mkproject git-ssh-init" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     bash)
@@ -1447,7 +1720,7 @@ function __q_compgen() {
       return 0
       ;;
     media)
-      COMPREPLY=($(compgen -W "help " -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help yt-dl" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     notes)
