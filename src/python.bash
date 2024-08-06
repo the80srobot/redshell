@@ -89,6 +89,7 @@ function python_func() {
     local path="${HOME}/.redshell/functions.py"
     local args="["
     local kwargs="{"
+    local clean=""
 
     while [[ "${#}" -ne 0 ]]; do
         case "$1" in
@@ -102,6 +103,9 @@ function python_func() {
             ;;
             -J|--json-output)
                 json_out="True"
+            ;;
+            --clean)
+                clean="True"
             ;;
             --)
                 shift
@@ -212,11 +216,27 @@ except Exception as e:
     sys.stderr.write(traceback.format_exc()+'\n')
     sys.exit(1)
 "
-
+    local ret
     python -c "${script}"
+    ret="$?"
 
     deactivate
+    if [[ -n "${clean}" ]]; then
+        >&2 echo "Cleaning up..."
+        rm -rf .venv
+        rm -rf __pycache__
+    fi
+
     popd > /dev/null
+    
+    if [[ "${ret}" -ne 0 ]]; then
+        >&2 echo "Python function failed with exit code ${ret}"
+        >&2 echo "(function: ${function} path: ${path})"
+        >&2 echo "Script dump:"
+        >&2 echo "${script}"
+    fi
+    
+    return "${ret}"
 }
 
 fi # _REDSHELL_PYTHON

@@ -113,6 +113,10 @@ Page $(( page + 1 ))/$(( max_page + 1 )) ${msg}: "
     fi
 }
 
+# Usage: multiple_choice [-n|-L] [-i INPUT] [-p PAGE] [-m MSG] [-a ALPHABET] [-I CONTROLS] [-A CONTROL_ALPHABET]
+#
+# Display an interactive menu with multiple choices, and then print the selected option to stdout.
+#
 # -n: return the number of the selected option
 # -L: return the string of the selected option
 # -p: page number to show

@@ -8,6 +8,8 @@ function fedora_setup() {
     dnf_install_or_skip git rsync pass
 }
 
+# Install a package with dnf if it's not already installed.
+# Usage: dnf_install_or_skip package1 package2 ...
 function dnf_install_or_skip() {
     local package
     local installed

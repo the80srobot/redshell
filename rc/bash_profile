@@ -188,4 +188,3 @@ then
     bind 'set colored-completion-prefix on'
     bind 'set show-all-if-ambiguous on'
 fi
-

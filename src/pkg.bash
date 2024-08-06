@@ -6,6 +6,10 @@ source "mac.bash"
 if [[ -z "${_REDSHELL_PKG}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_PKG=1
 
+# Install packages using the system package manager, or skip, if the package is
+# already installed.
+#
+# USAGE: pkg_install_or_skip [PACKAGE...]
 function pkg_install_or_skip() {
     if which brew > /dev/null; then
         brew_install_or_skip "${@}"
