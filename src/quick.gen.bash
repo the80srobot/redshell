@@ -1448,7 +1448,7 @@ function __q_help() {
       echo "  q time file_mtime [ARG...]"
       tput sgr0
       tput bold
-      echo "  q time file_age [ARG...]"
+      echo "  q time file_age [-s] PATH"
       tput sgr0
       ;;
     find)
@@ -1769,10 +1769,2470 @@ function __q_compgen() {
       ;;
     esac
     ;;
-    *)
-      COMPREPLY=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
-      return 0
+  *)
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    local prev="${COMP_WORDS[COMP_CWORD-1]}"
+    case "${COMP_WORDS[1]}" in
+    browser)
+      case "${COMP_WORDS[2]}" in
+      gdocs_id)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      sheets_dl_link)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      chrome_path)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      downloads_path)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      dl)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
       ;;
+    python)
+      case "${COMP_WORDS[2]}" in
+      venv)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      ipynb)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      detect_python)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      latest_python)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      func)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    quick)
+      case "${COMP_WORDS[2]}" in
+      rebuild)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=(3)
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      q)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    git)
+      case "${COMP_WORDS[2]}" in
+      mkproject)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      git-ssh-init)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    bash)
+      case "${COMP_WORDS[2]}" in
+      get_bash_functions)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    net)
+      case "${COMP_WORDS[2]}" in
+      dataurl)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      rtt)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      ip4)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      ip4gw)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      serve)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      dump_url)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      wiki)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      wifi_device)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      wifi_name)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    install)
+      case "${COMP_WORDS[2]}" in
+      reinstall_file)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      file)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      uninstall_file)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    ascii_art)
+      case "${COMP_WORDS[2]}" in
+      print_speech_bubble)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      erase_lines)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      cursor_position)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      cursor_row)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      print_bmo)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      print_pedro)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      scroll_output_pedro)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      select_visual)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    crypt)
+      case "${COMP_WORDS[2]}" in
+      encrypt_symmetric)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      decrypt_symmetric)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      gen_github_keypair)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      package)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      payloadify)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      downloadify)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    util)
+      case "${COMP_WORDS[2]}" in
+      sud)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      h)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=(3 4)
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      reload)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      markdown)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      human_size)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      install_heroku_cli)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      bazel)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      jup)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      wait_for_file)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      forex)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      trim)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    rust)
+      case "${COMP_WORDS[2]}" in
+      rustup)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      install_goodies)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    strings)
+      case "${COMP_WORDS[2]}" in
+      strip_control)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      repeat)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    mac)
+      case "${COMP_WORDS[2]}" in
+      setup)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      brew)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      get_user_shell)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      brew_bash_path)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      switch_to_bash)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      icloud)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      icloud_evict)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      brew_install_or_skip)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      install_miniconda)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      install_devtools)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    media)
+      case "${COMP_WORDS[2]}" in
+      yt-dl)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    notes)
+      case "${COMP_WORDS[2]}" in
+      napi_list_notes)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      nbck)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      napi_empty_notes)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      napi_list_todos)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      ntodo_help)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      ntodo)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      napi_git)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      napi_clone)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      nfsck)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      nw)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      nwin)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      napi_find)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      napi_quick_title)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      nlog)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      nn)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      nsync)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      napi_match_files)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      nls)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      nhist)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      nundo)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      napi_drop_note)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      ngc)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      napi_update_note)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      napi_edit_note)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      napi_perl_preview)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      nperl)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      n)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    time)
+      case "${COMP_WORDS[2]}" in
+      file_mtime)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      file_age)
+        local arg_names=(-s)
+        local switch_names=()
+        local keyword_names=(-s)
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    find)
+      case "${COMP_WORDS[2]}" in
+      f)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      fcc)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      fgo)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      fjava)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      faidl)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      fd)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    hg)
+      case "${COMP_WORDS[2]}" in
+      is_dir_hg)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    xterm_colors)
+      case "${COMP_WORDS[2]}" in
+      channel_step)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      greyscale_step)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      rgb_to_xterm)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      hue_diff)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      brightness)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      contrast)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      xterm_to_rgb)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      xterm_to_fg)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      xterm_to_bg)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      tfmt)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      color)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      shades)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      colors)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    go)
+      case "${COMP_WORDS[2]}" in
+      pkg_do)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    fedora)
+      case "${COMP_WORDS[2]}" in
+      setup)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      dnf_install_or_skip)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=(3 4)
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    multiple_choice)
+      case "${COMP_WORDS[2]}" in
+      multiple_choice)
+        local arg_names=(-n -L -i -p -m -a -I -A)
+        local switch_names=(-n -L)
+        local keyword_names=(-i -p -m -a -I -A)
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    monitor)
+      case "${COMP_WORDS[2]}" in
+      stream_load_stats)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      load_hist)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      latest_load_stats)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      write_load_stats)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      stream_top_stats)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      stream_net_stats)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      proc_stats)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    keyring)
+      case "${COMP_WORDS[2]}" in
+      keys_git)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      keys_path)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      keys_var)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    pkg)
+      case "${COMP_WORDS[2]}" in
+      install_or_skip)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=(3)
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    esac
+    ;;
   esac
 }
 

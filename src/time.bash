@@ -18,6 +18,7 @@ function file_mtime() {
     echo "${d}"
 }
 
+# Usage: file_age [-s] PATH
 function file_age() {
     # TODO: Check Linux support
     # TODO: add a getopts to enable -g in file_mtime.

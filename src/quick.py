@@ -25,10 +25,14 @@ class Token:
 
 
 class ArgumentType(Enum):
-    SWITCH = 1
-    PATH = 2
-    ANY = 3
-
+    DEFAULT = 1
+    SWITCH = 2
+    FILE = 3
+    DIRECTORY = 4
+    STRING = 5
+    USER = 7
+    GROUP = 8
+    HOSTNAME = 9
 
 @dataclass
 class Argument:
@@ -92,10 +96,21 @@ def _accept_comment(line: str) -> str | None:
 
 
 def _parse_arg_type(s: str) -> ArgumentType:
-    if s.lower() in ("path", "file"):
-        return ArgumentType.PATH
-    else:
-        return ArgumentType.ANY
+    if s.lower().endswith("file") or s.lower().endswith("path"):
+        return ArgumentType.FILE
+    if s.lower().endswith("dir") or s.lower().endswith("directory"):
+        return ArgumentType.DIRECTORY
+    if s.lower().endswith("user"):
+        return ArgumentType.USER
+    if s.lower().endswith("group"):
+        return ArgumentType.GROUP
+    if s.lower().endswith("host") or s.lower().endswith("hostname"):
+        return ArgumentType.HOSTNAME
+    if s.lower().endswith("string"):
+        return ArgumentType.STRING
+    if s == "ARG":
+        return ArgumentType.DEFAULT
+    return ArgumentType.STRING
 
 
 def _finalize_arguments(raw: list[Argument]) -> list[Argument]:
@@ -173,7 +188,7 @@ def _parse_usage(usage: str) -> tuple[str, list[Argument]]:
             args.append(
                 Argument(
                     name=m.group(1),
-                    type=ArgumentType.ANY,
+                    type=ArgumentType.DEFAULT,
                     type_name="",
                     default="",
                     required=not optional,
@@ -367,13 +382,19 @@ def gen_help(modules: Iterable[Module]) -> Generator[str, None, None]:
     yield "}"
 
 def gen_bash_complete(modules: Iterable[Module]) -> Generator[str, None, None]:
+    cword_offset = 2
+
     yield "function __q_compgen() {"
     yield f'  local modules="{" ".join(module.name for module in modules)}"'
     yield '  case "${COMP_CWORD}" in'
+
+    # First argument is a module.
     yield '  1)'
     yield '    COMPREPLY=($(compgen -W "help ${modules}" -- ${COMP_WORDS[COMP_CWORD]}))'
     yield "    return 0"
     yield "  ;;"
+
+    # Second argument is function in a module. (One case for each module).
     yield '  2)'
     yield '    case "${COMP_WORDS[1]}" in'
     for module in modules:
@@ -386,10 +407,92 @@ def gen_bash_complete(modules: Iterable[Module]) -> Generator[str, None, None]:
         yield f"      ;;"
     yield '    esac'
     yield '    ;;'
-    yield '    *)'
-    yield '      COMPREPLY=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))'
-    yield '      return 0'
-    yield '      ;;'
+
+    # Remaining arguments are function arguments. At each position, we are
+    # either recommending the name of the next --flag, or we are suggesting a
+    # value for a positional argument or the previous --flag.
+    #
+    # Multiple of the below cases can be active at the same time. Their
+    # suggestions are combined:
+    #
+    # 1. If CWORD=3 or the previous argument was a --flag of type SWITCH or a
+    # positional argument, then we should suggest argument names.
+    #
+    # 2. If the previous argument was a --flag of type other than SWITCH or a
+    # value for a repeated --flag argument of type other than SWITCH, then we
+    # are suggesting values for that argument.
+    #
+    # 3. If there is a valid positional argument at this position, then we are
+    # suggesting values for that argument. This is the most finnicky case.
+    yield '  *)'
+    yield '    local cur="${COMP_WORDS[COMP_CWORD]}"'
+    yield '    local prev="${COMP_WORDS[COMP_CWORD-1]}"'
+    yield '    case "${COMP_WORDS[1]}" in'
+    for module in modules:
+        if not [function for function in module.functions if not function.name.value.startswith("_")]:
+            continue
+        yield f"    {module.name})"
+        yield '      case "${COMP_WORDS[2]}" in'
+        for function in module.functions:
+            if function.name.value.startswith("_"):
+                continue
+
+            # The code to handle a particular function's arguments starts here.
+            yield f'      {_local_name(function.name.value, module.name)})'
+            # --flag names including aliases
+            arg_names = []
+            switch_names = []
+            keyword_names = []
+            repeated_names = []
+            valid_positions = []
+            for arg in function.args:
+                if arg.position is not None:
+                    valid_positions.append(arg.position + cword_offset)
+                    continue
+                arg_names.append(arg.name)
+                arg_names.extend(arg.aliases)
+                if arg.type == ArgumentType.SWITCH:
+                    switch_names.append(arg.name)
+                    switch_names.extend(arg.aliases)
+                else:
+                    keyword_names.append(arg.name)
+                    keyword_names.extend(arg.aliases)
+                if arg.repeated:
+                    repeated_names.append(arg.name)
+                    repeated_names.extend(arg.aliases)
+            
+            yield f'        local arg_names=({" ".join(arg_names)})'
+            yield f'        local switch_names=({" ".join(switch_names)})'
+            yield f'        local keyword_names=({" ".join(keyword_names)})'
+            yield f'        local repeated_names=({" ".join(repeated_names)})'
+            yield f'        local valid_positions=({" ".join(str(pos) for pos in valid_positions)})'
+            yield f'        COMPREPLY=()'
+
+            # Is a --flag name potentially valid here?
+            yield f'        if [[ " ${{switch_names[@]}} " =~ " ${{prev}} " || "${{COMP_CWORD}}" == {cword_offset + 1} ]]; then'
+            yield f'          COMPREPLY+=($(compgen -W "${{arg_names[*]}}" -- ${{cur}}))'
+            yield f'        fi'
+
+            # TODO: Currently these think every argument is a FILE.
+
+            # Is a positional argument valid here?
+            yield f'        if [[ " ${{valid_positions[@]}} " =~ " ${{COMP_CWORD}} " ]]; then'
+            yield f'          COMPREPLY+=($(compgen -A file -- ${{COMP_WORDS[COMP_CWORD]}}))'
+            yield f'        fi'
+
+            # Is the previous argument a --flag expecting a value?
+            yield f'        if [[ " ${{keyword_names[@]}} " =~ " ${{prev}} " ]]; then'
+            yield f'          COMPREPLY+=($(compgen -A file -- ${{COMP_WORDS[COMP_CWORD]}}))'
+            yield f'        fi'
+
+            # TODO: Handle repeated
+
+            yield f'        return 0'
+            yield f'        ;;'
+        yield f'      esac'
+        yield f'      ;;'
+    yield '    esac'
+    yield '    ;;'
     yield '  esac'
     yield "}"
     yield ""
@@ -402,7 +505,7 @@ def path_to_package(path: str, root: str) -> str:
 
 def gen_all(path: str, output: str) -> None:
     modules = []
-    for root, dirs, files in os.walk(path):
+    for root, _, files in os.walk(path):
         for file in files:
             if not file.endswith(".bash"):
                 continue
