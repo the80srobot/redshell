@@ -76,6 +76,10 @@ function __q() {
       shift
       python_func "$@"
       ;;
+    python_black|black)
+      shift
+      python_black "$@"
+      ;;
     *)
       if [ -n "$1" ]; then
         echo "Module python has no function $1"
@@ -1052,6 +1056,9 @@ function __q_help() {
       tput bold
       echo "  q python func [ARG...]"
       tput sgr0
+      tput bold
+      echo "  q python black [ARG...]"
+      tput sgr0
       ;;
     quick)
       echo "Usage: q quick FUNCTION [ARG...]"
@@ -1675,7 +1682,7 @@ function __q_compgen() {
       return 0
       ;;
     python)
-      COMPREPLY=($(compgen -W "help venv ipynb detect_python latest_python func" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help venv ipynb detect_python latest_python func black" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     quick)
@@ -1949,6 +1956,24 @@ function __q_compgen() {
         return 0
         ;;
       func)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      black)
         local arg_names=()
         local switch_names=()
         local keyword_names=()

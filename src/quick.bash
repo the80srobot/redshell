@@ -23,7 +23,7 @@ function quick_rebuild() {
         shift
     done
     local paths_arg="$(strings_join "," "${all_paths[@]}")"
-    python_func --clean -p "${rs_path}/quick.py" build_all --paths "${all_paths}" --output "${rs_path}/quick.gen.bash"
+    python_func --clean -p "${rs_path}/quick.py" build_all --paths "${paths_arg}" --output "${rs_path}/quick.gen.bash"
 }
 
 function q() {

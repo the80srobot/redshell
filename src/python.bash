@@ -252,4 +252,14 @@ except Exception as e:
     return "${ret}"
 }
 
+function python_black() {
+    mkdir -p "~/.redshell/python_black"
+    pushd "~/.redshell/python_black"
+    echo "black" > requirements.txt
+    venv
+    popd
+    python -m black "${@}"
+    deactivate
+}
+
 fi # _REDSHELL_PYTHON

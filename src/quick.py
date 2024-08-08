@@ -34,6 +34,7 @@ class ArgumentType(Enum):
     GROUP = 8
     HOSTNAME = 9
 
+
 @dataclass
 class Argument:
     name: str
@@ -74,6 +75,7 @@ def _escape_comment(comment: list[str]) -> Generator[str, None, None]:
         else:
             yield quoted
     # return (shlex.quote(line)[1:-1] for line in comment)
+
 
 def _accept_fname(line: str) -> tuple[str, tuple[int, int]] | None:
     # Bash supports two variants of declaration syntax:
@@ -283,7 +285,7 @@ def _local_name(func: str, module: str) -> str:
 def gen_switch(modules: Iterable[Module]) -> Generator[str, None, None]:
     yield "function __q() {"
     yield '  if [ "$#" -eq 0 ]; then'
-    yield '    __q_help'
+    yield "    __q_help"
     yield "    return 0"
     yield "  fi"
     yield '  case "$1" in'
@@ -367,19 +369,20 @@ def gen_help(modules: Iterable[Module]) -> Generator[str, None, None]:
             usage = function.usage
             if usage.startswith(function.name.value):
                 usage = usage[len(function.name.value) :].strip()
-            yield f'      tput bold'
+            yield f"      tput bold"
             yield f'      echo "  q {module.name} {_local_name(function.name.value, module.name)} {usage}"'
-            yield f'      tput sgr0'
+            yield f"      tput sgr0"
             for line in _escape_comment(function.comment):
                 yield f"      echo '    {line}'"
         yield f"      ;;"
-    yield f'    *)'
+    yield f"    *)"
     yield f'      echo "Unknown module $1"'
     yield f"      return 1"
     yield f"      ;;"
     yield f"    esac"
     yield f"  fi"
     yield "}"
+
 
 def gen_bash_complete(modules: Iterable[Module]) -> Generator[str, None, None]:
     cword_offset = 2
@@ -389,13 +392,13 @@ def gen_bash_complete(modules: Iterable[Module]) -> Generator[str, None, None]:
     yield '  case "${COMP_CWORD}" in'
 
     # First argument is a module.
-    yield '  1)'
+    yield "  1)"
     yield '    COMPREPLY=($(compgen -W "help ${modules}" -- ${COMP_WORDS[COMP_CWORD]}))'
     yield "    return 0"
     yield "  ;;"
 
     # Second argument is function in a module. (One case for each module).
-    yield '  2)'
+    yield "  2)"
     yield '    case "${COMP_WORDS[1]}" in'
     for module in modules:
         yield f"    {module.name})"
@@ -405,8 +408,8 @@ def gen_bash_complete(modules: Iterable[Module]) -> Generator[str, None, None]:
         )}" -- ${{COMP_WORDS[COMP_CWORD]}}))'
         yield f"      return 0"
         yield f"      ;;"
-    yield '    esac'
-    yield '    ;;'
+    yield "    esac"
+    yield "    ;;"
 
     # Remaining arguments are function arguments. At each position, we are
     # either recommending the name of the next --flag, or we are suggesting a
@@ -424,12 +427,16 @@ def gen_bash_complete(modules: Iterable[Module]) -> Generator[str, None, None]:
     #
     # 3. If there is a valid positional argument at this position, then we are
     # suggesting values for that argument. This is the most finnicky case.
-    yield '  *)'
+    yield "  *)"
     yield '    local cur="${COMP_WORDS[COMP_CWORD]}"'
     yield '    local prev="${COMP_WORDS[COMP_CWORD-1]}"'
     yield '    case "${COMP_WORDS[1]}" in'
     for module in modules:
-        if not [function for function in module.functions if not function.name.value.startswith("_")]:
+        if not [
+            function
+            for function in module.functions
+            if not function.name.value.startswith("_")
+        ]:
             continue
         yield f"    {module.name})"
         yield '      case "${COMP_WORDS[2]}" in'
@@ -438,7 +445,7 @@ def gen_bash_complete(modules: Iterable[Module]) -> Generator[str, None, None]:
                 continue
 
             # The code to handle a particular function's arguments starts here.
-            yield f'      {_local_name(function.name.value, module.name)})'
+            yield f"      {_local_name(function.name.value, module.name)})"
             # --flag names including aliases
             arg_names = []
             switch_names = []
@@ -460,40 +467,40 @@ def gen_bash_complete(modules: Iterable[Module]) -> Generator[str, None, None]:
                 if arg.repeated:
                     repeated_names.append(arg.name)
                     repeated_names.extend(arg.aliases)
-            
+
             yield f'        local arg_names=({" ".join(arg_names)})'
             yield f'        local switch_names=({" ".join(switch_names)})'
             yield f'        local keyword_names=({" ".join(keyword_names)})'
             yield f'        local repeated_names=({" ".join(repeated_names)})'
             yield f'        local valid_positions=({" ".join(str(pos) for pos in valid_positions)})'
-            yield f'        COMPREPLY=()'
+            yield f"        COMPREPLY=()"
 
             # Is a --flag name potentially valid here?
             yield f'        if [[ " ${{switch_names[@]}} " =~ " ${{prev}} " || "${{COMP_CWORD}}" == {cword_offset + 1} ]]; then'
             yield f'          COMPREPLY+=($(compgen -W "${{arg_names[*]}}" -- ${{cur}}))'
-            yield f'        fi'
+            yield f"        fi"
 
             # TODO: Currently these think every argument is a FILE.
 
             # Is a positional argument valid here?
             yield f'        if [[ " ${{valid_positions[@]}} " =~ " ${{COMP_CWORD}} " ]]; then'
-            yield f'          COMPREPLY+=($(compgen -A file -- ${{COMP_WORDS[COMP_CWORD]}}))'
-            yield f'        fi'
+            yield f"          COMPREPLY+=($(compgen -A file -- ${{COMP_WORDS[COMP_CWORD]}}))"
+            yield f"        fi"
 
             # Is the previous argument a --flag expecting a value?
             yield f'        if [[ " ${{keyword_names[@]}} " =~ " ${{prev}} " ]]; then'
-            yield f'          COMPREPLY+=($(compgen -A file -- ${{COMP_WORDS[COMP_CWORD]}}))'
-            yield f'        fi'
+            yield f"          COMPREPLY+=($(compgen -A file -- ${{COMP_WORDS[COMP_CWORD]}}))"
+            yield f"        fi"
 
             # TODO: Handle repeated
 
-            yield f'        return 0'
-            yield f'        ;;'
-        yield f'      esac'
-        yield f'      ;;'
-    yield '    esac'
-    yield '    ;;'
-    yield '  esac'
+            yield f"        return 0"
+            yield f"        ;;"
+        yield f"      esac"
+        yield f"      ;;"
+    yield "    esac"
+    yield "    ;;"
+    yield "  esac"
     yield "}"
     yield ""
     yield "complete -F __q_compgen q"
@@ -511,22 +518,27 @@ def load_modules(path: str) -> Generator[Module, None, None]:
             if ".gen." in file:
                 continue
             with open(os.path.join(root, file), "r") as f:
+                sys.stderr.write(f"Loading {os.path.join(root, file)}\n")
                 yield parse_module(f, path_to_package(os.path.join(root, file), path))
+
 
 def build_all(paths: list[str], output: str) -> None:
     modules = []
+    sys.stderr.write(f"Building quick.gen.bash from {paths}\n")
     for path in paths:
         modules.extend(load_modules(path))
 
     gen_all(modules, output)
 
 
-def gen_all(modules: list[Module], output: str) -> None:    
+def gen_all(modules: list[Module], output: str) -> None:
     with open(output, "w") as f:
         f.write("# This file is generated by quick.py. Do not edit.\n")
         f.write("# Run q quick rebuild to regenerate.\n")
         f.write("\n")
-        f.write('if [[ -z "${_REDSHELL_GEN_QUICK}" || -n "${_REDSHELL_RELOAD}" ]]; then\n')
+        f.write(
+            'if [[ -z "${_REDSHELL_GEN_QUICK}" || -n "${_REDSHELL_RELOAD}" ]]; then\n'
+        )
         f.write("_REDSHELL_GEN_QUICK=1\n")
         for line in gen_switch(modules):
             f.write(line)
@@ -541,5 +553,5 @@ def gen_all(modules: list[Module], output: str) -> None:
             f.write("\n")
         f.write("\n")
         f.write("fi\n")
-    
+
     sys.stderr.write(f"Generated {output} with {len(modules)} modules\n")
