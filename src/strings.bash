@@ -25,4 +25,12 @@ function repeat() {
     done
 }
 
+# Usage: strings_join DELIMITER [STRING ...]
+function strings_join {
+  local d=${1-} f=${2-}
+  if shift 2; then
+    printf %s "$f" "${@/#/$d}"
+  fi
+}
+
 fi # _REDSHELL_STRINGS

@@ -16,14 +16,14 @@ function venv() {
         case "$1" in
             -I|--install-requirements)
                 install_reqs="requirements.txt"
-            ;;
+                ;;
             -p|--python-path)
                 pythonpath="$(which "$2")"
                 shift
-            ;;
+                ;;
             *)
                 pythonpath="$(which "python$1")"
-            ;;
+                ;;
         esac
         shift
     done
@@ -90,27 +90,31 @@ function python_func() {
     local args="["
     local kwargs="{"
     local clean=""
+    local debug
 
     while [[ "${#}" -ne 0 ]]; do
         case "$1" in
             -f|--function)
                 function="$2"
                 shift
-            ;;
+                ;;
             -p|--path)
                 path="$2"
                 shift
-            ;;
+                ;;
             -J|--json-output)
                 json_out="True"
-            ;;
+                ;;
             --clean)
                 clean="True"
-            ;;
+                ;;
+            --debug)
+                debug="True"
+                ;;
             --)
                 shift
                 break;
-            ;;
+                ;;
             *)
                 # Assume positional function name. Implies --.
                 function="$1"
@@ -123,10 +127,10 @@ function python_func() {
 
     while [[ "${#}" -ne 0 ]]; do
         if [[ "${1:0:2}" == "--" ]]; then
-            kwargs+="$(printf '"%q": "%q"' "${1:2}" "${2}"),"
+            kwargs+="$(printf 'r"%q": r"%q"' "${1:2}" "${2}"),"
             shift
         else
-            args+="$(printf '"%q", ' "${1}")"
+            args+="$(printf 'r"%q", ' "${1}")"
         fi
         shift
     done
@@ -148,6 +152,8 @@ function python_func() {
 
     script="from $(basename "${path}" .py) import *
 import typing
+import shlex
+import datetime
 kwargs = ${kwargs}
 args = ${args}
 json_out = ${json_out}
@@ -165,16 +171,18 @@ def __convert_arg(
         if arg_type == float:
             return float(arg)
         if arg_type == str:
-            return arg
+            return shlex.split(arg)[0]
         if arg_type == datetime.date:
             return datetime.date.fromisoformat(arg)
+        if arg_type == list[str]:
+            return shlex.split(arg)[0].split(',')
         if typing.get_origin(arg_type) == typing.Union:
             type_args = typing.get_args(arg_type)
             if len(type_args) == 2 and type_args[1] == type(None):
                 return __convert_arg(arg, type_args[0])
             elif len(type_args) == 2 and type_args[0] == type(None):
                 return __convert_arg(arg, type_args[1])
-        if isinstance(arg_type, Callable):
+        if isinstance(arg_type, typing.Callable):
             return eval(arg)
     except Exception as e:
         raise TypeError('Cannot parse {} of type {}: {}'.format(arg, arg_type, e))
@@ -229,11 +237,16 @@ except Exception as e:
 
     popd > /dev/null
     
-    if [[ "${ret}" -ne 0 ]]; then
-        >&2 echo "Python function failed with exit code ${ret}"
+    if [[ "${ret}" -ne 0 || -n "${debug}" ]]; then
+        >&2 echo "Python function exited with code ${ret}"
         >&2 echo "(function: ${function} path: ${path})"
         >&2 echo "Script dump:"
-        >&2 echo "${script}"
+
+        local i=1
+        while IFS= read -r line; do
+            printf "%3d %s\n" "${i}" "${line}" >&2
+            ((i++))
+        done < <(echo "${script}")
     fi
     
     return "${ret}"

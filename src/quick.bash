@@ -8,15 +8,22 @@ source "quick.gen.bash"
 if [[ -z "${_REDSHELL_QUICK}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_QUICK=1
 
-# Usage: quick_rebuild [PATH]
+# Usage: quick_rebuild REDSHELL_PATH [EXTRA_PATH ...]
 function quick_rebuild() {
-    local path="${1}"
-    if [[ -z "${path}" ]]; then
-        path=~/.redshell/src
+    local rs_path="${1}"
+    if [[ -n "${rs_path}" ]]; then
+        shift
+    else
+        rs_path="$(cd ~/.redshell/src && pwd)"
     fi
-    abs_path="$(cd "${path}" && pwd)"
-    
-    python_func --clean -p "${abs_path}/quick.py" gen_all --path "${abs_path}" --output "${abs_path}/quick.gen.bash"
+
+    local all_paths=("${rs_path}")
+    while [[ "${#}" -ne 0 ]]; do
+        all_paths+=("$(cd "${1}" && pwd)")
+        shift
+    done
+    local paths_arg="$(strings_join "," "${all_paths[@]}")"
+    python_func --clean -p "${rs_path}/quick.py" build_all --paths "${all_paths}" --output "${rs_path}/quick.gen.bash"
 }
 
 function q() {

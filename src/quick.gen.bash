@@ -436,6 +436,10 @@ function __q() {
       shift
       repeat "$@"
       ;;
+    strings_join|join)
+      shift
+      strings_join "$@"
+      ;;
     *)
       if [ -n "$1" ]; then
         echo "Module strings has no function $1"
@@ -1054,7 +1058,7 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q quick rebuild [PATH]"
+      echo "  q quick rebuild REDSHELL_PATH [EXTRA_PATH ...]"
       tput sgr0
       tput bold
       echo "  q quick q [ARG...]"
@@ -1255,6 +1259,9 @@ function __q_help() {
       echo "  q strings repeat [ARG...]"
       tput sgr0
       echo '    repeat CHAR COUNT: prints CHAR COUNT times.'
+      tput bold
+      echo "  q strings join DELIMITER [STRING ...]"
+      tput sgr0
       ;;
     mac)
       echo "Usage: q mac FUNCTION [ARG...]"
@@ -1712,7 +1719,7 @@ function __q_compgen() {
       return 0
       ;;
     strings)
-      COMPREPLY=($(compgen -W "help strip_control repeat" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help strip_control repeat join" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     mac)
@@ -1968,7 +1975,7 @@ function __q_compgen() {
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
-        local valid_positions=(3)
+        local valid_positions=(3 4)
         COMPREPLY=()
         if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
           COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
@@ -2815,6 +2822,24 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local valid_positions=()
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      join)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=(3 4)
         COMPREPLY=()
         if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
           COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
