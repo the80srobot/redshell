@@ -961,6 +961,26 @@ function __q() {
       ;;
     esac
     ;;
+  path)
+    shift
+    case "$1" in
+    help|-h|--help|?)
+      shift
+      __q_help "path" "$@"
+      ;;
+    path_expand|expand)
+      shift
+      path_expand "$@"
+      ;;
+    *)
+      if [ -n "$1" ]; then
+        echo "Module path has no function $1"
+      fi
+      __q_help path
+      return 1
+      ;;
+    esac
+    ;;
   *)
     echo "Unknown module $1"
     return 1
@@ -1006,6 +1026,7 @@ function __q_help() {
     echo '  monitor         This file provides functions to monitor system stats and write them to a log.'
     echo '  keyring         (no description)'
     echo '  pkg             (no description)'
+    echo '  path            (no description)'
     return 0
   fi
   if [ "$#" -eq 1 ]; then
@@ -1054,10 +1075,10 @@ function __q_help() {
       echo "  q python latest_python [ARG...]"
       tput sgr0
       tput bold
-      echo "  q python func [ARG...]"
+      echo "  q python func -f|--function FUNCTION -p|--path PATH [-J|--json_output] [--clean] [--debug] [--] [ARGS...]"
       tput sgr0
       tput bold
-      echo "  q python black [ARG...]"
+      echo "  q python black [FILES...]"
       tput sgr0
       ;;
     quick)
@@ -1065,7 +1086,7 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q quick rebuild REDSHELL_PATH [EXTRA_PATH ...]"
+      echo "  q quick rebuild [--src-path PATH] [--skip-extra-paths]"
       tput sgr0
       tput bold
       echo "  q quick q [ARG...]"
@@ -1660,6 +1681,17 @@ function __q_help() {
       echo '    Install packages using the system package manager, or skip, if the package is'
       echo '    already installed.'
       ;;
+    path)
+      echo "Usage: q path FUNCTION [ARG...]"
+      echo
+      echo "Available functions:"
+      tput bold
+      echo "  q path expand [ARG...]"
+      tput sgr0
+      echo '    Usage path_expand PATH'
+      echo '    '
+      echo '    Expands tilde, safely, in the path.'
+      ;;
     *)
       echo "Unknown module $1"
       return 1
@@ -1669,7 +1701,7 @@ function __q_help() {
 }
 
 function __q_compgen() {
-  local modules="browser python quick git bash net install ascii_art init crypt util rust strings mac media notes time find hg xterm_colors go fedora multiple_choice monitor keyring pkg"
+  local modules="browser python quick git bash net install ascii_art init crypt util rust strings mac media notes time find hg xterm_colors go fedora multiple_choice monitor keyring pkg path"
   case "${COMP_CWORD}" in
   1)
     COMPREPLY=($(compgen -W "help ${modules}" -- ${COMP_WORDS[COMP_CWORD]}))
@@ -1779,6 +1811,10 @@ function __q_compgen() {
       ;;
     pkg)
       COMPREPLY=($(compgen -W "help install_or_skip" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    path)
+      COMPREPLY=($(compgen -W "help expand" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     esac
@@ -1956,9 +1992,9 @@ function __q_compgen() {
         return 0
         ;;
       func)
-        local arg_names=()
-        local switch_names=()
-        local keyword_names=()
+        local arg_names=(-f --function -p --path -J --json_output --clean --debug --)
+        local switch_names=(-J --json_output --clean --debug)
+        local keyword_names=(-f --function -p --path --)
         local repeated_names=()
         local valid_positions=()
         COMPREPLY=()
@@ -1978,7 +2014,7 @@ function __q_compgen() {
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
-        local valid_positions=()
+        local valid_positions=(3)
         COMPREPLY=()
         if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
           COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
@@ -1996,11 +2032,11 @@ function __q_compgen() {
     quick)
       case "${COMP_WORDS[2]}" in
       rebuild)
-        local arg_names=()
-        local switch_names=()
-        local keyword_names=()
+        local arg_names=(--src-path --skip-extra-paths)
+        local switch_names=(--skip-extra-paths)
+        local keyword_names=(--src-path)
         local repeated_names=()
-        local valid_positions=(3 4)
+        local valid_positions=()
         COMPREPLY=()
         if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
           COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
@@ -4267,6 +4303,28 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local valid_positions=(3)
+        COMPREPLY=()
+        if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
+          COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))
+        fi
+        if [[ " ${valid_positions[@]} " =~ " ${COMP_CWORD} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        if [[ " ${keyword_names[@]} " =~ " ${prev} " ]]; then
+          COMPREPLY+=($(compgen -A file -- ${COMP_WORDS[COMP_CWORD]}))
+        fi
+        return 0
+        ;;
+      esac
+      ;;
+    path)
+      case "${COMP_WORDS[2]}" in
+      expand)
+        local arg_names=()
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local valid_positions=()
         COMPREPLY=()
         if [[ " ${switch_names[@]} " =~ " ${prev} " || "${COMP_CWORD}" == 3 ]]; then
           COMPREPLY+=($(compgen -W "${arg_names[*]}" -- ${cur}))

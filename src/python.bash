@@ -41,7 +41,7 @@ function venv() {
         return 0
     fi
 
-    echo "Creating a new virtualenv..."
+    echo "Creating a new virtualenv..." >&2
     "${pythonpath}" -m virtualenv --help 2> /dev/null > /dev/null
     if [[ "$?" -ne 0 ]]; then
         >&2 echo "Installing virtualenv..."
@@ -83,6 +83,7 @@ function latest_python() {
     detect_python | head -n1 | cut -f2
 }
 
+# Usage: python_func -f|--function FUNCTION -p|--path PATH [-J|--json_output] [--clean] [--debug] [--] [ARGS...]
 function python_func() {
     local function
     local json_out="False"
@@ -148,7 +149,7 @@ function python_func() {
     fi
 
     pushd "$(dirname "${path}")" > /dev/null
-    venv
+    venv >&2
 
     script="from $(basename "${path}" .py) import *
 import typing
@@ -215,6 +216,9 @@ try:
     res = ${function}(**kwargs)
     if json_out:
         import json
+        from typing import Generator
+        if isinstance(res, Generator):
+            res = list(res)
         print(json.dumps(res, default=__json_default))
     else:
         print(res)
@@ -252,9 +256,10 @@ except Exception as e:
     return "${ret}"
 }
 
+# Usage: python_black [FILES...]
 function python_black() {
-    mkdir -p "~/.redshell/python_black"
-    pushd "~/.redshell/python_black"
+    mkdir -p "$HOME/.redshell/python_black"
+    pushd "$HOME/.redshell/python_black"
     echo "black" > requirements.txt
     venv
     popd

@@ -20,7 +20,11 @@ echo "Installing src..."
 rm -rf ~/.redshell
 mkdir -p ~/.redshell/src
 cp -r rc ./src ~/.redshell/
+# TODO: This should be removed later.
 cp -r rc ./asciiart ~/.redshell/
+
+# Create the persistent directory, if it doesn't exist yet.
+mkdir -p ~/.redshell_persist
 
 echo "Running OS-specific setup..."
 if [[ `uname -a` == *Darwin* ]]
