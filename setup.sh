@@ -41,3 +41,5 @@ else
     echo "Setting default visual identity. Run select_visual to change."
     echo "bmo" > ~/.redshell_visual
 fi
+
+quick_rebuild

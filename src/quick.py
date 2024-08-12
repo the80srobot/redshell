@@ -377,7 +377,7 @@ def gen_switch(modules: Iterable[Module]) -> Generator[str, None, None]:
 
 
 def gen_help(modules: Iterable[Module]) -> Generator[str, None, None]:
-    column = 18
+    column = 20
     yield "function __q_help() {"
     yield '  if [ "$#" -eq 0 ]; then'
     yield '    echo "q - redshell function registry"'
@@ -395,7 +395,10 @@ def gen_help(modules: Iterable[Module]) -> Generator[str, None, None]:
             raise ValueError(
                 f"Module name {module.name} is too long for the help output"
             )
-        yield f"    echo '  {module.name}{" ":{pad}}{doc[0]}'"
+        yield f"    tput bold"
+        yield f"    echo -n '  {module.name}'"
+        yield f"    tput sgr0"
+        yield f"    echo '{" ":{pad}}{doc[0]}'"
         for line in doc[1:]:
             yield f"    echo '{" ":{column}}{line}'"
     yield "    return 0"

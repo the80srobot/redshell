@@ -995,32 +995,110 @@ function __q_help() {
     echo "Run q --help MODULE for more information on a module."
     echo
     echo "Available modules:"
-    echo '  browser         Browser automation, downloads, link generators.'
-    echo '  python          Python env management, python-shell FFI and Jupyter.'
-    echo '  quick           Redshell function help, switch and autocomplete.'
-    echo '  git             Automate git and github operations.'
-    echo '  bash            Parse bash files and automate bash scripting.'
-    echo '  net             Network and wifi helpers, netcat wrappers, etc.'
-    echo '  install         Install a file into another file, optionally with a keyword.'
-    echo '  ascii_art       Assorted ascii art, screen drawing and speech bubbles.'
-    echo '  crypt           Encrypt/decrypt, signing, keypairs. SSH and GPG helpers.'
-    echo '  util            Catch-all utility functions that don'"'"'t fit anywhere else.'
-    echo '  rust            Manage rust toolchain and environment.'
-    echo '  strings         String helpers for bash.'
-    echo '  mac             Mac setup, package management and various helpers.'
-    echo '  media           Functions for working with media, ffmpeg, youtube, etc.'
-    echo '  notes           Note management based on git and markdown.'
-    echo '  time            Time and date helpers.'
-    echo '  find            Shorthands for find and grep.'
-    echo '  hg              Mercurial helpers.'
-    echo '  xterm_colors    Work with the xterm color space, convert to RGB, etc.'
-    echo '  go              Helpers for dealing with Go packages.'
-    echo '  fedora          Fedora setup and package management.'
-    echo '  multiple_choice Interactive multiple choice prompts.'
-    echo '  monitor         System load monitoring and logging.'
-    echo '  keyring         Password manager based on pass and gpg.'
-    echo '  pkg             Cross-platform package management.'
-    echo '  path            UNIX style path helpers.'
+    tput bold
+    echo -n '  browser'
+    tput sgr0
+    echo '           Browser automation, downloads, link generators.'
+    tput bold
+    echo -n '  python'
+    tput sgr0
+    echo '            Python env management, python-shell FFI and Jupyter.'
+    tput bold
+    echo -n '  quick'
+    tput sgr0
+    echo '             Redshell function help, switch and autocomplete.'
+    tput bold
+    echo -n '  git'
+    tput sgr0
+    echo '               Automate git and github operations.'
+    tput bold
+    echo -n '  bash'
+    tput sgr0
+    echo '              Parse bash files and automate bash scripting.'
+    tput bold
+    echo -n '  net'
+    tput sgr0
+    echo '               Network and wifi helpers, netcat wrappers, etc.'
+    tput bold
+    echo -n '  install'
+    tput sgr0
+    echo '           Install a file into another file, optionally with a keyword.'
+    tput bold
+    echo -n '  ascii_art'
+    tput sgr0
+    echo '         Assorted ascii art, screen drawing and speech bubbles.'
+    tput bold
+    echo -n '  crypt'
+    tput sgr0
+    echo '             Encrypt/decrypt, signing, keypairs. SSH and GPG helpers.'
+    tput bold
+    echo -n '  util'
+    tput sgr0
+    echo '              Catch-all utility functions that don'"'"'t fit anywhere else.'
+    tput bold
+    echo -n '  rust'
+    tput sgr0
+    echo '              Manage rust toolchain and environment.'
+    tput bold
+    echo -n '  strings'
+    tput sgr0
+    echo '           String helpers for bash.'
+    tput bold
+    echo -n '  mac'
+    tput sgr0
+    echo '               Mac setup, package management and various helpers.'
+    tput bold
+    echo -n '  media'
+    tput sgr0
+    echo '             Functions for working with media, ffmpeg, youtube, etc.'
+    tput bold
+    echo -n '  notes'
+    tput sgr0
+    echo '             Note management based on git and markdown.'
+    tput bold
+    echo -n '  time'
+    tput sgr0
+    echo '              Time and date helpers.'
+    tput bold
+    echo -n '  find'
+    tput sgr0
+    echo '              Shorthands for find and grep.'
+    tput bold
+    echo -n '  hg'
+    tput sgr0
+    echo '                Mercurial helpers.'
+    tput bold
+    echo -n '  xterm_colors'
+    tput sgr0
+    echo '      Work with the xterm color space, convert to RGB, etc.'
+    tput bold
+    echo -n '  go'
+    tput sgr0
+    echo '                Helpers for dealing with Go packages.'
+    tput bold
+    echo -n '  fedora'
+    tput sgr0
+    echo '            Fedora setup and package management.'
+    tput bold
+    echo -n '  multiple_choice'
+    tput sgr0
+    echo '   Interactive multiple choice prompts.'
+    tput bold
+    echo -n '  monitor'
+    tput sgr0
+    echo '           System load monitoring and logging.'
+    tput bold
+    echo -n '  keyring'
+    tput sgr0
+    echo '           Password manager based on pass and gpg.'
+    tput bold
+    echo -n '  pkg'
+    tput sgr0
+    echo '               Cross-platform package management.'
+    tput bold
+    echo -n '  path'
+    tput sgr0
+    echo '              UNIX style path helpers.'
     return 0
   fi
   if [ "$#" -eq 1 ]; then
