@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
+# Helpers for dealing with Go packages.
+
 if [[ -z "${_REDSHELL_GO}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_GO=1
 

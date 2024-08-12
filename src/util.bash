@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
+# Catch-all utility functions that don't fit anywhere else.
+
 if [[ -z "${_REDSHELL_UTIL}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_UTIL=1
 

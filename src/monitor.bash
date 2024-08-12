@@ -1,7 +1,7 @@
 # # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
-# This file provides functions to monitor system stats and write them to a log.
+# System load monitoring and logging.
 
 if [[ -z "${_REDSHELL_MONITOR}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_MONITOR=1

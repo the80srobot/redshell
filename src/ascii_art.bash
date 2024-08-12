@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
+# Assorted ascii art, screen drawing and speech bubbles.
+
 source "strings.bash"
 source "xterm_colors.bash"
 

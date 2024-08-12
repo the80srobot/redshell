@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
+# Initialization routines.
+
 if [[ -z "${_REDSHELL_INIT}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_INIT=1
 

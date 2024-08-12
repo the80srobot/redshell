@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
+# Redshell function help, switch and autocomplete.
 
 source "python.bash"
 source "quick.gen.bash"

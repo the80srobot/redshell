@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
+# Cross-platform package management.
+
 source "mac.bash"
 
 if [[ -z "${_REDSHELL_PKG}" || -n "${_REDSHELL_RELOAD}" ]]; then

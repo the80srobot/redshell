@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
+# Browser automation, downloads, link generators.
+
 if [[ -z "${_REDSHELL_BROWSER}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_BROWSER=1
 

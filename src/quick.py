@@ -5,7 +5,11 @@
 # a janky bash function parser that only handles the cases we use in this
 # project.
 #
-# To regen quick.gen.bash, just run `q quick rebuild``.
+# To regen quick.gen.bash on a system, just run `q quick rebuild`.
+#
+# To regenerate the checked-in version, run:
+#
+#  q quick rebuild --src-path ./src/ --skip-extra-paths
 
 import os
 import dataclasses
@@ -597,6 +601,3 @@ def build_all(paths: list[str], output: str) -> None:
         modules.extend(load_modules(path))
 
     gen_all(modules, output)
-
-
-# def

@@ -995,44 +995,39 @@ function __q_help() {
     echo "Run q --help MODULE for more information on a module."
     echo
     echo "Available modules:"
-    echo '  browser         (no description)'
-    echo '  python          This file provides functions to manage python environments, and quickly launch'
-    echo '                  python code in various ways. It includes a Bash-Python FFI bridge, in'
-    echo '                  python_func.'
-    echo '  quick           (no description)'
-    echo '  git             (no description)'
-    echo '  bash            (no description)'
-    echo '  net             (no description)'
+    echo '  browser         Browser automation, downloads, link generators.'
+    echo '  python          Python env management, python-shell FFI and Jupyter.'
+    echo '  quick           Redshell function help, switch and autocomplete.'
+    echo '  git             Automate git and github operations.'
+    echo '  bash            Parse bash files and automate bash scripting.'
+    echo '  net             Network and wifi helpers, netcat wrappers, etc.'
     echo '  install         Install a file into another file, optionally with a keyword.'
-    echo '  ascii_art       (no description)'
-    echo '  crypt           (no description)'
-    echo '  util            (no description)'
-    echo '  rust            (no description)'
-    echo '  strings         This file provides various terminal string helpers.'
-    echo '  mac             (no description)'
-    echo '  media           (no description)'
-    echo '  notes           This file implements a command-line note management system based on git and'
-    echo '                  markdown. It'"'"'s evolved over the years to be incredibly ergonomic for me, its'
-    echo '                  only user and developer. The madness of doing all this in bash is not lost on'
-    echo '                  me - I can only say that it started quite simple and grew features and use'
-    echo '                  cases over time, and I know better than to rewrite something that works fine.'
-    echo '  time            (no description)'
-    echo '  find            (no description)'
-    echo '  hg              (no description)'
-    echo '  xterm_colors    This file contains functions for working with xterm color codes.'
-    echo '  go              (no description)'
-    echo '  fedora          (no description)'
-    echo '  multiple_choice (no description)'
-    echo '  monitor         This file provides functions to monitor system stats and write them to a log.'
-    echo '  keyring         (no description)'
-    echo '  pkg             (no description)'
-    echo '  path            (no description)'
+    echo '  ascii_art       Assorted ascii art, screen drawing and speech bubbles.'
+    echo '  crypt           Encrypt/decrypt, signing, keypairs. SSH and GPG helpers.'
+    echo '  util            Catch-all utility functions that don'"'"'t fit anywhere else.'
+    echo '  rust            Manage rust toolchain and environment.'
+    echo '  strings         String helpers for bash.'
+    echo '  mac             Mac setup, package management and various helpers.'
+    echo '  media           Functions for working with media, ffmpeg, youtube, etc.'
+    echo '  notes           Note management based on git and markdown.'
+    echo '  time            Time and date helpers.'
+    echo '  find            Shorthands for find and grep.'
+    echo '  hg              Mercurial helpers.'
+    echo '  xterm_colors    Work with the xterm color space, convert to RGB, etc.'
+    echo '  go              Helpers for dealing with Go packages.'
+    echo '  fedora          Fedora setup and package management.'
+    echo '  multiple_choice Interactive multiple choice prompts.'
+    echo '  monitor         System load monitoring and logging.'
+    echo '  keyring         Password manager based on pass and gpg.'
+    echo '  pkg             Cross-platform package management.'
+    echo '  path            UNIX style path helpers.'
     return 0
   fi
   if [ "$#" -eq 1 ]; then
     case "$1" in
     browser)
       echo "Usage: q browser FUNCTION [ARG...]"
+      echo "Browser automation, downloads, link generators."
       echo
       echo "Available functions:"
       tput bold
@@ -1057,9 +1052,7 @@ function __q_help() {
       ;;
     python)
       echo "Usage: q python FUNCTION [ARG...]"
-      echo "This file provides functions to manage python environments, and quickly launch"
-      echo "python code in various ways. It includes a Bash-Python FFI bridge, in"
-      echo "python_func."
+      echo "Python env management, python-shell FFI and Jupyter."
       echo
       echo "Available functions:"
       tput bold
@@ -1083,6 +1076,7 @@ function __q_help() {
       ;;
     quick)
       echo "Usage: q quick FUNCTION [ARG...]"
+      echo "Redshell function help, switch and autocomplete."
       echo
       echo "Available functions:"
       tput bold
@@ -1094,6 +1088,7 @@ function __q_help() {
       ;;
     git)
       echo "Usage: q git FUNCTION [ARG...]"
+      echo "Automate git and github operations."
       echo
       echo "Available functions:"
       tput bold
@@ -1105,6 +1100,7 @@ function __q_help() {
       ;;
     bash)
       echo "Usage: q bash FUNCTION [ARG...]"
+      echo "Parse bash files and automate bash scripting."
       echo
       echo "Available functions:"
       tput bold
@@ -1113,6 +1109,7 @@ function __q_help() {
       ;;
     net)
       echo "Usage: q net FUNCTION [ARG...]"
+      echo "Network and wifi helpers, netcat wrappers, etc."
       echo
       echo "Available functions:"
       tput bold
@@ -1163,6 +1160,7 @@ function __q_help() {
       ;;
     ascii_art)
       echo "Usage: q ascii_art FUNCTION [ARG...]"
+      echo "Assorted ascii art, screen drawing and speech bubbles."
       echo
       echo "Available functions:"
       tput bold
@@ -1192,12 +1190,13 @@ function __q_help() {
       ;;
     init)
       echo "Usage: q init FUNCTION [ARG...]"
-      echo "Set the editor to vim by default, vscode if available."
+      echo "Initialization routines."
       echo
       echo "Available functions:"
       ;;
     crypt)
       echo "Usage: q crypt FUNCTION [ARG...]"
+      echo "Encrypt/decrypt, signing, keypairs. SSH and GPG helpers."
       echo
       echo "Available functions:"
       tput bold
@@ -1221,6 +1220,7 @@ function __q_help() {
       ;;
     util)
       echo "Usage: q util FUNCTION [ARG...]"
+      echo "Catch-all utility functions that don't fit anywhere else."
       echo
       echo "Available functions:"
       tput bold
@@ -1265,6 +1265,7 @@ function __q_help() {
       ;;
     rust)
       echo "Usage: q rust FUNCTION [ARG...]"
+      echo "Manage rust toolchain and environment."
       echo
       echo "Available functions:"
       tput bold
@@ -1276,7 +1277,7 @@ function __q_help() {
       ;;
     strings)
       echo "Usage: q strings FUNCTION [ARG...]"
-      echo "This file provides various terminal string helpers."
+      echo "String helpers for bash."
       echo
       echo "Available functions:"
       tput bold
@@ -1293,6 +1294,7 @@ function __q_help() {
       ;;
     mac)
       echo "Usage: q mac FUNCTION [ARG...]"
+      echo "Mac setup, package management and various helpers."
       echo
       echo "Available functions:"
       tput bold
@@ -1328,6 +1330,7 @@ function __q_help() {
       ;;
     media)
       echo "Usage: q media FUNCTION [ARG...]"
+      echo "Functions for working with media, ffmpeg, youtube, etc."
       echo
       echo "Available functions:"
       tput bold
@@ -1336,11 +1339,7 @@ function __q_help() {
       ;;
     notes)
       echo "Usage: q notes FUNCTION [ARG...]"
-      echo "This file implements a command-line note management system based on git and"
-      echo "markdown. It's evolved over the years to be incredibly ergonomic for me, its"
-      echo "only user and developer. The madness of doing all this in bash is not lost on"
-      echo "me - I can only say that it started quite simple and grew features and use"
-      echo "cases over time, and I know better than to rewrite something that works fine."
+      echo "Note management based on git and markdown."
       echo
       echo "Available functions:"
       tput bold
@@ -1477,6 +1476,7 @@ function __q_help() {
       ;;
     time)
       echo "Usage: q time FUNCTION [ARG...]"
+      echo "Time and date helpers."
       echo
       echo "Available functions:"
       tput bold
@@ -1488,6 +1488,7 @@ function __q_help() {
       ;;
     find)
       echo "Usage: q find FUNCTION [ARG...]"
+      echo "Shorthands for find and grep."
       echo
       echo "Available functions:"
       tput bold
@@ -1512,6 +1513,7 @@ function __q_help() {
       ;;
     hg)
       echo "Usage: q hg FUNCTION [ARG...]"
+      echo "Mercurial helpers."
       echo
       echo "Available functions:"
       tput bold
@@ -1521,7 +1523,7 @@ function __q_help() {
       ;;
     xterm_colors)
       echo "Usage: q xterm_colors FUNCTION [ARG...]"
-      echo "This file contains functions for working with xterm color codes."
+      echo "Work with the xterm color space, convert to RGB, etc."
       echo
       echo "Available functions:"
       tput bold
@@ -1582,6 +1584,7 @@ function __q_help() {
       ;;
     go)
       echo "Usage: q go FUNCTION [ARG...]"
+      echo "Helpers for dealing with Go packages."
       echo
       echo "Available functions:"
       tput bold
@@ -1590,6 +1593,7 @@ function __q_help() {
       ;;
     fedora)
       echo "Usage: q fedora FUNCTION [ARG...]"
+      echo "Fedora setup and package management."
       echo
       echo "Available functions:"
       tput bold
@@ -1602,6 +1606,7 @@ function __q_help() {
       ;;
     multiple_choice)
       echo "Usage: q multiple_choice FUNCTION [ARG...]"
+      echo "Interactive multiple choice prompts."
       echo
       echo "Available functions:"
       tput bold
@@ -1620,7 +1625,7 @@ function __q_help() {
       ;;
     monitor)
       echo "Usage: q monitor FUNCTION [ARG...]"
-      echo "This file provides functions to monitor system stats and write them to a log."
+      echo "System load monitoring and logging."
       echo
       echo "Available functions:"
       tput bold
@@ -1659,6 +1664,7 @@ function __q_help() {
       ;;
     keyring)
       echo "Usage: q keyring FUNCTION [ARG...]"
+      echo "Password manager based on pass and gpg."
       echo
       echo "Available functions:"
       tput bold
@@ -1673,6 +1679,7 @@ function __q_help() {
       ;;
     pkg)
       echo "Usage: q pkg FUNCTION [ARG...]"
+      echo "Cross-platform package management."
       echo
       echo "Available functions:"
       tput bold
@@ -1683,6 +1690,7 @@ function __q_help() {
       ;;
     path)
       echo "Usage: q path FUNCTION [ARG...]"
+      echo "UNIX style path helpers."
       echo
       echo "Available functions:"
       tput bold

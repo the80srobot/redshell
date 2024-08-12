@@ -1,9 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
-# This file provides functions to manage python environments, and quickly launch
-# python code in various ways. It includes a Bash-Python FFI bridge, in
-# python_func.
+# Python env management, python-shell FFI and Jupyter.
 
 if [[ -z "${_REDSHELL_PYTHON}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_PYTHON=1

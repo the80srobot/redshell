@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
+# Manage rust toolchain and environment.
+
 if [[ -z "${_REDSHELL_RUST}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_RUST=1
 

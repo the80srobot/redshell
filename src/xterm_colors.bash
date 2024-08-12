@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
-# This file contains functions for working with xterm color codes.
+# Work with the xterm color space, convert to RGB, etc.
 
 source "python.bash"
 

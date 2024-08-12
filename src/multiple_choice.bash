@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
+# Interactive multiple choice prompts.
+
 if [[ -z "${_REDSHELL_MULTIPLE_CHOICE}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_MULTIPLE_CHOICE=1
 

@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
+# Fedora setup and package management.
+
 if [[ -z "${_REDSHELL_FEDORA}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_FEDORA=1
 

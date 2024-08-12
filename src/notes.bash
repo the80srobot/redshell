@@ -7,26 +7,7 @@ if [[ -z "${_REDSHELL_NOTES}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_NOTES=1
 
 
-# This file implements a command-line note management system based on git and
-# markdown. It's evolved over the years to be incredibly ergonomic for me, its
-# only user and developer. The madness of doing all this in bash is not lost on
-# me - I can only say that it started quite simple and grew features and use
-# cases over time, and I know better than to rewrite something that works fine.
-
-# Dependencies:
-#
-# - git
-# - date (BSD or GNU)
-# - grep (BSD or GNU)
-# - perl
-# - sed (BSD or GNU)
-# - tr
-# - wc
-# - cat
-# - find
-# - vim
-# - h (hashing with md5)
-# - diff
+# Note management based on git and markdown.
 
 NOTES_ROOT="${HOME}/.mnotes"
 NOTES_REPO="${NOTES_ROOT}/notes"

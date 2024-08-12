@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
+# Shorthands for find and grep.
+
 if [[ -z "${_REDSHELL_FIND}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_FIND=1
 

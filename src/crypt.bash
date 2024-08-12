@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
+# Encrypt/decrypt, signing, keypairs. SSH and GPG helpers.
+
 if [[ -z "${_REDSHELL_CRYPT}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_CRYPT=1
 

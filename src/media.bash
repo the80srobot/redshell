@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
+# Functions for working with media, ffmpeg, youtube, etc.
+
 if [[ -z "${_REDSHELL_MEDIA}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_MEDIA=1
 
