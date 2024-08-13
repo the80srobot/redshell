@@ -6,7 +6,7 @@
 if [[ -z "${_REDSHELL_PATH}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_PATH=1
 
-# Usage path_expand PATH
+# Usage: path_expand PATH
 #
 # Expands tilde, safely, in the path.
 function path_expand() {

@@ -495,15 +495,19 @@ def gen_bash_complete(modules: Iterable[Module]) -> Generator[str, None, None]:
 
             # The code to handle a particular function's arguments starts here.
             yield f"      {_local_name(function.name.value, module.name)})"
-            # --flag names including aliases
+            yield f"        # {function.usage}"
+
             arg_names = []
             switch_names = []
             keyword_names = []
             repeated_names = []
-            valid_positions = []
+            positional = []
+            repeated_positions = []
             for arg in function.args:
                 if arg.position is not None:
-                    valid_positions.append(arg.position + cword_offset)
+                    if arg.repeated:
+                        repeated_positions.append(len(positional))
+                    positional.append(arg)
                     continue
                 arg_names.append(arg.name)
                 arg_names.extend(arg.aliases)
@@ -517,32 +521,83 @@ def gen_bash_complete(modules: Iterable[Module]) -> Generator[str, None, None]:
                     repeated_names.append(arg.name)
                     repeated_names.extend(arg.aliases)
 
-            yield f'        local arg_names=({" ".join(arg_names)})'
+            # yield f'        local arg_names=({" ".join(arg_names)})'
             yield f'        local switch_names=({" ".join(switch_names)})'
             yield f'        local keyword_names=({" ".join(keyword_names)})'
             yield f'        local repeated_names=({" ".join(repeated_names)})'
-            yield f'        local valid_positions=({" ".join(str(pos) for pos in valid_positions)})'
+            yield f'        local repeated_positions=({" ".join(str(p) for p in repeated_positions)})'
+            yield f'        local positional_types=({" ".join(arg.type.name for arg in positional)})'
+            yield f'        local i={cword_offset + 1}'
+            yield f'        local state="EXPECT_ARG"'
+            yield f'        local pos=0'
+            yield f'        while [[ "${{i}}" -lt "${{COMP_CWORD}}" ]]; do'
+            yield f'          case "${{state}}" in'
+            yield f'          IDK)'
+            yield f'            break'
+            yield f'            ;;'
+            yield f'          EXPECT_ARG)'
+            yield f'            case "${{COMP_WORDS[i]}}" in'
+            yield f'            --)'
+            yield f'              state="IDK"'
+            yield f'              ;;'
+            for arg in function.args:
+                if arg.position is None and arg.type != ArgumentType.SWITCH:
+                    yield f'            {arg.name})'
+                    yield f'              state="EXPECT_VALUE_{arg.type.name}"'
+                    yield f'              ;;'
+                if arg.position is None and arg.type == ArgumentType.SWITCH:
+                    yield f'            {arg.name})'
+                    yield f'              state="EXPECT_ARG"'
+                    yield f'              ;;'
+            yield f'            *)'
+            yield f'              state="EXPECT_ARG"'
+            yield f'              (( pos++ ))'
+            # TODO: Handle repeated positional arguments.
+            yield f'              ;;'
+            yield f'            esac'
+            yield f'            ;;'
+            yield f'          esac'
+            yield f'          (( i++ ))'
+            yield f'        done'
+            
             yield f"        COMPREPLY=()"
-
-            # Is a --flag name potentially valid here?
-            yield f'        if [[ " ${{switch_names[@]}} " =~ " ${{prev}} " || "${{COMP_CWORD}}" == {cword_offset + 1} ]]; then'
-            yield f'          COMPREPLY+=($(compgen -W "${{arg_names[*]}}" -- ${{cur}}))'
-            yield f"        fi"
-
-            # TODO: Currently these think every argument is a FILE.
-
-            # Is a positional argument valid here?
-            yield f'        if [[ " ${{valid_positions[@]}} " =~ " ${{COMP_CWORD}} " ]]; then'
-            yield f"          COMPREPLY+=($(compgen -A file -- ${{COMP_WORDS[COMP_CWORD]}}))"
-            yield f"        fi"
-
-            # Is the previous argument a --flag expecting a value?
-            yield f'        if [[ " ${{keyword_names[@]}} " =~ " ${{prev}} " ]]; then'
-            yield f"          COMPREPLY+=($(compgen -A file -- ${{COMP_WORDS[COMP_CWORD]}}))"
-            yield f"        fi"
-
-            # TODO: Handle repeated
-
+            yield f'        if [[ "${{state}}" == "EXPECT_ARG" ]]; then'
+            # Arg can be any switch, keyword or the next positional argument.
+            yield f'          COMPREPLY+=($(compgen -W "${{keyword_names[*]}} ${{switch_names[*]}}" -- ${{cur}}))'
+            yield f'          if [[ -n "${{positional_types[$pos]}}" ]]; then'
+            yield f'            state="EXPECT_VALUE_${{positional_types[$pos]}}"'
+            yield f'          else'
+            yield f'            return 0'
+            yield f'          fi'
+            yield f'        fi'
+            yield f'        case "${{state}}" in'
+            yield f'        EXPECT_VALUE_FILE)'
+            yield f'          COMPREPLY+=($(compgen -A file -- ${{cur}}))'
+            yield f'          ;;'
+            yield f'        EXPECT_VALUE_DIRECTORY)'
+            yield f'          COMPREPLY+=($(compgen -A directory -- ${{cur}}))'
+            yield f'          ;;'
+            yield f'        EXPECT_VALUE_USER)'
+            yield f'          COMPREPLY+=($(compgen -A user -- ${{cur}}))'
+            yield f'          ;;'
+            yield f'        EXPECT_VALUE_GROUP)'
+            yield f'          COMPREPLY+=($(compgen -A group -- ${{cur}}))'
+            yield f'          ;;'
+            yield f'        EXPECT_VALUE_HOSTNAME)'
+            yield f'          COMPREPLY+=($(compgen -A hostname -- ${{cur}}))'
+            yield f'          ;;'
+            yield f'        EXPECT_VALUE_STRING)'
+            yield f'          ;;'
+            yield f'        IDK)'
+            # Fuck it, just suggest everything.
+            yield f'          COMPREPLY+=($(compgen -W "${{keyword_names[*]}} ${{switch_names[*]}}" -- ${{cur}}))'
+            yield f'          COMPREPLY+=($(compgen -A file -- ${{cur}}))'
+            yield f'          ;;'
+            yield f'        *)'
+            # Who knows, suggest a file.
+            yield f'          COMPREPLY+=($(compgen -A file -- ${{cur}}))'
+            yield f'          ;;'
+            yield f'        esac'
             yield f"        return 0"
             yield f"        ;;"
         yield f"      esac"
