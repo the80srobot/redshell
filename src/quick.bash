@@ -4,6 +4,8 @@
 # Redshell function help, switch and autocomplete.
 
 source "python.bash"
+source "path.bash"
+source "strings.bash"
 source "quick.gen.bash"
 
 if [[ -z "${_REDSHELL_QUICK}" || -n "${_REDSHELL_RELOAD}" ]]; then
