@@ -398,9 +398,9 @@ def gen_help(modules: Iterable[Module]) -> Generator[str, None, None]:
         yield f"    tput bold"
         yield f"    echo -n '  {module.name}'"
         yield f"    tput sgr0"
-        yield f"    echo '{" "* pad}{doc[0]}'"
+        yield f"    echo '{' ' * pad}{doc[0]}'"
         for line in doc[1:]:
-            yield f"    echo '{" " * column}{line}'"
+            yield f"    echo '{' ' * column}{line}'"
     yield "    return 0"
     yield "  fi"
     yield '  if [ "$#" -eq 1 ]; then'
