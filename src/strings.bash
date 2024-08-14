@@ -6,7 +6,8 @@
 if [[ -z "${_REDSHELL_STRINGS}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_STRINGS=1
 
-# Strips terminal escape sequences from the input.
+# Usage: strip_control
+# Strips terminal escape sequences from standard input.
 function strip_control() {
     # The sed call strips escape characters from the string. The
     # additional perl one-liner deletes the literal ^(B which `tput
@@ -16,7 +17,8 @@ function strip_control() {
     | perl -pe 's/\033\(B//g'
 }
 
-# repeat CHAR COUNT: prints CHAR COUNT times.
+# Usage: repeat STRING N
+# Prints STRING N times.
 function repeat() {
     local c="${1}"
     local n="${2}"

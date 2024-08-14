@@ -6,6 +6,9 @@
 if [[ -z "${_REDSHELL_MEDIA}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_MEDIA=1
 
+# Usage: yt-dl [OPTIONS ...] URL
+#
+# Wrapper areound yt-dlp. Automatically ensures dependencies are installed.
 function yt-dl() {
     pkg_install_or_skip python ffmpeg
     local YTDL_DIR="$HOME/.redshell/yt-dl"

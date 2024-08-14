@@ -1320,8 +1320,17 @@ function __q_help() {
       echo "  q util markdown [ARG...]"
       tput sgr0
       tput bold
-      echo "  q util human_size [ARG...]"
+      echo "  q util human_size [-b|-bb|-S|-h|-hh] SIZE"
       tput sgr0
+      echo '    Convert SIZE to human-readable format.'
+      echo '    '
+      echo '    -b: bits'
+      echo '    -bb: SI units'
+      echo '    -S: SI bytes'
+      echo '    -h: base-2 bytes'
+      echo '    -hh: base-2 bytes, no space between number and unit'
+      echo '    '
+      echo '    If no mode switch is specified then normal, base-2 byte units are used.'
       tput bold
       echo "  q util install_heroku_cli [ARG...]"
       tput sgr0
@@ -1359,13 +1368,13 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q strings strip_control [ARG...]"
+      echo "  q strings strip_control "
       tput sgr0
-      echo '    Strips terminal escape sequences from the input.'
+      echo '    Strips terminal escape sequences from standard input.'
       tput bold
-      echo "  q strings repeat [ARG...]"
+      echo "  q strings repeat STRING N"
       tput sgr0
-      echo '    repeat CHAR COUNT: prints CHAR COUNT times.'
+      echo '    Prints STRING N times.'
       tput bold
       echo "  q strings join DELIMITER [STRING ...]"
       tput sgr0
@@ -1412,8 +1421,9 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q media yt-dl [ARG...]"
+      echo "  q media yt-dl [OPTIONS ...] URL"
       tput sgr0
+      echo '    Wrapper areound yt-dlp. Automatically ensures dependencies are installed.'
       ;;
     notes)
       echo "Usage: q notes FUNCTION [ARG...]"
@@ -5006,9 +5016,9 @@ function __q_compgen() {
         return 0
         ;;
       human_size)
-        # [ARG...]
+        # human_size [-b|-bb|-S|-h|-hh] SIZE
         local switch_names=()
-        local keyword_names=()
+        local keyword_names=(-b -bb -S -h -hh)
         local repeated_names=()
         local repeated_positions=()
         local positional_types=()
@@ -5024,6 +5034,9 @@ function __q_compgen() {
             case "${COMP_WORDS[i]}" in
             --)
               state="IDK"
+              ;;
+            -b)
+              state="EXPECT_VALUE_STRING"
               ;;
             *)
               state="EXPECT_ARG"
@@ -5608,7 +5621,7 @@ function __q_compgen() {
     strings)
       case "${COMP_WORDS[2]}" in
       strip_control)
-        # [ARG...]
+        # strip_control
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -5674,12 +5687,12 @@ function __q_compgen() {
         return 0
         ;;
       repeat)
-        # [ARG...]
+        # repeat STRING N
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=()
+        local positional_types=(DEFAULT DEFAULT)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -6474,12 +6487,12 @@ function __q_compgen() {
     media)
       case "${COMP_WORDS[2]}" in
       yt-dl)
-        # [ARG...]
+        # yt-dl [OPTIONS ...] URL
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
+        local repeated_positions=(0)
+        local positional_types=(DEFAULT DEFAULT)
         local i=3
         local state="EXPECT_ARG"
         local pos=0

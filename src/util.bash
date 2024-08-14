@@ -71,7 +71,16 @@ function markdown() {
     "${path}" "${@}"
 }
 
-
+# Usage: human_size [-b|-bb|-S|-h|-hh] SIZE
+# Convert SIZE to human-readable format.
+#
+# -b: bits
+# -bb: SI units
+# -S: SI bytes
+# -h: base-2 bytes
+# -hh: base-2 bytes, no space between number and unit
+#
+# If no mode switch is specified then normal, base-2 byte units are used.
 function human_size() {
     local units
     local div
