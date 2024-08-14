@@ -120,4 +120,25 @@ function mac_install_devtools() {
         jq
 }
 
+# Kills Microsoft Defender in a way that tends to persist for an hour or so.
+# This is useful for working around bugs or surviving when they push and update
+# that breaks the OS.
+#
+# Use at your own risk, and only after discussing with your IT department. This
+# action is likely to be detected.
+function kill_defender() {
+    launchctl unload /Library/LaunchAgents/com.microsoft.wdav.tray.plist 
+    sudo launchctl unload /Library/LaunchDaemons/com.microsoft.fresno.plist
+    sudo launchctl unload /Library/LaunchDaemons/com.tanium.taniumclient.plist
+}
+
+# Keeps Microsoft Defender from restarting.
+#
+# Use at your own risk, and only after discussing with your IT department. This
+# action is likely to be detected.
+function suppress_defender() {
+    sudo bash -c 'while true; do launchctl unload /Library/LaunchAgents/com.microsoft.wdav.tray.plist ; launchctl unload /Library/LaunchDaemons/com.microsoft.fresno.plist ; launchctl unload /Library/LaunchDaemons/com.tanium.taniumclient.plist; sleep 10; done'
+}
+
+
 fi # _REDSHELL_MAC
