@@ -14,7 +14,7 @@
 import os
 import dataclasses
 from dataclasses import dataclass
-from typing import Iterable, Generator
+from typing import Iterable, Generator, Union
 from enum import Enum
 import re
 import sys
@@ -55,7 +55,7 @@ class Argument:
     default: str
     required: bool = False
     repeated: bool = False
-    position: int | None = None
+    position: Union[int, None] = None
     aliases: Iterable[str] = ()
 
     @classmethod
@@ -123,7 +123,7 @@ def _escape_comment(comment: list[str]) -> Generator[str, None, None]:
     # return (shlex.quote(line)[1:-1] for line in comment)
 
 
-def _accept_fname(line: str) -> tuple[str, tuple[int, int]] | None:
+def _accept_fname(line: str) -> Union[tuple[str, tuple[int, int]], None]:
     # Bash supports two variants of declaration syntax:
     # Type A: fname () compound-command [ redirections ]
     # Type B: function fname [()] compound-command [ redirections ]
@@ -136,7 +136,7 @@ def _accept_fname(line: str) -> tuple[str, tuple[int, int]] | None:
         return None
 
 
-def _accept_comment(line: str) -> str | None:
+def _accept_comment(line: str) -> Union[str, None]:
     if line.startswith("#"):
         return line[1:].strip()
     else:
@@ -283,7 +283,7 @@ def _parse_func_comment(comment: list[str]) -> tuple[str, list[Argument], list[s
 def parse_module(lines: Iterable[str], package: str) -> Module:
     line_no = 1
     comment_no = 0
-    last_comment_line: int | None = None
+    last_comment_line: Union[int, None] = None
     comment_block: list[str] = []
     module = Module(name=package, functions=[], comment=[])
     for line in lines:
@@ -452,7 +452,8 @@ def gen_bash_complete(modules: Iterable[Module]) -> Generator[str, None, None]:
     for module in modules:
         yield f"    {module.name})"
         names = " ".join(
-            _local_name(function.name.value, module.name) for function in module.functions
+            _local_name(function.name.value, module.name)
+            for function in module.functions
             if not function.name.value.startswith("_")
         )
         yield f'      COMPREPLY=($(compgen -W "help {names}" -- ${{COMP_WORDS[COMP_CWORD]}}))'
@@ -528,77 +529,77 @@ def gen_bash_complete(modules: Iterable[Module]) -> Generator[str, None, None]:
             yield f'        local repeated_names=({" ".join(repeated_names)})'
             yield f'        local repeated_positions=({" ".join(str(p) for p in repeated_positions)})'
             yield f'        local positional_types=({" ".join(arg.type.name for arg in positional)})'
-            yield f'        local i={cword_offset + 1}'
+            yield f"        local i={cword_offset + 1}"
             yield f'        local state="EXPECT_ARG"'
-            yield f'        local pos=0'
+            yield f"        local pos=0"
             yield f'        while [[ "${{i}}" -lt "${{COMP_CWORD}}" ]]; do'
             yield f'          case "${{state}}" in'
-            yield f'          IDK)'
-            yield f'            break'
-            yield f'            ;;'
-            yield f'          EXPECT_ARG)'
+            yield f"          IDK)"
+            yield f"            break"
+            yield f"            ;;"
+            yield f"          EXPECT_ARG)"
             yield f'            case "${{COMP_WORDS[i]}}" in'
-            yield f'            --)'
+            yield f"            --)"
             yield f'              state="IDK"'
-            yield f'              ;;'
+            yield f"              ;;"
             for arg in function.args:
                 if arg.position is None and arg.type != ArgumentType.SWITCH:
-                    yield f'            {arg.name})'
+                    yield f"            {arg.name})"
                     yield f'              state="EXPECT_VALUE_{arg.type.name}"'
-                    yield f'              ;;'
+                    yield f"              ;;"
                 if arg.position is None and arg.type == ArgumentType.SWITCH:
-                    yield f'            {arg.name})'
+                    yield f"            {arg.name})"
                     yield f'              state="EXPECT_ARG"'
-                    yield f'              ;;'
-            yield f'            *)'
+                    yield f"              ;;"
+            yield f"            *)"
             yield f'              state="EXPECT_ARG"'
-            yield f'              (( pos++ ))'
+            yield f"              (( pos++ ))"
             # TODO: Handle repeated positional arguments.
-            yield f'              ;;'
-            yield f'            esac'
-            yield f'            ;;'
-            yield f'          esac'
-            yield f'          (( i++ ))'
-            yield f'        done'
-            
+            yield f"              ;;"
+            yield f"            esac"
+            yield f"            ;;"
+            yield f"          esac"
+            yield f"          (( i++ ))"
+            yield f"        done"
+
             yield f"        COMPREPLY=()"
             yield f'        if [[ "${{state}}" == "EXPECT_ARG" ]]; then'
             # Arg can be any switch, keyword or the next positional argument.
             yield f'          COMPREPLY+=($(compgen -W "${{keyword_names[*]}} ${{switch_names[*]}}" -- ${{cur}}))'
             yield f'          if [[ -n "${{positional_types[$pos]}}" ]]; then'
             yield f'            state="EXPECT_VALUE_${{positional_types[$pos]}}"'
-            yield f'          else'
-            yield f'            return 0'
-            yield f'          fi'
-            yield f'        fi'
+            yield f"          else"
+            yield f"            return 0"
+            yield f"          fi"
+            yield f"        fi"
             yield f'        case "${{state}}" in'
-            yield f'        EXPECT_VALUE_FILE)'
-            yield f'          COMPREPLY+=($(compgen -A file -- ${{cur}}))'
-            yield f'          ;;'
-            yield f'        EXPECT_VALUE_DIRECTORY)'
-            yield f'          COMPREPLY+=($(compgen -A directory -- ${{cur}}))'
-            yield f'          ;;'
-            yield f'        EXPECT_VALUE_USER)'
-            yield f'          COMPREPLY+=($(compgen -A user -- ${{cur}}))'
-            yield f'          ;;'
-            yield f'        EXPECT_VALUE_GROUP)'
-            yield f'          COMPREPLY+=($(compgen -A group -- ${{cur}}))'
-            yield f'          ;;'
-            yield f'        EXPECT_VALUE_HOSTNAME)'
-            yield f'          COMPREPLY+=($(compgen -A hostname -- ${{cur}}))'
-            yield f'          ;;'
-            yield f'        EXPECT_VALUE_STRING)'
-            yield f'          ;;'
-            yield f'        IDK)'
+            yield f"        EXPECT_VALUE_FILE)"
+            yield f"          COMPREPLY+=($(compgen -A file -- ${{cur}}))"
+            yield f"          ;;"
+            yield f"        EXPECT_VALUE_DIRECTORY)"
+            yield f"          COMPREPLY+=($(compgen -A directory -- ${{cur}}))"
+            yield f"          ;;"
+            yield f"        EXPECT_VALUE_USER)"
+            yield f"          COMPREPLY+=($(compgen -A user -- ${{cur}}))"
+            yield f"          ;;"
+            yield f"        EXPECT_VALUE_GROUP)"
+            yield f"          COMPREPLY+=($(compgen -A group -- ${{cur}}))"
+            yield f"          ;;"
+            yield f"        EXPECT_VALUE_HOSTNAME)"
+            yield f"          COMPREPLY+=($(compgen -A hostname -- ${{cur}}))"
+            yield f"          ;;"
+            yield f"        EXPECT_VALUE_STRING)"
+            yield f"          ;;"
+            yield f"        IDK)"
             # Fuck it, just suggest everything.
             yield f'          COMPREPLY+=($(compgen -W "${{keyword_names[*]}} ${{switch_names[*]}}" -- ${{cur}}))'
-            yield f'          COMPREPLY+=($(compgen -A file -- ${{cur}}))'
-            yield f'          ;;'
-            yield f'        *)'
+            yield f"          COMPREPLY+=($(compgen -A file -- ${{cur}}))"
+            yield f"          ;;"
+            yield f"        *)"
             # Who knows, suggest a file.
-            yield f'          COMPREPLY+=($(compgen -A file -- ${{cur}}))'
-            yield f'          ;;'
-            yield f'        esac'
+            yield f"          COMPREPLY+=($(compgen -A file -- ${{cur}}))"
+            yield f"          ;;"
+            yield f"        esac"
             yield f"        return 0"
             yield f"        ;;"
         yield f"      esac"
