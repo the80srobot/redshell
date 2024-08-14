@@ -658,4 +658,6 @@ def build_all(paths: list[str], output: str) -> None:
     for path in paths:
         modules.extend(load_modules(path))
 
+    modules.sort(key=lambda m: m.name)
+
     gen_all(modules, output)
