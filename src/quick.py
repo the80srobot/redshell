@@ -451,10 +451,11 @@ def gen_bash_complete(modules: Iterable[Module]) -> Generator[str, None, None]:
     yield '    case "${COMP_WORDS[1]}" in'
     for module in modules:
         yield f"    {module.name})"
-        yield f'      COMPREPLY=($(compgen -W "help {" ".join(
+        names = " ".join(
             _local_name(function.name.value, module.name) for function in module.functions
             if not function.name.value.startswith("_")
-        )}" -- ${{COMP_WORDS[COMP_CWORD]}}))'
+        )
+        yield f'      COMPREPLY=($(compgen -W "help {names}" -- ${{COMP_WORDS[COMP_CWORD]}}))'
         yield f"      return 0"
         yield f"      ;;"
     yield "    esac"
