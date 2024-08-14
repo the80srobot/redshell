@@ -6,10 +6,16 @@
 if [[ -z "${_REDSHELL_KEYRING}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_KEYRING=1
 
+# Wraps git for use with the keys repository.
+#
+# Usage: keys_git [ARGS ...]
 function keys_git() {
     GIT_SSH_COMMAND="ssh -i ~/.redshell_pass_git.key" pass git "${@}"
 }
 
+# Usage: keys_path [-f] KEY
+#
+# Dumps the contents of the given key in a file and returns the path.
 function keys_path() {
     local force
     if [[ "$1" == "-f" ]]; then
@@ -34,6 +40,9 @@ function keys_path() {
     echo "${path}"
 }
 
+# Usage: keys_var KEY
+#
+# Returns the conents of a given key in pass.
 function keys_var() {
     pass "Redshell/${1}.var"
 }
