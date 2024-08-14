@@ -17,10 +17,11 @@ function __python_ensurepip() {
 }
 
 function __python_ensurevenv() {
-    python3 -m pip install virtualenv
+    local pythonpath="$1"
+    "${pythonpath}" -m pip install virtualenv
     if [[ "$?" -ne 0 ]]; then
         >&2 echo "Retrying with --break-system-packages..."
-        python3 -m pip install virtualenv --break-system-packages
+        "${pythonpath}" -m pip install virtualenv --break-system-packages
         return $?
     fi
 }
@@ -62,7 +63,7 @@ function venv() {
     "${pythonpath}" -m virtualenv --help 2> /dev/null > /dev/null
     if [[ "$?" -ne 0 ]]; then
         >&2 echo "Installing virtualenv..."
-        __python_ensurevenv || return 2
+        __python_ensurevenv "${pythonpath}" || return 2
     fi
 
     "${pythonpath}" -m virtualenv .venv || return 3
