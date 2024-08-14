@@ -6,6 +6,25 @@
 if [[ -z "${_REDSHELL_PYTHON}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_PYTHON=1
 
+function __python_ensurepip() {
+    local pythonpath="$1"
+    "${pythonpath}" -m ensurepip --upgrade
+    if [[ "$?" -ne 0 ]]; then
+        >&2 echo "Retrying with --break-system-packages..."
+        "${pythonpath}" -m ensurepip --upgrade --break-system-packages
+        return $?
+    fi
+}
+
+function __python_ensurevenv() {
+    python3 -m pip install virtualenv
+    if [[ "$?" -ne 0 ]]; then
+        >&2 echo "Retrying with --break-system-packages..."
+        python3 -m pip install virtualenv --break-system-packages
+        return $?
+    fi
+}
+
 function venv() {
     local install_reqs=""
     local pythonpath="$(latest_python)"
@@ -28,7 +47,7 @@ function venv() {
 
     # Ensure PIP is installed.
     "${pythonpath}" -m pip --help 2> /dev/null > /dev/null \
-        || "${pythonpath}" -m ensurepip --upgrade --break-system-packages
+        || __python_ensurepip "${pythonpath}"
     
     if [[ -d "./.venv" ]]; then
         echo "Activating existing environment" >&2
@@ -43,7 +62,7 @@ function venv() {
     "${pythonpath}" -m virtualenv --help 2> /dev/null > /dev/null
     if [[ "$?" -ne 0 ]]; then
         >&2 echo "Installing virtualenv..."
-        python3 -m pip install virtualenv --break-system-packages || return 2
+        __python_ensurevenv || return 2
     fi
 
     "${pythonpath}" -m virtualenv .venv || return 3
