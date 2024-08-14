@@ -42,6 +42,8 @@ function downloads_path() {
 # This is finnicky and relies on the browser downloading to the default
 # Downloads folder. If multiple new files are created around the same time, this
 # might behave in unpredictable ways. You've been warned.
+#
+# Usage: browser_dl URL
 function browser_dl() {
     local url="$1"
     local browser

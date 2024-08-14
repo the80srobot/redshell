@@ -114,4 +114,11 @@ function wifi_name() {
     networksetup -getairportnetwork "$(wifi_device)" | perl -pe 's/.*Network: //'
 }
 
+
+# Usage: net_ssh_fingerprint HOST
+function net_ssh_fingerprint() {
+    local ip="${1}"
+    2>/dev/null ssh-keyscan -T1 "${ip}" | ssh-keygen -lf -
+}
+
 fi # _REDSHELL_NET
