@@ -568,41 +568,41 @@ function __q() {
       shift
       __q_help "notes" "$@"
       ;;
-    napi_list_notes)
+    notes_api_list_notes|api_list_notes)
       shift
-      napi_list_notes "$@"
+      notes_api_list_notes "$@"
       ;;
-    nbck)
+    notes_backup|backup)
       shift
-      nbck "$@"
+      notes_backup "$@"
       ;;
-    napi_empty_notes)
+    notes_api_empty_notes|api_empty_notes)
       shift
-      napi_empty_notes "$@"
+      notes_api_empty_notes "$@"
       ;;
-    napi_list_todos)
+    notes_api_list_todos|api_list_todos)
       shift
-      napi_list_todos "$@"
+      notes_api_list_todos "$@"
       ;;
     ntodo_help)
       shift
       ntodo_help "$@"
       ;;
-    ntodo)
+    notes_todo|todo)
       shift
-      ntodo "$@"
+      notes_todo "$@"
       ;;
-    napi_git)
+    notes_api_git|api_git)
       shift
-      napi_git "$@"
+      notes_api_git "$@"
       ;;
-    napi_clone)
+    notes_api_clone|api_clone)
       shift
-      napi_clone "$@"
+      notes_api_clone "$@"
       ;;
-    nfsck)
+    notes_api_fsck|api_fsck)
       shift
-      nfsck "$@"
+      notes_api_fsck "$@"
       ;;
     nw)
       shift
@@ -612,13 +612,13 @@ function __q() {
       shift
       nwin "$@"
       ;;
-    napi_find)
+    notes_api_find|api_find)
       shift
-      napi_find "$@"
+      notes_api_find "$@"
       ;;
-    napi_quick_title)
+    notes_api_quick_title|api_quick_title)
       shift
-      napi_quick_title "$@"
+      notes_api_quick_title "$@"
       ;;
     nlog)
       shift
@@ -632,49 +632,49 @@ function __q() {
       shift
       nsync "$@"
       ;;
-    napi_match_files)
+    notes_api_match_files|api_match_files)
       shift
-      napi_match_files "$@"
+      notes_api_match_files "$@"
       ;;
-    nls)
+    notes_ls|ls)
       shift
-      nls "$@"
+      notes_ls "$@"
       ;;
-    nhist)
+    notes_hist|hist)
       shift
-      nhist "$@"
+      notes_hist "$@"
       ;;
-    nundo)
+    notes_undo|undo)
       shift
-      nundo "$@"
+      notes_undo "$@"
       ;;
-    napi_drop_note)
+    notes_api_drop_note|api_drop_note)
       shift
-      napi_drop_note "$@"
+      notes_api_drop_note "$@"
       ;;
-    ngc)
+    notes_gc|gc)
       shift
-      ngc "$@"
+      notes_gc "$@"
       ;;
-    napi_update_note)
+    notes_api_update_note|api_update_note)
       shift
-      napi_update_note "$@"
+      notes_api_update_note "$@"
       ;;
-    napi_edit_note)
+    notes_api_edit_note|api_edit_note)
       shift
-      napi_edit_note "$@"
+      notes_api_edit_note "$@"
       ;;
-    napi_perl_preview)
+    notes_api_perl_preview|api_perl_preview)
       shift
-      napi_perl_preview "$@"
+      notes_api_perl_preview "$@"
       ;;
-    nperl)
+    notes_perl|perl)
       shift
-      nperl "$@"
+      notes_perl "$@"
       ;;
-    n)
+    notes_note|note)
       shift
-      n "$@"
+      notes_note "$@"
       ;;
     *)
       if [ -n "$1" ]; then
@@ -1476,10 +1476,15 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q notes napi_list_notes [ARG...]"
+      echo "  q notes api_list_notes notes_api_match_files [-f] [-a] [TERM ...]"
       tput sgr0
-      echo '    Outputs:'
+      echo '    Outputs a list of notes files that match the given terms.'
       echo '    '
+      echo '    Options:'
+      echo '    -f: Only match files, not directories.'
+      echo '    -a: Include archived files.'
+      echo '    '
+      echo '    Outputs:'
       echo '    1. relative path'
       echo '    2. mtime'
       echo '    3. age'
@@ -1493,15 +1498,19 @@ function __q_help() {
       echo '    11. Quick-TODO-aware title'
       echo '    12. Archived (A if archived - if not)'
       tput bold
-      echo "  q notes nbck [ARG...]"
+      echo "  q notes backup "
       tput sgr0
+      echo '    Backs up the notes repository to a timestamped tarball in the notes root.'
       tput bold
-      echo "  q notes napi_empty_notes [ARG...]"
+      echo "  q notes api_empty_notes notes_api_edit_notes"
       tput sgr0
+      echo '    Lists empty notes.'
       tput bold
-      echo "  q notes napi_list_todos [ARG...]"
+      echo "  q notes api_list_todos [CONTEXT] [TERM ...]"
       tput sgr0
-      echo '    Output:'
+      echo '    Lists TODOs matching the given context and terms.'
+      echo '    '
+      echo '    Outputs:'
       echo '    '
       echo '    1. Path'
       echo '    2. Line number'
@@ -1518,18 +1527,19 @@ function __q_help() {
       echo "  q notes ntodo_help [ARG...]"
       tput sgr0
       tput bold
-      echo "  q notes ntodo [ARG...]"
+      echo "  q notes todo [TERM ...]"
       tput sgr0
+      echo '    Shows an interactive listing of matching TODOs.'
       tput bold
-      echo "  q notes napi_git [ARG...]"
+      echo "  q notes api_git [ARGS ...]"
       tput sgr0
       echo '    Forwards its args to git running with the correct key and in the notes root.'
       tput bold
-      echo "  q notes napi_clone [ARG...]"
+      echo "  q notes api_clone "
       tput sgr0
       echo '    Clones the git reposity.'
       tput bold
-      echo "  q notes nfsck [ARG...]"
+      echo "  q notes api_fsck [ARG...]"
       tput sgr0
       echo '    Resets the mtime of notes files from git.'
       tput bold
@@ -1539,12 +1549,12 @@ function __q_help() {
       echo "  q notes nwin [ARG...]"
       tput sgr0
       tput bold
-      echo "  q notes napi_find [ARG...]"
+      echo "  q notes api_find [ARG...]"
       tput sgr0
       echo '    Runs find automatically scoped to the right mtime by the NEND and NSTART env'
       echo '    variables.'
       tput bold
-      echo "  q notes napi_quick_title [ARG...]"
+      echo "  q notes api_quick_title [ARG...]"
       tput sgr0
       tput bold
       echo "  q notes nlog [ARG...]"
@@ -1556,7 +1566,7 @@ function __q_help() {
       echo "  q notes nsync [ARG...]"
       tput sgr0
       tput bold
-      echo "  q notes napi_match_files [ARG...]"
+      echo "  q notes api_match_files [ARG...]"
       tput sgr0
       echo '    Returns a list of files, as absolute paths, that match a search query. The'
       echo '    query is a list of terms, separated by spaces. Each term is either a'
@@ -1575,37 +1585,51 @@ function __q_help() {
       echo '    '
       echo '    -w match only complete words (DEFAULT) -W match substrings'
       tput bold
-      echo "  q notes nls [ARG...]"
+      echo "  q notes ls notes_list [TERM ...]"
       tput sgr0
+      echo '    Prints a tree of notes, with the TERM as a filter.'
       tput bold
-      echo "  q notes nhist [ARG...]"
+      echo "  q notes hist [N]"
       tput sgr0
+      echo '    Prints the N most recent notes.'
       tput bold
-      echo "  q notes nundo [ARG...]"
+      echo "  q notes undo [-f]"
       tput sgr0
+      echo '    Undoes the last note change. If the last change was to a local note, it will'
+      echo '    refuse to undo it, unless -f is passed.'
       tput bold
-      echo "  q notes napi_drop_note [ARG...]"
+      echo "  q notes api_drop_note NOTE"
       tput sgr0
+      echo '    Delete the note at the provided relative path.'
       tput bold
-      echo "  q notes ngc [ARG...]"
+      echo "  q notes gc "
       tput sgr0
+      echo '    Deletes empty notes and runs git gc.'
       tput bold
-      echo "  q notes napi_update_note [ARG...]"
+      echo "  q notes api_update_note RELPATH CONTENTS"
       tput sgr0
+      echo '    Updates the note at the given relative path with the given contents.'
       tput bold
-      echo "  q notes napi_edit_note [ARG...]"
+      echo "  q notes api_edit_note PATH [LINE]"
       tput sgr0
       echo '    Opens vim for the given relative note path, then updates the notes tree using'
       echo '    the result. Optional second argument is the line number to open vim at.'
       tput bold
-      echo "  q notes napi_perl_preview [ARG...]"
+      echo "  q notes api_perl_preview PROG [TERM ...]"
       tput sgr0
+      echo '    Applies the provided perl program to matching notes to generate replacements.'
+      echo '    Returns the potential replacements.'
       tput bold
-      echo "  q notes nperl [ARG...]"
+      echo "  q notes perl PROG [TERM ...]"
       tput sgr0
+      echo '    Applies the provided perl program to matching notes to generate replacements.'
+      echo '    Then allows the user to select which replacements to save.'
       tput bold
-      echo "  q notes n [ARG...]"
+      echo "  q notes note [NOTE]"
       tput sgr0
+      echo '    Saves the provided note, intelligently placing it and generating a title. If'
+      echo '    run with no arguments, instead opens vim and saves whatever is entered into'
+      echo '    the file.'
       ;;
     path)
       echo "Usage: q path FUNCTION [ARG...]"
@@ -1906,7 +1930,7 @@ function __q_compgen() {
       return 0
       ;;
     notes)
-      COMPREPLY=($(compgen -W "help napi_list_notes nbck napi_empty_notes napi_list_todos ntodo_help ntodo napi_git napi_clone nfsck nw nwin napi_find napi_quick_title nlog nn nsync napi_match_files nls nhist nundo napi_drop_note ngc napi_update_note napi_edit_note napi_perl_preview nperl n" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help api_list_notes backup api_empty_notes api_list_todos ntodo_help todo api_git api_clone api_fsck nw nwin api_find api_quick_title nlog nn nsync api_match_files ls hist undo api_drop_note gc api_update_note api_edit_note api_perl_preview perl note" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     path)
@@ -6595,8 +6619,80 @@ function __q_compgen() {
       ;;
     notes)
       case "${COMP_WORDS[2]}" in
-      napi_list_notes)
-        # [ARG...]
+      api_list_notes)
+        # notes_api_match_files [-f] [-a] [TERM ...]
+        local switch_names=(-f)
+        local keyword_names=(-a)
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            -f)
+              state="EXPECT_ARG"
+              ;;
+            -a)
+              state="EXPECT_VALUE_STRING"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      backup)
+        # notes_backup
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -6661,8 +6757,8 @@ function __q_compgen() {
         esac
         return 0
         ;;
-      nbck)
-        # [ARG...]
+      api_empty_notes)
+        # notes_api_edit_notes
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -6727,79 +6823,13 @@ function __q_compgen() {
         esac
         return 0
         ;;
-      napi_empty_notes)
-        # [ARG...]
+      api_list_todos)
+        # notes_api_list_todos [CONTEXT] [TERM ...]
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
-        local i=3
-        local state="EXPECT_ARG"
-        local pos=0
-        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
-          case "${state}" in
-          IDK)
-            break
-            ;;
-          EXPECT_ARG)
-            case "${COMP_WORDS[i]}" in
-            --)
-              state="IDK"
-              ;;
-            *)
-              state="EXPECT_ARG"
-              (( pos++ ))
-              ;;
-            esac
-            ;;
-          esac
-          (( i++ ))
-        done
-        COMPREPLY=()
-        if [[ "${state}" == "EXPECT_ARG" ]]; then
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          if [[ -n "${positional_types[$pos]}" ]]; then
-            state="EXPECT_VALUE_${positional_types[$pos]}"
-          else
-            return 0
-          fi
-        fi
-        case "${state}" in
-        EXPECT_VALUE_FILE)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        EXPECT_VALUE_DIRECTORY)
-          COMPREPLY+=($(compgen -A directory -- ${cur}))
-          ;;
-        EXPECT_VALUE_USER)
-          COMPREPLY+=($(compgen -A user -- ${cur}))
-          ;;
-        EXPECT_VALUE_GROUP)
-          COMPREPLY+=($(compgen -A group -- ${cur}))
-          ;;
-        EXPECT_VALUE_HOSTNAME)
-          COMPREPLY+=($(compgen -A hostname -- ${cur}))
-          ;;
-        EXPECT_VALUE_STRING)
-          ;;
-        IDK)
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        *)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        esac
-        return 0
-        ;;
-      napi_list_todos)
-        # [ARG...]
-        local switch_names=()
-        local keyword_names=()
-        local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
+        local repeated_positions=(1)
+        local positional_types=(DEFAULT DEFAULT)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -6925,8 +6955,140 @@ function __q_compgen() {
         esac
         return 0
         ;;
-      ntodo)
-        # [ARG...]
+      todo)
+        # notes_todo [TERM ...]
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=(0)
+        local positional_types=(DEFAULT)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      api_git)
+        # notes_api_git [ARGS ...]
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=(0)
+        local positional_types=(DEFAULT)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      api_clone)
+        # notes_api_clone
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -6991,139 +7153,7 @@ function __q_compgen() {
         esac
         return 0
         ;;
-      napi_git)
-        # [ARG...]
-        local switch_names=()
-        local keyword_names=()
-        local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
-        local i=3
-        local state="EXPECT_ARG"
-        local pos=0
-        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
-          case "${state}" in
-          IDK)
-            break
-            ;;
-          EXPECT_ARG)
-            case "${COMP_WORDS[i]}" in
-            --)
-              state="IDK"
-              ;;
-            *)
-              state="EXPECT_ARG"
-              (( pos++ ))
-              ;;
-            esac
-            ;;
-          esac
-          (( i++ ))
-        done
-        COMPREPLY=()
-        if [[ "${state}" == "EXPECT_ARG" ]]; then
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          if [[ -n "${positional_types[$pos]}" ]]; then
-            state="EXPECT_VALUE_${positional_types[$pos]}"
-          else
-            return 0
-          fi
-        fi
-        case "${state}" in
-        EXPECT_VALUE_FILE)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        EXPECT_VALUE_DIRECTORY)
-          COMPREPLY+=($(compgen -A directory -- ${cur}))
-          ;;
-        EXPECT_VALUE_USER)
-          COMPREPLY+=($(compgen -A user -- ${cur}))
-          ;;
-        EXPECT_VALUE_GROUP)
-          COMPREPLY+=($(compgen -A group -- ${cur}))
-          ;;
-        EXPECT_VALUE_HOSTNAME)
-          COMPREPLY+=($(compgen -A hostname -- ${cur}))
-          ;;
-        EXPECT_VALUE_STRING)
-          ;;
-        IDK)
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        *)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        esac
-        return 0
-        ;;
-      napi_clone)
-        # [ARG...]
-        local switch_names=()
-        local keyword_names=()
-        local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
-        local i=3
-        local state="EXPECT_ARG"
-        local pos=0
-        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
-          case "${state}" in
-          IDK)
-            break
-            ;;
-          EXPECT_ARG)
-            case "${COMP_WORDS[i]}" in
-            --)
-              state="IDK"
-              ;;
-            *)
-              state="EXPECT_ARG"
-              (( pos++ ))
-              ;;
-            esac
-            ;;
-          esac
-          (( i++ ))
-        done
-        COMPREPLY=()
-        if [[ "${state}" == "EXPECT_ARG" ]]; then
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          if [[ -n "${positional_types[$pos]}" ]]; then
-            state="EXPECT_VALUE_${positional_types[$pos]}"
-          else
-            return 0
-          fi
-        fi
-        case "${state}" in
-        EXPECT_VALUE_FILE)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        EXPECT_VALUE_DIRECTORY)
-          COMPREPLY+=($(compgen -A directory -- ${cur}))
-          ;;
-        EXPECT_VALUE_USER)
-          COMPREPLY+=($(compgen -A user -- ${cur}))
-          ;;
-        EXPECT_VALUE_GROUP)
-          COMPREPLY+=($(compgen -A group -- ${cur}))
-          ;;
-        EXPECT_VALUE_HOSTNAME)
-          COMPREPLY+=($(compgen -A hostname -- ${cur}))
-          ;;
-        EXPECT_VALUE_STRING)
-          ;;
-        IDK)
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        *)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        esac
-        return 0
-        ;;
-      nfsck)
+      api_fsck)
         # [ARG...]
         local switch_names=()
         local keyword_names=()
@@ -7321,7 +7351,7 @@ function __q_compgen() {
         esac
         return 0
         ;;
-      napi_find)
+      api_find)
         # [ARG...]
         local switch_names=()
         local keyword_names=()
@@ -7387,7 +7417,7 @@ function __q_compgen() {
         esac
         return 0
         ;;
-      napi_quick_title)
+      api_quick_title)
         # [ARG...]
         local switch_names=()
         local keyword_names=()
@@ -7651,7 +7681,7 @@ function __q_compgen() {
         esac
         return 0
         ;;
-      napi_match_files)
+      api_match_files)
         # [ARG...]
         local switch_names=()
         local keyword_names=()
@@ -7717,8 +7747,275 @@ function __q_compgen() {
         esac
         return 0
         ;;
-      nls)
-        # [ARG...]
+      ls)
+        # notes_list [TERM ...]
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=(0)
+        local positional_types=(DEFAULT)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      hist)
+        # notes_hist [N]
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=(DEFAULT)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      undo)
+        # notes_undo [-f]
+        local switch_names=(-f)
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            -f)
+              state="EXPECT_ARG"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      api_drop_note)
+        # notes_api_drop_note NOTE
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=(DEFAULT)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      gc)
+        # notes_gc
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -7783,13 +8080,13 @@ function __q_compgen() {
         esac
         return 0
         ;;
-      nhist)
-        # [ARG...]
+      api_update_note)
+        # notes_api_update_note RELPATH CONTENTS
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=()
+        local positional_types=(DEFAULT DEFAULT)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -7849,13 +8146,13 @@ function __q_compgen() {
         esac
         return 0
         ;;
-      nundo)
-        # [ARG...]
+      api_edit_note)
+        # notes_api_edit_note PATH [LINE]
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=()
+        local positional_types=(DEFAULT DEFAULT)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -7915,13 +8212,13 @@ function __q_compgen() {
         esac
         return 0
         ;;
-      napi_drop_note)
-        # [ARG...]
+      api_perl_preview)
+        # notes_api_perl_preview PROG [TERM ...]
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
+        local repeated_positions=(1)
+        local positional_types=(DEFAULT DEFAULT)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -7981,13 +8278,13 @@ function __q_compgen() {
         esac
         return 0
         ;;
-      ngc)
-        # [ARG...]
+      perl)
+        # notes_perl PROG [TERM ...]
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
+        local repeated_positions=(1)
+        local positional_types=(DEFAULT DEFAULT)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -8047,277 +8344,13 @@ function __q_compgen() {
         esac
         return 0
         ;;
-      napi_update_note)
-        # [ARG...]
+      note)
+        # notes_note [NOTE]
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=()
-        local i=3
-        local state="EXPECT_ARG"
-        local pos=0
-        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
-          case "${state}" in
-          IDK)
-            break
-            ;;
-          EXPECT_ARG)
-            case "${COMP_WORDS[i]}" in
-            --)
-              state="IDK"
-              ;;
-            *)
-              state="EXPECT_ARG"
-              (( pos++ ))
-              ;;
-            esac
-            ;;
-          esac
-          (( i++ ))
-        done
-        COMPREPLY=()
-        if [[ "${state}" == "EXPECT_ARG" ]]; then
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          if [[ -n "${positional_types[$pos]}" ]]; then
-            state="EXPECT_VALUE_${positional_types[$pos]}"
-          else
-            return 0
-          fi
-        fi
-        case "${state}" in
-        EXPECT_VALUE_FILE)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        EXPECT_VALUE_DIRECTORY)
-          COMPREPLY+=($(compgen -A directory -- ${cur}))
-          ;;
-        EXPECT_VALUE_USER)
-          COMPREPLY+=($(compgen -A user -- ${cur}))
-          ;;
-        EXPECT_VALUE_GROUP)
-          COMPREPLY+=($(compgen -A group -- ${cur}))
-          ;;
-        EXPECT_VALUE_HOSTNAME)
-          COMPREPLY+=($(compgen -A hostname -- ${cur}))
-          ;;
-        EXPECT_VALUE_STRING)
-          ;;
-        IDK)
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        *)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        esac
-        return 0
-        ;;
-      napi_edit_note)
-        # [ARG...]
-        local switch_names=()
-        local keyword_names=()
-        local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
-        local i=3
-        local state="EXPECT_ARG"
-        local pos=0
-        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
-          case "${state}" in
-          IDK)
-            break
-            ;;
-          EXPECT_ARG)
-            case "${COMP_WORDS[i]}" in
-            --)
-              state="IDK"
-              ;;
-            *)
-              state="EXPECT_ARG"
-              (( pos++ ))
-              ;;
-            esac
-            ;;
-          esac
-          (( i++ ))
-        done
-        COMPREPLY=()
-        if [[ "${state}" == "EXPECT_ARG" ]]; then
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          if [[ -n "${positional_types[$pos]}" ]]; then
-            state="EXPECT_VALUE_${positional_types[$pos]}"
-          else
-            return 0
-          fi
-        fi
-        case "${state}" in
-        EXPECT_VALUE_FILE)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        EXPECT_VALUE_DIRECTORY)
-          COMPREPLY+=($(compgen -A directory -- ${cur}))
-          ;;
-        EXPECT_VALUE_USER)
-          COMPREPLY+=($(compgen -A user -- ${cur}))
-          ;;
-        EXPECT_VALUE_GROUP)
-          COMPREPLY+=($(compgen -A group -- ${cur}))
-          ;;
-        EXPECT_VALUE_HOSTNAME)
-          COMPREPLY+=($(compgen -A hostname -- ${cur}))
-          ;;
-        EXPECT_VALUE_STRING)
-          ;;
-        IDK)
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        *)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        esac
-        return 0
-        ;;
-      napi_perl_preview)
-        # [ARG...]
-        local switch_names=()
-        local keyword_names=()
-        local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
-        local i=3
-        local state="EXPECT_ARG"
-        local pos=0
-        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
-          case "${state}" in
-          IDK)
-            break
-            ;;
-          EXPECT_ARG)
-            case "${COMP_WORDS[i]}" in
-            --)
-              state="IDK"
-              ;;
-            *)
-              state="EXPECT_ARG"
-              (( pos++ ))
-              ;;
-            esac
-            ;;
-          esac
-          (( i++ ))
-        done
-        COMPREPLY=()
-        if [[ "${state}" == "EXPECT_ARG" ]]; then
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          if [[ -n "${positional_types[$pos]}" ]]; then
-            state="EXPECT_VALUE_${positional_types[$pos]}"
-          else
-            return 0
-          fi
-        fi
-        case "${state}" in
-        EXPECT_VALUE_FILE)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        EXPECT_VALUE_DIRECTORY)
-          COMPREPLY+=($(compgen -A directory -- ${cur}))
-          ;;
-        EXPECT_VALUE_USER)
-          COMPREPLY+=($(compgen -A user -- ${cur}))
-          ;;
-        EXPECT_VALUE_GROUP)
-          COMPREPLY+=($(compgen -A group -- ${cur}))
-          ;;
-        EXPECT_VALUE_HOSTNAME)
-          COMPREPLY+=($(compgen -A hostname -- ${cur}))
-          ;;
-        EXPECT_VALUE_STRING)
-          ;;
-        IDK)
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        *)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        esac
-        return 0
-        ;;
-      nperl)
-        # [ARG...]
-        local switch_names=()
-        local keyword_names=()
-        local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
-        local i=3
-        local state="EXPECT_ARG"
-        local pos=0
-        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
-          case "${state}" in
-          IDK)
-            break
-            ;;
-          EXPECT_ARG)
-            case "${COMP_WORDS[i]}" in
-            --)
-              state="IDK"
-              ;;
-            *)
-              state="EXPECT_ARG"
-              (( pos++ ))
-              ;;
-            esac
-            ;;
-          esac
-          (( i++ ))
-        done
-        COMPREPLY=()
-        if [[ "${state}" == "EXPECT_ARG" ]]; then
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          if [[ -n "${positional_types[$pos]}" ]]; then
-            state="EXPECT_VALUE_${positional_types[$pos]}"
-          else
-            return 0
-          fi
-        fi
-        case "${state}" in
-        EXPECT_VALUE_FILE)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        EXPECT_VALUE_DIRECTORY)
-          COMPREPLY+=($(compgen -A directory -- ${cur}))
-          ;;
-        EXPECT_VALUE_USER)
-          COMPREPLY+=($(compgen -A user -- ${cur}))
-          ;;
-        EXPECT_VALUE_GROUP)
-          COMPREPLY+=($(compgen -A group -- ${cur}))
-          ;;
-        EXPECT_VALUE_HOSTNAME)
-          COMPREPLY+=($(compgen -A hostname -- ${cur}))
-          ;;
-        EXPECT_VALUE_STRING)
-          ;;
-        IDK)
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        *)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        esac
-        return 0
-        ;;
-      n)
-        # [ARG...]
-        local switch_names=()
-        local keyword_names=()
-        local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
+        local positional_types=(DEFAULT)
         local i=3
         local state="EXPECT_ARG"
         local pos=0

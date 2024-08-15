@@ -6,7 +6,6 @@ source "keyring.bash"
 if [[ -z "${_REDSHELL_NOTES}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_NOTES=1
 
-
 # Note management based on git and markdown.
 
 NOTES_ROOT="${HOME}/.mnotes"
@@ -58,7 +57,7 @@ function __file_mtime_and_age() {
     printf "%s\t%s" "${d}" "${a}"
 }
 
-function __napi_list_notes_batch() {
+function __notes_api_list_notes_batch() {
     local filter
     if [[ "${1}" == "-a" ]]; then
         filter="not_archived"
@@ -103,7 +102,7 @@ function __napi_list_notes_batch() {
 
         local location="g"
         # This is the proper check, however it's slow:
-        # napi_git check-ignore -q "${path}" && location="l"
+        # notes_api_git check-ignore -q "${path}" && location="l"
         # Therefore, hack:
         [[ "${relpath:0:6}" == "local/" ]] && location="l"
 
@@ -122,8 +121,14 @@ function __napi_list_notes_batch() {
     done
 }
 
-# Outputs:
+# Usage: notes_api_match_files [-f] [-a] [TERM ...]
+# Outputs a list of notes files that match the given terms.
 #
+# Options:
+# -f: Only match files, not directories.
+# -a: Include archived files.
+#
+# Outputs:
 # 1. relative path
 # 2. mtime
 # 3. age
@@ -136,7 +141,7 @@ function __napi_list_notes_batch() {
 # 10. base path
 # 11. Quick-TODO-aware title
 # 12. Archived (A if archived - if not)
-function napi_list_notes() {
+function notes_api_list_notes() {
     local mode="all"
     # Filter for the xargs batch closure. -a means only live files, -A includes
     # archived files.
@@ -155,26 +160,26 @@ function napi_list_notes() {
         shift
     done
 
-    export -f __napi_list_notes_batch __file_mtime_and_age __nonempty_wc_l napi_git
+    export -f __notes_api_list_notes_batch __file_mtime_and_age __nonempty_wc_l notes_api_git
     export NOTES_REPO NOTES_MAX_TODO_LEN _SGR0 _DISABLED_COLOR
 
     local data
     if [[ "${#terms[@]}" -ne 0 ]]; then
-        napi_match_files "${terms[@]}" \
+        notes_api_match_files "${terms[@]}" \
             | __NOTES_BATCH_FILTER="${batch_filter}" \
-            xargs -P`nproc` -J{} -n 10 bash -c '__napi_list_notes_batch "${__NOTES_BATCH_FILTER}" "${@}"' _ {}
+            xargs -P`nproc` -J{} -n 10 bash -c '__notes_api_list_notes_batch "${__NOTES_BATCH_FILTER}" "${@}"' _ {}
         [[ "${mode}" == "all" ]] && \
-            napi_find -type d -and -not -ipath "*.git*" -and -not -iname ".*" \
+            notes_api_find -type d -and -not -ipath "*.git*" -and -not -iname ".*" \
                 | __NOTES_BATCH_FILTER="${batch_filter}" \
-                xargs -P`nproc` -J{} -n 10 bash -c '__napi_list_notes_batch "${__NOTES_BATCH_FILTER}" "${@}"' _ {}
+                xargs -P`nproc` -J{} -n 10 bash -c '__notes_api_list_notes_batch "${__NOTES_BATCH_FILTER}" "${@}"' _ {}
     elif [[ "${mode}" == "files" ]]; then
-        napi_find -iname "*.md" -depth +0 \
+        notes_api_find -iname "*.md" -depth +0 \
             | __NOTES_BATCH_FILTER="${batch_filter}" \
-            xargs -P`nproc` -J{} -n 10 bash -c '__napi_list_notes_batch "${__NOTES_BATCH_FILTER}" "${@}"' _ {}
+            xargs -P`nproc` -J{} -n 10 bash -c '__notes_api_list_notes_batch "${__NOTES_BATCH_FILTER}" "${@}"' _ {}
     else
-        napi_find \( \( -type d -and -not -ipath "*.git*" -and -not -iname ".*" \) -or -iname "*.md" \) -depth +0 \
+        notes_api_find \( \( -type d -and -not -ipath "*.git*" -and -not -iname ".*" \) -or -iname "*.md" \) -depth +0 \
             | __NOTES_BATCH_FILTER="${batch_filter}" \
-            xargs -P`nproc` -J{} -n 10 bash -c '__napi_list_notes_batch "${__NOTES_BATCH_FILTER}" "${@}"' _ {}
+            xargs -P`nproc` -J{} -n 10 bash -c '__notes_api_list_notes_batch "${__NOTES_BATCH_FILTER}" "${@}"' _ {}
     fi
 }
 
@@ -193,7 +198,10 @@ function __nonempty_wc_l() {
     echo "${c}"
 }
 
-function nbck() {
+# Usage: notes_backup
+#
+# Backs up the notes repository to a timestamped tarball in the notes root.
+function notes_backup() {
     local olddir=$(pwd)
     cd "${NOTES_ROOT}"
 
@@ -207,10 +215,13 @@ function nbck() {
     cd "${olddir}"
 }
 
-function napi_empty_notes() {
+# Usage: notes_api_edit_notes
+#
+# Lists empty notes.
+function notes_api_empty_notes() {
     local prefix="${#NOTES_REPO}"
     export -f __nonempty_wc_l
-    napi_find -iname "*.md" -exec bash -c 'echo -ne "{}\t" && __nonempty_wc_l "{}"' \; \
+    notes_api_find -iname "*.md" -exec bash -c 'echo -ne "{}\t" && __nonempty_wc_l "{}"' \; \
     | while IFS= read line; do
         local n=$(cut -f2 <<< "${line}")
         if (( n < 3 )); then
@@ -352,7 +363,7 @@ function __when() {
     echo -e "${start}\t${end}"
 }
 
-function __napi_list_todos_batch() {
+function __notes_api_list_todos_batch() {
     local prefix="${#NOTES_REPO}"
     local today="$(date +'%Y-%m-%d')"
     local want_context="$(echo "${1}" | xargs)"
@@ -401,7 +412,10 @@ function __napi_list_todos_batch() {
     done
 }
 
-# Output:
+# Usage: notes_api_list_todos [CONTEXT] [TERM ...]
+# Lists TODOs matching the given context and terms.
+#
+# Outputs:
 #
 # 1. Path
 # 2. Line number
@@ -414,19 +428,19 @@ function __napi_list_todos_batch() {
 # 9. Earliest date (if any)
 # 10. Due date (if any)
 # 11. Context (one letter)
-function napi_list_todos() {
+function notes_api_list_todos() {
     export NOTES_REPO
-    export -f __napi_list_todos_batch file_age file_mtime __when __relative_moment __wday_number __wday __date_add __parse_age __date_unit __date_sub __date_convert
+    export -f __notes_api_list_todos_batch file_age file_mtime __when __relative_moment __wday_number __wday __date_add __parse_age __date_unit __date_sub __date_convert
     local context=""
     if [[ "${#1}" -eq 1 ]]; then
         context="$1"
         shift
     fi
 
-    napi_match_files "${@}" \
+    notes_api_match_files "${@}" \
         | xargs -J{} grep --color=never -nwHE "(TODO|DONE)" {} \
         | perl -pe 's/^(.*md):(\d+):.*(TODO|DONE):?\s*((?:[A-Z]\s)|\s)\s*(.*)\n/\1\t\2\t\3\t\4\t\5\0/' \
-        | xargs -0 -P`nproc` -J{} -n 4 bash -c '__napi_list_todos_batch '"'${context}'"' "${@}"' _ {} \
+        | xargs -0 -P`nproc` -J{} -n 4 bash -c '__notes_api_list_todos_batch '"'${context}'"' "${@}"' _ {} \
         | sort -r -k7 -t $'\t'
 }
 
@@ -504,7 +518,7 @@ function __todo_context_emoji() {
 }
 
 # Presents an interactive dialog to select a TODO in the same format as
-# napi_list_todos.
+# notes_api_list_todos.
 #
 # This is the function that ntodo et al use to filter out stuff based on status.
 function __select_todo() {
@@ -522,7 +536,7 @@ function __select_todo() {
         [[ ( "${cols[7]}" == "DONE" || "${cols[7]}" == "LATER" ) && "${match}" != "all" ]] && continue
         todo_data+="${line}"$'\n'
         [[ "${width}" -lt "${#cols[3]}" ]] && width="${#cols[3]}"
-    done <<< "$(napi_list_todos "${@}")"
+    done <<< "$(notes_api_list_todos "${@}")"
     [[ -z "${todo_data}" ]] && return 1
     todo_data="${todo_data:0:-1}" # Trailing \n
     (( width > NOTES_MAX_TODO_LEN )) && width="${NOTES_MAX_TODO_LEN}"
@@ -586,7 +600,10 @@ function __select_todo() {
     tail "-n+${choice}" <<< "${todo_data}" | head -n1
 }
 
-function ntodo() {
+# Usage: notes_todo [TERM ...]
+#
+# Shows an interactive listing of matching TODOs.
+function notes_todo() {
     __preamble
     local todo
     todo=$(__select_todo "${@}") || return 2
@@ -605,7 +622,7 @@ function ntodo() {
     op=$(multiple_choice -n -i "Mark done
 Mark not done
 Delete the whole line $(tput setaf 6)${path}:${lno}$(tput sgr0)
-Edit the file $(tput setaf 6)${path}$(tput sgr0)" -m "Select operation" -a "xXde") || ntodo "${@}"
+Edit the file $(tput setaf 6)${path}$(tput sgr0)" -m "Select operation" -a "xXde") || notes_todo "${@}"
 
     local before=$(cat "${abspath}" | head -n$(( lno - 1 )))
     local after=$(cat "${abspath}" | tail -n+$(( lno + 1 )))
@@ -616,38 +633,41 @@ Edit the file $(tput setaf 6)${path}$(tput sgr0)" -m "Select operation" -a "xXde
             echo "${before}" > "${abspath}"
             echo "${line}" | sed 's/TODO/DONE/' >> "${abspath}"
             echo "${after}" >> "${abspath}"
-            napi_git add "${abspath}"
-            napi_git commit -m "Mark ${path}:${lno} as done"
+            notes_api_git add "${abspath}"
+            notes_api_git commit -m "Mark ${path}:${lno} as done"
         ;;
         2)
             >&2 echo "Mark not done"
             echo "${before}" > "${abspath}"
             echo "${line}" | sed 's/DONE/TODO/' >> "${abspath}"
             echo "${after}" >> "${abspath}"
-            napi_git add "${abspath}"
-            napi_git commit -m "Mark ${path}:${lno} as TODO"
+            notes_api_git add "${abspath}"
+            notes_api_git commit -m "Mark ${path}:${lno} as TODO"
         ;;
         3)
             >&2 echo "Delete the whole line ${path}:${lno}"
             echo "${before}" > "${abspath}"
             echo "${after}" >> "${abspath}"
-            napi_git add "${abspath}"
-            napi_git commit -m "Delete TODO line ${path}:${lno}"
+            notes_api_git add "${abspath}"
+            notes_api_git commit -m "Delete TODO line ${path}:${lno}"
         ;;
         4)
             >&2 echo "Edit the file ${path}"
-            napi_edit_note "${path}" "${lno}"
+            notes_api_edit_note "${path}" "${lno}"
         ;;
         *)
         return 0
         ;;
     esac
 
-    ntodo "${@}"
+    notes_todo "${@}"
 }
 
+alias ntodo=notes_todo
+
+# Usage: notes_api_git [ARGS ...]
 # Forwards its args to git running with the correct key and in the notes root.
-function napi_git() {
+function notes_api_git() {
     local old=`pwd`
     cd "${NOTES_REPO}"
     GIT_SSH_COMMAND="ssh -i $(keys_path notes)" git "$@"
@@ -657,8 +677,9 @@ function napi_git() {
     return "${status}"
 }
 
+# Usage: notes_api_clone
 # Clones the git reposity.
-function napi_clone() {
+function notes_api_clone() {
     mkdir -p "${NOTES_ROOT}"
     local old=`pwd`
     cd "${NOTES_ROOT}"
@@ -684,8 +705,8 @@ function __fix_mtime_from_git() {
 }
 
 # Resets the mtime of notes files from git.
-function nfsck() {
-    # Can't use napi_find here, because it relies on the timestamps we're about to set.
+function notes_api_fsck() {
+    # Can't use notes_api_find here, because it relies on the timestamps we're about to set.
     local old=`pwd`
     cd "${NOTES_REPO}"
     
@@ -903,7 +924,7 @@ alias nwa='nwin 10y'
 
 # Runs find automatically scoped to the right mtime by the NEND and NSTART env
 # variables.
-function napi_find() {
+function notes_api_find() {
     local end_age="${NEND}"
     [[ -z "${end_age}" ]] && end_age=0
 
@@ -921,7 +942,7 @@ function napi_find() {
     cd "${oldpwd}"
 }
 
-function napi_quick_title() {
+function notes_api_quick_title() {
     local w="${1}"
     [[ -z "${w}" ]] && w="note"
     local h=`uname -n`
@@ -935,7 +956,7 @@ function __notes_filename() {
 }
 
 function nlog() {
-    napi_git log --name-status
+    notes_api_git log --name-status
 }
 
 alias nnn='nn ~"quick todo"'
@@ -944,7 +965,7 @@ alias nna='nn -a ~"quick todo"'
 
 function nn() {
     __preamble
-    local data="$(napi_list_notes -f "${@}" | sort -r -k2)"
+    local data="$(notes_api_list_notes -f "${@}" | sort -r -k2)"
     local text
     local cols
     local width=0
@@ -956,7 +977,7 @@ function nn() {
     local grep_flags="iwnE"
     for arg in "${@}"; do
         [[ "${arg:0:1}" == "-" || "${arg:0:1}" == "@" || "${arg:0:1}" == "-" ]] || grep_needle+="${arg}|"
-        # If napi_list_notes is getting the -W flag, then it'll return partial
+        # If notes_api_list_notes is getting the -W flag, then it'll return partial
         # word matches, and we should highlight those, so we need to drop the -w
         # flag for grep.
         [[ "${arg}" == "-W" ]] && grep_flags="inE"
@@ -1013,10 +1034,10 @@ Return the absolute path" -m "Select operation" -a "edcsf") || nn "${@}"
 
     case "${op}" in
         1)
-            napi_edit_note "${path}"
+            notes_api_edit_note "${path}"
         ;;
         2)
-            napi_drop_note "${path}"
+            notes_api_drop_note "${path}"
         ;;
         3)
             [[ -z "${grep_needle}" ]] \
@@ -1039,16 +1060,16 @@ Return the absolute path" -m "Select operation" -a "edcsf") || nn "${@}"
 
 function nsync() {
     __preamble
-    napi_git pull --rebase
-    napi_git push
-    nfsck
-    ngc
+    notes_api_git pull --rebase
+    notes_api_git push
+    notes_api_fsck
+    notes_gc
 }
 
 function __match_files_one() {
     local grep_flags="${__GREP_FLAGS}"
-    local by_grep=$(napi_find -iname "*.md" -exec grep -${grep_flags} "${1}" {} \+)
-    local by_path=$(napi_find -ipath "*${1}*.md")
+    local by_grep=$(notes_api_find -iname "*.md" -exec grep -${grep_flags} "${1}" {} \+)
+    local by_path=$(notes_api_find -ipath "*${1}*.md")
     local matches=$(echo -e "${by_grep}\n${by_path}" | sort -u | grep -vE '^$')
     echo "${matches}"
 }
@@ -1057,10 +1078,10 @@ function __match_files_all() {
     local grep_flags="${1}"
     shift
     if [[ "${#}" -eq 0 ]]; then
-        napi_find -ipath "*${1}*.md"
+        notes_api_find -ipath "*${1}*.md"
         return 0
     fi
-    export -f __match_files_one napi_find
+    export -f __match_files_one notes_api_find
     export NOTES_REPO NSTART NEND
     export __GREP_FLAGS="${grep_flags}"
     local n="${#}"
@@ -1074,9 +1095,9 @@ function __match_files_regex() {
     local grep_flags="${1}"
     shift
     [[ -z "${1}" ]] && return
-    local by_grep=$(napi_find -iname "*.md" -exec grep -${grep_flags} -E "${1}" {} \+)
+    local by_grep=$(notes_api_find -iname "*.md" -exec grep -${grep_flags} -E "${1}" {} \+)
     export __NEEDLE="${1}"
-    local by_path=$(napi_find -iname "*.md" | perl -ne 'print if m/^$ENV{"NOTES_REPO"}\/.*$ENV{"__NEEDLE"}.*\.md/')
+    local by_path=$(notes_api_find -iname "*.md" | perl -ne 'print if m/^$ENV{"NOTES_REPO"}\/.*$ENV{"__NEEDLE"}.*\.md/')
     echo "${by_grep}"$'\n'"${by_path}" | sort -u | grep -vE '^$'
 }
 
@@ -1096,7 +1117,7 @@ function __match_files_regex() {
 # Additional flags start with a dash '-', to be supplied in any position:
 #
 # -w match only complete words (DEFAULT) -W match substrings
-function napi_match_files() {
+function notes_api_match_files() {
     # First, find all the files that match, then remove the files that match the
     # anti-pattern. The behavior for the pro-pattern and the anti-pattern are
     # different: pro-pattern is match-all, anti-pattern match-any.
@@ -1165,7 +1186,7 @@ function __todo_title() {
     local input="${1}"
     [[ "$(wc -l <<< "${input}")" -eq 1 \
         && "$(echo "${input}" | grep TODO | wc -l)" -eq 1 ]] \
-            && napi_quick_title "todo"
+            && notes_api_quick_title "todo"
 }
 
 function __notes_title() {
@@ -1178,7 +1199,7 @@ function __notes_title() {
     fi
 
     [[ -z "${title}" ]] && title="$(__todo_title "${input}")"
-    [[ -z "${title}" ]] && title="$(napi_quick_title)"
+    [[ -z "${title}" ]] && title="$(notes_api_quick_title)"
 
     echo "${title}"
 }
@@ -1196,18 +1217,21 @@ function __notes_category() {
 }
 
 function __preamble() {
-    [[ ! -d "${NOTES_REPO}" ]] && napi_clone
+    [[ ! -d "${NOTES_REPO}" ]] && notes_api_clone
     
     [[ ! -z "${NSTART}" ]] && >&2 echo "(Active interval ${NSTART} - ${NEND})"
 }
 
-function nls() {
+# Usage: notes_list [TERM ...]
+#
+# Prints a tree of notes, with the TERM as a filter.
+function notes_ls() {
     __preamble
     local lpad
     local rpad
     local depth
     local name
-    local notes=$(napi_list_notes "${@}")
+    local notes=$(notes_api_list_notes "${@}")
     local width=0
     local len
 
@@ -1263,7 +1287,11 @@ function nls() {
     done
 }
 
-function nhist() {
+alias nls=notes_ls
+
+# Usage: notes_hist [N]
+# Prints the N most recent notes.
+function notes_hist() {
     __preamble
     if [[ -z "$1" ]]; then
         local i=10
@@ -1271,17 +1299,23 @@ function nhist() {
         local i="$1"
     fi
 
-    napi_list_notes -f | sort -r -k2 | head -n$i \
+    notes_api_list_notes -f | sort -r -k2 | head -n$i \
     | while IFS= read line; do
         IFS=$'\t' read -r -a cols <<< "${line}"
         echo -e "${cols[1]}\t${_TIME_COLOR}(${cols[2]} ago)${_SGR0}\t${cols[0]}"
     done
 }
 
-function nundo() {
-    # TODO: Rebuild this on top of napi_ functions.
+alias nhist=notes_hist
+
+# Usage: notes_undo [-f]
+#
+# Undoes the last note change. If the last change was to a local note, it will
+# refuse to undo it, unless -f is passed.
+function notes_undo() {
+    # TODO: Rebuild this on top of notes_api_ functions.
     if [[ "$1" == "-f" ]]; then
-    shift
+        shift
         local force="force"
     fi
 
@@ -1295,14 +1329,19 @@ function nundo() {
         fi
     fi
 
-    napi_git reset HEAD~ --hard
+    notes_api_git reset HEAD~ --hard
 }
 
-function napi_drop_note() {
+alias nundo=notes_undo
+
+# Usage: notes_api_drop_note NOTE
+#
+# Delete the note at the provided relative path.
+function notes_api_drop_note() {
     local f="${1}"
     rm -f "${NOTES_REPO}/${f}"
-    napi_git add "$f"
-    napi_git commit -m "Delete ${f}"
+    notes_api_git add "$f"
+    notes_api_git commit -m "Delete ${f}"
 }
 
 # Actually writes the note to disk.
@@ -1331,27 +1370,33 @@ function __notes_gen() {
     echo -e "@${category}\n" >> "${path}"
     echo "${text}" >> "${path}"
 
-    if [[ ! $(napi_git check-ignore "${path}") ]]; then
-        napi_git add "${path}" > /dev/null
-        # napi_git commit -m "${filename}" -m "${text}" > /dev/null
+    if [[ ! $(notes_api_git check-ignore "${path}") ]]; then
+        notes_api_git add "${path}" > /dev/null
+        # notes_api_git commit -m "${filename}" -m "${text}" > /dev/null
     fi
 
     echo "${category}/${filename}"
 }
 
-function ngc() {
+# Usage: notes_gc
+#
+# Deletes empty notes and runs git gc.
+function notes_gc() {
     find $NOTES_REPO -empty -and -not -ipath "*.git*" -delete
-    napi_git gc
-    napi_empty_notes | while IFS= read line; do
+    notes_api_git gc
+    notes_api_empty_notes | while IFS= read line; do
         grep -qE "/quick_(note|todo)_" <<< "${line}" || continue
         >&2 echo "Deleting empty quick note ${line}..."
         rm -f "${NOTES_REPO}/${line}"
-        napi_git add "${line}"
+        notes_api_git add "${line}"
     done
-    napi_git commit -m "Deleted empty notes" || true
+    notes_api_git commit -m "Deleted empty notes" || true
 }
 
-function napi_update_note() {
+# Usage: notes_api_update_note RELPATH CONTENTS
+#
+# Updates the note at the given relative path with the given contents.
+function notes_api_update_note() {
     local relpath="${1}"
     local abspath="${NOTES_REPO}/${relpath}"
     local contents="${2}"
@@ -1360,22 +1405,24 @@ function napi_update_note() {
 
     new_relpath=$(__notes_gen "${contents}") || return 1
     if [[ "${new_relpath}" == "${relpath}" ]]; then
-        napi_git check-ignore "${relpath}" && return 0
-        napi_git add "${relpath}"
-        napi_git commit -m "Edit ${new_relpath}"
+        notes_api_git check-ignore "${relpath}" && return 0
+        notes_api_git add "${relpath}"
+        notes_api_git commit -m "Edit ${new_relpath}"
     else
         rm -f "${abspath}"
-        napi_git check-ignore "${relpath}" || napi_git add "${relpath}"
-        napi_git check-ignore "${new_relpath}" || napi_git add "${new_relpath}"
-        [[ -z "$(napi_git status -s)" ]] || napi_git commit -m "Edit and rename ${relpath} -> ${new_relpath}"
+        notes_api_git check-ignore "${relpath}" || notes_api_git add "${relpath}"
+        notes_api_git check-ignore "${new_relpath}" || notes_api_git add "${new_relpath}"
+        [[ -z "$(notes_api_git status -s)" ]] || notes_api_git commit -m "Edit and rename ${relpath} -> ${new_relpath}"
     fi
 }
 
+# Usage: notes_api_edit_note PATH [LINE]
+#
 # Opens vim for the given relative note path, then updates the notes tree using
 # the result. Optional second argument is the line number to open vim at.
-function napi_edit_note() {
-    if [[ ! -z "$(napi_git status -s)" ]]; then
-        >&2 echo "The working tree is not clean - run napi_git status and deal with whatever's going on."
+function notes_api_edit_note() {
+    if [[ ! -z "$(notes_api_git status -s)" ]]; then
+        >&2 echo "The working tree is not clean - run notes_api_git status and deal with whatever's going on."
         return 1
     fi
 
@@ -1397,10 +1444,10 @@ function napi_edit_note() {
     local newsum=`h md5 <<< "${contents}"`
     [[ "${newsum}" == "${oldsum}" ]] && return 0
 
-    napi_update_note "${relpath}" "${contents}"
+    notes_api_update_note "${relpath}" "${contents}"
 }
 
-function __napi_perl_preview_batch() {
+function __notes_api_perl_preview_batch() {
     local notes
     local prog="${1}"
     shift
@@ -1450,11 +1497,15 @@ function __napi_perl_preview_batch() {
 
     # List the notes files including archived ones (the -A switch).
     # Archived/non-archived filter will have already been decided in
-    # napi_perl_preview.
-    done <<< "$(__napi_list_notes_batch -A "${@}")"
+    # notes_api_perl_preview.
+    done <<< "$(__notes_api_list_notes_batch -A "${@}")"
 }
 
-function napi_perl_preview() {
+# Usage: notes_api_perl_preview PROG [TERM ...]
+#
+# Applies the provided perl program to matching notes to generate replacements.
+# Returns the potential replacements.
+function notes_api_perl_preview() {
     __preamble
 
     local prog="${1}"
@@ -1467,10 +1518,10 @@ function napi_perl_preview() {
     shift
 
     export NOTES_REPO NOTES_ROOT
-    export -f __napi_perl_preview_batch __napi_list_notes_batch __file_mtime_and_age __nonempty_wc_l napi_git
-    napi_match_files "${@}" \
+    export -f __notes_api_perl_preview_batch __notes_api_list_notes_batch __file_mtime_and_age __nonempty_wc_l notes_api_git
+    notes_api_match_files "${@}" \
         | __PERL_PROG="${prog}" \
-        xargs -P`nproc` -J{} -n 4 bash -c '__napi_perl_preview_batch "${__PERL_PROG}" "${@}"' _ {} || return "$?"
+        xargs -P`nproc` -J{} -n 4 bash -c '__notes_api_perl_preview_batch "${__PERL_PROG}" "${@}"' _ {} || return "$?"
 }
 
 function __nperl_render_preview() {
@@ -1516,16 +1567,20 @@ function __nperl_apply() {
 
     new_relpath=$(__notes_gen "${contents}") || return 1
     if [[ "${new_relpath}" == "${relpath}" ]]; then
-        napi_git check-ignore "${relpath}" && return 0
-        napi_git add "${relpath}"
+        notes_api_git check-ignore "${relpath}" && return 0
+        notes_api_git add "${relpath}"
     else
         rm -f "${abspath}"
-        napi_git check-ignore "${relpath}" || napi_git add "${relpath}"
-        napi_git check-ignore "${new_relpath}" || napi_git add "${new_relpath}"
+        notes_api_git check-ignore "${relpath}" || notes_api_git add "${relpath}"
+        notes_api_git check-ignore "${new_relpath}" || notes_api_git add "${new_relpath}"
     fi
 }
 
-function nperl() {
+# Usage: notes_perl PROG [TERM ...]
+#
+# Applies the provided perl program to matching notes to generate replacements.
+# Then allows the user to select which replacements to save.
+function notes_perl() {
     __preamble
 
     local preview
@@ -1533,7 +1588,7 @@ function nperl() {
     local marks=()
     local paths=()
     # TODO: This doesn't properly exit when the perl program is fucked up.
-    preview="$(napi_perl_preview "${@}" | sort)" || return $?
+    preview="$(notes_api_perl_preview "${@}" | sort)" || return $?
     while IFS= read line; do
         IFS=$'\t' read -r -a cols <<< "${line}"
         [[ "${cols[2]}" == "-" ]] || continue
@@ -1573,7 +1628,7 @@ Apply Changes"
                     [[ "${marks[$i]}" == "X" ]] && __nperl_apply "${path}" "${@}" && (( c+=1 ))
                     (( i+=1 ))
                 done
-                napi_git commit -m "Apply perl -pe to ${c} files"
+                notes_api_git commit -m "Apply perl -pe to ${c} files"
                 return 0
             ;;
             *)
@@ -1584,13 +1639,20 @@ Apply Changes"
     done
 }
 
-function n() {
+alias nperl=notes_perl
+
+# Usage: notes_note [NOTE]
+#
+# Saves the provided note, intelligently placing it and generating a title. If
+# run with no arguments, instead opens vim and saves whatever is entered into
+# the file.
+function notes_note() {
     __preamble
 
     if [[ "$1" == "-s" ]]; then
         local sync="sync"
         shift
-        napi_git pull
+        notes_api_git pull
     fi
 
     if [[ "${#}" -eq 0 ]]; then
@@ -1604,13 +1666,15 @@ function n() {
 
     local f
     f=`__notes_gen "${input}"` || return 1
-    napi_git commit -m "$(basename "${f}")" -m "${text}" > /dev/null
+    notes_api_git commit -m "$(basename "${f}")" -m "${text}" > /dev/null
     
     if [[ "${sync}" == "sync" ]]; then
-        napi_git push
+        notes_api_git push
     fi
 
     cat "${NOTES_REPO}/${f}"
 }
+
+alias n=notes_note
 
 fi # _REDSHELL_NOTES
