@@ -6,6 +6,7 @@
 if [[ -z "${_REDSHELL_CRYPT}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_CRYPT=1
 
+# Usage: encrypt_symmetric FILE
 function encrypt_symmetric() {
     tar -czf "$1.tgz" "$1"
     gpg --symmetric --output "$1.tgz.gpg" "$1.tgz"
@@ -14,6 +15,7 @@ function encrypt_symmetric() {
     echo "$1 -> ${$1}.tgz.gpg"
 }
 
+# Usage: decrypt_symmetric FILE
 function decrypt_symmetric() {
     gpg --decrypt --output "$1.tgz" "$1"
     tar -xzf "$1.tgz"
@@ -102,6 +104,7 @@ function package() {
     rm -f "${tar_name}"
 }
 
+# Usage: payloadify FILE
 function payloadify() {
     local payload="$1"
     gpg --symmetric --output "${payload}.gpg" "${payload}"
@@ -117,6 +120,9 @@ function payloadify() {
     rm -f "${payload}.gpg"
 }
 
+# Usage: downloadify FILE
+#
+# Encrypt a file and wrap it in a base64 self-unpacking shell script.
 function downloadify() {
     local payload="$1"
     gpg --symmetric --output "${payload}.gpg" "${payload}"

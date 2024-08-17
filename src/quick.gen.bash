@@ -1185,10 +1185,10 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q crypt encrypt_symmetric [ARG...]"
+      echo "  q crypt encrypt_symmetric FILE"
       tput sgr0
       tput bold
-      echo "  q crypt decrypt_symmetric [ARG...]"
+      echo "  q crypt decrypt_symmetric FILE"
       tput sgr0
       tput bold
       echo "  q crypt gen_github_keypair [ARG...]"
@@ -1197,11 +1197,12 @@ function __q_help() {
       echo "  q crypt package [ARG...]"
       tput sgr0
       tput bold
-      echo "  q crypt payloadify [ARG...]"
+      echo "  q crypt payloadify FILE"
       tput sgr0
       tput bold
-      echo "  q crypt downloadify [ARG...]"
+      echo "  q crypt downloadify FILE"
       tput sgr0
+      echo '    Encrypt a file and wrap it in a base64 self-unpacking shell script.'
       ;;
     fedora)
       echo "Usage: q fedora FUNCTION [ARG...]"
@@ -2914,12 +2915,12 @@ function __q_compgen() {
     crypt)
       case "${COMP_WORDS[2]}" in
       encrypt_symmetric)
-        # [ARG...]
+        # encrypt_symmetric FILE
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=()
+        local positional_types=(DEFAULT)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -2980,12 +2981,12 @@ function __q_compgen() {
         return 0
         ;;
       decrypt_symmetric)
-        # [ARG...]
+        # decrypt_symmetric FILE
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=()
+        local positional_types=(DEFAULT)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -3178,12 +3179,12 @@ function __q_compgen() {
         return 0
         ;;
       payloadify)
-        # [ARG...]
+        # payloadify FILE
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=()
+        local positional_types=(DEFAULT)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -3244,12 +3245,12 @@ function __q_compgen() {
         return 0
         ;;
       downloadify)
-        # [ARG...]
+        # downloadify FILE
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=()
+        local positional_types=(DEFAULT)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
