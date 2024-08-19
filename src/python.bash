@@ -67,7 +67,7 @@ function venv() {
         __python_ensurevenv "${pythonpath}" || return 2
     fi
 
-    "${pythonpath}" -m virtualenv .venv || return 3
+    "${pythonpath}" -m virtualenv --python="${pythonpath}" .venv  || return 3
     source ./.venv/bin/activate
     pip install --upgrade pip
     [[ -f requirements.txt ]] && pip install --upgrade -r requirements.txt
