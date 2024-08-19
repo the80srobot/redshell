@@ -169,6 +169,7 @@ status() {
     vid
     echo "Local time: `date`"
     echo "This node: `hostname` (`uname -srm`)"
+    uptime
     
     local wifi=`wifi_name 2> /dev/null`
     [[ -z "${wifi}" ]] || echo "Connected to ${wifi}"
