@@ -68,7 +68,11 @@ function venv() {
     fi
 
     echo "Creating virtualenv in $(pwd)/.venv with ${pythonpath}" >&2
-    "${pythonpath}" -m virtualenv --python="${pythonpath}" .venv  || return 3
+    env VIRTUALENV_PYTHON="${pythonpath}" \
+        "${pythonpath}" -m virtualenv \
+        --python="${pythonpath}" \
+        .venv \
+        || return 3
     source ./.venv/bin/activate
     pip install --upgrade pip
     [[ -f requirements.txt ]] && pip install --upgrade -r requirements.txt
