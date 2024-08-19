@@ -100,7 +100,7 @@ function detect_python() {
 function latest_python() {
     # TODO: this is a hack to work around environments with special blessed
     # python versions, but actually it should be made user-selectable.
-    local path=~/.redshell/python_path
+    local path=~/.redshell_persist/python_path
     if [[ -f "${path}" ]]; then
         cat "${path}"
     else
