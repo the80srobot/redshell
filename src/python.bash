@@ -26,6 +26,17 @@ function __python_ensurevenv() {
     fi
 }
 
+# virtualenv is stupid and completely ignores --python and VIRTUALENV_PYTHON. Go
+# in and fix it manually.
+function __fix_stupid_virtualenv_behavior() {
+    local pythonpath="$1"
+    local venvpath="$2"
+    pushd "${venvpath}/bin" || return 1
+    rm -f python || return 2
+    ln -s "${pythonpath}" python || return 3
+    popd
+}
+
 function venv() {
     local install_reqs=""
     local pythonpath="$(latest_python)"
@@ -68,12 +79,11 @@ function venv() {
     fi
 
     echo "Creating virtualenv in $(pwd)/.venv with ${pythonpath}" >&2
-    env VIRTUALENV_PYTHON="${pythonpath}" \
-        "${pythonpath}" -m virtualenv \
-        --try-first-with="${pythonpath}" \
+    "${pythonpath}" -m virtualenv \
         --python="${pythonpath}" \
         .venv \
         || return 3
+    __fix_stupid_virtualenv_behavior "${pythonpath}" "$(pwd)/.venv" || return $?
     source ./.venv/bin/activate
     pip install --upgrade pip
     [[ -f requirements.txt ]] && pip install --upgrade -r requirements.txt
