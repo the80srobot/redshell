@@ -70,6 +70,7 @@ function venv() {
     echo "Creating virtualenv in $(pwd)/.venv with ${pythonpath}" >&2
     env VIRTUALENV_PYTHON="${pythonpath}" \
         "${pythonpath}" -m virtualenv \
+        --try-first-with="${pythonpath}" \
         --python="${pythonpath}" \
         .venv \
         || return 3
