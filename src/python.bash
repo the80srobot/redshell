@@ -67,6 +67,7 @@ function venv() {
         __python_ensurevenv "${pythonpath}" || return 2
     fi
 
+    echo "Creating virtualenv with ${pythonpath}" >&2
     "${pythonpath}" -m virtualenv --python="${pythonpath}" .venv  || return 3
     source ./.venv/bin/activate
     pip install --upgrade pip
