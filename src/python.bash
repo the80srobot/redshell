@@ -98,7 +98,14 @@ function detect_python() {
 }
 
 function latest_python() {
-    detect_python | head -n1 | cut -f2
+    # TODO: this is a hack to work around environments with special blessed
+    # python versions, but actually it should be made user-selectable.
+    local path=~/.redshell/python_path
+    if [[ -f "${path}" ]]; then
+        cat "${path}"
+    else
+        detect_python | head -n1 | cut -f2
+    fi
 }
 
 # Usage: python_func -f|--function FUNCTION -p|--path PATH [-J|--json_output] [--clean] [--debug] [--] [ARGS...]
