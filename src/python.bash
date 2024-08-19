@@ -29,6 +29,7 @@ function __python_ensurevenv() {
 function venv() {
     local install_reqs=""
     local pythonpath="$(latest_python)"
+    echo "Using Python: ${pythonpath}" >&2
 
     while [[ "${#}" -ne 0 ]]; do
         case "$1" in
