@@ -47,7 +47,7 @@ function path_expand() {
   printf '%s\n' "${result%:}"
 }
 
-
+# Usage: path_push PATH
 function path_push() {
   local path="$(path_expand "${1}")"
   pushd "${1}" >/dev/null || return 1
