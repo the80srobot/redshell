@@ -3,6 +3,9 @@
 
 # UNIX style path helpers.
 
+source "screen.bash"
+source "strings.bash"
+
 if [[ -z "${_REDSHELL_PATH}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_PATH=1
 
@@ -43,5 +46,18 @@ function path_expand() {
   printf -v result '%s:' "${resultPathElements[@]}"
   printf '%s\n' "${result%:}"
 }
+
+
+function path_push() {
+  local path="$(path_expand "${1}")"
+  pushd "${1}" >/dev/null || return 1
+  screen_reset_dirname
+}
+
+function path_pop() {
+  popd >/dev/null || return 1
+  screen_reset_dirname
+}
+
 
 fi # _REDSHELL_PATH
