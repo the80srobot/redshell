@@ -3,6 +3,8 @@
 
 # String helpers for bash.
 
+source "go.bash"
+
 if [[ -z "${_REDSHELL_STRINGS}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_STRINGS=1
 
@@ -33,6 +35,26 @@ function strings_join {
   if shift 2; then
     printf %s "$f" "${@/#/$d}"
   fi
+}
+
+# Usage: sgrep [-C NUM]
+function sgrep() {
+  # https://github.com/arunsupe/semantic-grep
+  # go_pkg_do
+  echo TODO
+  return 1
+}
+
+function strings_strip_prefix() {
+  local prefix="${1}"
+  local string="${2}"
+
+  if [[ "${string}" != "${prefix}"* ]]; then
+    echo "${string}"
+    return 1
+  fi
+
+  echo "${string#${prefix}}"
 }
 
 fi # _REDSHELL_STRINGS
