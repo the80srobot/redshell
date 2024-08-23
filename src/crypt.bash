@@ -136,4 +136,47 @@ function downloadify() {
     rm -f "${payload}.gpg"
 }
 
+# Print a cryptographic hash of the input.
+#
+# Usage: crypt_hash ALGO [INPUT]
+# If no INPUT is provided, read from stdin.
+#
+# hash 256 foo -> b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c
+# hash md5 foo -> d3b07384d113edec49eaa6238ad5ff00
+function crypt_hash() {
+    case "$1" in
+        md5)
+            which md5 2> /dev/null > /dev/null
+            if [[ $? -eq 0 ]]; then
+                local cmd="md5"
+            else
+                local cmd="md5sum"
+            fi
+            if [[ -z "$2" ]]; then
+                "${cmd}"
+            else
+                "${cmd}" <<< "$2"
+            fi
+        ;;
+        *)
+            which shasum 2> /dev/null  > /dev/null
+            if [[ $? -eq 0 ]]; then    
+                if [[ -z "$2" ]]; then
+                    shasum -a "$1" | cut -d' ' -f1
+                else
+                    shasum -a "$1" <<< "$2" | cut -d' ' -f1
+                fi
+            else
+                if [[ -z "$2" ]]; then
+                    "sha${1}sum" | cut -d' ' -f1
+                else
+                    "sha${1}sum" <<< "$2" | cut -d' ' -f1
+                fi
+            fi
+        ;;
+    esac
+}
+
+alias h=crypt_hash
+
 fi # _REDSHELL_CRYPT

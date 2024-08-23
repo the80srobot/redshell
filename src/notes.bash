@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
-source "keyring.bash"
+source "keys.bash"
 
 if [[ -z "${_REDSHELL_NOTES}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_NOTES=1
