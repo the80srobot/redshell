@@ -121,6 +121,326 @@ function __notes_api_list_notes_batch() {
     done
 }
 
+# Usage: notes_note [NOTE]
+#
+# Saves the provided note, intelligently placing it and generating a title. If
+# run with no arguments, instead opens vim and saves whatever is entered into
+# the file.
+function notes_note() {
+    __preamble
+
+    if [[ "$1" == "-s" ]]; then
+        local sync="sync"
+        shift
+        notes_api_git pull
+    fi
+
+    if [[ "${#}" -eq 0 ]]; then
+        local tmp=`mktemp`
+        >&2 echo "Editing temp file ${tmp}"
+        vim "${tmp}"
+        local input=`cat "${tmp}"`
+    else
+        local input="${*}"
+    fi
+
+    local f
+    f=`__notes_gen "${input}"` || return 1
+    notes_api_git commit -m "$(basename "${f}")" -m "${text}" > /dev/null
+    
+    if [[ "${sync}" == "sync" ]]; then
+        notes_api_git push
+    fi
+
+    cat "${NOTES_REPO}/${f}"
+}
+
+alias n=notes_note
+
+function notes_list() {
+    __preamble
+    local data="$(notes_api_list_notes -f "${@}" | sort -r -k2)"
+    local text
+    local cols
+    local width=0
+    [[ -z "${data}" ]] && return 1
+
+    # This might be empty, if we're running with no params.
+    # Used to highlight matching text in the output.
+    local grep_needle
+    local grep_flags="iwnE"
+    for arg in "${@}"; do
+        [[ "${arg:0:1}" == "-" || "${arg:0:1}" == "@" || "${arg:0:1}" == "-" ]] || grep_needle+="${arg}|"
+        # If notes_api_list_notes is getting the -W flag, then it'll return partial
+        # word matches, and we should highlight those, so we need to drop the -w
+        # flag for grep.
+        [[ "${arg}" == "-W" ]] && grep_flags="inE"
+    done
+    [[ -z "${grep_needle}" ]] || grep_needle="${grep_needle:0:-1}"
+
+    while IFS= read line; do
+        IFS=$'\t' read -r -a cols <<< "${line}" # Faster than cut
+        local title="${cols[10]}"
+        local w="${#title}"
+        (( width < w )) && width="${w}"
+        (( width > 50 )) && width=50
+    done <<< "${data}"
+
+    while IFS= read line; do
+        IFS=$'\t' read -r -a cols <<< "${line}"
+        local archived="${cols[11]}"
+        local title="${cols[10]}"
+        local title_color=""
+        local attribute_color="${_DISABLED_COLOR}"
+        [[ "${archived}" == "A" ]] && title_color="${_DISABLED_COLOR}" && attribute_color="${_ERROR_COLOR}"
+        local w="${#title}"
+        (( w > 50 )) && title="$(__elide "${title}" 50)"
+        text+="${_SGR0}${title_color}${title}${_SGR0}${_DISABLED_COLOR} ."
+        for (( i=w; i < width; i++ )); do
+            text+="."
+        done
+        local age="$(printf '%5s' "${cols[2]}")"
+        local lines="$(printf '%3s' "${cols[3]}")"
+        text+=" ${_SGR0}${attribute_color}${archived} ${_DISABLED_COLOR}${cols[1]} ${_TIME_COLOR}${age} ago ${_EXTRA_COLOR}${lines} lines ${_PATH_COLOR}@${cols[9]}${_SGR0}"$'\n'
+
+        [[ -z "${grep_needle}" ]] && continue
+        local grep_lines="$(grep --color=always -"${grep_flags}" "${grep_needle}" "${cols[5]}")"
+        [[ -z "${grep_lines}" ]] && continue
+        while IFS= read grep_line; do
+            grep_line="$(perl -pe "s/^(\\d+):/${_PATH_COLOR}Line \\1: ${_SGR0}/" <<< "${grep_line}")"
+            text+=$'\t'"${grep_line}"$'\n'
+        done <<< "${grep_lines}"
+    done <<< "${data}"
+    
+    text="${text:0:-1}" # trailing \n
+
+    local i
+    i="$(multiple_choice -n -i "${text}")" || return $?
+
+    local record="$(echo "${data}" | tail "-n+${i}" | head -n1)"
+    local path="$(echo "${record}" | cut -f1)"
+    >&2 echo "Selected: ${_BOLD}$(echo "${record}" | cut -f8)${_SGR0}${_PATH_COLOR} ($(echo "${record}" | cut -f6))${_SGR0}"
+    op=$(multiple_choice -n -i "Edit the file ${_PATH_COLOR}${path}${_SGR0}
+Drop the file ${_PATH_COLOR}${path}${_SGR0}
+Cat the file ${_PATH_COLOR}${path}${_SGR0}
+HTTP serve ${_PATH_COLOR}${path}${_SGR0}
+Return the absolute path" -m "Select operation" -a "edcsf") || nn "${@}"
+
+    case "${op}" in
+        1)
+            notes_api_edit_note "${path}"
+        ;;
+        2)
+            notes_api_drop_note "${path}"
+        ;;
+        3)
+            [[ -z "${grep_needle}" ]] \
+                && cat "${NOTES_REPO}/${path}" \
+                || grep -C 100000 --color=always -iEw "${grep_needle}" "${NOTES_REPO}/${path}"
+        ;;
+        4)
+            bash -c "sleep 1 && open http://127.0.0.1:8081" &
+            cat "${NOTES_REPO}/${path}" | strip_control | markdown | serve
+        ;;
+        5)
+            echo "${NOTES_REPO}/${path}"
+        ;;
+        *)
+            return 1
+        ;;
+    esac
+    nn "${@}"
+}
+
+alias nn=notes_list
+alias nnn='nn ~"quick todo"'
+alias na='nn -a'
+alias nna='nn -a ~"quick todo"'
+
+function notes_sync() {
+    __preamble
+    notes_api_git pull --rebase
+    notes_api_git push
+    notes_api_fsck
+    notes_gc
+}
+
+alias nsync=notes_sync
+
+
+# Usage: notes_todo [TERM ...]
+#
+# Shows an interactive listing of matching TODOs.
+#
+# Uses the following categories:
+#   A - 💬 - Asynchronous Comms
+#   B - 💰 - Bank
+#   C - 📅 - Calendar
+#   E - 🏃 - Errand
+#   H - 🏠 - Home
+#   M - 👥 - Meeting
+#   L - 💩 - Long Task
+#   O - 👔 - Office
+#   R - 📚 - Reading
+#   S - 🛒 - Shopping
+#   T - 📞 - Telephone
+#   W - 📝 - Writing
+#   X - 🛠️ - Technical Task
+#   Z - ⏩ - Misc Quick Task
+#   📥 - Inbox
+function notes_todo() {
+    __preamble
+    local todo
+    todo=$(__select_todo "${@}") || return 2
+    IFS=$'\t' read -r -a cols <<< "${todo}"
+
+    local state="[ ]"
+    [[ "${cols[2]}" == "DONE" ]] && state="${_DISABLED_COLOR}[x]"
+    local text="${cols[3]}"
+    local age="${cols[5]}"
+    local path="${cols[0]}"
+    local abspath="${cols[4]}"
+    local lno="${cols[1]}"
+
+    echo -e "Selected: ${state} ${text} ${_TIME_COLOR}(${age} ago) ${_PATH_COLOR}${path}:${lno}${_SGR0}"
+    local op
+    op=$(multiple_choice -n -i "Mark done
+Mark not done
+Delete the whole line $(tput setaf 6)${path}:${lno}$(tput sgr0)
+Edit the file $(tput setaf 6)${path}$(tput sgr0)" -m "Select operation" -a "xXde") || notes_todo "${@}"
+
+    local before=$(cat "${abspath}" | head -n$(( lno - 1 )))
+    local after=$(cat "${abspath}" | tail -n+$(( lno + 1 )))
+    local line=$(cat "${abspath}" | tail -n+$lno | head -n1)
+    case "${op}" in
+        1)
+            >&2 echo "Mark done"
+            echo "${before}" > "${abspath}"
+            echo "${line}" | sed 's/TODO/DONE/' >> "${abspath}"
+            echo "${after}" >> "${abspath}"
+            notes_api_git add "${abspath}"
+            notes_api_git commit -m "Mark ${path}:${lno} as done"
+        ;;
+        2)
+            >&2 echo "Mark not done"
+            echo "${before}" > "${abspath}"
+            echo "${line}" | sed 's/DONE/TODO/' >> "${abspath}"
+            echo "${after}" >> "${abspath}"
+            notes_api_git add "${abspath}"
+            notes_api_git commit -m "Mark ${path}:${lno} as TODO"
+        ;;
+        3)
+            >&2 echo "Delete the whole line ${path}:${lno}"
+            echo "${before}" > "${abspath}"
+            echo "${after}" >> "${abspath}"
+            notes_api_git add "${abspath}"
+            notes_api_git commit -m "Delete TODO line ${path}:${lno}"
+        ;;
+        4)
+            >&2 echo "Edit the file ${path}"
+            notes_api_edit_note "${path}" "${lno}"
+        ;;
+        *)
+        return 0
+        ;;
+    esac
+
+    notes_todo "${@}"
+}
+
+alias ntodo=notes_todo
+
+# Usage: notes_undo [-f]
+#
+# Undoes the last note change. If the last change was to a local note, it will
+# refuse to undo it, unless -f is passed.
+function notes_undo() {
+    # TODO: Rebuild this on top of notes_api_ functions.
+    if [[ "$1" == "-f" ]]; then
+        shift
+        local force="force"
+    fi
+
+    local lastf=`nhist | head -n1 | cut -f3`
+
+    if [[ "${lastf:0:6}" == "local/" ]]; then
+        >&2 echo "Warning: the most recent change was to a local note, not tracked in git!"
+        if [[ "${force}" != "force" ]]; then
+            >&2 echo "Pass -f to force undo anyway."
+            return 1
+        fi
+    fi
+
+    notes_api_git reset HEAD~ --hard
+}
+
+alias nundo=notes_undo
+
+# Usage: notes_perl PROG [TERM ...]
+#
+# Applies the provided perl program to matching notes to generate replacements.
+# Then allows the user to select which replacements to save.
+function notes_perl() {
+    __preamble
+
+    local preview
+    local cols
+    local marks=()
+    local paths=()
+    # TODO: This doesn't properly exit when the perl program is fucked up.
+    preview="$(notes_api_perl_preview "${@}" | sort)" || return $?
+    while IFS= read line; do
+        IFS=$'\t' read -r -a cols <<< "${line}"
+        [[ "${cols[2]}" == "-" ]] || continue
+        marks+=(" ")
+        paths+=("${cols[10]}")
+    done <<< "${preview}"
+
+    local text
+    local choice
+    local controls="Select All
+Deselect All
+Apply Changes"
+    while true; do
+        text="$(__nperl_render_preview "${preview}" "${marks[@]}")" || return 2
+        choice="$(multiple_choice -n -i "${text}" -I "${controls}" -A 'ads' -m 'Select files to apply changes')" || return "$?"
+
+        case "${choice}" in
+            a)
+                local i=0
+                for _ in "${marks[@]}"; do
+                    marks["$i"]="X"
+                    (( i+=1 ))
+                done
+            ;;
+            d)
+                local i=0
+                for _ in "${marks[@]}"; do
+                    marks["$i"]=" "
+                    (( i+=1 ))
+                done
+            ;;
+            s)
+                i=0
+                local c=0
+                local path
+                for path in "${paths[@]}"; do
+                    [[ "${marks[$i]}" == "X" ]] && __nperl_apply "${path}" "${@}" && (( c+=1 ))
+                    (( i+=1 ))
+                done
+                notes_api_git commit -m "Apply perl -pe to ${c} files"
+                return 0
+            ;;
+            *)
+                (( i=choice-1 ))
+                [[ "${marks[$i]}" == "X" ]] && marks["${i}"]=" " || marks["${i}"]="X"
+            ;;
+        esac
+    done
+}
+
+alias nperl=notes_perl
+
 # Usage: notes_api_match_files [-f] [-a] [TERM ...]
 # Outputs a list of notes files that match the given terms.
 #
@@ -444,7 +764,7 @@ function notes_api_list_todos() {
         | sort -r -k7 -t $'\t'
 }
 
-function ntodo_help() {
+function print_todo_categories() {
     echo "ntodo emoji:"
     echo "  A - 💬"
     echo "  B - 💰"
@@ -599,71 +919,6 @@ function __select_todo() {
     choice="$(multiple_choice -n -i "${todo_text}")" || return 2
     tail "-n+${choice}" <<< "${todo_data}" | head -n1
 }
-
-# Usage: notes_todo [TERM ...]
-#
-# Shows an interactive listing of matching TODOs.
-function notes_todo() {
-    __preamble
-    local todo
-    todo=$(__select_todo "${@}") || return 2
-    IFS=$'\t' read -r -a cols <<< "${todo}"
-
-    local state="[ ]"
-    [[ "${cols[2]}" == "DONE" ]] && state="${_DISABLED_COLOR}[x]"
-    local text="${cols[3]}"
-    local age="${cols[5]}"
-    local path="${cols[0]}"
-    local abspath="${cols[4]}"
-    local lno="${cols[1]}"
-
-    echo -e "Selected: ${state} ${text} ${_TIME_COLOR}(${age} ago) ${_PATH_COLOR}${path}:${lno}${_SGR0}"
-    local op
-    op=$(multiple_choice -n -i "Mark done
-Mark not done
-Delete the whole line $(tput setaf 6)${path}:${lno}$(tput sgr0)
-Edit the file $(tput setaf 6)${path}$(tput sgr0)" -m "Select operation" -a "xXde") || notes_todo "${@}"
-
-    local before=$(cat "${abspath}" | head -n$(( lno - 1 )))
-    local after=$(cat "${abspath}" | tail -n+$(( lno + 1 )))
-    local line=$(cat "${abspath}" | tail -n+$lno | head -n1)
-    case "${op}" in
-        1)
-            >&2 echo "Mark done"
-            echo "${before}" > "${abspath}"
-            echo "${line}" | sed 's/TODO/DONE/' >> "${abspath}"
-            echo "${after}" >> "${abspath}"
-            notes_api_git add "${abspath}"
-            notes_api_git commit -m "Mark ${path}:${lno} as done"
-        ;;
-        2)
-            >&2 echo "Mark not done"
-            echo "${before}" > "${abspath}"
-            echo "${line}" | sed 's/DONE/TODO/' >> "${abspath}"
-            echo "${after}" >> "${abspath}"
-            notes_api_git add "${abspath}"
-            notes_api_git commit -m "Mark ${path}:${lno} as TODO"
-        ;;
-        3)
-            >&2 echo "Delete the whole line ${path}:${lno}"
-            echo "${before}" > "${abspath}"
-            echo "${after}" >> "${abspath}"
-            notes_api_git add "${abspath}"
-            notes_api_git commit -m "Delete TODO line ${path}:${lno}"
-        ;;
-        4)
-            >&2 echo "Edit the file ${path}"
-            notes_api_edit_note "${path}" "${lno}"
-        ;;
-        *)
-        return 0
-        ;;
-    esac
-
-    notes_todo "${@}"
-}
-
-alias ntodo=notes_todo
 
 # Usage: notes_api_git [ARGS ...]
 # Forwards its args to git running with the correct key and in the notes root.
@@ -857,7 +1112,7 @@ function nw() {
     done
 }
 
-function nwin() {
+function notes_window() {
     if [[ -z "${1}" ]]; then
         >&2 echo "Default -> nwin 7"
         nwin 7
@@ -916,6 +1171,7 @@ function nwin() {
     fi
 }
 
+alias nwin=notes_window
 alias nwd='nwin 1d'
 alias nww='nwin 1w'
 alias nwm='nwin 1m'
@@ -955,116 +1211,11 @@ function __notes_filename() {
     echo "${base}.md"
 }
 
-function nlog() {
+function notes_log() {
     notes_api_git log --name-status
 }
 
-alias nnn='nn ~"quick todo"'
-alias na='nn -a'
-alias nna='nn -a ~"quick todo"'
-
-function nn() {
-    __preamble
-    local data="$(notes_api_list_notes -f "${@}" | sort -r -k2)"
-    local text
-    local cols
-    local width=0
-    [[ -z "${data}" ]] && return 1
-
-    # This might be empty, if we're running with no params.
-    # Used to highlight matching text in the output.
-    local grep_needle
-    local grep_flags="iwnE"
-    for arg in "${@}"; do
-        [[ "${arg:0:1}" == "-" || "${arg:0:1}" == "@" || "${arg:0:1}" == "-" ]] || grep_needle+="${arg}|"
-        # If notes_api_list_notes is getting the -W flag, then it'll return partial
-        # word matches, and we should highlight those, so we need to drop the -w
-        # flag for grep.
-        [[ "${arg}" == "-W" ]] && grep_flags="inE"
-    done
-    [[ -z "${grep_needle}" ]] || grep_needle="${grep_needle:0:-1}"
-
-    while IFS= read line; do
-        IFS=$'\t' read -r -a cols <<< "${line}" # Faster than cut
-        local title="${cols[10]}"
-        local w="${#title}"
-        (( width < w )) && width="${w}"
-        (( width > 50 )) && width=50
-    done <<< "${data}"
-
-    while IFS= read line; do
-        IFS=$'\t' read -r -a cols <<< "${line}"
-        local archived="${cols[11]}"
-        local title="${cols[10]}"
-        local title_color=""
-        local attribute_color="${_DISABLED_COLOR}"
-        [[ "${archived}" == "A" ]] && title_color="${_DISABLED_COLOR}" && attribute_color="${_ERROR_COLOR}"
-        local w="${#title}"
-        (( w > 50 )) && title="$(__elide "${title}" 50)"
-        text+="${_SGR0}${title_color}${title}${_SGR0}${_DISABLED_COLOR} ."
-        for (( i=w; i < width; i++ )); do
-            text+="."
-        done
-        local age="$(printf '%5s' "${cols[2]}")"
-        local lines="$(printf '%3s' "${cols[3]}")"
-        text+=" ${_SGR0}${attribute_color}${archived} ${_DISABLED_COLOR}${cols[1]} ${_TIME_COLOR}${age} ago ${_EXTRA_COLOR}${lines} lines ${_PATH_COLOR}@${cols[9]}${_SGR0}"$'\n'
-
-        [[ -z "${grep_needle}" ]] && continue
-        local grep_lines="$(grep --color=always -"${grep_flags}" "${grep_needle}" "${cols[5]}")"
-        [[ -z "${grep_lines}" ]] && continue
-        while IFS= read grep_line; do
-            grep_line="$(perl -pe "s/^(\\d+):/${_PATH_COLOR}Line \\1: ${_SGR0}/" <<< "${grep_line}")"
-            text+=$'\t'"${grep_line}"$'\n'
-        done <<< "${grep_lines}"
-    done <<< "${data}"
-    
-    text="${text:0:-1}" # trailing \n
-
-    local i
-    i="$(multiple_choice -n -i "${text}")" || return $?
-
-    local record="$(echo "${data}" | tail "-n+${i}" | head -n1)"
-    local path="$(echo "${record}" | cut -f1)"
-    >&2 echo "Selected: ${_BOLD}$(echo "${record}" | cut -f8)${_SGR0}${_PATH_COLOR} ($(echo "${record}" | cut -f6))${_SGR0}"
-    op=$(multiple_choice -n -i "Edit the file ${_PATH_COLOR}${path}${_SGR0}
-Drop the file ${_PATH_COLOR}${path}${_SGR0}
-Cat the file ${_PATH_COLOR}${path}${_SGR0}
-HTTP serve ${_PATH_COLOR}${path}${_SGR0}
-Return the absolute path" -m "Select operation" -a "edcsf") || nn "${@}"
-
-    case "${op}" in
-        1)
-            notes_api_edit_note "${path}"
-        ;;
-        2)
-            notes_api_drop_note "${path}"
-        ;;
-        3)
-            [[ -z "${grep_needle}" ]] \
-                && cat "${NOTES_REPO}/${path}" \
-                || grep -C 100000 --color=always -iEw "${grep_needle}" "${NOTES_REPO}/${path}"
-        ;;
-        4)
-            bash -c "sleep 1 && open http://127.0.0.1:8081" &
-            cat "${NOTES_REPO}/${path}" | strip_control | markdown | serve
-        ;;
-        5)
-            echo "${NOTES_REPO}/${path}"
-        ;;
-        *)
-            return 1
-        ;;
-    esac
-    nn "${@}"
-}
-
-function nsync() {
-    __preamble
-    notes_api_git pull --rebase
-    notes_api_git push
-    notes_api_fsck
-    notes_gc
-}
+alias nlog=notes_log
 
 function __match_files_one() {
     local grep_flags="${__GREP_FLAGS}"
@@ -1308,31 +1459,7 @@ function notes_hist() {
 
 alias nhist=notes_hist
 
-# Usage: notes_undo [-f]
-#
-# Undoes the last note change. If the last change was to a local note, it will
-# refuse to undo it, unless -f is passed.
-function notes_undo() {
-    # TODO: Rebuild this on top of notes_api_ functions.
-    if [[ "$1" == "-f" ]]; then
-        shift
-        local force="force"
-    fi
 
-    local lastf=`nhist | head -n1 | cut -f3`
-
-    if [[ "${lastf:0:6}" == "local/" ]]; then
-        >&2 echo "Warning: the most recent change was to a local note, not tracked in git!"
-        if [[ "${force}" != "force" ]]; then
-            >&2 echo "Pass -f to force undo anyway."
-            return 1
-        fi
-    fi
-
-    notes_api_git reset HEAD~ --hard
-}
-
-alias nundo=notes_undo
 
 # Usage: notes_api_drop_note NOTE
 #
@@ -1576,105 +1703,5 @@ function __nperl_apply() {
     fi
 }
 
-# Usage: notes_perl PROG [TERM ...]
-#
-# Applies the provided perl program to matching notes to generate replacements.
-# Then allows the user to select which replacements to save.
-function notes_perl() {
-    __preamble
-
-    local preview
-    local cols
-    local marks=()
-    local paths=()
-    # TODO: This doesn't properly exit when the perl program is fucked up.
-    preview="$(notes_api_perl_preview "${@}" | sort)" || return $?
-    while IFS= read line; do
-        IFS=$'\t' read -r -a cols <<< "${line}"
-        [[ "${cols[2]}" == "-" ]] || continue
-        marks+=(" ")
-        paths+=("${cols[10]}")
-    done <<< "${preview}"
-
-    local text
-    local choice
-    local controls="Select All
-Deselect All
-Apply Changes"
-    while true; do
-        text="$(__nperl_render_preview "${preview}" "${marks[@]}")" || return 2
-        choice="$(multiple_choice -n -i "${text}" -I "${controls}" -A 'ads' -m 'Select files to apply changes')" || return "$?"
-
-        case "${choice}" in
-            a)
-                local i=0
-                for _ in "${marks[@]}"; do
-                    marks["$i"]="X"
-                    (( i+=1 ))
-                done
-            ;;
-            d)
-                local i=0
-                for _ in "${marks[@]}"; do
-                    marks["$i"]=" "
-                    (( i+=1 ))
-                done
-            ;;
-            s)
-                i=0
-                local c=0
-                local path
-                for path in "${paths[@]}"; do
-                    [[ "${marks[$i]}" == "X" ]] && __nperl_apply "${path}" "${@}" && (( c+=1 ))
-                    (( i+=1 ))
-                done
-                notes_api_git commit -m "Apply perl -pe to ${c} files"
-                return 0
-            ;;
-            *)
-                (( i=choice-1 ))
-                [[ "${marks[$i]}" == "X" ]] && marks["${i}"]=" " || marks["${i}"]="X"
-            ;;
-        esac
-    done
-}
-
-alias nperl=notes_perl
-
-# Usage: notes_note [NOTE]
-#
-# Saves the provided note, intelligently placing it and generating a title. If
-# run with no arguments, instead opens vim and saves whatever is entered into
-# the file.
-function notes_note() {
-    __preamble
-
-    if [[ "$1" == "-s" ]]; then
-        local sync="sync"
-        shift
-        notes_api_git pull
-    fi
-
-    if [[ "${#}" -eq 0 ]]; then
-        local tmp=`mktemp`
-        >&2 echo "Editing temp file ${tmp}"
-        vim "${tmp}"
-        local input=`cat "${tmp}"`
-    else
-        local input="${*}"
-    fi
-
-    local f
-    f=`__notes_gen "${input}"` || return 1
-    notes_api_git commit -m "$(basename "${f}")" -m "${text}" > /dev/null
-    
-    if [[ "${sync}" == "sync" ]]; then
-        notes_api_git push
-    fi
-
-    cat "${NOTES_REPO}/${f}"
-}
-
-alias n=notes_note
 
 fi # _REDSHELL_NOTES

@@ -3,8 +3,8 @@
 
 # Password manager based on pass and gpg.
 
-if [[ -z "${_REDSHELL_KEYRING}" || -n "${_REDSHELL_RELOAD}" ]]; then
-_REDSHELL_KEYRING=1
+if [[ -z "${_REDSHELL_KEYS}" || -n "${_REDSHELL_RELOAD}" ]]; then
+_REDSHELL_KEYS=1
 
 # Wraps git for use with the keys repository.
 #
@@ -47,4 +47,4 @@ function keys_var() {
     pass "Redshell/${1}.var"
 }
 
-fi # _REDSHELL_KEYRING
+fi # _REDSHELL_KEYS
