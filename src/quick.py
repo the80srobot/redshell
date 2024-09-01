@@ -339,6 +339,10 @@ def gen_switch(modules: Iterable[Module]) -> Generator[str, None, None]:
     yield "    shift"
     yield '    __q_help "$@"'
     yield "    ;;"
+    yield "  dump)"
+    yield "    shift"
+    yield '    __q_dump "$@"'
+    yield "    ;;"
     for module in modules:
         yield f"  {module.name})"
         yield f"    shift"
@@ -373,6 +377,34 @@ def gen_switch(modules: Iterable[Module]) -> Generator[str, None, None]:
     yield f"    return 1"
     yield f"    ;;"
     yield f"  esac"
+    yield "}"
+
+
+def gen_dump(modules: Iterable[Module]) -> Generator[str, None, None]:
+    yield "function __q_dump() {"
+    yield '  if [[ ! "$#" -eq 2 ]]; then'
+    yield '    echo "Usage: q dump MODULE FUNCTION"'
+    yield "    return 1"
+    yield "  fi"
+    yield "  case \"$1\" in"
+    for module in modules:
+        yield f"  {module.name})"
+        yield f'    case \"$2\" in'
+        for function in module.functions:
+            yield f"    {_local_name(function.name.value, module.name)})"
+            yield f"      type {function.name.value}"
+            yield f"      ;;"
+        yield f"    *)"
+        yield f'      echo "Unknown function $2"'
+        yield f"      return 1"
+        yield f"      ;;"
+        yield f"    esac"
+        yield f"    ;;"
+    yield f"  *)"
+    yield f'    echo "Unknown module $1"'
+    yield f"    return 1"
+    yield f"    ;;"
+    yield "  esac"
     yield "}"
 
 
@@ -642,6 +674,9 @@ def gen_all(modules: list[Module], output: str) -> None:
             f.write("\n")
         f.write("\n")
         for line in gen_help(modules):
+            f.write(line)
+            f.write("\n")
+        for line in gen_dump(modules):
             f.write(line)
             f.write("\n")
         f.write("\n")

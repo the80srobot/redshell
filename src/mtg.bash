@@ -69,30 +69,37 @@ function mtg_card_json() {
 # Print the Magic: The Gathering card with the given name. (Case sensitive.)
 function mtg_card() {
     local card_json=$(mtg_card_json "${@}")
-    local name="$(jq -r '.[0].name' <<< "${card_json}")"
-    local mana_cost="$(jq -r '.[0].mana_cost' <<< "${card_json}")"
-    local type_line="$(jq -r '.[0].type_line' <<< "${card_json}")"
-    local oracle_text="$(jq -r '.[0].oracle_text' <<< "${card_json}")"
-    local flavor_text="$(jq -r '.[0].flavor_text' <<< "${card_json}")"
-    local power="$(jq -r '.[0].power' <<< "${card_json}")"
-    local toughness="$(jq -r '.[0].toughness' <<< "${card_json}")"
+    local count=$(jq 'length' <<< "${card_json}")
 
-    [[ "${name}" == "null" ]] && {
+    [[ "${count}" -eq 0 ]] && {
         echo "Card not found." >&2
         return 1
     }
 
-    tput bold
-    printf "%s %*s\n" "${name}" $((80 - ${#name})) "${mana_cost}"
-    tput sgr0
-    tput setaf 6
-    printf "%s\n\n" "${type_line}"
-    tput sgr0
-    printf "%s\n" "${oracle_text}"
-    tput setaf 8
-    [[ "${flavor_text}" != "null" ]] && printf "\n%s\n" "${flavor_text}"
-    tput sgr0
-    [[ "${power}" != "null" ]] && printf "%*s %s/%s\n" $(( 79 - ${#power} - ${#toughness} )) " " "${power}" "${toughness}"
+    local i=0
+    while [[ "${i}" -lt "${count}" ]]; do
+        local name="$(jq -r ".[${i}].name" <<< "${card_json}")"
+        local mana_cost="$(jq -r ".[${i}].mana_cost" <<< "${card_json}")"
+        local type_line="$(jq -r ".[${i}].type_line" <<< "${card_json}")"
+        local oracle_text="$(jq -r ".[${i}].oracle_text" <<< "${card_json}")"
+        local flavor_text="$(jq -r ".[${i}].flavor_text" <<< "${card_json}")"
+        local power="$(jq -r ".[${i}].power" <<< "${card_json}")"
+        local toughness="$(jq -r ".[${i}].toughness" <<< "${card_json}")"
+
+        tput bold
+        printf "%s %*s\n" "${name}" $((80 - ${#name})) "${mana_cost}"
+        tput sgr0
+        tput setaf 6
+        printf "%s\n\n" "${type_line}"
+        tput sgr0
+        printf "%s\n" "${oracle_text}"
+        tput setaf 8
+        [[ "${flavor_text}" != "null" ]] && printf "\n%s\n" "${flavor_text}"
+        tput sgr0
+        [[ "${power}" != "null" ]] && printf "%*s %s/%s\n" $(( 79 - ${#power} - ${#toughness} )) " " "${power}" "${toughness}"
+        echo
+        ((i++))
+    done
 }
 
 fi # _REDSHELL_MTG

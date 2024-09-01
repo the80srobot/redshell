@@ -13,6 +13,10 @@ function __q() {
     shift
     __q_help "$@"
     ;;
+  dump)
+    shift
+    __q_dump "$@"
+    ;;
   ascii_art)
     shift
     case "$1" in
@@ -744,6 +748,10 @@ function __q() {
       shift
       omdb_query "$@"
       ;;
+    omdb_guess_title|guess_title)
+      shift
+      omdb_guess_title "$@"
+      ;;
     *)
       if [ -n "$1" ]; then
         echo "Module omdb has no function $1"
@@ -931,6 +939,10 @@ function __q() {
     help|-h|--help|?)
       shift
       __q_help "strings" "$@"
+      ;;
+    strings_urlencode|urlencode)
+      shift
+      strings_urlencode "$@"
       ;;
     strip_control)
       shift
@@ -1814,13 +1826,13 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q omdb set_key [ARG...]"
+      echo "  q omdb set_key KEY"
       tput sgr0
       tput bold
-      echo "  q omdb register_key [ARG...]"
+      echo "  q omdb register_key "
       tput sgr0
       tput bold
-      echo "  q omdb get_key [ARG...]"
+      echo "  q omdb get_key "
       tput sgr0
       tput bold
       echo "  q omdb query [-f] [QUERY ...]"
@@ -1831,10 +1843,18 @@ function __q_help() {
       echo '    The query consists of a series of PARAMETER=QUERY pairs. Valid parameters are'
       echo '    documented at http://www.omdbapi.com.'
       echo '    '
+      echo '    Examples:'
+      echo '    q omdb query "t=The Matrix"'
+      echo '    q omdb query "i=tt0133093"'
+      echo '    '
       echo '    Useful parameters include:'
       echo '    '
       echo '    - t: Title of the movie.'
       echo '    - i: IMDB ID of the movie.'
+      tput bold
+      echo "  q omdb guess_title FILE"
+      tput sgr0
+      echo '    Guess the title of the movie based on the filename.'
       ;;
     path)
       echo "Usage: q path FUNCTION [ARG...]"
@@ -1937,6 +1957,12 @@ function __q_help() {
       echo "String helpers for bash."
       echo
       echo "Available functions:"
+      tput bold
+      echo "  q strings urlencode [ARG...]"
+      tput sgr0
+      echo '    Usage strings_urlencode STRING'
+      echo '    '
+      echo '    URL-encodes a string. DO NOT USE with curl: prefer --data-urlencode.'
       tput bold
       echo "  q strings strip_control "
       tput sgr0
@@ -2080,6 +2106,867 @@ function __q_help() {
     esac
   fi
 }
+function __q_dump() {
+  if [[ ! "$#" -eq 2 ]]; then
+    echo "Usage: q dump MODULE FUNCTION"
+    return 1
+  fi
+  case "$1" in
+  ascii_art)
+    case "$2" in
+    print_speech_bubble)
+      type print_speech_bubble
+      ;;
+    erase_lines)
+      type erase_lines
+      ;;
+    cursor_position)
+      type cursor_position
+      ;;
+    cursor_row)
+      type cursor_row
+      ;;
+    print_bmo)
+      type print_bmo
+      ;;
+    print_pedro)
+      type print_pedro
+      ;;
+    scroll_output_pedro)
+      type scroll_output_pedro
+      ;;
+    select_visual)
+      type select_visual
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  bash)
+    case "$2" in
+    get_bash_functions)
+      type get_bash_functions
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  browser)
+    case "$2" in
+    gdocs_id)
+      type gdocs_id
+      ;;
+    sheets_dl_link)
+      type sheets_dl_link
+      ;;
+    chrome_path)
+      type chrome_path
+      ;;
+    downloads_path)
+      type downloads_path
+      ;;
+    dl)
+      type browser_dl
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  crypt)
+    case "$2" in
+    encrypt_symmetric)
+      type encrypt_symmetric
+      ;;
+    decrypt_symmetric)
+      type decrypt_symmetric
+      ;;
+    gen_github_keypair)
+      type gen_github_keypair
+      ;;
+    package)
+      type package
+      ;;
+    payloadify)
+      type payloadify
+      ;;
+    downloadify)
+      type downloadify
+      ;;
+    hash)
+      type crypt_hash
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  fedora)
+    case "$2" in
+    setup)
+      type fedora_setup
+      ;;
+    dnf_install_or_skip)
+      type dnf_install_or_skip
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  find)
+    case "$2" in
+    f)
+      type f
+      ;;
+    __f_args)
+      type __f_args
+      ;;
+    fcc)
+      type fcc
+      ;;
+    fgo)
+      type fgo
+      ;;
+    fjava)
+      type fjava
+      ;;
+    faidl)
+      type faidl
+      ;;
+    fd)
+      type fd
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  git)
+    case "$2" in
+    mkproject)
+      type mkproject
+      ;;
+    git-ssh-init)
+      type git-ssh-init
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  go)
+    case "$2" in
+    pkg_do)
+      type go_pkg_do
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  hg)
+    case "$2" in
+    is_dir_hg)
+      type is_dir_hg
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  init)
+    case "$2" in
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  install)
+    case "$2" in
+    reinstall_file)
+      type reinstall_file
+      ;;
+    file)
+      type install_file
+      ;;
+    uninstall_file)
+      type uninstall_file
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  keys)
+    case "$2" in
+    git)
+      type keys_git
+      ;;
+    path)
+      type keys_path
+      ;;
+    var)
+      type keys_var
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  mac)
+    case "$2" in
+    setup)
+      type mac_setup
+      ;;
+    brew)
+      type brew
+      ;;
+    get_user_shell)
+      type mac_get_user_shell
+      ;;
+    brew_bash_path)
+      type mac_brew_bash_path
+      ;;
+    switch_to_bash)
+      type mac_switch_to_bash
+      ;;
+    icloud)
+      type icloud
+      ;;
+    icloud_evict)
+      type icloud_evict
+      ;;
+    brew_install_or_skip)
+      type brew_install_or_skip
+      ;;
+    install_miniconda)
+      type mac_install_miniconda
+      ;;
+    install_devtools)
+      type mac_install_devtools
+      ;;
+    kill_defender)
+      type kill_defender
+      ;;
+    suppress_defender)
+      type suppress_defender
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  media)
+    case "$2" in
+    yt-dl)
+      type yt-dl
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  monitor)
+    case "$2" in
+    __load_stats_worker)
+      type __load_stats_worker
+      ;;
+    __stream_tick)
+      type __stream_tick
+      ;;
+    stream_load_stats)
+      type stream_load_stats
+      ;;
+    __write_load_stats_worker)
+      type __write_load_stats_worker
+      ;;
+    load_hist)
+      type load_hist
+      ;;
+    latest_load_stats)
+      type latest_load_stats
+      ;;
+    __parse_load_stats)
+      type __parse_load_stats
+      ;;
+    write_load_stats)
+      type write_load_stats
+      ;;
+    stream_top_stats)
+      type stream_top_stats
+      ;;
+    __parse_top_header)
+      type __parse_top_header
+      ;;
+    __parse_units)
+      type __parse_units
+      ;;
+    __stream_net_stats_worker)
+      type __stream_net_stats_worker
+      ;;
+    __parse_nettop)
+      type __parse_nettop
+      ;;
+    stream_net_stats)
+      type stream_net_stats
+      ;;
+    proc_stats)
+      type proc_stats
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  mtg)
+    case "$2" in
+    __mtg_latest_scryfall_oracle_cards_uri)
+      type __mtg_latest_scryfall_oracle_cards_uri
+      ;;
+    oracle_json)
+      type mtg_oracle_json
+      ;;
+    rules)
+      type mtg_rules
+      ;;
+    card_json)
+      type mtg_card_json
+      ;;
+    card)
+      type mtg_card
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  multiple_choice)
+    case "$2" in
+    __prompt)
+      type __prompt
+      ;;
+    __multiple_choice)
+      type __multiple_choice
+      ;;
+    multiple_choice)
+      type multiple_choice
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  net)
+    case "$2" in
+    dataurl)
+      type dataurl
+      ;;
+    rtt)
+      type rtt
+      ;;
+    ip4)
+      type ip4
+      ;;
+    ip4gw)
+      type ip4gw
+      ;;
+    serve)
+      type serve
+      ;;
+    dump_url)
+      type dump_url
+      ;;
+    wiki)
+      type wiki
+      ;;
+    wifi_device)
+      type wifi_device
+      ;;
+    wifi_name)
+      type wifi_name
+      ;;
+    ssh_fingerprint)
+      type net_ssh_fingerprint
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  notes)
+    case "$2" in
+    __elide)
+      type __elide
+      ;;
+    __file_mtime_and_age)
+      type __file_mtime_and_age
+      ;;
+    __notes_api_list_notes_batch)
+      type __notes_api_list_notes_batch
+      ;;
+    note)
+      type notes_note
+      ;;
+    list)
+      type notes_list
+      ;;
+    sync)
+      type notes_sync
+      ;;
+    todo)
+      type notes_todo
+      ;;
+    undo)
+      type notes_undo
+      ;;
+    perl)
+      type notes_perl
+      ;;
+    api_list_notes)
+      type notes_api_list_notes
+      ;;
+    __nonempty_wc_l)
+      type __nonempty_wc_l
+      ;;
+    backup)
+      type notes_backup
+      ;;
+    api_empty_notes)
+      type notes_api_empty_notes
+      ;;
+    __date_add)
+      type __date_add
+      ;;
+    __wday)
+      type __wday
+      ;;
+    __date_sub)
+      type __date_sub
+      ;;
+    __date_convert)
+      type __date_convert
+      ;;
+    __wday_number)
+      type __wday_number
+      ;;
+    __relative_moment)
+      type __relative_moment
+      ;;
+    __when)
+      type __when
+      ;;
+    __notes_api_list_todos_batch)
+      type __notes_api_list_todos_batch
+      ;;
+    api_list_todos)
+      type notes_api_list_todos
+      ;;
+    print_todo_categories)
+      type print_todo_categories
+      ;;
+    __todo_context_emoji)
+      type __todo_context_emoji
+      ;;
+    __select_todo)
+      type __select_todo
+      ;;
+    api_git)
+      type notes_api_git
+      ;;
+    api_clone)
+      type notes_api_clone
+      ;;
+    __fix_mtime_from_git)
+      type __fix_mtime_from_git
+      ;;
+    api_fsck)
+      type notes_api_fsck
+      ;;
+    __date_unit)
+      type __date_unit
+      ;;
+    __parse_age)
+      type __parse_age
+      ;;
+    nw)
+      type nw
+      ;;
+    window)
+      type notes_window
+      ;;
+    api_find)
+      type notes_api_find
+      ;;
+    api_quick_title)
+      type notes_api_quick_title
+      ;;
+    __notes_filename)
+      type __notes_filename
+      ;;
+    log)
+      type notes_log
+      ;;
+    __match_files_one)
+      type __match_files_one
+      ;;
+    __match_files_all)
+      type __match_files_all
+      ;;
+    __match_files_regex)
+      type __match_files_regex
+      ;;
+    api_match_files)
+      type notes_api_match_files
+      ;;
+    __todo_title)
+      type __todo_title
+      ;;
+    __notes_title)
+      type __notes_title
+      ;;
+    __notes_category)
+      type __notes_category
+      ;;
+    __preamble)
+      type __preamble
+      ;;
+    ls)
+      type notes_ls
+      ;;
+    hist)
+      type notes_hist
+      ;;
+    api_drop_note)
+      type notes_api_drop_note
+      ;;
+    __notes_gen)
+      type __notes_gen
+      ;;
+    gc)
+      type notes_gc
+      ;;
+    api_update_note)
+      type notes_api_update_note
+      ;;
+    api_edit_note)
+      type notes_api_edit_note
+      ;;
+    __notes_api_perl_preview_batch)
+      type __notes_api_perl_preview_batch
+      ;;
+    api_perl_preview)
+      type notes_api_perl_preview
+      ;;
+    __nperl_render_preview)
+      type __nperl_render_preview
+      ;;
+    __nperl_apply)
+      type __nperl_apply
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  omdb)
+    case "$2" in
+    __omdb_key_path)
+      type __omdb_key_path
+      ;;
+    set_key)
+      type omdb_set_key
+      ;;
+    register_key)
+      type omdb_register_key
+      ;;
+    get_key)
+      type omdb_get_key
+      ;;
+    __omdb_query_string)
+      type __omdb_query_string
+      ;;
+    query)
+      type omdb_query
+      ;;
+    guess_title)
+      type omdb_guess_title
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  path)
+    case "$2" in
+    expand)
+      type path_expand
+      ;;
+    push)
+      type path_push
+      ;;
+    pop)
+      type path_pop
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  pkg)
+    case "$2" in
+    install_or_skip)
+      type pkg_install_or_skip
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  python)
+    case "$2" in
+    __python_ensurepip)
+      type __python_ensurepip
+      ;;
+    __python_ensurevenv)
+      type __python_ensurevenv
+      ;;
+    __fix_stupid_virtualenv_behavior)
+      type __fix_stupid_virtualenv_behavior
+      ;;
+    venv)
+      type venv
+      ;;
+    ipynb)
+      type ipynb
+      ;;
+    detect_python)
+      type detect_python
+      ;;
+    latest_python)
+      type latest_python
+      ;;
+    func)
+      type python_func
+      ;;
+    black)
+      type python_black
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  quick)
+    case "$2" in
+    __quick_build_all)
+      type __quick_build_all
+      ;;
+    rebuild)
+      type quick_rebuild
+      ;;
+    q)
+      type q
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  rust)
+    case "$2" in
+    rustup)
+      type rustup
+      ;;
+    install_goodies)
+      type rust_install_goodies
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  screen)
+    case "$2" in
+    session)
+      type screen_session
+      ;;
+    window)
+      type screen_window
+      ;;
+    rename)
+      type screen_rename
+      ;;
+    home)
+      type screen_home
+      ;;
+    reset_dirname)
+      type screen_reset_dirname
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  strings)
+    case "$2" in
+    urlencode)
+      type strings_urlencode
+      ;;
+    strip_control)
+      type strip_control
+      ;;
+    repeat)
+      type repeat
+      ;;
+    join)
+      type strings_join
+      ;;
+    sgrep)
+      type sgrep
+      ;;
+    strip_prefix)
+      type strings_strip_prefix
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  time)
+    case "$2" in
+    file_mtime)
+      type file_mtime
+      ;;
+    file_age)
+      type file_age
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  util)
+    case "$2" in
+    sud)
+      type sud
+      ;;
+    reload)
+      type reload
+      ;;
+    markdown)
+      type markdown
+      ;;
+    human_size)
+      type human_size
+      ;;
+    install_heroku_cli)
+      type install_heroku_cli
+      ;;
+    bazel)
+      type bazel
+      ;;
+    jup)
+      type jup
+      ;;
+    wait_for_file)
+      type wait_for_file
+      ;;
+    forex)
+      type forex
+      ;;
+    trim)
+      type trim
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  xterm_colors)
+    case "$2" in
+    channel_step)
+      type channel_step
+      ;;
+    greyscale_step)
+      type greyscale_step
+      ;;
+    rgb_to_xterm)
+      type rgb_to_xterm
+      ;;
+    hue_diff)
+      type hue_diff
+      ;;
+    brightness)
+      type brightness
+      ;;
+    contrast)
+      type contrast
+      ;;
+    xterm_to_rgb)
+      type xterm_to_rgb
+      ;;
+    xterm_to_fg)
+      type xterm_to_fg
+      ;;
+    xterm_to_bg)
+      type xterm_to_bg
+      ;;
+    tfmt)
+      type tfmt
+      ;;
+    color)
+      type color
+      ;;
+    shades)
+      type shades
+      ;;
+    colors)
+      type colors
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
+  *)
+    echo "Unknown module $1"
+    return 1
+    ;;
+  esac
+}
 
 function __q_compgen() {
   local modules="ascii_art bash browser crypt fedora find git go hg init install keys mac media monitor mtg multiple_choice net notes omdb path pkg python quick rust screen strings time util xterm_colors"
@@ -2167,7 +3054,7 @@ function __q_compgen() {
       return 0
       ;;
     omdb)
-      COMPREPLY=($(compgen -W "help set_key register_key get_key query" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help set_key register_key get_key query guess_title" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     path)
@@ -2195,7 +3082,7 @@ function __q_compgen() {
       return 0
       ;;
     strings)
-      COMPREPLY=($(compgen -W "help strip_control repeat join sgrep strip_prefix" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help urlencode strip_control repeat join sgrep strip_prefix" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     time)
@@ -8990,12 +9877,12 @@ function __q_compgen() {
     omdb)
       case "${COMP_WORDS[2]}" in
       set_key)
-        # [ARG...]
+        # omdb_set_key KEY
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=()
+        local positional_types=(DEFAULT)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -9056,7 +9943,7 @@ function __q_compgen() {
         return 0
         ;;
       register_key)
-        # [ARG...]
+        # omdb_register_key
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -9122,7 +10009,7 @@ function __q_compgen() {
         return 0
         ;;
       get_key)
-        # [ARG...]
+        # omdb_get_key
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -9209,6 +10096,72 @@ function __q_compgen() {
               ;;
             -f)
               state="EXPECT_VALUE_STRING"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      guess_title)
+        # omdb_guess_title FILE
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=(DEFAULT)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
               ;;
             *)
               state="EXPECT_ARG"
@@ -10562,6 +11515,72 @@ function __q_compgen() {
       ;;
     strings)
       case "${COMP_WORDS[2]}" in
+      urlencode)
+        # [ARG...]
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
       strip_control)
         # strip_control
         local switch_names=()

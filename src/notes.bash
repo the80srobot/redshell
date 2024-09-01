@@ -249,7 +249,7 @@ Return the absolute path" -m "Select operation" -a "edcsf") || nn "${@}"
             return 1
         ;;
     esac
-    nn "${@}"
+    notes_list "${@}"
 }
 
 alias nn=notes_list

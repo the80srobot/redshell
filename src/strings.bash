@@ -8,6 +8,13 @@ source "go.bash"
 if [[ -z "${_REDSHELL_STRINGS}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_STRINGS=1
 
+# Usage strings_urlencode STRING
+#
+# URL-encodes a string. DO NOT USE with curl: prefer --data-urlencode.
+function strings_urlencode() {
+  jq -rn --arg x "${1}" '$x|@uri'
+}
+
 # Usage: strip_control
 # Strips terminal escape sequences from standard input.
 function strip_control() {
@@ -39,10 +46,7 @@ function strings_join {
 
 # Usage: sgrep [-C NUM]
 function sgrep() {
-  # https://github.com/arunsupe/semantic-grep
-  # go_pkg_do
-  echo TODO
-  return 1
+  go_pkg_do https://github.com/arunsupe/semantic-grep go run w2vgrep.go -- "${@}"
 }
 
 function strings_strip_prefix() {
