@@ -37,9 +37,15 @@ function __fix_stupid_virtualenv_behavior() {
     popd
 }
 
-function venv() {
+# Usage: python_venv [-I|--install-requirements] [-p|--python-path PATH] [VERSION]
+#
+# Create a new virtualenv in the current directory, using the latest available
+# python version. If a virtualenv already exists, activate it. If -I is passed,
+# install requirements.txt. If -p is passed, use the specified Python binary. If
+# VERSION is passed, find a python binary with that version.
+function python_venv() {
     local install_reqs=""
-    local pythonpath="$(latest_python)"
+    local pythonpath="$(python_latest)"
     echo "Using Python: ${pythonpath}" >&2
 
     while [[ "${#}" -ne 0 ]]; do
@@ -89,14 +95,22 @@ function venv() {
     [[ -f requirements.txt ]] && pip install --upgrade -r requirements.txt
 }
 
-function ipynb() {
-    venv "${@}"
+alias venv=python_venv
+
+# Usage: python_ipynb [-I|--install-requirements] [-p|--python-path PATH] [VERSION]
+#
+# Creates a new virtualenv in the current directory (as venv) and opens a new
+# Jupyter notebook.
+function python_ipynb() {
+    python_venv "${@}"
     touch ./nb.ipynb
     e .
     e ./nb.ipynb
 }
 
-function detect_python() {
+alias ipynb=python_ipynb
+
+function python_detect() {
     IFS=: read -r -d '' -a path_array <<< "${PATH}"
     for p in "${path_array[@]}"; do
         [[ -d "${p}" ]] || continue
@@ -114,14 +128,14 @@ function detect_python() {
     } | sort -Vr
 }
 
-function latest_python() {
+function python_latest() {
     # TODO: this is a hack to work around environments with special blessed
     # python versions, but actually it should be made user-selectable.
     local path=~/.redshell_persist/python_path
     if [[ -f "${path}" ]]; then
         cat "${path}"
     else
-        detect_python | head -n1 | cut -f2
+        python_detect | head -n1 | cut -f2
     fi
 }
 
@@ -191,7 +205,7 @@ function python_func() {
     fi
 
     pushd "$(dirname "${path}")" > /dev/null
-    venv >&2
+    python_venv >&2
 
     script="from $(basename "${path}" .py) import *
 import typing
@@ -303,7 +317,7 @@ function python_black() {
     mkdir -p "$HOME/.redshell/python_black"
     pushd "$HOME/.redshell/python_black"
     echo "black" > requirements.txt
-    venv
+    python_venv
     popd
     python -m black "${@}"
     deactivate

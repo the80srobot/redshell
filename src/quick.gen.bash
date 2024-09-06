@@ -820,21 +820,21 @@ function __q() {
       shift
       __q_help "python" "$@"
       ;;
-    venv)
+    python_venv|venv)
       shift
-      venv "$@"
+      python_venv "$@"
       ;;
-    ipynb)
+    python_ipynb|ipynb)
       shift
-      ipynb "$@"
+      python_ipynb "$@"
       ;;
-    detect_python)
+    python_detect|detect)
       shift
-      detect_python "$@"
+      python_detect "$@"
       ;;
-    latest_python)
+    python_latest|latest)
       shift
-      latest_python "$@"
+      python_latest "$@"
       ;;
     python_func|func)
       shift
@@ -1902,16 +1902,22 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q python venv [ARG...]"
+      echo "  q python venv [-I|--install-requirements] [-p|--python-path PATH] [VERSION]"
+      tput sgr0
+      echo '    Create a new virtualenv in the current directory, using the latest available'
+      echo '    python version. If a virtualenv already exists, activate it. If -I is passed,'
+      echo '    install requirements.txt. If -p is passed, use the specified Python binary. If'
+      echo '    VERSION is passed, find a python binary with that version.'
+      tput bold
+      echo "  q python ipynb [-I|--install-requirements] [-p|--python-path PATH] [VERSION]"
+      tput sgr0
+      echo '    Creates a new virtualenv in the current directory (as venv) and opens a new'
+      echo '    Jupyter notebook.'
+      tput bold
+      echo "  q python detect [ARG...]"
       tput sgr0
       tput bold
-      echo "  q python ipynb [ARG...]"
-      tput sgr0
-      tput bold
-      echo "  q python detect_python [ARG...]"
-      tput sgr0
-      tput bold
-      echo "  q python latest_python [ARG...]"
+      echo "  q python latest [ARG...]"
       tput sgr0
       tput bold
       echo "  q python func -f|--function FUNCTION -p|--path PATH [-J|--json_output] [--clean] [--debug] [--] [ARGS...]"
@@ -2775,16 +2781,16 @@ function __q_dump() {
       type __fix_stupid_virtualenv_behavior
       ;;
     venv)
-      type venv
+      type python_venv
       ;;
     ipynb)
-      type ipynb
+      type python_ipynb
       ;;
-    detect_python)
-      type detect_python
+    detect)
+      type python_detect
       ;;
-    latest_python)
-      type latest_python
+    latest)
+      type python_latest
       ;;
     func)
       type python_func
@@ -3082,7 +3088,7 @@ function __q_compgen() {
       return 0
       ;;
     python)
-      COMPREPLY=($(compgen -W "help venv ipynb detect_python latest_python func black" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help venv ipynb detect latest func black" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     quick)
@@ -10568,12 +10574,12 @@ function __q_compgen() {
     python)
       case "${COMP_WORDS[2]}" in
       venv)
-        # [ARG...]
-        local switch_names=()
-        local keyword_names=()
+        # python_venv [-I|--install-requirements] [-p|--python-path PATH] [VERSION]
+        local switch_names=(-I --install-requirements)
+        local keyword_names=(-p --python-path)
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=()
+        local positional_types=(DEFAULT)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -10586,6 +10592,12 @@ function __q_compgen() {
             case "${COMP_WORDS[i]}" in
             --)
               state="IDK"
+              ;;
+            -I)
+              state="EXPECT_ARG"
+              ;;
+            -p)
+              state="EXPECT_VALUE_FILE"
               ;;
             *)
               state="EXPECT_ARG"
@@ -10634,6 +10646,78 @@ function __q_compgen() {
         return 0
         ;;
       ipynb)
+        # python_ipynb [-I|--install-requirements] [-p|--python-path PATH] [VERSION]
+        local switch_names=(-I --install-requirements)
+        local keyword_names=(-p --python-path)
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=(DEFAULT)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            -I)
+              state="EXPECT_ARG"
+              ;;
+            -p)
+              state="EXPECT_VALUE_FILE"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      detect)
         # [ARG...]
         local switch_names=()
         local keyword_names=()
@@ -10699,73 +10783,7 @@ function __q_compgen() {
         esac
         return 0
         ;;
-      detect_python)
-        # [ARG...]
-        local switch_names=()
-        local keyword_names=()
-        local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
-        local i=3
-        local state="EXPECT_ARG"
-        local pos=0
-        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
-          case "${state}" in
-          IDK)
-            break
-            ;;
-          EXPECT_ARG)
-            case "${COMP_WORDS[i]}" in
-            --)
-              state="IDK"
-              ;;
-            *)
-              state="EXPECT_ARG"
-              (( pos++ ))
-              ;;
-            esac
-            ;;
-          esac
-          (( i++ ))
-        done
-        COMPREPLY=()
-        if [[ "${state}" == "EXPECT_ARG" ]]; then
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          if [[ -n "${positional_types[$pos]}" ]]; then
-            state="EXPECT_VALUE_${positional_types[$pos]}"
-          else
-            return 0
-          fi
-        fi
-        case "${state}" in
-        EXPECT_VALUE_FILE)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        EXPECT_VALUE_DIRECTORY)
-          COMPREPLY+=($(compgen -A directory -- ${cur}))
-          ;;
-        EXPECT_VALUE_USER)
-          COMPREPLY+=($(compgen -A user -- ${cur}))
-          ;;
-        EXPECT_VALUE_GROUP)
-          COMPREPLY+=($(compgen -A group -- ${cur}))
-          ;;
-        EXPECT_VALUE_HOSTNAME)
-          COMPREPLY+=($(compgen -A hostname -- ${cur}))
-          ;;
-        EXPECT_VALUE_STRING)
-          ;;
-        IDK)
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        *)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        esac
-        return 0
-        ;;
-      latest_python)
+      latest)
         # [ARG...]
         local switch_names=()
         local keyword_names=()

@@ -17,7 +17,7 @@ function yt-dl() {
         echo "ffmpeg-python>=0.2.0"
         echo "yt-dlp>=2023.11.16"
     } > requirements.txt
-    venv
+    python_venv
     popd
     yt-dlp "${@}"
     deactivate
