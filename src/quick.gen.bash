@@ -280,9 +280,9 @@ function __q() {
       shift
       __q_help "hg" "$@"
       ;;
-    is_dir_hg)
+    hg_root|root)
       shift
-      is_dir_hg "$@"
+      hg_root "$@"
       ;;
     *)
       if [ -n "$1" ]; then
@@ -412,13 +412,17 @@ function __q() {
       shift
       mac_install_devtools "$@"
       ;;
-    kill_defender)
+    mac_kill_defender|kill_defender)
       shift
-      kill_defender "$@"
+      mac_kill_defender "$@"
       ;;
-    suppress_defender)
+    mac_suppress_defender|suppress_defender)
       shift
-      suppress_defender "$@"
+      mac_suppress_defender "$@"
+      ;;
+    mac_kill_crashplan|kill_crashplan)
+      shift
+      mac_kill_crashplan "$@"
       ;;
     *)
       if [ -n "$1" ]; then
@@ -1418,9 +1422,10 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q hg is_dir_hg [ARG...]"
+      echo "  q hg root [ARG...]"
       tput sgr0
-      echo '    Is the current directory a mercurial repo? Fast check.'
+      echo '    Is the current directory a mercurial repo? Fast check. Prints the path to the'
+      echo '    repo root, or nothing.'
       ;;
     init)
       echo "Usage: q init FUNCTION [ARG...]"
@@ -1497,7 +1502,7 @@ function __q_help() {
       echo "  q mac install_devtools [ARG...]"
       tput sgr0
       tput bold
-      echo "  q mac kill_defender [ARG...]"
+      echo "  q mac kill_defender "
       tput sgr0
       echo '    Kills Microsoft Defender in a way that tends to persist for an hour or so.'
       echo '    This is useful for working around bugs or surviving when they push and update'
@@ -1506,12 +1511,18 @@ function __q_help() {
       echo '    Use at your own risk, and only after discussing with your IT department. This'
       echo '    action is likely to be detected.'
       tput bold
-      echo "  q mac suppress_defender [ARG...]"
+      echo "  q mac suppress_defender "
       tput sgr0
       echo '    Keeps Microsoft Defender from restarting.'
       echo '    '
       echo '    Use at your own risk, and only after discussing with your IT department. This'
       echo '    action is likely to be detected.'
+      tput bold
+      echo "  q mac kill_crashplan "
+      tput sgr0
+      echo '    Stops CrashPlan from running. CrashPlan is a very poorly optimized backup'
+      echo '    service. When you'"'"'re running IO intensive workloads, it can slow them down'
+      echo '    massively and eat up 2-3 CPU cores.'
       ;;
     media)
       echo "Usage: q media FUNCTION [ARG...]"
@@ -1868,6 +1879,8 @@ function __q_help() {
       tput bold
       echo "  q path push DIRECTORY"
       tput sgr0
+      echo '    This is like pushd, except it also updates the name of the screen window to'
+      echo '    the new path, if run from inside a screen session.'
       tput bold
       echo "  q path pop [ARG...]"
       tput sgr0
@@ -2277,8 +2290,8 @@ function __q_dump() {
     ;;
   hg)
     case "$2" in
-    is_dir_hg)
-      type is_dir_hg
+    root)
+      type hg_root
       ;;
     *)
       echo "Unknown function $2"
@@ -2361,10 +2374,13 @@ function __q_dump() {
       type mac_install_devtools
       ;;
     kill_defender)
-      type kill_defender
+      type mac_kill_defender
       ;;
     suppress_defender)
-      type suppress_defender
+      type mac_suppress_defender
+      ;;
+    kill_crashplan)
+      type mac_kill_crashplan
       ;;
     *)
       echo "Unknown function $2"
@@ -3010,7 +3026,7 @@ function __q_compgen() {
       return 0
       ;;
     hg)
-      COMPREPLY=($(compgen -W "help is_dir_hg" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help root" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     init)
@@ -3026,7 +3042,7 @@ function __q_compgen() {
       return 0
       ;;
     mac)
-      COMPREPLY=($(compgen -W "help setup brew get_user_shell brew_bash_path switch_to_bash icloud icloud_evict brew_install_or_skip install_miniconda install_devtools kill_defender suppress_defender" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help setup brew get_user_shell brew_bash_path switch_to_bash icloud icloud_evict brew_install_or_skip install_miniconda install_devtools kill_defender suppress_defender kill_crashplan" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     media)
@@ -5249,7 +5265,7 @@ function __q_compgen() {
       ;;
     hg)
       case "${COMP_WORDS[2]}" in
-      is_dir_hg)
+      root)
         # [ARG...]
         local switch_names=()
         local keyword_names=()
@@ -6387,7 +6403,7 @@ function __q_compgen() {
         return 0
         ;;
       kill_defender)
-        # [ARG...]
+        # mac_kill_defender
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -6453,7 +6469,73 @@ function __q_compgen() {
         return 0
         ;;
       suppress_defender)
-        # [ARG...]
+        # mac_suppress_defender
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      kill_crashplan)
+        # mac_kill_crashplan
         local switch_names=()
         local keyword_names=()
         local repeated_names=()

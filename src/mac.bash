@@ -126,7 +126,9 @@ function mac_install_devtools() {
 #
 # Use at your own risk, and only after discussing with your IT department. This
 # action is likely to be detected.
-function kill_defender() {
+#
+# Usage: mac_kill_defender
+function mac_kill_defender() {
     launchctl unload /Library/LaunchAgents/com.microsoft.wdav.tray.plist 
     sudo launchctl unload /Library/LaunchDaemons/com.microsoft.fresno.plist
     sudo launchctl unload /Library/LaunchDaemons/com.tanium.taniumclient.plist
@@ -136,9 +138,19 @@ function kill_defender() {
 #
 # Use at your own risk, and only after discussing with your IT department. This
 # action is likely to be detected.
-function suppress_defender() {
+#
+# Usage: mac_suppress_defender
+function mac_suppress_defender() {
     sudo bash -c 'while true; do launchctl unload /Library/LaunchAgents/com.microsoft.wdav.tray.plist ; launchctl unload /Library/LaunchDaemons/com.microsoft.fresno.plist ; launchctl unload /Library/LaunchDaemons/com.tanium.taniumclient.plist; sleep 10; done'
 }
 
+# Stops CrashPlan from running. CrashPlan is a very poorly optimized backup
+# service. When you're running IO intensive workloads, it can slow them down
+# massively and eat up 2-3 CPU cores.
+#
+# Usage: mac_kill_crashplan
+function mac_kill_crashplan() {
+    sudo launchctl unload /Library/LaunchDaemons/com.crashplan.service.plist
+}
 
 fi # _REDSHELL_MAC

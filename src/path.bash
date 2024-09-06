@@ -48,6 +48,9 @@ function path_expand() {
 }
 
 # Usage: path_push DIRECTORY
+#
+# This is like pushd, except it also updates the name of the screen window to
+# the new path, if run from inside a screen session.
 function path_push() {
   local path="$(path_expand "${1}")"
   pushd "${1}" >/dev/null || return 1
