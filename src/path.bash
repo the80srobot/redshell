@@ -57,6 +57,10 @@ function path_push() {
   screen_reset_dirname
 }
 
+# Usage: path_pop
+#
+# This is like popd, except it also updates the name of the screen window to the
+# new path, if run from inside a screen session.
 function path_pop() {
   popd >/dev/null || return 1
   screen_reset_dirname

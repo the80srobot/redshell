@@ -14,12 +14,16 @@ function __omdb_key_path() {
 }
 
 # Usage: omdb_set_key KEY
+#
+# Configure a new KEY for the OMDB API.
 function omdb_set_key() {
     local key="${1}"
     echo "${key}" > "$(__omdb_key_path)"
 }
 
 # Usage: omdb_register_key
+#
+# Interactive prompt to configure the API key for OMDB.
 function omdb_register_key() {
     echo "Register at http://www.omdbapi.com/apikey.aspx to get an API key."
     echo "Enter your API key:"
@@ -28,6 +32,8 @@ function omdb_register_key() {
 }
 
 # Usage: omdb_get_key
+#
+# Prints the API key for OMDB.
 function omdb_get_key() {
     if [[ -f "$(__omdb_key_path)" ]]; then
         cat "$(__omdb_key_path)"

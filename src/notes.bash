@@ -240,7 +240,7 @@ Return the absolute path" -m "Select operation" -a "edcsf") || nn "${@}"
         ;;
         4)
             bash -c "sleep 1 && open http://127.0.0.1:8081" &
-            cat "${NOTES_REPO}/${path}" | strip_control | markdown | serve
+            cat "${NOTES_REPO}/${path}" | strings_strip_control | util_markdown | net_serve
         ;;
         5)
             echo "${NOTES_REPO}/${path}"

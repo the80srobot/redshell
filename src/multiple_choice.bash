@@ -110,7 +110,7 @@ Page $(( page + 1 ))/$(( max_page + 1 )) ${msg}: "
         if [[ "${mode}" == "-n" ]]; then
             echo "${n}"
         else
-            echo "${choices}" | tail -n+${n} | head -n1 | strip_control
+            echo "${choices}" | tail -n+${n} | head -n1 | strings_strip_control
         fi
     fi
 }

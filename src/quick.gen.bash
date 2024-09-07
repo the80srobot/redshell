@@ -556,25 +556,29 @@ function __q() {
       shift
       __q_help "net" "$@"
       ;;
-    dataurl)
+    net_dataurl|dataurl)
       shift
-      dataurl "$@"
+      net_dataurl "$@"
       ;;
-    rtt)
+    net_undataurl|undataurl)
       shift
-      rtt "$@"
+      net_undataurl "$@"
       ;;
-    ip4)
+    net_rtt|rtt)
       shift
-      ip4 "$@"
+      net_rtt "$@"
       ;;
-    ip4gw)
+    net_ip4|ip4)
       shift
-      ip4gw "$@"
+      net_ip4 "$@"
       ;;
-    serve)
+    net_ip4gw|ip4gw)
       shift
-      serve "$@"
+      net_ip4gw "$@"
+      ;;
+    net_serve|serve)
+      shift
+      net_serve "$@"
       ;;
     dump_url)
       shift
@@ -948,9 +952,9 @@ function __q() {
       shift
       strings_urlencode "$@"
       ;;
-    strip_control)
+    strings_strip_control|strip_control)
       shift
-      strip_control "$@"
+      strings_strip_control "$@"
       ;;
     repeat)
       shift
@@ -960,9 +964,9 @@ function __q() {
       shift
       strings_join "$@"
       ;;
-    sgrep)
+    strings_sgrep|sgrep)
       shift
-      sgrep "$@"
+      strings_sgrep "$@"
       ;;
     strings_strip_prefix|strip_prefix)
       shift
@@ -1016,9 +1020,9 @@ function __q() {
       shift
       reload "$@"
       ;;
-    markdown)
+    util_markdown|markdown)
       shift
-      markdown "$@"
+      util_markdown "$@"
       ;;
     human_size)
       shift
@@ -1620,20 +1624,25 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q net dataurl [ARG...]"
+      echo "  q net dataurl dataurl FILE"
       tput sgr0
-      echo '    Create a data URL from a file'
+      echo '    Create a data URL from a file.'
       tput bold
-      echo "  q net rtt [ARG...]"
+      echo "  q net undataurl undataurl"
+      tput sgr0
+      echo '    Decode a dataurl from stdin onto stdout.'
+      tput bold
+      echo "  q net rtt rtt HOST"
       tput sgr0
       echo '    Average round-trip time to the specified host.'
       tput bold
-      echo "  q net ip4 [ARG...]"
+      echo "  q net ip4 "
       tput sgr0
       echo '    Print the non-localhost IPv4 addresses of this machine. One address per line.'
       tput bold
-      echo "  q net ip4gw [ARG...]"
+      echo "  q net ip4gw "
       tput sgr0
+      echo '    Print the default gateway'"'"'s IP address.'
       tput bold
       echo "  q net serve [ARG...]"
       tput sgr0
@@ -1839,12 +1848,15 @@ function __q_help() {
       tput bold
       echo "  q omdb set_key KEY"
       tput sgr0
+      echo '    Configure a new KEY for the OMDB API.'
       tput bold
       echo "  q omdb register_key "
       tput sgr0
+      echo '    Interactive prompt to configure the API key for OMDB.'
       tput bold
       echo "  q omdb get_key "
       tput sgr0
+      echo '    Prints the API key for OMDB.'
       tput bold
       echo "  q omdb query [-f] [QUERY ...]"
       tput sgr0
@@ -1882,8 +1894,10 @@ function __q_help() {
       echo '    This is like pushd, except it also updates the name of the screen window to'
       echo '    the new path, if run from inside a screen session.'
       tput bold
-      echo "  q path pop [ARG...]"
+      echo "  q path pop "
       tput sgr0
+      echo '    This is like popd, except it also updates the name of the screen window to the'
+      echo '    new path, if run from inside a screen session.'
       ;;
     pkg)
       echo "Usage: q pkg FUNCTION [ARG...]"
@@ -2501,19 +2515,22 @@ function __q_dump() {
   net)
     case "$2" in
     dataurl)
-      type dataurl
+      type net_dataurl
+      ;;
+    undataurl)
+      type net_undataurl
       ;;
     rtt)
-      type rtt
+      type net_rtt
       ;;
     ip4)
-      type ip4
+      type net_ip4
       ;;
     ip4gw)
-      type ip4gw
+      type net_ip4gw
       ;;
     serve)
-      type serve
+      type net_serve
       ;;
     dump_url)
       type dump_url
@@ -2864,7 +2881,7 @@ function __q_dump() {
       type strings_urlencode
       ;;
     strip_control)
-      type strip_control
+      type strings_strip_control
       ;;
     repeat)
       type repeat
@@ -2873,7 +2890,7 @@ function __q_dump() {
       type strings_join
       ;;
     sgrep)
-      type sgrep
+      type strings_sgrep
       ;;
     strip_prefix)
       type strings_strip_prefix
@@ -2907,7 +2924,7 @@ function __q_dump() {
       type reload
       ;;
     markdown)
-      type markdown
+      type util_markdown
       ;;
     human_size)
       type human_size
@@ -3068,7 +3085,7 @@ function __q_compgen() {
       return 0
       ;;
     net)
-      COMPREPLY=($(compgen -W "help dataurl rtt ip4 ip4gw serve dump_url wiki wifi_device wifi_name ssh_fingerprint" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help dataurl undataurl rtt ip4 ip4gw serve dump_url wiki wifi_device wifi_name ssh_fingerprint" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     notes)
@@ -7506,7 +7523,73 @@ function __q_compgen() {
     net)
       case "${COMP_WORDS[2]}" in
       dataurl)
-        # [ARG...]
+        # dataurl FILE
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=(DEFAULT)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      undataurl)
+        # undataurl
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -7572,12 +7655,12 @@ function __q_compgen() {
         return 0
         ;;
       rtt)
-        # [ARG...]
+        # rtt HOST
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=()
+        local positional_types=(DEFAULT)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -7638,7 +7721,7 @@ function __q_compgen() {
         return 0
         ;;
       ip4)
-        # [ARG...]
+        # net_ip4
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -7704,7 +7787,7 @@ function __q_compgen() {
         return 0
         ;;
       ip4gw)
-        # [ARG...]
+        # net_ip4gw
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -10434,7 +10517,7 @@ function __q_compgen() {
         return 0
         ;;
       pop)
-        # [ARG...]
+        # path_pop
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -11682,7 +11765,7 @@ function __q_compgen() {
         return 0
         ;;
       strip_control)
-        # strip_control
+        # strings_strip_control
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -11880,7 +11963,7 @@ function __q_compgen() {
         return 0
         ;;
       sgrep)
-        # sgrep [-C NUM]
+        # strings_sgrep [-C NUM]
         local switch_names=()
         local keyword_names=(-C)
         local repeated_names=()

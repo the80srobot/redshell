@@ -15,9 +15,10 @@ function strings_urlencode() {
   jq -rn --arg x "${1}" '$x|@uri'
 }
 
-# Usage: strip_control
+# Usage: strings_strip_control
+#
 # Strips terminal escape sequences from standard input.
-function strip_control() {
+function strings_strip_control() {
     # The sed call strips escape characters from the string. The
     # additional perl one-liner deletes the literal ^(B which `tput
     # sgr0` outputs on some systems for unknown reasons. (It's not in
@@ -27,6 +28,7 @@ function strip_control() {
 }
 
 # Usage: repeat STRING N
+#
 # Prints STRING N times.
 function repeat() {
     local c="${1}"
@@ -44,10 +46,12 @@ function strings_join {
   fi
 }
 
-# Usage: sgrep [-C NUM]
-function sgrep() {
+# Usage: strings_sgrep [-C NUM]
+function strings_sgrep() {
   go_pkg_do https://github.com/arunsupe/semantic-grep go run w2vgrep.go -- "${@}"
 }
+
+alias sgrep=strings_sgrep
 
 function strings_strip_prefix() {
   local prefix="${1}"

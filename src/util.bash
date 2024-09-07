@@ -18,7 +18,7 @@ function reload() {
 }
 
 
-function markdown() {
+function util_markdown() {
     local path="$HOME/.Markdown.pl"
     if [[ ! -x "${path}" ]]; then
         curl https://raw.githubusercontent.com/the80srobot/markdown/master/Markdown.pl \

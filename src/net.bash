@@ -6,8 +6,10 @@
 if [[ -z "${_REDSHELL_NET}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_NET=1
 
-# Create a data URL from a file
-function dataurl() {
+# Create a data URL from a file.
+#
+# Usage: dataurl FILE
+function net_dataurl() {
     local mimeType=$(file -b --mime-type "$1")
     if [[ $mimeType == text/* ]]; then
             mimeType="${mimeType};charset=utf-8"
@@ -15,18 +17,29 @@ function dataurl() {
     echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')"
 }
 
-# Decode a dataurl onto stdout
-alias undataurl='cut -d"," -f2 | base64 -d'
+alias dataurl='net_dataurl'
 
+# Decode a dataurl from stdin onto stdout.
+#
+# Usage: undataurl
+function net_undataurl() {
+    cut -d"," -f2 | base64 -d
+}
+
+alias undataurl=net_undataurl
 
 # Average round-trip time to the specified host.
-function rtt() {
+#
+# Usage: rtt HOST
+function net_rtt() {
     local times=$(ping -c5 $1 | grep time= | perl -pe 's/.*time=(.*?) \w.\n*/$1 +/' | sed 's/+$//g') || return 1
     bc -l <<< "(${times}) / 5"
 }
 
 # Print the non-localhost IPv4 addresses of this machine. One address per line.
-function ip4() {
+#
+# Usage: net_ip4
+function net_ip4() {
     which ip > /dev/null
     if [[ $? -eq 0 ]]; then
         ip a | grep 'inet ' | perl -pe 's/.*inet (\d{1,3}\..*?) .*/$1/' | grep -v 127.0.0.1
@@ -35,12 +48,18 @@ function ip4() {
     fi
 }
 
-function ip4gw() {
+alias ip4=net_ip4
+
+# Print the default gateway's IP address.
+#
+# Usage: net_ip4gw
+function net_ip4gw() {
     netstat -nr | perl -ne 'm/^default\s*(\d+\.\d+\.\d+\.\d+)/ and print "$1\n"' | sort | uniq
 }
 
+alias ip4gw=net_ip4gw
 
-function serve() {
+function net_serve() {
     # TODO: Safari is dumb and loads twice.
     local port=8081
     if [[ "${1}" == "-l" ]]; then

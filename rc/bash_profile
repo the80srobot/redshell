@@ -129,7 +129,7 @@ __screen_info() {
 }
 
 __addr() {
-    ips="`ip4`" || return 1
+    ips="`net_ip4`" || return 1
     n=`wc -l <<< "$ips"`
     if [[ n -eq 1 ]]; then
         echo "${ips}"

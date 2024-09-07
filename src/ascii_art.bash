@@ -12,7 +12,7 @@ _REDSHELL_ASCII_ART=1
 function print_speech_bubble() {
     local width=0
     while IFS= read -r line; do
-        local stripped="$(strip_control <<< "${line}")"
+        local stripped="$(strings_strip_control <<< "${line}")"
         local w="${#stripped}"
         if (( w > width )); then
             width="${w}"
@@ -24,7 +24,7 @@ function print_speech_bubble() {
     echo "  /$(repeat ' ' $width) \\"
     while IFS= read -r line; do
         echo -n "  | ${line}"
-        local stripped="$(strip_control <<< "${line}")"
+        local stripped="$(strings_strip_control <<< "${line}")"
         local l="${#stripped}"
         local p=$((width-l))
         for (( c=0; c<p; c++ )); do
