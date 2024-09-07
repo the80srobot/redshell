@@ -141,6 +141,8 @@ function downloadify() {
 # Usage: crypt_hash ALGO [INPUT]
 # If no INPUT is provided, read from stdin.
 #
+# Supported ALGO values: md5 or SHA version (1, 128, 224, 256, 512).
+#
 # hash 256 foo -> b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c
 # hash md5 foo -> d3b07384d113edec49eaa6238ad5ff00
 function crypt_hash() {

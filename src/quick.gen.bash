@@ -592,9 +592,9 @@ function __q() {
       shift
       wifi_device "$@"
       ;;
-    wifi_name)
+    net_wifi_name|wifi_name)
       shift
-      wifi_name "$@"
+      net_wifi_name "$@"
       ;;
     net_ssh_fingerprint|ssh_fingerprint)
       shift
@@ -1186,7 +1186,7 @@ function __q_help() {
     tput bold
     echo -n '  keys'
     tput sgr0
-    echo '              Password manager based on pass and gpg.'
+    echo '              Key management utils using pass and gpg.'
     tput bold
     echo -n '  mac'
     tput sgr0
@@ -1358,6 +1358,8 @@ function __q_help() {
       echo '    '
       echo '    If no INPUT is provided, read from stdin.'
       echo '    '
+      echo '    Supported ALGO values: md5 or SHA version (1, 128, 224, 256, 512).'
+      echo '    '
       echo '    hash 256 foo -> b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c'
       echo '    hash md5 foo -> d3b07384d113edec49eaa6238ad5ff00'
       ;;
@@ -1454,7 +1456,7 @@ function __q_help() {
       ;;
     keys)
       echo "Usage: q keys FUNCTION [ARG...]"
-      echo "Password manager based on pass and gpg."
+      echo "Key management utils using pass and gpg."
       echo
       echo "Available functions:"
       tput bold
@@ -1656,8 +1658,9 @@ function __q_help() {
       echo "  q net wifi_device [ARG...]"
       tput sgr0
       tput bold
-      echo "  q net wifi_name [ARG...]"
+      echo "  q net wifi_name "
       tput sgr0
+      echo '    Print the name of the currently connected wifi network.'
       tput bold
       echo "  q net ssh_fingerprint HOST"
       tput sgr0
@@ -2542,7 +2545,7 @@ function __q_dump() {
       type wifi_device
       ;;
     wifi_name)
-      type wifi_name
+      type net_wifi_name
       ;;
     ssh_fingerprint)
       type net_ssh_fingerprint
@@ -8117,7 +8120,7 @@ function __q_compgen() {
         return 0
         ;;
       wifi_name)
-        # [ARG...]
+        # net_wifi_name
         local switch_names=()
         local keyword_names=()
         local repeated_names=()

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
-# Password manager based on pass and gpg.
+# Key management utils using pass and gpg.
 
 if [[ -z "${_REDSHELL_KEYS}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_KEYS=1

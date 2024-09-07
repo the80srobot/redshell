@@ -129,8 +129,20 @@ function wifi_device() {
         | perl -pe 's/.*Device: (\w+).*/$1/'
 }
 
-function wifi_name() {
-    networksetup -getairportnetwork "$(wifi_device)" | perl -pe 's/.*Network: //'
+# Print the name of the currently connected wifi network.
+#
+# Usage: net_wifi_name
+function net_wifi_name() {
+    # On mac, there's networksetup.
+    if [[ "$(uname -a)" == *Darwin* ]]; then
+        networksetup -getairportnetwork "$(wifi_device)" | perl -pe 's/.*Network: //'
+        return
+    fi
+
+    # On linux, we can use iwgetid or nmcli.
+    which iwgetid > /dev/null && iwgetid -r && return
+    which nmcli > /dev/null || return 1
+    nmcli -t -f NAME connection show --active
 }
 
 
