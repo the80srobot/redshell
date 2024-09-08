@@ -47,6 +47,18 @@ class ArgumentType(Enum):
     HOSTNAME = 9
 
 
+ARG_TYPE_COLORS = {
+    ArgumentType.DEFAULT: None,
+    ArgumentType.SWITCH: None,
+    ArgumentType.FILE: 9,
+    ArgumentType.DIRECTORY: 1,
+    ArgumentType.STRING: None,
+    ArgumentType.USER: 10,
+    ArgumentType.GROUP: 2,
+    ArgumentType.HOSTNAME: 4,
+}
+
+
 @dataclass
 class Argument:
     name: str
@@ -206,6 +218,7 @@ def _finalize_arguments(raw: list[Argument]) -> list[Argument]:
                 # This is a positional argument.
                 args.append(arg)
                 arg.position = len(args)
+                arg.type = _parse_arg_type(arg.name)
 
     return args
 
@@ -394,6 +407,29 @@ def gen_switch(modules: Iterable[Module]) -> Generator[str, None, None]:
     yield "}"
 
 
+def __gen_usage_color(function: Function) -> Iterable[str|int]:
+    for arg in function.args:
+        if not arg.required:
+            yield '['
+        color = ARG_TYPE_COLORS.get(arg.type, None)
+
+        # Only highlight the upper case TYPE NAME. If the type name is set, then
+        # we're on a --flag TYPE argument and don't want to highlight the --flag
+        # part.
+        if not arg.type_name and color is not None:
+            yield color
+        yield "|".join([arg.name] + list(arg.aliases))
+        if arg.type_name:
+            if color is not None:
+                yield color
+            yield arg.type_name
+        
+        if arg.repeated:
+            yield "..."
+        
+        if not arg.required:
+            yield ']'
+
 def gen_dump(modules: Iterable[Module]) -> Generator[str, None, None]:
     yield "function __q_dump() {"
     yield '  if [[ ! "$#" -eq 2 ]]; then'
@@ -461,16 +497,27 @@ def gen_help(modules: Iterable[Module]) -> Generator[str, None, None]:
         for function in module.functions:
             if function.name.value.startswith("_"):
                 continue
-            usage = function.usage
-            if usage.startswith(function.name.value):
-                usage = usage[len(function.name.value) :].strip()
+
+            # Usage
             yield f"      tput bold"
-            yield f'      echo "  q {module.name} {_local_name(function.name.value, module.name)} {usage}"'
+            yield f"      echo -n '  {_local_name(function.name.value, module.name)}'"
+            for s in __gen_usage_color(function):
+                if isinstance(s, int):
+                    yield f"      tput setaf {s}"
+                else:
+                    yield f"      echo -n ' {s}'"
+                    yield f"      tput sgr0"
+                    yield f"      tput bold"
+            yield f"      echo"
             yield f"      tput sgr0"
+
+            # Aliases
             yield f"      tput setaf 6"
             for alias in module.func_to_alias.get(function.name.value, []):
                 yield f'      echo "    alias {alias}=\'q {module.name} {_local_name(function.name.value, module.name)}\'"'
             yield f"      tput sgr0"
+
+            # Description
             for line in _escape_comment(function.comment):
                 yield f"      echo '    {line}'"
         yield f"      ;;"

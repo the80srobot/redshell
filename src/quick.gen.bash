@@ -1269,42 +1269,50 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q ascii_art print_speech_bubble [ARG...]"
+      echo -n '  print_speech_bubble'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q ascii_art erase_lines [ARG...]"
+      echo -n '  erase_lines'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q ascii_art cursor_position [ARG...]"
+      echo -n '  cursor_position'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q ascii_art cursor_row [ARG...]"
+      echo -n '  cursor_row'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q ascii_art print_bmo [ARG...]"
+      echo -n '  print_bmo'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q ascii_art print_pedro [ARG...]"
+      echo -n '  print_pedro'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q ascii_art scroll_output_pedro [ARG...]"
+      echo -n '  scroll_output_pedro'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q ascii_art select_visual [ARG...]"
+      echo -n '  select_visual'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1315,7 +1323,8 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q bash get_bash_functions [ARG...]"
+      echo -n '  get_bash_functions'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1326,27 +1335,35 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q browser gdocs_id [ARG...]"
+      echo -n '  gdocs_id'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q browser sheets_dl_link [ARG...]"
+      echo -n '  sheets_dl_link'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q browser chrome_path [ARG...]"
+      echo -n '  chrome_path'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q browser downloads_path [ARG...]"
+      echo -n '  downloads_path'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q browser dl URL"
+      echo -n '  dl'
+      echo -n ' URL'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1361,38 +1378,73 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q crypt encrypt_symmetric FILE"
+      echo -n '  encrypt_symmetric'
+      tput setaf 9
+      echo -n ' FILE'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q crypt decrypt_symmetric FILE"
+      echo -n '  decrypt_symmetric'
+      tput setaf 9
+      echo -n ' FILE'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q crypt gen_github_keypair [ARG...]"
+      echo -n '  gen_github_keypair'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q crypt package [ARG...]"
+      echo -n '  package'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q crypt payloadify FILE"
+      echo -n '  payloadify'
+      tput setaf 9
+      echo -n ' FILE'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q crypt downloadify FILE"
+      echo -n '  downloadify'
+      tput setaf 9
+      echo -n ' FILE'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Encrypt a file and wrap it in a base64 self-unpacking shell script.'
       tput bold
-      echo "  q crypt hash ALGO [INPUT]"
+      echo -n '  hash'
+      echo -n ' ALGO'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' INPUT'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias h='q crypt hash'"
@@ -1412,12 +1464,23 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q fedora setup [ARG...]"
+      echo -n '  setup'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q fedora dnf_install_or_skip package1 package2 ..."
+      echo -n '  dnf_install_or_skip'
+      echo -n ' package1'
+      tput sgr0
+      tput bold
+      echo -n ' package2'
+      tput sgr0
+      tput bold
+      echo -n ' ...'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1429,33 +1492,39 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q find f [ARG...]"
+      echo -n '  f'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Shorthand for find'
       tput bold
-      echo "  q find fcc [ARG...]"
+      echo -n '  fcc'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q find fgo [ARG...]"
+      echo -n '  fgo'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q find fjava [ARG...]"
+      echo -n '  fjava'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q find faidl [ARG...]"
+      echo -n '  faidl'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q find fd [ARG...]"
+      echo -n '  fd'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1466,12 +1535,14 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q git mkproject [ARG...]"
+      echo -n '  mkproject'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q git git-ssh-init [ARG...]"
+      echo -n '  git-ssh-init'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1482,7 +1553,8 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q go pkg_do [ARG...]"
+      echo -n '  pkg_do'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1493,7 +1565,8 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q hg root [ARG...]"
+      echo -n '  root'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1512,17 +1585,20 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q install reinstall_file [ARG...]"
+      echo -n '  reinstall_file'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q install file [ARG...]"
+      echo -n '  file'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q install uninstall_file [ARG...]"
+      echo -n '  uninstall_file'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1533,19 +1609,49 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q keys git [ARGS ...]"
+      echo -n '  git'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' ARGS'
+      tput sgr0
+      tput bold
+      echo -n ' ...'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Wraps git for use with the keys repository.'
       tput bold
-      echo "  q keys path [-f] KEY"
+      echo -n '  path'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -f'
+      tput sgr0
+      tput bold
+      echo -n ' KEY'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Dumps the contents of the given key in a file and returns the path.'
       tput bold
-      echo "  q keys var KEY"
+      echo -n '  var'
+      echo -n ' KEY'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1557,57 +1663,68 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q mac setup [ARG...]"
+      echo -n '  setup'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q mac brew [ARG...]"
+      echo -n '  brew'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q mac get_user_shell [ARG...]"
+      echo -n '  get_user_shell'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q mac brew_bash_path [ARG...]"
+      echo -n '  brew_bash_path'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q mac switch_to_bash [ARG...]"
+      echo -n '  switch_to_bash'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q mac icloud [ARG...]"
+      echo -n '  icloud'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q mac icloud_evict [ARG...]"
+      echo -n '  icloud_evict'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q mac brew_install_or_skip [ARG...]"
+      echo -n '  brew_install_or_skip'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q mac install_miniconda [ARG...]"
+      echo -n '  install_miniconda'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q mac install_devtools [ARG...]"
+      echo -n '  install_devtools'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q mac kill_defender "
+      echo -n '  kill_defender'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1618,7 +1735,8 @@ function __q_help() {
       echo '    Use at your own risk, and only after discussing with your IT department. This'
       echo '    action is likely to be detected.'
       tput bold
-      echo "  q mac suppress_defender "
+      echo -n '  suppress_defender'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1627,7 +1745,8 @@ function __q_help() {
       echo '    Use at your own risk, and only after discussing with your IT department. This'
       echo '    action is likely to be detected.'
       tput bold
-      echo "  q mac kill_crashplan "
+      echo -n '  kill_crashplan'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1641,7 +1760,23 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q media yt-dl [OPTIONS ...] URL"
+      echo -n '  yt-dl'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' OPTIONS'
+      tput sgr0
+      tput bold
+      echo -n ' ...'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' URL'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1653,37 +1788,44 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q monitor stream_load_stats [ARG...]"
+      echo -n '  stream_load_stats'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q monitor load_hist [ARG...]"
+      echo -n '  load_hist'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q monitor latest_load_stats [ARG...]"
+      echo -n '  latest_load_stats'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q monitor write_load_stats [ARG...]"
+      echo -n '  write_load_stats'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q monitor stream_top_stats [ARG...]"
+      echo -n '  stream_top_stats'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q monitor stream_net_stats [ARG...]"
+      echo -n '  stream_net_stats'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q monitor proc_stats [ARG...]"
+      echo -n '  proc_stats'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1706,25 +1848,35 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q mtg oracle_json "
+      echo -n '  oracle_json'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Fetch the latest oracle cards from Scryfall and return the path to the JSON'
       echo '    dump. The dump is cached for about two weeks.'
       tput bold
-      echo "  q mtg rules [ARG...]"
+      echo -n '  rules'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q mtg card_json NAME"
+      echo -n '  card_json'
+      echo -n ' NAME'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Return the JSON object for the card with the given name. (Case sensitive.)'
       tput bold
-      echo "  q mtg card NAME"
+      echo -n '  card'
+      echo -n ' NAME'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1736,7 +1888,89 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q multiple_choice multiple_choice [-n|-L] [-i INPUT] [-p PAGE] [-m MSG] [-a ALPHABET] [-I CONTROLS] [-A CONTROL_ALPHABET]"
+      echo -n '  multiple_choice'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -n|-L'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -i'
+      tput sgr0
+      tput bold
+      echo -n ' INPUT'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -p'
+      tput sgr0
+      tput bold
+      echo -n ' PAGE'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -m'
+      tput sgr0
+      tput bold
+      echo -n ' MSG'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -a'
+      tput sgr0
+      tput bold
+      echo -n ' ALPHABET'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -I'
+      tput sgr0
+      tput bold
+      echo -n ' CONTROLS'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -A'
+      tput sgr0
+      tput bold
+      echo -n ' CONTROL_ALPHABET'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1757,66 +1991,89 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q net dataurl dataurl FILE"
+      echo -n '  dataurl'
+      tput setaf 9
+      echo -n ' FILE'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Create a data URL from a file.'
       tput bold
-      echo "  q net undataurl undataurl"
+      echo -n '  undataurl'
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias undataurl='q net undataurl'"
       tput sgr0
       echo '    Decode a dataurl from stdin onto stdout.'
       tput bold
-      echo "  q net rtt rtt HOST"
+      echo -n '  rtt'
+      tput setaf 4
+      echo -n ' HOST'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Average round-trip time to the specified host.'
       tput bold
-      echo "  q net ip4 "
+      echo -n '  ip4'
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias ip4='q net ip4'"
       tput sgr0
       echo '    Print the non-localhost IPv4 addresses of this machine. One address per line.'
       tput bold
-      echo "  q net ip4gw "
+      echo -n '  ip4gw'
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias ip4gw='q net ip4gw'"
       tput sgr0
       echo '    Print the default gateway'"'"'s IP address.'
       tput bold
-      echo "  q net serve [ARG...]"
+      echo -n '  serve'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q net dump_url [ARG...]"
+      echo -n '  dump_url'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q net wiki [ARG...]"
+      echo -n '  wiki'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q net wifi_device [ARG...]"
+      echo -n '  wifi_device'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q net wifi_name "
+      echo -n '  wifi_name'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Print the name of the currently connected wifi network.'
       tput bold
-      echo "  q net ssh_fingerprint HOST"
+      echo -n '  ssh_fingerprint'
+      tput setaf 4
+      echo -n ' HOST'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1827,7 +2084,17 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q notes note [NOTE]"
+      echo -n '  note'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' NOTE'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias n='q notes note'"
@@ -1836,19 +2103,34 @@ function __q_help() {
       echo '    run with no arguments, instead opens vim and saves whatever is entered into'
       echo '    the file.'
       tput bold
-      echo "  q notes list [ARG...]"
+      echo -n '  list'
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias nn='q notes list'"
       tput sgr0
       tput bold
-      echo "  q notes sync [ARG...]"
+      echo -n '  sync'
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias nsync='q notes sync'"
       tput sgr0
       tput bold
-      echo "  q notes todo [TERM ...]"
+      echo -n '  todo'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' TERM'
+      tput sgr0
+      tput bold
+      echo -n ' ...'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias ntodo='q notes todo'"
@@ -1872,7 +2154,17 @@ function __q_help() {
       echo '    Z - ⏩ - Misc Quick Task'
       echo '    📥 - Inbox'
       tput bold
-      echo "  q notes undo [-f]"
+      echo -n '  undo'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -f'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias nundo='q notes undo'"
@@ -1880,7 +2172,23 @@ function __q_help() {
       echo '    Undoes the last note change. If the last change was to a local note, it will'
       echo '    refuse to undo it, unless -f is passed.'
       tput bold
-      echo "  q notes perl PROG [TERM ...]"
+      echo -n '  perl'
+      echo -n ' PROG'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' TERM'
+      tput sgr0
+      tput bold
+      echo -n ' ...'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias nperl='q notes perl'"
@@ -1888,7 +2196,29 @@ function __q_help() {
       echo '    Applies the provided perl program to matching notes to generate replacements.'
       echo '    Then allows the user to select which replacements to save.'
       tput bold
-      echo "  q notes api_list_notes notes_api_match_files [-f] [-a] [TERM ...]"
+      echo -n '  api_list_notes'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -f'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -a'
+      tput sgr0
+      tput bold
+      echo -n ' TERM'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1912,19 +2242,43 @@ function __q_help() {
       echo '    11. Quick-TODO-aware title'
       echo '    12. Archived (A if archived - if not)'
       tput bold
-      echo "  q notes backup "
+      echo -n '  backup'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Backs up the notes repository to a timestamped tarball in the notes root.'
       tput bold
-      echo "  q notes api_empty_notes notes_api_edit_notes"
+      echo -n '  api_empty_notes'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Lists empty notes.'
       tput bold
-      echo "  q notes api_list_todos [CONTEXT] [TERM ...]"
+      echo -n '  api_list_todos'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' CONTEXT'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' TERM'
+      tput sgr0
+      tput bold
+      echo -n ' ...'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -1944,59 +2298,81 @@ function __q_help() {
       echo '    10. Due date (if any)'
       echo '    11. Context (one letter)'
       tput bold
-      echo "  q notes print_todo_categories [ARG...]"
+      echo -n '  print_todo_categories'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q notes api_git [ARGS ...]"
+      echo -n '  api_git'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' ARGS'
+      tput sgr0
+      tput bold
+      echo -n ' ...'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Forwards its args to git running with the correct key and in the notes root.'
       tput bold
-      echo "  q notes api_clone "
+      echo -n '  api_clone'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Clones the git reposity.'
       tput bold
-      echo "  q notes api_fsck [ARG...]"
+      echo -n '  api_fsck'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Resets the mtime of notes files from git.'
       tput bold
-      echo "  q notes nw [ARG...]"
+      echo -n '  nw'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q notes window [ARG...]"
+      echo -n '  window'
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias nwin='q notes window'"
       tput sgr0
       tput bold
-      echo "  q notes api_find [ARG...]"
+      echo -n '  api_find'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Runs find automatically scoped to the right mtime by the NEND and NSTART env'
       echo '    variables.'
       tput bold
-      echo "  q notes api_quick_title [ARG...]"
+      echo -n '  api_quick_title'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q notes log [ARG...]"
+      echo -n '  log'
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias nlog='q notes log'"
       tput sgr0
       tput bold
-      echo "  q notes api_match_files [ARG...]"
+      echo -n '  api_match_files'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2017,46 +2393,112 @@ function __q_help() {
       echo '    '
       echo '    -w match only complete words (DEFAULT) -W match substrings'
       tput bold
-      echo "  q notes ls notes_list [TERM ...]"
+      echo -n '  ls'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' TERM'
+      tput sgr0
+      tput bold
+      echo -n ' ...'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias nls='q notes ls'"
       tput sgr0
       echo '    Prints a tree of notes, with the TERM as a filter.'
       tput bold
-      echo "  q notes hist [N]"
+      echo -n '  hist'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' N'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias nhist='q notes hist'"
       tput sgr0
       echo '    Prints the N most recent notes.'
       tput bold
-      echo "  q notes api_drop_note NOTE"
+      echo -n '  api_drop_note'
+      echo -n ' NOTE'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Delete the note at the provided relative path.'
       tput bold
-      echo "  q notes gc "
+      echo -n '  gc'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Deletes empty notes and runs git gc.'
       tput bold
-      echo "  q notes api_update_note RELPATH CONTENTS"
+      echo -n '  api_update_note'
+      tput setaf 9
+      echo -n ' RELPATH'
+      tput sgr0
+      tput bold
+      echo -n ' CONTENTS'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Updates the note at the given relative path with the given contents.'
       tput bold
-      echo "  q notes api_edit_note PATH [LINE]"
+      echo -n '  api_edit_note'
+      tput setaf 9
+      echo -n ' PATH'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' LINE'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Opens vim for the given relative note path, then updates the notes tree using'
       echo '    the result. Optional second argument is the line number to open vim at.'
       tput bold
-      echo "  q notes api_perl_preview PROG [TERM ...]"
+      echo -n '  api_perl_preview'
+      echo -n ' PROG'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' TERM'
+      tput sgr0
+      tput bold
+      echo -n ' ...'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2069,25 +2511,44 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q omdb set_key KEY"
+      echo -n '  set_key'
+      echo -n ' KEY'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Configure a new KEY for the OMDB API.'
       tput bold
-      echo "  q omdb register_key "
+      echo -n '  register_key'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Interactive prompt to configure the API key for OMDB.'
       tput bold
-      echo "  q omdb get_key "
+      echo -n '  get_key'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Prints the API key for OMDB.'
       tput bold
-      echo "  q omdb query [-f] [QUERY ...]"
+      echo -n '  query'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -f'
+      tput sgr0
+      tput bold
+      echo -n ' QUERY'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2106,7 +2567,12 @@ function __q_help() {
       echo '    - t: Title of the movie.'
       echo '    - i: IMDB ID of the movie.'
       tput bold
-      echo "  q omdb guess_title FILE"
+      echo -n '  guess_title'
+      tput setaf 9
+      echo -n ' FILE'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2118,20 +2584,31 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q path expand PATH"
+      echo -n '  expand'
+      tput setaf 9
+      echo -n ' PATH'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Expands tilde, safely, in the path.'
       tput bold
-      echo "  q path push DIRECTORY"
+      echo -n '  push'
+      tput setaf 1
+      echo -n ' DIRECTORY'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    This is like pushd, except it also updates the name of the screen window to'
       echo '    the new path, if run from inside a screen session.'
       tput bold
-      echo "  q path pop "
+      echo -n '  pop'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2144,7 +2621,20 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q pkg install_or_skip [PACKAGE...]"
+      echo -n '  install_or_skip'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' PACKAGE'
+      tput sgr0
+      tput bold
+      echo -n ' ...'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2157,7 +2647,39 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q python venv [-I|--install-requirements] [-p|--python-path PATH] [VERSION]"
+      echo -n '  venv'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -I|--install-requirements'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -p|--python-path'
+      tput sgr0
+      tput bold
+      tput setaf 9
+      echo -n ' PATH'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' VERSION'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias venv='q python venv'"
@@ -2167,7 +2689,39 @@ function __q_help() {
       echo '    install requirements.txt. If -p is passed, use the specified Python binary. If'
       echo '    VERSION is passed, find a python binary with that version.'
       tput bold
-      echo "  q python ipynb [-I|--install-requirements] [-p|--python-path PATH] [VERSION]"
+      echo -n '  ipynb'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -I|--install-requirements'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -p|--python-path'
+      tput sgr0
+      tput bold
+      tput setaf 9
+      echo -n ' PATH'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' VERSION'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias ipynb='q python ipynb'"
@@ -2175,22 +2729,91 @@ function __q_help() {
       echo '    Creates a new virtualenv in the current directory (as venv) and opens a new'
       echo '    Jupyter notebook.'
       tput bold
-      echo "  q python detect [ARG...]"
+      echo -n '  detect'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q python latest [ARG...]"
+      echo -n '  latest'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q python func -f|--function FUNCTION -p|--path PATH [-J|--json_output] [--clean] [--debug] [--] [ARGS...]"
+      echo -n '  func'
+      echo -n ' -f|--function'
+      tput sgr0
+      tput bold
+      echo -n ' FUNCTION'
+      tput sgr0
+      tput bold
+      echo -n ' -p|--path'
+      tput sgr0
+      tput bold
+      tput setaf 9
+      echo -n ' PATH'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -J|--json_output'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' --clean'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' --debug'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' --'
+      tput sgr0
+      tput bold
+      echo -n ' ARGS'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q python black [FILES...]"
+      echo -n '  black'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      tput setaf 9
+      echo -n ' FILES'
+      tput sgr0
+      tput bold
+      echo -n ' ...'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2201,12 +2824,36 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q quick rebuild [--src-path PATH] [--skip-extra-paths]"
+      echo -n '  rebuild'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' --src-path'
+      tput sgr0
+      tput bold
+      tput setaf 9
+      echo -n ' PATH'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' --skip-extra-paths'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q quick q [ARG...]"
+      echo -n '  q'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2217,12 +2864,14 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q rust rustup [ARG...]"
+      echo -n '  rustup'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q rust install_goodies [ARG...]"
+      echo -n '  install_goodies'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2233,27 +2882,32 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q screen session [ARG...]"
+      echo -n '  session'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q screen window [ARG...]"
+      echo -n '  window'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q screen rename [ARG...]"
+      echo -n '  rename'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q screen home [ARG...]"
+      echo -n '  home'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q screen reset_dirname [ARG...]"
+      echo -n '  reset_dirname'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2264,7 +2918,8 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q strings urlencode [ARG...]"
+      echo -n '  urlencode'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2272,30 +2927,68 @@ function __q_help() {
       echo '    '
       echo '    URL-encodes a string. DO NOT USE with curl: prefer --data-urlencode.'
       tput bold
-      echo "  q strings strip_control "
+      echo -n '  strip_control'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Strips terminal escape sequences from standard input.'
       tput bold
-      echo "  q strings repeat STRING N"
+      echo -n '  repeat'
+      echo -n ' STRING'
+      tput sgr0
+      tput bold
+      echo -n ' N'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Prints STRING N times.'
       tput bold
-      echo "  q strings join DELIMITER [STRING ...]"
+      echo -n '  join'
+      echo -n ' DELIMITER'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' STRING'
+      tput sgr0
+      tput bold
+      echo -n ' ...'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q strings sgrep [-C NUM]"
+      echo -n '  sgrep'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -C'
+      tput sgr0
+      tput bold
+      echo -n ' NUM'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias sgrep='q strings sgrep'"
       tput sgr0
       tput bold
-      echo "  q strings strip_prefix [ARG...]"
+      echo -n '  strip_prefix'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2306,12 +2999,27 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q time file_mtime [ARG...]"
+      echo -n '  file_mtime'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q time file_age [-s] PATH"
+      echo -n '  file_age'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -s'
+      tput sgr0
+      tput bold
+      tput setaf 9
+      echo -n ' PATH'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2322,22 +3030,38 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q util sud [ARG...]"
+      echo -n '  sud'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q util reload [ARG...]"
+      echo -n '  reload'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q util markdown [ARG...]"
+      echo -n '  markdown'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q util human_size [-b|-bb|-S|-h|-hh] SIZE"
+      echo -n '  human_size'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -b|-bb|-S|-h|-hh'
+      tput sgr0
+      tput bold
+      echo -n ' SIZE'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2351,33 +3075,39 @@ function __q_help() {
       echo '    '
       echo '    If no mode switch is specified then normal, base-2 byte units are used.'
       tput bold
-      echo "  q util install_heroku_cli [ARG...]"
+      echo -n '  install_heroku_cli'
+      echo
       tput sgr0
       tput setaf 6
       echo "    alias heroku_install_cli='q util install_heroku_cli'"
       tput sgr0
       tput bold
-      echo "  q util bazel [ARG...]"
+      echo -n '  bazel'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q util jup [ARG...]"
+      echo -n '  jup'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q util wait_for_file [ARG...]"
+      echo -n '  wait_for_file'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q util forex [ARG...]"
+      echo -n '  forex'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q util trim [ARG...]"
+      echo -n '  trim'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2388,26 +3118,30 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo "  q xterm_colors channel_step [ARG...]"
+      echo -n '  channel_step'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Takes one RGB channel value as a 2-byte hex string and returns a decimal'
       echo '    number representing the step in XTERM_CHANNEL_STEPS that'"'"'s the closest.'
       tput bold
-      echo "  q xterm_colors greyscale_step [ARG...]"
+      echo -n '  greyscale_step'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    As channel_step, but for greyscale.'
       tput bold
-      echo "  q xterm_colors rgb_to_xterm [ARG...]"
+      echo -n '  rgb_to_xterm'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Takes an RGB color as a 6-byte hex string and returns the closest xterm color.'
       tput bold
-      echo "  q xterm_colors hue_diff [ARG...]"
+      echo -n '  hue_diff'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2416,7 +3150,8 @@ function __q_help() {
       echo '    are usually legible for text, if sufficient brightness contrast also exists.'
       echo '    (Depends on terminal.)'
       tput bold
-      echo "  q xterm_colors brightness [ARG...]"
+      echo -n '  brightness'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2424,7 +3159,8 @@ function __q_help() {
       echo '    is in the interval [0; 255]. Brightness contrast of ~100 is usually legible if'
       echo '    sufficient hue contrast also exists. (Depends on terminal.)'
       tput bold
-      echo "  q xterm_colors contrast [ARG...]"
+      echo -n '  contrast'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -2432,39 +3168,46 @@ function __q_help() {
       echo '    Result is in the interval [0; 192]. Combines hue and brightness information.'
       echo '    Contrast values over 80 are usually legible, depending on terminal.'
       tput bold
-      echo "  q xterm_colors xterm_to_rgb [ARG...]"
+      echo -n '  xterm_to_rgb'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       echo '    Takes an xterm color number as a decimal integer and returns a 6-byte hex of'
       echo '    the RGB color.'
       tput bold
-      echo "  q xterm_colors xterm_to_fg [ARG...]"
+      echo -n '  xterm_to_fg'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q xterm_colors xterm_to_bg [ARG...]"
+      echo -n '  xterm_to_bg'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q xterm_colors tfmt [ARG...]"
+      echo -n '  tfmt'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q xterm_colors color [ARG...]"
+      echo -n '  color'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q xterm_colors shades [ARG...]"
+      echo -n '  shades'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
       tput bold
-      echo "  q xterm_colors colors [ARG...]"
+      echo -n '  colors'
+      echo
       tput sgr0
       tput setaf 6
       tput sgr0
@@ -4353,7 +5096,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -4423,7 +5166,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(FILE)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -4489,7 +5232,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(FILE)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -4687,7 +5430,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(FILE)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -4753,7 +5496,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(FILE)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -4819,7 +5562,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT DEFAULT)
+        local positional_types=(STRING STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -4955,7 +5698,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=(1)
-        local positional_types=(DEFAULT DEFAULT)
+        local positional_types=(STRING STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -5903,7 +6646,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=(0)
-        local positional_types=(DEFAULT)
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -6038,7 +6781,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -6970,7 +7713,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=(0)
-        local positional_types=(DEFAULT DEFAULT)
+        local positional_types=(STRING STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -7638,7 +8381,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -7704,7 +8447,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -7865,7 +8608,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(FILE)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -7997,7 +8740,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(HOSTNAME)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -8525,7 +9268,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(HOSTNAME)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -8595,7 +9338,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -8793,7 +9536,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=(0)
-        local positional_types=(DEFAULT)
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -8928,7 +9671,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=(1)
-        local positional_types=(DEFAULT DEFAULT)
+        local positional_types=(STRING STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -9198,7 +9941,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=(1)
-        local positional_types=(DEFAULT DEFAULT)
+        local positional_types=(STRING STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -9330,7 +10073,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=(0)
-        local positional_types=(DEFAULT)
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -9924,7 +10667,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=(0)
-        local positional_types=(DEFAULT)
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -9990,7 +10733,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -10056,7 +10799,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -10188,7 +10931,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT DEFAULT)
+        local positional_types=(FILE STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -10254,7 +10997,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT DEFAULT)
+        local positional_types=(FILE STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -10320,7 +11063,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=(1)
-        local positional_types=(DEFAULT DEFAULT)
+        local positional_types=(STRING STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -10390,7 +11133,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -10657,7 +11400,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(FILE)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -10727,7 +11470,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(FILE)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -10793,7 +11536,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(DIRECTORY)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -10929,7 +11672,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=(0)
-        local positional_types=(DEFAULT)
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -10999,7 +11742,7 @@ function __q_compgen() {
         local keyword_names=(-p --python-path)
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -11071,7 +11814,7 @@ function __q_compgen() {
         local keyword_names=(-p --python-path)
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT)
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -11359,7 +12102,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=(0)
-        local positional_types=(DEFAULT)
+        local positional_types=(FILE)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -12173,7 +12916,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(DEFAULT DEFAULT)
+        local positional_types=(STRING STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -12239,7 +12982,7 @@ function __q_compgen() {
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=(1)
-        local positional_types=(DEFAULT DEFAULT)
+        local positional_types=(STRING STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
