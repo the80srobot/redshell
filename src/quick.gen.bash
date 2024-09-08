@@ -972,6 +972,10 @@ function __q() {
       shift
       strings_strip_prefix "$@"
       ;;
+    strings_trim|trim)
+      shift
+      strings_trim "$@"
+      ;;
     *)
       if [ -n "$1" ]; then
         echo "Module strings has no function $1"
@@ -1044,13 +1048,9 @@ function __q() {
       shift
       wait_for_file "$@"
       ;;
-    forex)
+    util_forex|forex)
       shift
-      forex "$@"
-      ;;
-    trim)
-      shift
-      trim "$@"
+      util_forex "$@"
       ;;
     *)
       if [ -n "$1" ]; then
@@ -2988,10 +2988,27 @@ function __q_help() {
       tput sgr0
       tput bold
       echo -n '  strip_prefix'
+      echo -n ' PREFIX'
+      tput sgr0
+      tput bold
+      echo -n ' STRING'
+      tput sgr0
+      tput bold
       echo
       tput sgr0
       tput setaf 6
       tput sgr0
+      echo '    Strips the prefix from the string if it'"'"'s there.'
+      tput bold
+      echo -n '  trim'
+      echo -n ' STRING'
+      tput sgr0
+      tput bold
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      echo '    Strips leading and trailing whitespace from a string.'
       ;;
     time)
       echo "Usage: q time FUNCTION [ARG...]"
@@ -3101,12 +3118,63 @@ function __q_help() {
       tput sgr0
       tput bold
       echo -n '  forex'
-      echo
-      tput sgr0
-      tput setaf 6
+      echo -n ' ['
       tput sgr0
       tput bold
-      echo -n '  trim'
+      echo -n ' -f'
+      tput sgr0
+      tput bold
+      echo -n ' FROM'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -t'
+      tput sgr0
+      tput bold
+      echo -n ' TO'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -d'
+      tput sgr0
+      tput bold
+      echo -n ' DATE'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -a'
+      tput sgr0
+      tput bold
+      echo -n ' AMOUNT'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -v'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
       echo
       tput sgr0
       tput setaf 6
@@ -3975,6 +4043,9 @@ function __q_dump() {
     strip_prefix)
       type strings_strip_prefix
       ;;
+    trim)
+      type strings_trim
+      ;;
     *)
       echo "Unknown function $2"
       return 1
@@ -4022,10 +4093,7 @@ function __q_dump() {
       type wait_for_file
       ;;
     forex)
-      type forex
-      ;;
-    trim)
-      type trim
+      type util_forex
       ;;
     *)
       echo "Unknown function $2"
@@ -4201,7 +4269,7 @@ function __q_compgen() {
       return 0
       ;;
     strings)
-      COMPREPLY=($(compgen -W "help urlencode strip_control repeat join sgrep strip_prefix" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help urlencode strip_control repeat join sgrep strip_prefix trim" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     time)
@@ -4209,7 +4277,7 @@ function __q_compgen() {
       return 0
       ;;
     util)
-      COMPREPLY=($(compgen -W "help sud reload markdown human_size install_heroku_cli bazel jup wait_for_file forex trim" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help sud reload markdown human_size install_heroku_cli bazel jup wait_for_file forex" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     xterm_colors)
@@ -13112,12 +13180,78 @@ function __q_compgen() {
         return 0
         ;;
       strip_prefix)
-        # [ARG...]
+        # strings_strip_prefix PREFIX STRING
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=()
+        local positional_types=(STRING STRING)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      trim)
+        # strings_trim STRING
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -13852,9 +13986,9 @@ function __q_compgen() {
         return 0
         ;;
       forex)
-        # [ARG...]
-        local switch_names=()
-        local keyword_names=()
+        # util_forex [-f] FROM [-t] TO [-d DATE] [-a] [AMOUNT] [-v]
+        local switch_names=(-v)
+        local keyword_names=(-f -t -d -a)
         local repeated_names=()
         local repeated_positions=()
         local positional_types=()
@@ -13871,71 +14005,20 @@ function __q_compgen() {
             --)
               state="IDK"
               ;;
-            *)
+            -f)
+              state="EXPECT_VALUE_STRING"
+              ;;
+            -t)
+              state="EXPECT_VALUE_STRING"
+              ;;
+            -d)
+              state="EXPECT_VALUE_STRING"
+              ;;
+            -a)
+              state="EXPECT_VALUE_STRING"
+              ;;
+            -v)
               state="EXPECT_ARG"
-              (( pos++ ))
-              ;;
-            esac
-            ;;
-          esac
-          (( i++ ))
-        done
-        COMPREPLY=()
-        if [[ "${state}" == "EXPECT_ARG" ]]; then
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          if [[ -n "${positional_types[$pos]}" ]]; then
-            state="EXPECT_VALUE_${positional_types[$pos]}"
-          else
-            return 0
-          fi
-        fi
-        case "${state}" in
-        EXPECT_VALUE_FILE)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        EXPECT_VALUE_DIRECTORY)
-          COMPREPLY+=($(compgen -A directory -- ${cur}))
-          ;;
-        EXPECT_VALUE_USER)
-          COMPREPLY+=($(compgen -A user -- ${cur}))
-          ;;
-        EXPECT_VALUE_GROUP)
-          COMPREPLY+=($(compgen -A group -- ${cur}))
-          ;;
-        EXPECT_VALUE_HOSTNAME)
-          COMPREPLY+=($(compgen -A hostname -- ${cur}))
-          ;;
-        EXPECT_VALUE_STRING)
-          ;;
-        IDK)
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        *)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        esac
-        return 0
-        ;;
-      trim)
-        # [ARG...]
-        local switch_names=()
-        local keyword_names=()
-        local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
-        local i=3
-        local state="EXPECT_ARG"
-        local pos=0
-        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
-          case "${state}" in
-          IDK)
-            break
-            ;;
-          EXPECT_ARG)
-            case "${COMP_WORDS[i]}" in
-            --)
-              state="IDK"
               ;;
             *)
               state="EXPECT_ARG"

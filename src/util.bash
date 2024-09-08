@@ -194,7 +194,8 @@ function wait_for_file() {
     return 1
 }
 
-function forex() {
+# Usage: util_forex [-f] FROM [-t] TO [-d DATE] [-a] [AMOUNT] [-v]
+function util_forex() {
     local from
     local to
     local date="today"
@@ -281,17 +282,6 @@ function forex() {
         echo "${output}"
     fi
     
-}
-
-
-trim() {
-    local var="$*"
-    [[ -z "${var}" ]] && var="$(cat)"
-    # remove leading whitespace characters
-    var="${var#"${var%%[![:space:]]*}"}"
-    # remove trailing whitespace characters
-    var="${var%"${var##*[![:space:]]}"}"
-    printf '%s' "$var"
 }
 
 

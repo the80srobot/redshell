@@ -117,7 +117,8 @@ function mac_install_devtools() {
         pip-completion \
         rustc-completion \
         swiftdefaultappsprefpane \
-        jq
+        jq \
+        ugrep
 }
 
 # Kills Microsoft Defender in a way that tends to persist for an hour or so.

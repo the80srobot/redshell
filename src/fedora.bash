@@ -7,7 +7,12 @@ if [[ -z "${_REDSHELL_FEDORA}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_FEDORA=1
 
 function fedora_setup() {
-    dnf_install_or_skip git rsync pass
+    dnf_install_or_skip \
+        git \
+        rsync \
+        pass \
+        jq \
+        ugrep
 }
 
 # Install a package with dnf if it's not already installed.

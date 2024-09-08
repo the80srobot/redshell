@@ -53,6 +53,9 @@ function strings_sgrep() {
 
 alias sgrep=strings_sgrep
 
+# Usage: strings_strip_prefix PREFIX STRING
+#
+# Strips the prefix from the string if it's there.
 function strings_strip_prefix() {
   local prefix="${1}"
   local string="${2}"
@@ -64,5 +67,19 @@ function strings_strip_prefix() {
 
   echo "${string#${prefix}}"
 }
+
+# Usage: strings_trim STRING
+#
+# Strips leading and trailing whitespace from a string.
+function strings_trim() {
+    local var="$*"
+    [[ -z "${var}" ]] && var="$(cat)"
+    # remove leading whitespace characters
+    var="${var#"${var%%[![:space:]]*}"}"
+    # remove trailing whitespace characters
+    var="${var%"${var##*[![:space:]]}"}"
+    printf '%s' "$var"
+}
+
 
 fi # _REDSHELL_STRINGS

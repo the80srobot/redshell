@@ -4,6 +4,7 @@
 # Stuff for Magic: The Gathering.
 
 source "time.bash"
+source "multiple_choice.bash"
 
 if [[ -z "${_REDSHELL_MTG}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_MTG=1
@@ -34,10 +35,6 @@ function mtg_oracle_json() {
     echo "${persist}"
 }
 
-# function mtg_card_search() {
-# 
-# }
-
 function mtg_rules() {
     local url="https://gist.githubusercontent.com/the80srobot/6f9b83a7b930830ab454d1697c547120/raw/17572b00ccddee652eabf1028945aa17093f7f24/MTG%2520Rules"
     local persist=~/.scryfall/mtg-rules.txt
@@ -64,6 +61,18 @@ function mtg_card_json() {
     jq -r "map(select(.name == \"${name}\"))" "${json_path}"
 }
 
+function __mtg_approx_match() {
+    local tmp=$(mktemp)
+    local matches
+    jq -r '.[].name' "$(mtg_oracle_json)" > "${tmp}"
+    matches="$(ug -iw --fuzzy=best2 "${1}" "${tmp}")"
+    [[ -z "${matches}" ]] && {
+        return 1
+    }
+    rm -f "${tmp}"
+    echo "${matches}"
+}
+
 # Usage: mtg_card NAME
 #
 # Print the Magic: The Gathering card with the given name. (Case sensitive.)
@@ -72,8 +81,19 @@ function mtg_card() {
     local count=$(jq 'length' <<< "${card_json}")
 
     [[ "${count}" -eq 0 ]] && {
-        echo "Card not found." >&2
-        return 1
+        echo "No card named '${*}' found - checking approximate matches." >&2
+        local approx
+        approx=$(__mtg_approx_match "${@}") || {
+            echo "No approximate matches found." >&2
+            return 1
+        }
+
+        local choice
+        choice=$(multiple_choice -L -i "${approx}" -m "Did you mean any of these?") || {
+            echo "User cancelled." >&2
+            return 2
+        }
+        mtg_card "${choice}"
     }
 
     local i=0
