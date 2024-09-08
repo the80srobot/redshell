@@ -20,8 +20,8 @@ function print_speech_bubble() {
     done <<< "${1}"
     (( width++ ))
 
-    echo "   $(repeat _ $width)_ "
-    echo "  /$(repeat ' ' $width) \\"
+    echo "   $(strings_repeat _ $width)_ "
+    echo "  /$(strings_repeat ' ' $width) \\"
     while IFS= read -r line; do
         echo -n "  | ${line}"
         local stripped="$(strings_strip_control <<< "${line}")"
@@ -34,10 +34,10 @@ function print_speech_bubble() {
     done <<< "$1"
 
     (( rpad = width ))
-    echo "  / $(repeat _ $rpad)/"
-    echo " / /$(repeat ' ' $rpad) "
-    echo "/_/$(repeat ' ' $rpad)  "
-    echo "$(repeat ' ' $rpad)   "
+    echo "  / $(strings_repeat _ $rpad)/"
+    echo " / /$(strings_repeat ' ' $rpad) "
+    echo "/_/$(strings_repeat ' ' $rpad)  "
+    echo "$(strings_repeat ' ' $rpad)   "
 }
 
 function erase_lines() {

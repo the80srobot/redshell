@@ -27,10 +27,10 @@ function strings_strip_control() {
     | perl -pe 's/\033\(B//g'
 }
 
-# Usage: repeat STRING N
+# Usage: strings_repeat STRING N
 #
 # Prints STRING N times.
-function repeat() {
+function strings_repeat() {
     local c="${1}"
     local n="${2}"
     for (( i=0; i < n; i++ )); do
