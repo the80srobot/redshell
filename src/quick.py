@@ -95,6 +95,7 @@ class Function:
 class Module:
     name: str
     functions: list[Function]
+    func_to_alias: dict[str, list[str]]
     comment: list[str]
 
     def toJSON(self):
@@ -105,6 +106,7 @@ class Module:
         return cls(
             name=d["name"],
             functions=[Function.from_dict(f) for f in d["functions"]],
+            func_to_alias=d["aliases"],
             comment=d["comment"],
         )
 
@@ -123,6 +125,7 @@ def _escape_comment(comment: list[str]) -> Generator[str, None, None]:
     # return (shlex.quote(line)[1:-1] for line in comment)
 
 
+# Returns the function name and its position in the line, or None.
 def _accept_fname(line: str) -> Union[tuple[str, tuple[int, int]], None]:
     # Bash supports two variants of declaration syntax:
     # Type A: fname () compound-command [ redirections ]
@@ -132,6 +135,13 @@ def _accept_fname(line: str) -> Union[tuple[str, tuple[int, int]], None]:
         return m.group(1), m.span(1)
     elif m := FNAME_TYPE_B.match(line):
         return m.group(1), m.span(1)
+    else:
+        return None
+
+def _accept_alias(line: str) -> Union[tuple[str, str], None]:
+    if line.startswith("alias "):
+        parts = line[6:].split("=", 1)
+        return parts[0].strip(), parts[1].strip()
     else:
         return None
 
@@ -285,7 +295,7 @@ def parse_module(lines: Iterable[str], package: str) -> Module:
     comment_no = 0
     last_comment_line: Union[int, None] = None
     comment_block: list[str] = []
-    module = Module(name=package, functions=[], comment=[])
+    module = Module(name=package, functions=[], func_to_alias={}, comment=[])
     for line in lines:
         # Functions are emitted right away. If there is a comment block ending
         # on the previous line, it's attached to the function.
@@ -304,6 +314,10 @@ def parse_module(lines: Iterable[str], package: str) -> Module:
             )
             comment_block = []
             comment_no += 1
+        elif alias := _accept_alias(line):
+            comment_block = []
+            comment_no += 1
+            module.func_to_alias.setdefault(alias[1], []).append(alias[0])
         # Comment lines are accumulated. We keep the most recent block.
         elif (comment := _accept_comment(line)) is not None:
             if last_comment_line == line_no - 1:
@@ -452,6 +466,10 @@ def gen_help(modules: Iterable[Module]) -> Generator[str, None, None]:
                 usage = usage[len(function.name.value) :].strip()
             yield f"      tput bold"
             yield f'      echo "  q {module.name} {_local_name(function.name.value, module.name)} {usage}"'
+            yield f"      tput sgr0"
+            yield f"      tput setaf 6"
+            for alias in module.func_to_alias.get(function.name.value, []):
+                yield f'      echo "    alias {alias}=\'q {module.name} {_local_name(function.name.value, module.name)}\'"'
             yield f"      tput sgr0"
             for line in _escape_comment(function.comment):
                 yield f"      echo '    {line}'"
