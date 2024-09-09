@@ -956,9 +956,9 @@ function __q() {
       shift
       strings_strip_control "$@"
       ;;
-    repeat)
+    strings_repeat|repeat)
       shift
-      repeat "$@"
+      strings_repeat "$@"
       ;;
     strings_join|join)
       shift
@@ -3634,6 +3634,15 @@ function __q_dump() {
     card_json)
       type mtg_card_json
       ;;
+    __mtg_approx_match)
+      type __mtg_approx_match
+      ;;
+    __colorize_mana)
+      type __colorize_mana
+      ;;
+    __print_card)
+      type __print_card
+      ;;
     card)
       type mtg_card
       ;;
@@ -4032,7 +4041,7 @@ function __q_dump() {
       type strings_strip_control
       ;;
     repeat)
-      type repeat
+      type strings_repeat
       ;;
     join)
       type strings_join
@@ -12979,7 +12988,7 @@ function __q_compgen() {
         return 0
         ;;
       repeat)
-        # repeat STRING N
+        # strings_repeat STRING N
         local switch_names=()
         local keyword_names=()
         local repeated_names=()

@@ -77,6 +77,7 @@ function __colorize_mana() {
     # Line by line
     local line
     while read -r line; do
+        # Single pips
         line="$(sed "s/{W}/$(tput setaf 11){W}$(tput sgr0)/g" <<< "${line}")"
         line="$(sed "s/{U}/$(tput setaf 14){U}$(tput sgr0)/g" <<< "${line}")"
         line="$(sed "s/{B}/$(tput setaf 8){B}$(tput sgr0)/g" <<< "${line}")"
@@ -100,6 +101,31 @@ function __colorize_mana() {
 
         echo -e "${line}"
     done
+}
+
+function __print_card() {
+    local name="$(jq -r ".name" <<< "${1}")"
+    local mana_cost="$(jq -r ".mana_cost" <<< "${1}")"
+    local mana_cost_color="$(__colorize_mana <<< "${mana_cost}")"
+    local type_line="$(jq -r ".type_line" <<< "${1}")"
+    local oracle_text="$(jq -r ".oracle_text" <<< "${1}")"
+    local flavor_text="$(jq -r ".flavor_text" <<< "${1}")"
+    local power="$(jq -r ".power" <<< "${1}")"
+    local toughness="$(jq -r ".toughness" <<< "${1}")"
+
+    tput bold
+    printf "%s" "${name}"
+    tput sgr0
+    printf "%s%s\n" "$(strings_repeat " " $((80 - ${#name} - ${#mana_cost})))" "${mana_cost_color}"
+    tput setaf 6
+    printf "%s\n\n" "${type_line}"
+    tput sgr0
+    printf "%s\n" "$(fold -s -w 80 <<< "${oracle_text}" | __colorize_mana)"
+    tput setaf 8
+    [[ "${flavor_text}" != "null" ]] && printf "\n%s\n" "$(fold -s -w 80 <<< "${flavor_text}")"
+    tput sgr0
+    [[ "${power}" != "null" ]] && printf "%*s %s/%s\n" $(( 78 - ${#power} - ${#toughness} )) " " "${power}" "${toughness}"
+    echo
 }
 
 # Usage: mtg_card NAME
@@ -126,29 +152,14 @@ function mtg_card() {
     }
 
     local i=0
+    # TODO: Multiple faces. Do them like separate cards.
     while [[ "${i}" -lt "${count}" ]]; do
-        local name="$(jq -r ".[${i}].name" <<< "${card_json}")"
-        local mana_cost="$(jq -r ".[${i}].mana_cost" <<< "${card_json}")"
-        local mana_cost_color="$(__colorize_mana <<< "${mana_cost}")"
-        local type_line="$(jq -r ".[${i}].type_line" <<< "${card_json}")"
-        local oracle_text="$(jq -r ".[${i}].oracle_text" <<< "${card_json}")"
-        local flavor_text="$(jq -r ".[${i}].flavor_text" <<< "${card_json}")"
-        local power="$(jq -r ".[${i}].power" <<< "${card_json}")"
-        local toughness="$(jq -r ".[${i}].toughness" <<< "${card_json}")"
-
-        tput bold
-        printf "%s" "${name}"
-        tput sgr0
-        printf "%s%s\n" "$(strings_repeat " " $((80 - ${#name} - ${#mana_cost})))" "${mana_cost_color}"
-        tput setaf 6
-        printf "%s\n\n" "${type_line}"
-        tput sgr0
-        printf "%s\n" "$(fold -s -w 80 <<< "${oracle_text}" | __colorize_mana)"
-        tput setaf 8
-        [[ "${flavor_text}" != "null" ]] && printf "\n%s\n" "$(fold -s -w 80 <<< "${flavor_text}")"
-        tput sgr0
-        [[ "${power}" != "null" ]] && printf "%*s %s/%s\n" $(( 78 - ${#power} - ${#toughness} )) " " "${power}" "${toughness}"
-        echo
+        if [[ $(jq ".[${i}][\"card_faces\"] | length" <<< "${card_json}") -eq 2 ]]; then
+            __print_card "$(jq -r ".[${i}][\"card_faces\"][0]" <<< "${card_json}")"
+            __print_card "$(jq -r ".[${i}][\"card_faces\"][1]" <<< "${card_json}")"
+        else
+            __print_card "$(jq -r ".[${i}]" <<< "${card_json}")"
+        fi
         ((i++))
     done
 }
