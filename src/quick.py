@@ -407,7 +407,7 @@ def gen_switch(modules: Iterable[Module]) -> Generator[str, None, None]:
     yield "}"
 
 
-def __gen_usage_color(function: Function) -> Iterable[str|int]:
+def __gen_usage_color(function: Function) -> Iterable[Union[str,int]]:
     for arg in function.args:
         if not arg.required:
             yield '['
