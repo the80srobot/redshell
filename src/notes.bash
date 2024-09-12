@@ -224,7 +224,7 @@ function notes_list() {
 Drop the file ${_PATH_COLOR}${path}${_SGR0}
 Cat the file ${_PATH_COLOR}${path}${_SGR0}
 HTTP serve ${_PATH_COLOR}${path}${_SGR0}
-Return the absolute path" -m "Select operation" -a "edcsf") || nn "${@}"
+Return the absolute path" -m "Select operation" -a "edcsf") || notes_list "${@}"
 
     case "${op}" in
         1)
