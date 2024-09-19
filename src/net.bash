@@ -152,4 +152,22 @@ function net_ssh_fingerprint() {
     2>/dev/null ssh-keyscan -T1 "${ip}" | ssh-keygen -lf -
 }
 
+# Prints the aliases and hostnames from the ssh config file.
+#
+# Usage: net_ssh_aliases
+function net_ssh_aliases() {
+    cat ~/.ssh/config \
+        | perl -0pe 's/(?:^|\n)Host\s*(\w+).*?HostName\s*(.*?)\n/ALIAS\t$1\t$2\n/sg' \
+        | grep ALIAS \
+        | cut -f2,3
+}
+
+# Based on SSH config, looks up the full hostname of the given alias.
+#
+# Usage: net_ssh_fqdn ALIAS
+function net_ssh_fqdn() {
+    local alias="${1}"
+    net_ssh_aliases | grep -w "${alias}" | cut -f2
+}
+
 fi # _REDSHELL_NET
