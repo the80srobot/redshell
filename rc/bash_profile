@@ -95,11 +95,7 @@ __git_info() {
 }
 
 __hg_info() {
-    local root="$(pwd -P)"
-    while [[ $root && ! -d $root/.hg ]]; do
-        root="${root%/*}"
-    done
-    [[ -z "${root}" ]] && return 0
+    hg_ps1_widget || true
 }
 
 __error_info() {
@@ -154,6 +150,7 @@ PS1_PREFIX="┌─|\[$(tput sgr0)\]\u@$(__prompt_escape)\h\[$(tput sgr0)\] \w "
 PS1_WIDGETS="\[$(tput setaf 196)\]\$(__error_info)" # Has to be first
 PS1_WIDGETS+="\[$(tput setaf 2)\]\$(__time_info)"
 PS1_WIDGETS+="\[$(tput setaf 26)\]\$(__git_info)"
+PS1_WIDGETS+="\[$(tput setaf 26)\]\$(__hg_info)"
 PS1_WIDGETS+="\[$(tput setaf 33)\]\$(__screen_info)"
 PS1_WIDGETS+="\[$(tput setaf 214)\]\$(__addr_info)"
 PS1_SUFFIX="\[$(tput sgr0)\]\n└─> "
