@@ -119,8 +119,7 @@ function install_heroku_cli() {
     mv heroku/* ./ # Pop one level up
 
     echo "export PATH=\$PATH:${target}/bin" > ./heroku_profile
-    uninstall_file ~/.bash_profile '#' 'HEROKU'
-    install_file ./heroku_profile ~/.bash_profile '#' 'HEROKU'
+    reinstall_file ./heroku_profile ~/.bash_profile '#' 'HEROKU'
 
     >&2 echo "heroku CLI installed in ${target} and added to PATH - you may need to reload bash"
     >&2 echo "NOW:"

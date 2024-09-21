@@ -316,17 +316,13 @@ function __q() {
       shift
       __q_help "install" "$@"
       ;;
-    reinstall_file)
-      shift
-      reinstall_file "$@"
-      ;;
     install_file|file)
       shift
       install_file "$@"
       ;;
-    uninstall_file)
+    reinstall_file)
       shift
-      uninstall_file "$@"
+      reinstall_file "$@"
       ;;
     *)
       if [ -n "$1" ]; then
@@ -671,6 +667,10 @@ function __q() {
     notes_api_git|api_git)
       shift
       notes_api_git "$@"
+      ;;
+    notes_api_pushd|api_pushd)
+      shift
+      notes_api_pushd "$@"
       ;;
     notes_api_clone|api_clone)
       shift
@@ -1344,28 +1344,37 @@ function __q_help() {
       echo "Available functions:"
       tput bold
       echo -n '  gdocs_id'
+      echo -n ' URL'
+      tput sgr0
+      tput bold
       echo
       tput sgr0
       tput setaf 6
       tput sgr0
+      echo '    Extracts a Google Docs ID from a URL.'
       tput bold
       echo -n '  sheets_dl_link'
       echo
       tput sgr0
       tput setaf 6
       tput sgr0
+      echo '    Usage sheets_dl_link URL [FORMAT]'
+      echo '    Generates a direct download link for a Google Docs spreadsheet.'
+      echo '    FORMAT is optional and defaults to "csv".'
       tput bold
       echo -n '  chrome_path'
       echo
       tput sgr0
       tput setaf 6
       tput sgr0
+      echo '    Returns the path to the Chrome executable.'
       tput bold
       echo -n '  downloads_path'
       echo
       tput sgr0
       tput setaf 6
       tput sgr0
+      echo '    Returns the path to the Downloads folder.'
       tput bold
       echo -n '  dl'
       echo -n ' URL'
@@ -1593,23 +1602,124 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo -n '  reinstall_file'
-      echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
       echo -n '  file'
-      echo
-      tput sgr0
-      tput setaf 6
+      echo -n ' -s|--sfile'
       tput sgr0
       tput bold
-      echo -n '  uninstall_file'
+      tput setaf 9
+      echo -n ' SFILE'
+      tput sgr0
+      tput bold
+      echo -n ' -d|--dfile'
+      tput sgr0
+      tput bold
+      tput setaf 9
+      echo -n ' DFILE'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -c|--char'
+      tput sgr0
+      tput bold
+      echo -n ' CHAR'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -k|--section'
+      tput sgr0
+      tput bold
+      echo -n ' SECTION'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -d|--append'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' --uninstall'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
       echo
       tput sgr0
       tput setaf 6
       tput sgr0
+      echo '    Installs the contents of DFILE into SFILE, guarded by a comment at the first'
+      echo '    and last line. Optional arguments CHAR and SECTION control what the commend'
+      echo '    guard looks like. Default CHAR is '"'"'#'"'"' and default SECTION is '"'"'REDSHELL'"'"' for:'
+      echo '    '
+      echo '    # REDSHELL'
+      echo '    ... contents'
+      echo '    # /REDSHELL'
+      echo '    '
+      echo '    Subsequent calls to install_file remove the old contents before intalling the'
+      echo '    new contents. New contents replace the old contents in-place.'
+      echo '    '
+      echo '    Pass --append to install the contents always at the end of the file, rather'
+      echo '    than in-place. Pass --uninstall to only uninstall the file.'
+      tput bold
+      echo -n '  reinstall_file'
+      tput setaf 9
+      echo -n ' SFILE'
+      tput sgr0
+      tput bold
+      tput setaf 9
+      echo -n ' DFILE'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' CHAR'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' SECTION'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      echo '    This is a legacy form of install_file. It is kept for backwards compatibility.'
+      echo '    '
+      echo '    Installs the contents of DFILE into SFILE, guarded by a comment at the first'
+      echo '    and last line. Optional arguments CHAR and SECTION control what the commend'
+      echo '    guard looks like. Default CHAR is '"'"'#'"'"' and default SECTION is '"'"'REDSHELL'"'"' for:'
+      echo '    '
+      echo '    # REDSHELL'
+      echo '    ... contents'
+      echo '    # /REDSHELL'
+      echo '    '
+      echo '    Subsequent calls to reinstall_file remove the old contents before intalling'
+      echo '    the new contents.'
       ;;
     keys)
       echo "Usage: q keys FUNCTION [ARG...]"
@@ -2347,6 +2457,12 @@ function __q_help() {
       tput setaf 6
       tput sgr0
       echo '    Forwards its args to git running with the correct key and in the notes root.'
+      tput bold
+      echo -n '  api_pushd'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
       tput bold
       echo -n '  api_clone'
       echo
@@ -3502,14 +3618,17 @@ function __q_dump() {
     ;;
   install)
     case "$2" in
-    reinstall_file)
-      type reinstall_file
-      ;;
     file)
       type install_file
       ;;
-    uninstall_file)
-      type uninstall_file
+    reinstall_file)
+      type reinstall_file
+      ;;
+    __install_file)
+      type __install_file
+      ;;
+    __uninstall_file)
+      type __uninstall_file
       ;;
     *)
       echo "Unknown function $2"
@@ -3820,6 +3939,9 @@ function __q_dump() {
       ;;
     api_git)
       type notes_api_git
+      ;;
+    api_pushd)
+      type notes_api_pushd
       ;;
     api_clone)
       type notes_api_clone
@@ -4245,7 +4367,7 @@ function __q_compgen() {
       return 0
       ;;
     install)
-      COMPREPLY=($(compgen -W "help reinstall_file file uninstall_file" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help file reinstall_file" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     keys)
@@ -4277,7 +4399,7 @@ function __q_compgen() {
       return 0
       ;;
     notes)
-      COMPREPLY=($(compgen -W "help note list sync todo undo perl api_list_notes backup api_empty_notes api_list_todos print_todo_categories api_git api_clone api_fsck nw window api_find api_quick_title log api_match_files ls hist api_drop_note gc api_update_note api_edit_note api_perl_preview" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help note list sync todo undo perl api_list_notes backup api_empty_notes api_list_todos print_todo_categories api_git api_pushd api_clone api_fsck nw window api_find api_quick_title log api_match_files ls hist api_drop_note gc api_update_note api_edit_note api_perl_preview" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     omdb)
@@ -4935,12 +5057,12 @@ function __q_compgen() {
     browser)
       case "${COMP_WORDS[2]}" in
       gdocs_id)
-        # [ARG...]
+        # gdocs_id URL
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=()
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -5067,7 +5189,7 @@ function __q_compgen() {
         return 0
         ;;
       chrome_path)
-        # [ARG...]
+        # chrome_path
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -5133,7 +5255,7 @@ function __q_compgen() {
         return 0
         ;;
       downloads_path)
-        # [ARG...]
+        # downloads_path
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -6546,76 +6668,10 @@ function __q_compgen() {
       ;;
     install)
       case "${COMP_WORDS[2]}" in
-      reinstall_file)
-        # [ARG...]
-        local switch_names=()
-        local keyword_names=()
-        local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
-        local i=3
-        local state="EXPECT_ARG"
-        local pos=0
-        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
-          case "${state}" in
-          IDK)
-            break
-            ;;
-          EXPECT_ARG)
-            case "${COMP_WORDS[i]}" in
-            --)
-              state="IDK"
-              ;;
-            *)
-              state="EXPECT_ARG"
-              (( pos++ ))
-              ;;
-            esac
-            ;;
-          esac
-          (( i++ ))
-        done
-        COMPREPLY=()
-        if [[ "${state}" == "EXPECT_ARG" ]]; then
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          if [[ -n "${positional_types[$pos]}" ]]; then
-            state="EXPECT_VALUE_${positional_types[$pos]}"
-          else
-            return 0
-          fi
-        fi
-        case "${state}" in
-        EXPECT_VALUE_FILE)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        EXPECT_VALUE_DIRECTORY)
-          COMPREPLY+=($(compgen -A directory -- ${cur}))
-          ;;
-        EXPECT_VALUE_USER)
-          COMPREPLY+=($(compgen -A user -- ${cur}))
-          ;;
-        EXPECT_VALUE_GROUP)
-          COMPREPLY+=($(compgen -A group -- ${cur}))
-          ;;
-        EXPECT_VALUE_HOSTNAME)
-          COMPREPLY+=($(compgen -A hostname -- ${cur}))
-          ;;
-        EXPECT_VALUE_STRING)
-          ;;
-        IDK)
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        *)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        esac
-        return 0
-        ;;
       file)
-        # [ARG...]
-        local switch_names=()
-        local keyword_names=()
+        # install_file -s|--sfile SFILE -d|--dfile DFILE [-c|--char CHAR] [-k|--section SECTION] [-d|--append] [--uninstall]
+        local switch_names=(-d --append --uninstall)
+        local keyword_names=(-s --sfile -d --dfile -c --char -k --section)
         local repeated_names=()
         local repeated_positions=()
         local positional_types=()
@@ -6631,6 +6687,24 @@ function __q_compgen() {
             case "${COMP_WORDS[i]}" in
             --)
               state="IDK"
+              ;;
+            -s)
+              state="EXPECT_VALUE_FILE"
+              ;;
+            -d)
+              state="EXPECT_VALUE_FILE"
+              ;;
+            -c)
+              state="EXPECT_VALUE_STRING"
+              ;;
+            -k)
+              state="EXPECT_VALUE_STRING"
+              ;;
+            -d)
+              state="EXPECT_ARG"
+              ;;
+            --uninstall)
+              state="EXPECT_ARG"
               ;;
             *)
               state="EXPECT_ARG"
@@ -6678,13 +6752,13 @@ function __q_compgen() {
         esac
         return 0
         ;;
-      uninstall_file)
-        # [ARG...]
+      reinstall_file)
+        # reinstall_file SFILE DFILE [CHAR] [SECTION]
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=()
+        local positional_types=(FILE FILE STRING STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -10314,6 +10388,72 @@ function __q_compgen() {
         local repeated_names=()
         local repeated_positions=(0)
         local positional_types=(STRING)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      api_pushd)
+        # [ARG...]
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
         local i=3
         local state="EXPECT_ARG"
         local pos=0

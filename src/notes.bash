@@ -932,6 +932,10 @@ function notes_api_git() {
     return "${status}"
 }
 
+function notes_api_pushd() {
+    pushd "${NOTES_REPO}"
+}
+
 # Usage: notes_api_clone
 # Clones the git reposity.
 function notes_api_clone() {

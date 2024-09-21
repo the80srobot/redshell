@@ -6,10 +6,15 @@
 if [[ -z "${_REDSHELL_BROWSER}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_BROWSER=1
 
+# Extracts a Google Docs ID from a URL.
+# Usage: gdocs_id URL
 function gdocs_id() {
     echo "$1" | perl -pe 's/^http.*\/d\/(.*)\/.*$/$1/'
 }
 
+# Usage sheets_dl_link URL [FORMAT]
+# Generates a direct download link for a Google Docs spreadsheet.
+# FORMAT is optional and defaults to "csv".
 function sheets_dl_link() {
     local format="csv"
     [[ -n "$2" ]] && format="$2"
@@ -21,6 +26,8 @@ function sheets_dl_link() {
         "$format"
 }
 
+# Usage: chrome_path
+# Returns the path to the Chrome executable.
 function chrome_path() {    
     if [[ -f "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" ]]; then
         echo "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
@@ -29,6 +36,8 @@ function chrome_path() {
     fi
 }
 
+# Usage: downloads_path
+# Returns the path to the Downloads folder.
 function downloads_path() {
     if [[ -d "$HOME/Downloads" ]]; then
         echo "$HOME/Downloads"
