@@ -37,7 +37,7 @@ function __fix_stupid_virtualenv_behavior() {
     popd
 }
 
-# Usage: python_venv [-I|--install-requirements] [-p|--python-path PATH] [VERSION]
+# Usage: python_venv [-I|--install-requirements] [-p|--python-path PATH] [-q|--quiet] [VERSION]
 #
 # Create a new virtualenv in the current directory, using the latest available
 # python version. If a virtualenv already exists, activate it. If -I is passed,
@@ -45,8 +45,8 @@ function __fix_stupid_virtualenv_behavior() {
 # VERSION is passed, find a python binary with that version.
 function python_venv() {
     local install_reqs=""
+    local stderr=/dev/stderr
     local pythonpath="$(python_latest)"
-    echo "Using Python: ${pythonpath}" >&2
 
     while [[ "${#}" -ne 0 ]]; do
         case "$1" in
@@ -57,19 +57,23 @@ function python_venv() {
                 pythonpath="$(which "$2")"
                 shift
                 ;;
+            -q|--quiet)
+                stderr=/dev/null
+                ;;
             *)
                 pythonpath="$(which "python$1")"
                 ;;
         esac
         shift
     done
+    echo "Using Python: ${pythonpath}" >$stderr
 
     # Ensure PIP is installed.
     "${pythonpath}" -m pip --help 2> /dev/null > /dev/null \
         || __python_ensurepip "${pythonpath}"
     
     if [[ -d "./.venv" ]]; then
-        echo "Activating existing environment" >&2
+        echo "Activating existing environment" >$stderr
         source ./.venv/bin/activate
         if [[ -n "${install_reqs}" ]]; then
             pip install --upgrade -r "${install_reqs}"
@@ -77,14 +81,14 @@ function python_venv() {
         return 0
     fi
 
-    echo "Creating a new virtualenv..." >&2
+    echo "Creating a new virtualenv..." >$stderr
     "${pythonpath}" -m virtualenv --help 2> /dev/null > /dev/null
     if [[ "$?" -ne 0 ]]; then
         >&2 echo "Installing virtualenv..."
         __python_ensurevenv "${pythonpath}" || return 2
     fi
 
-    echo "Creating virtualenv in $(pwd)/.venv with ${pythonpath}" >&2
+    echo "Creating virtualenv in $(pwd)/.venv with ${pythonpath}" >$stderr
     "${pythonpath}" -m virtualenv \
         --python="${pythonpath}" \
         .venv \
@@ -139,7 +143,7 @@ function python_latest() {
     fi
 }
 
-# Usage: python_func -f|--function FUNCTION -p|--path PATH [-J|--json_output] [--clean] [--debug] [--] [ARGS...]
+# Usage: python_func -f|--function FUNCTION -p|--path PATH [-J|--json_output] [--clean] [--debug] [--quiet] [--] [ARGS...]
 function python_func() {
     local function
     local json_out="False"
@@ -148,6 +152,7 @@ function python_func() {
     local kwargs="{"
     local clean=""
     local debug
+    local quiet
 
     while [[ "${#}" -ne 0 ]]; do
         case "$1" in
@@ -167,6 +172,9 @@ function python_func() {
                 ;;
             --debug)
                 debug="True"
+                ;;
+            --quiet)
+                quiet="True"
                 ;;
             --)
                 shift
@@ -205,7 +213,11 @@ function python_func() {
     fi
 
     pushd "$(dirname "${path}")" > /dev/null
-    python_venv >&2
+    if [[ -n "${quiet}" ]]; then
+        python_venv --quiet
+    else
+        python_venv
+    fi
 
     script="from $(basename "${path}" .py) import *
 import typing
