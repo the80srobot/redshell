@@ -942,7 +942,6 @@ function notes_api_clone() {
     mkdir -p "${NOTES_ROOT}"
     local old=`pwd`
     cd "${NOTES_ROOT}"
-    # TODO(adam): Make the URL configurable
     GIT_SSH_COMMAND="ssh -i $(keys_path notes)" git clone $(keys_var notes_repo)
     cd "${old}"
 }
