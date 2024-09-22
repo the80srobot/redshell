@@ -155,9 +155,9 @@ function crypt_hash() {
                 local cmd="md5sum"
             fi
             if [[ -z "$2" ]]; then
-                "${cmd}"
+                "${cmd}" | cut -d' ' -f1
             else
-                "${cmd}" <<< "$2"
+                "${cmd}" <<< "$2" | cut -d' ' -f1
             fi
         ;;
         *)
