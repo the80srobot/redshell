@@ -14,7 +14,8 @@ function debian_setup() {
         pass \
         git \
         rsync \
-        python3-pip
+        python3-pip \
+        ugrep
 }
 
 

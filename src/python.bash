@@ -97,6 +97,7 @@ function python_venv() {
     source ./.venv/bin/activate
     pip install --upgrade pip
     [[ -f requirements.txt ]] && pip install --upgrade -r requirements.txt
+    echo "Virtualenv created" >$stderr
 }
 
 alias venv=python_venv
