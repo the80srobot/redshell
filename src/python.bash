@@ -114,6 +114,10 @@ function python_ipynb() {
 
 alias ipynb=python_ipynb
 
+# Usage: python_detect
+#
+# Find all available Python binaries in the PATH and their versions.
+# Prints a tab-separated list: VERSION  PATH  SHORT_VERSION
 function python_detect() {
     IFS=: read -r -d '' -a path_array <<< "${PATH}"
     for p in "${path_array[@]}"; do
@@ -132,6 +136,9 @@ function python_detect() {
     } | sort -Vr
 }
 
+# Usage: python_latest
+#
+# Returns the path to the latest available Python binary.
 function python_latest() {
     # TODO: this is a hack to work around environments with special blessed
     # python versions, but actually it should be made user-selectable.
@@ -144,6 +151,24 @@ function python_latest() {
 }
 
 # Usage: python_func -f|--function FUNCTION -p|--path PATH [-J|--json_output] [--clean] [--debug] [--quiet] [--] [ARGS...]
+#
+# Run a Python function from a file. Calls `q python venv` to setup the
+# environment. The function must be defined in the file and must be a top-level
+# function. The function must be defined with type hints for all arguments.
+#
+# Function arguments are passed as positional arguments or keyword arguments.
+# Keyword arguments are passed as --KEY VALUE. Positional arguments are passed
+# after a single --.
+#
+# Example: python_func -f my_function -p my_file.py --kwarg val -- --arg1 arg2
+#
+# Arguments:
+# -f|--function: The name of the function to run.
+# -p|--path: The path to the Python file.
+# -J|--json-output: Serialize the output as JSON.
+# --clean: Delete the virtualenv after running the function.
+# --debug: Print the Python script that was executed.
+# --quiet: Do not print any output from the virtualenv creation.
 function python_func() {
     local function
     local json_out="False"
@@ -325,6 +350,8 @@ except Exception as e:
 }
 
 # Usage: python_black [FILES...]
+#
+# Run the black code formatter on the specified files.
 function python_black() {
     mkdir -p "$HOME/.redshell/python_black"
     pushd "$HOME/.redshell/python_black"

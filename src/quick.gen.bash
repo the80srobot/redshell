@@ -284,6 +284,18 @@ function __q() {
       shift
       hg_root "$@"
       ;;
+    hg_repo_name|repo_name)
+      shift
+      hg_repo_name "$@"
+      ;;
+    hg_branch_name|branch_name)
+      shift
+      hg_branch_name "$@"
+      ;;
+    hg_ps1_widget|ps1_widget)
+      shift
+      hg_ps1_widget "$@"
+      ;;
     *)
       if [ -n "$1" ]; then
         echo "Module hg has no function $1"
@@ -1226,7 +1238,7 @@ function __q_help() {
     tput bold
     echo -n '  omdb'
     tput sgr0
-    echo '              IMDB (and actually open movie database) helpers for bash.'
+    echo '              OMDB (Open Movie Database) helpers for bash.'
     tput bold
     echo -n '  path'
     tput sgr0
@@ -1587,8 +1599,27 @@ function __q_help() {
       tput sgr0
       tput setaf 6
       tput sgr0
-      echo '    Is the current directory a mercurial repo? Fast check. Prints the path to the'
-      echo '    repo root, or nothing.'
+      echo '    Fast check for mercurial. (About 100 times faster than `hg root`.) Prints the'
+      echo '    root directory of the repository if the current directory is in a repository.'
+      echo '    Otherwise returns 1.'
+      tput bold
+      echo -n '  repo_name'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      tput bold
+      echo -n '  branch_name'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      tput bold
+      echo -n '  ps1_widget'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
       ;;
     init)
       echo "Usage: q init FUNCTION [ARG...]"
@@ -2648,7 +2679,7 @@ function __q_help() {
       ;;
     omdb)
       echo "Usage: q omdb FUNCTION [ARG...]"
-      echo "IMDB (and actually open movie database) helpers for bash."
+      echo "OMDB (Open Movie Database) helpers for bash."
       echo
       echo "Available functions:"
       tput bold
@@ -2814,6 +2845,9 @@ function __q_help() {
       echo -n ' ['
       tput sgr0
       tput bold
+      echo -n ' -q|--quiet'
+      tput sgr0
+      tput bold
       echo -n ' VERSION'
       tput sgr0
       tput bold
@@ -2875,12 +2909,15 @@ function __q_help() {
       tput sgr0
       tput setaf 6
       tput sgr0
+      echo '    Find all available Python binaries in the PATH and their versions.'
+      echo '    Prints a tab-separated list: VERSION  PATH  SHORT_VERSION'
       tput bold
       echo -n '  latest'
       echo
       tput sgr0
       tput setaf 6
       tput sgr0
+      echo '    Returns the path to the latest available Python binary.'
       tput bold
       echo -n '  func'
       echo -n ' -f|--function'
@@ -2926,6 +2963,15 @@ function __q_help() {
       echo -n ' ['
       tput sgr0
       tput bold
+      echo -n ' --quiet'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
       echo -n ' --'
       tput sgr0
       tput bold
@@ -2939,6 +2985,23 @@ function __q_help() {
       tput sgr0
       tput setaf 6
       tput sgr0
+      echo '    Run a Python function from a file. Calls `q python venv` to setup the'
+      echo '    environment. The function must be defined in the file and must be a top-level'
+      echo '    function. The function must be defined with type hints for all arguments.'
+      echo '    '
+      echo '    Function arguments are passed as positional arguments or keyword arguments.'
+      echo '    Keyword arguments are passed as --KEY VALUE. Positional arguments are passed'
+      echo '    after a single --.'
+      echo '    '
+      echo '    Example: python_func -f my_function -p my_file.py --kwarg val -- --arg1 arg2'
+      echo '    '
+      echo '    Arguments:'
+      echo '    -f|--function: The name of the function to run.'
+      echo '    -p|--path: The path to the Python file.'
+      echo '    -J|--json-output: Serialize the output as JSON.'
+      echo '    --clean: Delete the virtualenv after running the function.'
+      echo '    --debug: Print the Python script that was executed.'
+      echo '    --quiet: Do not print any output from the virtualenv creation.'
       tput bold
       echo -n '  black'
       echo -n ' ['
@@ -2958,6 +3021,7 @@ function __q_help() {
       tput sgr0
       tput setaf 6
       tput sgr0
+      echo '    Run the black code formatter on the specified files.'
       ;;
     quick)
       echo "Usage: q quick FUNCTION [ARG...]"
@@ -3601,6 +3665,15 @@ function __q_dump() {
     case "$2" in
     root)
       type hg_root
+      ;;
+    repo_name)
+      type hg_repo_name
+      ;;
+    branch_name)
+      type hg_branch_name
+      ;;
+    ps1_widget)
+      type hg_ps1_widget
       ;;
     *)
       echo "Unknown function $2"
@@ -4359,7 +4432,7 @@ function __q_compgen() {
       return 0
       ;;
     hg)
-      COMPREPLY=($(compgen -W "help root" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help root repo_name branch_name ps1_widget" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     init)
@@ -6599,6 +6672,204 @@ function __q_compgen() {
     hg)
       case "${COMP_WORDS[2]}" in
       root)
+        # hg_root
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      repo_name)
+        # [ARG...]
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      branch_name)
+        # [ARG...]
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      ps1_widget)
         # [ARG...]
         local switch_names=()
         local keyword_names=()
@@ -12117,12 +12388,12 @@ function __q_compgen() {
     python)
       case "${COMP_WORDS[2]}" in
       venv)
-        # python_venv [-I|--install-requirements] [-p|--python-path PATH] [VERSION]
+        # python_venv [-I|--install-requirements] [-p|--python-path PATH] [-q|--quiet] [VERSION]
         local switch_names=(-I --install-requirements)
-        local keyword_names=(-p --python-path)
+        local keyword_names=(-p --python-path -q --quiet)
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(STRING)
+        local positional_types=()
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -12141,6 +12412,9 @@ function __q_compgen() {
               ;;
             -p)
               state="EXPECT_VALUE_FILE"
+              ;;
+            -q)
+              state="EXPECT_VALUE_STRING"
               ;;
             *)
               state="EXPECT_ARG"
@@ -12261,7 +12535,7 @@ function __q_compgen() {
         return 0
         ;;
       detect)
-        # [ARG...]
+        # python_detect
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -12327,7 +12601,7 @@ function __q_compgen() {
         return 0
         ;;
       latest)
-        # [ARG...]
+        # python_latest
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -12393,8 +12667,8 @@ function __q_compgen() {
         return 0
         ;;
       func)
-        # python_func -f|--function FUNCTION -p|--path PATH [-J|--json_output] [--clean] [--debug] [--] [ARGS...]
-        local switch_names=(-J --json_output --clean --debug)
+        # python_func -f|--function FUNCTION -p|--path PATH [-J|--json_output] [--clean] [--debug] [--quiet] [--] [ARGS...]
+        local switch_names=(-J --json_output --clean --debug --quiet)
         local keyword_names=(-f --function -p --path --)
         local repeated_names=()
         local repeated_positions=()
@@ -12425,6 +12699,9 @@ function __q_compgen() {
               state="EXPECT_ARG"
               ;;
             --debug)
+              state="EXPECT_ARG"
+              ;;
+            --quiet)
               state="EXPECT_ARG"
               ;;
             --)

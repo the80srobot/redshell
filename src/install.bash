@@ -3,6 +3,8 @@
 
 # Install a file into another file, optionally with a keyword.
 
+source "file.bash"
+
 if [[ -z "${_REDSHELL_INSTALL}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_INSTALL=1
 
@@ -110,7 +112,7 @@ function install_file() {
         echo "${char} /${section} ###" >> "${tmp}"
     fi
 
-    local bak="$(mktemp -t "$(basename "${dfile}")")"
+    local bak="$(file_mktemp "$(basename "${dfile}")")"
     >&2 echo "Installing ${sfile} -> ${dfile} (${section}). Backup up to ${bak}..."
     mv "${dfile}" "${bak}" || return 3
     mv "${tmp}" "${dfile}" || return 4

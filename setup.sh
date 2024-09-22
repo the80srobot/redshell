@@ -2,21 +2,21 @@
 
 set -e
 
-echo "Starting redshell setup..."
+>&2 echo "Starting redshell setup..."
 
 [[ -z "${TERM}" ]] && export TERM=xterm
 pushd ./src
 for f in ./*.bash; do
-    echo "Sourcing $f..."
-    source $f || echo "That blew up: $?"
+    >&2 echo "Sourcing $f..."
+    source $f || echo "That blew up: $?" >&2
 done
 popd
 
-echo "Installing rc files..."
+>&2 echo "Installing rc files..."
 reinstall_file rc/bash_profile ~/.bash_profile
 reinstall_file rc/screenrc ~/.screenrc
 
-echo "Installing src..."
+>&2 echo "Installing src..."
 rm -rf ~/.redshell
 mkdir -p ~/.redshell/src
 cp -r rc ./src ~/.redshell/
@@ -26,20 +26,25 @@ cp -r rc ./asciiart ~/.redshell/
 # Create the persistent directory, if it doesn't exist yet.
 mkdir -p ~/.redshell_persist
 
-echo "Running OS-specific setup..."
+>&2 echo "Running OS-specific setup..."
 if [[ `uname -a` == *Darwin* ]]
 then
     mac_setup
 elif which dnf
 then
     fedora_setup
+elif which apt-get
+then
+    debian_setup
+else
+    >&2 echo "Unknown OS. Skipping OS-specific setup."
 fi
 
 if [[ -f ~/.redshell_visual ]]; then
-    echo "Visual identity already set."
+    >&2 echo "Visual identity already set."
 else
-    echo "Setting default visual identity. Run select_visual to change."
-    echo "bmo" > ~/.redshell_visual
+    >&2 echo "Setting default visual identity. Run select_visual to change."
+    >&2 echo "bmo" > ~/.redshell_visual
 fi
 
 quick_rebuild

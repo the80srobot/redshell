@@ -1,7 +1,7 @@
 # # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
-# IMDB (and actually open movie database) helpers for bash.
+# OMDB (Open Movie Database) helpers for bash.
 
 source "crypt.bash"
 source "keys.bash"
