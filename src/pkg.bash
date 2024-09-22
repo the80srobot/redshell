@@ -16,8 +16,7 @@ function pkg_install_or_skip() {
     if which brew > /dev/null; then
         brew_install_or_skip "${@}"
     elif which apt-get > /dev/null; then
-        # TODO(adam): Actually implement this.
-        apt_install_or_skip "${@}"
+        debian_install_or_skip "${@}"
     elif which dnf > /dev/null; then
         dnf_install_or_skip "${@}"
     else
