@@ -24,6 +24,8 @@ function dnf_install_or_skip() {
     for package in "${@}"; do
         if echo "${installed}" | grep -q "${package}"; then
             echo "Package ${package} is already installed."
+        elif [[ -n "${_REDSHELL_SKIP_INSTALL}" ]]; then
+            echo "Skipping package ${package} installation."
         else
             echo "Installing package ${package}..."
             sudo dnf -y install "${package}"
