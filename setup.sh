@@ -47,4 +47,5 @@ else
     >&2 echo "bmo" > ~/.redshell_visual
 fi
 
-quick_rebuild
+>&2 echo "Redshell installed. Will now try to rebuild the quick function index with any local modules."
+quick_rebuild || >&2 echo "Failed to rebuild quick index. Local modules might not be available via 'q'."
