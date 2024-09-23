@@ -71,6 +71,13 @@ function install_file() {
     [[ -z "${char}" ]] && char="###"
     [[ -z "${section}" ]] && section="REDSHELL"
 
+    # Special case if the file doesn't exist yet.
+    if [[ ! -f "${dfile}" ]]; then
+        >&2 echo "Copying ${sfile} -> ${dfile} (${section})."
+        cp "${sfile}" "${dfile}" || return 3
+        return
+    fi
+
     local tmp
     tmp="$(mktemp)"
 
