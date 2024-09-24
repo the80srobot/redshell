@@ -7,7 +7,7 @@ if [[ -z "${_REDSHELL_NEWS}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_NEWS=1
 
 function news_all() {
-    news_weather zrh
+    news_weather "${@}"
     news_nytimes
     news_npr
     news_pbs
