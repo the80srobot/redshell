@@ -70,13 +70,13 @@ function python_venv() {
 
     # Ensure PIP is installed.
     "${pythonpath}" -m pip --help 2> /dev/null > /dev/null \
-        || __python_ensurepip "${pythonpath}"
+        || __python_ensurepip "${pythonpath}" 2> $stderr
     
     if [[ -d "./.venv" ]]; then
         echo "Activating existing environment" >$stderr
         source ./.venv/bin/activate
         if [[ -n "${install_reqs}" ]]; then
-            pip install --upgrade -r "${install_reqs}"
+            pip install --upgrade -r "${install_reqs}" 2> $stderr
         fi
         return 0
     fi
@@ -85,18 +85,18 @@ function python_venv() {
     "${pythonpath}" -m virtualenv --help 2> /dev/null > /dev/null
     if [[ "$?" -ne 0 ]]; then
         >&2 echo "Installing virtualenv..."
-        __python_ensurevenv "${pythonpath}" || return 2
+        __python_ensurevenv "${pythonpath}" 2> $stderr || return 2
     fi
 
     echo "Creating virtualenv in $(pwd)/.venv with ${pythonpath}" >$stderr
     "${pythonpath}" -m virtualenv \
         --python="${pythonpath}" \
         .venv \
-        || return 3
-    __fix_stupid_virtualenv_behavior "${pythonpath}" "$(pwd)/.venv" || return $?
+        2> $stderr || return 3
+    __fix_stupid_virtualenv_behavior "${pythonpath}" "$(pwd)/.venv" 2> $stderr || return $?
     source ./.venv/bin/activate
-    pip install --upgrade pip
-    [[ -f requirements.txt ]] && pip install --upgrade -r requirements.txt
+    pip install --upgrade pip 2> $stderr
+    [[ -f requirements.txt ]] && pip install --upgrade -r requirements.txt 2> $stderr
     echo "Virtualenv created" >$stderr
 }
 
