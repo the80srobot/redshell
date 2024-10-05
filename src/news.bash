@@ -15,6 +15,10 @@ function news_all() {
     news_cnbc
 }
 
+function news_stocks() {
+    python_pip_run tstock "${@}"
+}
+
 function news_weather() {
     curl wttr.in/"${1}"
 }

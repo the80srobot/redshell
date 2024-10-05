@@ -102,6 +102,58 @@ function python_venv() {
 
 alias venv=python_venv
 
+function python_pip_run() {
+    local pythonpath="$(python_latest)"
+    local package
+    local exe
+    while [[ "${#}" -ne 0 ]]; do
+        case "$1" in
+            -p|--python-path)
+                pythonpath="$(which "$2")"
+                shift
+                ;;
+            -P|--package)
+                package="$2"
+                shift
+                ;;
+            *)
+                exe="$1"
+                package="$1"
+                break
+                ;;
+            --)
+                break
+                ;;
+        esac
+        shift
+    done
+
+    if [[ -z "${package}" ]]; then
+        >&2 echo "No package specified"
+        return 1
+    fi
+
+    if [[ -z "${exe}" ]]; then
+        if [[ -z "$1" ]]; then
+            >&2 echo "No executable specified"
+            return 2
+        fi
+        exe="$1"
+    fi
+
+    local dir="${HOME}/.redshell/python_pip_run/${package}"
+    local ret
+    mkdir -p "${dir}"
+    pushd "${dir}" > /dev/null
+    python_venv -p "${pythonpath}" --quiet || return 2
+    which "${exe}" > /dev/null || pip install "${package}"
+    "${exe}" "${@:2}"
+    ret="$?"
+    deactivate
+    popd > /dev/null
+    return "${ret}"
+}
+
 # Usage: python_ipynb [-I|--install-requirements] [-p|--python-path PATH] [VERSION]
 #
 # Creates a new virtualenv in the current directory (as venv) and opens a new
@@ -151,7 +203,7 @@ function python_latest() {
     fi
 }
 
-# Usage: python_func -f|--function FUNCTION -p|--path PATH [-J|--json_output] [--clean] [--debug] [--quiet] [--] [ARGS...]
+# Usage: python_func -f|--function FUNCTION -p|--path PATH [-J|--json_output] [--clean] [--debug] [--quiet] [--no-venv] [--] [ARGS...]
 #
 # Run a Python function from a file. Calls `q python venv` to setup the
 # environment. The function must be defined in the file and must be a top-level
@@ -170,6 +222,7 @@ function python_latest() {
 # --clean: Delete the virtualenv after running the function.
 # --debug: Print the Python script that was executed.
 # --quiet: Do not print any output from the virtualenv creation.
+# --no-venv: Do not create a virtualenv.
 function python_func() {
     local function
     local json_out="False"
@@ -179,6 +232,7 @@ function python_func() {
     local clean=""
     local debug
     local quiet
+    local use_venv="1"
 
     while [[ "${#}" -ne 0 ]]; do
         case "$1" in
@@ -201,6 +255,9 @@ function python_func() {
                 ;;
             --quiet)
                 quiet="True"
+                ;;
+            --no-venv)
+                use_venv=""
                 ;;
             --)
                 shift
@@ -239,10 +296,13 @@ function python_func() {
     fi
 
     pushd "$(dirname "${path}")" > /dev/null
-    if [[ -n "${quiet}" ]]; then
-        python_venv --quiet
-    else
-        python_venv
+
+    if [[ -n "${use_venv}" ]]; then
+        if [[ -n "${quiet}" ]]; then
+            python_venv --quiet
+        else
+            python_venv
+        fi
     fi
 
     script="from $(basename "${path}" .py) import *
@@ -323,10 +383,12 @@ except Exception as e:
     sys.exit(1)
 "
     local ret
-    python -c "${script}"
+    local exe="python"
+    [[ -z "${use_venv}" ]] && exe="$(python_latest)"
+    "${exe}" -c "${script}"
     ret="$?"
 
-    deactivate
+    [[ -n "${use_venv}" ]] && deactivate
     if [[ -n "${clean}" ]]; then
         >&2 echo "Cleaning up..."
         rm -rf .venv

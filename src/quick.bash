@@ -22,6 +22,7 @@ function __quick_build_all() {
     local paths_arg="$(strings_join "," "${all_paths[@]}")"
     python_func \
         -p "${rs_path}/quick.py" \
+        --no-venv \
         build_all \
         --paths "${paths_arg}" \
         --output "${rs_path}/quick.gen.bash"
