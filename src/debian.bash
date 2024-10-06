@@ -15,7 +15,9 @@ function debian_setup() {
         git \
         rsync \
         python3-pip \
-        ugrep
+        ugrep \
+        gh \
+        vim
 }
 
 
