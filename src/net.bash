@@ -6,6 +6,14 @@
 if [[ -z "${_REDSHELL_NET}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_NET=1
 
+# Check if you have a usable internet connection.
+#
+# Usage: net_online
+function net_online() {
+    timeout 1 curl https://captive.apple.com 2>/dev/null \
+        | grep -q '<TITLE>Success</TITLE>'
+}
+
 # Create a data URL from a file.
 #
 # Usage: dataurl FILE
