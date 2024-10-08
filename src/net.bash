@@ -14,6 +14,66 @@ function net_online() {
         | grep -q '<TITLE>Success</TITLE>'
 }
 
+# Usage: net_ccurl [-M|--max-age SECONDS] [-K|--key KEY] -- CURL_ARGS...
+#
+# Cached curl wrapper. Request parameters are converted to a key and used to
+# cache the response.
+#
+# Options:
+#   -M, --max-age SECONDS  Maximum age of the cache in seconds. Default is 3600.
+#   -K, --key KEY          Use the given key instead of the request parameters.
+function net_ccurl() {
+    local max_age=3600
+    local key
+    local curl_args=()
+    while [[ "${#}" -ne 0 ]]; do
+        case "${1}" in
+            -M|--max-age)
+                max_age="${2}"
+                shift
+                ;;
+            -K|--key)
+                key="${2}"
+                shift
+                ;;
+            --)
+                shift
+                break
+                ;;
+            *)
+                >&2 echo "Unknown option: ${1}"
+                return 1
+                ;;
+        esac
+        shift
+    done
+    curl_args=("${@}")
+
+    [[ -z "${key}" ]] && key="$(
+        echo "${curl_args[@]}"
+    )"
+    key="$(perl -pe 's/[^a-zA-Z0-9]/_/g' <<< "${key}")"
+    local cache_dir="${HOME}/.redshell_persist/net_ccurl"
+    local cache_file="${cache_dir}/${key}"
+    
+    if [[ -f "${cache_file}" ]]; then
+        local age="$(file_age -s "${cache_file}")"
+        if [[ "${age}" -lt "${max_age}" ]]; then
+            cat "${cache_file}"
+            return
+        fi
+        # If we're offline, then even a stale cache is better than nothing.
+        if ! net_online; then
+            cat "${cache_file}"
+            return
+        fi
+    fi
+
+    mkdir -p "${cache_dir}"
+    curl "${curl_args[@]}" > "${cache_file}" || return "$?"
+    cat "${cache_file}"
+}
+
 # Create a data URL from a file.
 #
 # Usage: dataurl FILE

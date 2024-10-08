@@ -23,7 +23,7 @@ function mtg_oracle_json() {
     local max_age=1000000
     local age
     [[ -f "${persist}" ]] && age="$(file_age -s "${persist}")"
-    if [[ -z "${age}" || "${age}" -gt "${max_age}" ]]; then
+    if [[ -z "${age}" || ( "${age}" -gt "${max_age}" && net_online ) ]]; then
         echo "Fetching latest oracle cards from Scryfall..." >&2
         mkdir -p "$(dirname "${persist}")"
         local uri=$(__mtg_latest_scryfall_oracle_cards_uri)

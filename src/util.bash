@@ -129,7 +129,7 @@ function install_heroku_cli() {
 alias heroku_install_cli=install_heroku_cli
 
 function bazel() {
-    which bazel > /dev/null || {
+    type -P bazel > /dev/null || {
         >&2 echo "No bazel installation - downloading bazelisk..."
         local os="unknown"
         local arch="unknown"
@@ -156,7 +156,7 @@ function bazel() {
         curl -L "${url}" > "${HOME}/mbin/bazel"
         chmod a+x "${HOME}/mbin/bazel"
     }
-    "$(which bazel)" "${@}"
+    "$(type -P bazel)" "${@}"
 }
 
 function jup() {
