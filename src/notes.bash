@@ -441,12 +441,13 @@ Apply Changes"
 
 alias nperl=notes_perl
 
-# Usage: notes_api_match_files [-f] [-a] [TERM ...]
+# Usage: notes_api_list_notes [-f] [-a] [TERM ...]
 # Outputs a list of notes files that match the given terms.
 #
 # Options:
 # -f: Only match files, not directories.
 # -a: Include archived files.
+# -w: Match whole words.
 #
 # Outputs:
 # 1. relative path

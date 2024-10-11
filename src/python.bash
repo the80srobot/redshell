@@ -102,6 +102,9 @@ function python_venv() {
 
 alias venv=python_venv
 
+# Usage: python_pip_run [-p|--python-path PATH] [-P|--package PACKAGE] [EXE] [ARGS...]
+#
+# Run a Python script with the specified package installed.
 function python_pip_run() {
     local pythonpath="$(python_latest)"
     local package

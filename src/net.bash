@@ -14,6 +14,39 @@ function net_online() {
         | grep -q '<TITLE>Success</TITLE>'
 }
 
+function net_health() {
+    {
+        echo "== ONLINE STATUS =="
+        if net_online; then
+            echo "[OK] - You are online."
+        else
+            echo "[No connection]"
+            return 1
+        fi
+
+        echo "== ROUND TRIP TIME =="
+        echo -n "RTT to facebook.com: "
+        echo "$(net_rtt facebook.com)"
+
+        echo -n "RTT to google.com: "
+        echo "$(net_rtt google.com)"
+
+        echo "== SPEED TEST =="
+        python_pip_run speedtest-cli
+    } >&2
+}
+
+function net_ssh_fingerprint() {
+    local ip="${1}"
+    2>/dev/null ssh-keyscan -T1 "${ip}" | ssh-keygen -lf -
+}
+
+function net_dump_cert() {
+    echo \
+        | openssl s_client -showcerts -servername gnupg.org -connect gnupg.org:443 2>/dev/null \
+        | openssl x509 -inform pem -noout -text
+}
+
 # Usage: net_ccurl [-M|--max-age SECONDS] [-K|--key KEY] -- CURL_ARGS...
 #
 # Cached curl wrapper. Request parameters are converted to a key and used to
