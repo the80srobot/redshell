@@ -41,7 +41,7 @@ function __f_args() {
 function fcc() {
     IFS=$'\t' read -r -a args <<< "$(__f_args "${@}")"
     find "${args[0]}" \
-        -iname "*.c" -or -iname "*.h" -or -iname "*.cc" -or -iname "*.h" -or -iname "*.cpp" \
+        \( -iname "*.c" -or -iname "*.h" -or -iname "*.cc" -or -iname "*.h" -or -iname "*.cpp" \) \
         -exec grep --color -B 2 -A 4 "${args[1]}" "${args[2]}" {} \+
 }
 
@@ -55,7 +55,7 @@ function fgo() {
 function fjava() {
     IFS=$'\t' read -r -a args <<< "$(__f_args "${@}")"
     find "${args[0]}" \
-        -iname "*.java" -or -iname "*.kt" \
+        \( -iname "*.java" -or -iname "*.kt" \) \
         -exec grep --color -B 2 -A 4 "${args[1]}" "${args[2]}" {} \+
 }
 
@@ -71,6 +71,33 @@ function fd() {
     local path
     path="$(find "." -ipath "*${1}*" | head -1)"
     [[ -n "${path}" ]] && pushd "$(dirname "${path}")"
+}
+
+# Usage find_replace [DIR] GLOB NEEDLE REPLACEMENT
+function find_replace() {
+    local dir
+    local glob
+    local needle
+    local replacement
+    case "${#}" in
+        3)
+            dir="."
+            glob="${1}"
+            needle="${2}"
+            replacement="${3}"
+            ;;
+        4)
+            dir="${1}"
+            glob="${2}"
+            needle="${3}"
+            replacement="${4}"
+            ;;
+        *)
+            return 2;
+        ;;
+    esac
+
+    find "${dir}" -iname "${glob}" -exec sed -i "s/${needle}/${replacement}/g" {} \;
 }
 
 fi # _REDSHELL_FIND
