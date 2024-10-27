@@ -20,10 +20,14 @@ CET:Europe/Paris
 CEST:Europe/Paris
 CST:America/Chicago
 CDT:America/Chicago
+Central:America/Chicago
 EST:America/New_York
 EDT:America/New_York
+NYC:America/New_York
+Eastern:America/New_York
 PST:America/Los_Angeles
 PDT:America/Los_Angeles
+Pacific:America/Chicago
 America/San Francisco:America/Los_Angeles
 Asia/Bangalore:Asia/Kolkata
 Asia/New Delhi:Asia/Kolkata
