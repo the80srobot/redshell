@@ -1144,6 +1144,30 @@ function __q() {
       shift
       __q_help "time" "$@"
       ;;
+    time_zones|zones)
+      shift
+      time_zones "$@"
+      ;;
+    time_get_tz|get_tz)
+      shift
+      time_get_tz "$@"
+      ;;
+    time_local|local)
+      shift
+      time_local "$@"
+      ;;
+    time_utc|utc)
+      shift
+      time_utc "$@"
+      ;;
+    time_in|in)
+      shift
+      time_in "$@"
+      ;;
+    time_tz_diff|tz_diff)
+      shift
+      time_tz_diff "$@"
+      ;;
     *)
       if [ -n "$1" ]; then
         echo "Module time has no function $1"
@@ -1423,6 +1447,10 @@ function __q_help() {
     echo -n '  strings'
     tput sgr0
     echo '           String helpers for bash.'
+    tput bold
+    echo -n '  time'
+    tput sgr0
+    echo '              Time and date helpers.'
     tput bold
     echo -n '  transit'
     tput sgr0
@@ -3640,6 +3668,44 @@ function __q_help() {
       echo "Time and date helpers."
       echo
       echo "Available functions:"
+      tput bold
+      echo -n '  zones'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      echo '    List all time zones.'
+      tput bold
+      echo -n '  get_tz'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      tput bold
+      echo -n '  local'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      tput bold
+      echo -n '  utc'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      tput bold
+      echo -n '  in'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      echo '    Usage time_in TIMEZONE [FORMAT]'
+      tput bold
+      echo -n '  tz_diff'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
       ;;
     transit)
       echo "Usage: q transit FUNCTION [ARG...]"
@@ -4783,6 +4849,30 @@ function __q_dump() {
     ;;
   time)
     case "$2" in
+    zones)
+      type time_zones
+      ;;
+    __time_get_tz_alias)
+      type __time_get_tz_alias
+      ;;
+    __time_get_tz)
+      type __time_get_tz
+      ;;
+    get_tz)
+      type time_get_tz
+      ;;
+    local)
+      type time_local
+      ;;
+    utc)
+      type time_utc
+      ;;
+    in)
+      type time_in
+      ;;
+    tz_diff)
+      type time_tz_diff
+      ;;
     *)
       echo "Unknown function $2"
       return 1
@@ -5019,7 +5109,7 @@ function __q_compgen() {
       return 0
       ;;
     time)
-      COMPREPLY=($(compgen -W "help " -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help zones get_tz local utc in tz_diff" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     transit)
@@ -15775,6 +15865,406 @@ function __q_compgen() {
         local repeated_names=()
         local repeated_positions=()
         local positional_types=(STRING)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      esac
+      ;;
+    time)
+      case "${COMP_WORDS[2]}" in
+      zones)
+        # time_zones
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      get_tz)
+        # [ARG...]
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      local)
+        # [ARG...]
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      utc)
+        # [ARG...]
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      in)
+        # [ARG...]
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      tz_diff)
+        # [ARG...]
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
         local i=3
         local state="EXPECT_ARG"
         local pos=0
