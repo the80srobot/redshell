@@ -27,7 +27,7 @@ NYC:America/New_York
 Eastern:America/New_York
 PST:America/Los_Angeles
 PDT:America/Los_Angeles
-Pacific:America/Chicago
+Pacific:America/Los_Angeles
 America/San Francisco:America/Los_Angeles
 Asia/Bangalore:Asia/Kolkata
 Asia/New Delhi:Asia/Kolkata
@@ -62,7 +62,7 @@ function __time_get_tz() {
     query="$(__time_get_tz_alias "${input}")" || query="${input}"
     local tmp=$(mktemp)
     time_zones > "${tmp}"
-    ug -iw --fuzzy=best1 "${query}" "${tmp}"
+    ug -iw --fuzzy=best1 "${query}" "${tmp}" 2>/dev/null
 }
 
 function time_get_tz() {
