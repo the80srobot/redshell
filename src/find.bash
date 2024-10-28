@@ -3,6 +3,8 @@
 
 # Shorthands for find and grep.
 
+. "path.bash"
+
 if [[ -z "${_REDSHELL_FIND}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_FIND=1
 
@@ -70,7 +72,7 @@ function fd() {
     local needle="$1"
     local path
     path="$(find "." -ipath "*${1}*" | head -1)"
-    [[ -n "${path}" ]] && pushd "$(dirname "${path}")"
+    [[ -n "${path}" ]] && path_push "$(dirname "${path}")"
 }
 
 # Usage find_replace [DIR] GLOB NEEDLE REPLACEMENT
