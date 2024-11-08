@@ -155,4 +155,12 @@ function time_tz_diff() {
     printf "%02d:%02d hours\t(%d seconds)\n" $(( diff / 3600 )) $(( (diff % 3600) / 60 )) "${real_diff}"
 }
 
+function time_ts() {
+    if [[ "$(uname)" == "Darwin" ]]; then
+        date -r "${1}" "+%Y-%m-%d %H:%M:%S"
+    else
+        date -d "@${1}" "+%Y-%m-%d %H:%M:%S"
+    fi
+}
+
 fi # _REDSHELL_TIME
