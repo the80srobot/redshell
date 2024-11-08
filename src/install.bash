@@ -63,7 +63,7 @@ function install_file() {
         shift
     done
 
-    if [[ -z "${sfile}" || -z "${dfile}" ]]; then
+    if [[ -z "${dfile}" || ( -z "${sfile}" && -z "${uninstall}" ) ]]; then
         echo "Usage: install_file --sfile SFILE --dfile DFILE [--char CHAR] [--section SECTION] [--append] [--uninstall]" >&2
         return 2
     fi
@@ -102,7 +102,7 @@ function install_file() {
         if [[ "${line}" == "${char} /${section} ###" ]]; then
             in_section=
             if [[ -z "${append}" && -z "${uninstall}" ]]; then
-                cat "${sfile}" >> "${tmp}"
+                [[ -n "${sfile}" ]] && cat "${sfile}" >> "${tmp}"
                 echo "" >> "${tmp}"
                 replaced=1
             fi
