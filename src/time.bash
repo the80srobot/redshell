@@ -6,7 +6,10 @@
 if [[ -z "${_REDSHELL_TIME}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_TIME=1
 
-# List all time zones.
+# List all time zones know to the system. (In /usr/share/zoneinfo.)
+#
+# This doesn't include aliases declared in this package.
+#
 # Usage: time_zones
 function time_zones() {
     find -L /usr/share/zoneinfo -depth 2 -type f -exec file {} \+ \
@@ -89,6 +92,10 @@ function time_utc() {
 }
 
 # Usage time_in TIMEZONE [FORMAT]
+#
+# Sets the time zone to TIMEZONE and runs date with the remaining arguments.
+# Timezone resolution suppors fuzzy matching and aliases, so that cities like
+# San Francisco work as timezones.
 function time_in() {
     local tz
     local tz_match

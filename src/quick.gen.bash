@@ -3674,7 +3674,9 @@ function __q_help() {
       tput sgr0
       tput setaf 6
       tput sgr0
-      echo '    List all time zones.'
+      echo '    List all time zones know to the system. (In /usr/share/zoneinfo.)'
+      echo '    '
+      echo '    This doesn'"'"'t include aliases declared in this package.'
       tput bold
       echo -n '  get_tz'
       echo
@@ -3700,6 +3702,10 @@ function __q_help() {
       tput setaf 6
       tput sgr0
       echo '    Usage time_in TIMEZONE [FORMAT]'
+      echo '    '
+      echo '    Sets the time zone to TIMEZONE and runs date with the remaining arguments.'
+      echo '    Timezone resolution suppors fuzzy matching and aliases, so that cities like'
+      echo '    San Francisco work as timezones.'
       tput bold
       echo -n '  tz_diff'
       echo
