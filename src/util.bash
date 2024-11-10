@@ -6,17 +6,15 @@
 if [[ -z "${_REDSHELL_UTIL}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_UTIL=1
 
-function sud() {
+function util_sudo() {
     sudo bash -c "REDSHELL_SILENT=1 source ${HOME}/.bash_profile && $*"
 }
-
 
 function reload() {
     tput reset
     history -a
     exec $(which bash) -l
 }
-
 
 function util_markdown() {
     local path="$HOME/.Markdown.pl"

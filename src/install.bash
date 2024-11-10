@@ -74,7 +74,11 @@ function install_file() {
     # Special case if the file doesn't exist yet.
     if [[ ! -f "${dfile}" ]]; then
         >&2 echo "Copying ${sfile} -> ${dfile} (${section})."
-        cp "${sfile}" "${dfile}" || return 3
+        mkdir -p "$(dirname "${dfile}")" || return 3
+        echo "${char} ${section} ###" > "${dfile}" || return 3
+        cat "${sfile}" >> "${dfile}" || return 3
+        echo "" >> "${dfile}" || return 3
+        echo "${char} /${section} ###" >> "${dfile}" || return 3
         return
     fi
 
