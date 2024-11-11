@@ -236,7 +236,13 @@ function wifi_device() {
 function net_wifi_name() {
     # On mac, there's networksetup.
     if [[ "$(uname -a)" == *Darwin* ]]; then
-        networksetup -getairportnetwork "$(wifi_device)" | perl -pe 's/.*Network: //'
+        # On Sequoia and up, Apple have once again fucked up their own
+        # replacement for the interface they fucked up in the previous version.
+        if [[ "$(uname -r | cut -d. -f1)" -ge 24 ]]; then
+            ipconfig getsummary en0 | awk -F ' SSID : '  '/ SSID : / {print $2}'
+        else
+            networksetup -getairportnetwork "$(wifi_device)" | perl -pe 's/.*Network: //'
+        fi
         return
     fi
 
