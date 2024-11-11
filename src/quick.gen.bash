@@ -333,34 +333,6 @@ function __q() {
       ;;
     esac
     ;;
-  grepo)
-    shift
-    case "$1" in
-    help|-h|--help|?)
-      shift
-      __q_help "grepo" "$@"
-      ;;
-    grepo_checkout|checkout)
-      shift
-      grepo_checkout "$@"
-      ;;
-    grepo_lfs_pull|lfs_pull)
-      shift
-      grepo_lfs_pull "$@"
-      ;;
-    grepo_remove_branch|remove_branch)
-      shift
-      grepo_remove_branch "$@"
-      ;;
-    *)
-      if [ -n "$1" ]; then
-        echo "Module grepo has no function $1"
-      fi
-      __q_help grepo
-      return 1
-      ;;
-    esac
-    ;;
   hg)
     shift
     case "$1" in
@@ -1240,9 +1212,9 @@ function __q() {
       shift
       __q_help "util" "$@"
       ;;
-    sud)
+    util_sudo|sudo)
       shift
-      sud "$@"
+      util_sudo "$@"
       ;;
     reload)
       shift
@@ -1407,10 +1379,6 @@ function __q_help() {
     echo -n '  go'
     tput sgr0
     echo '                Helpers for dealing with Go packages.'
-    tput bold
-    echo -n '  grepo'
-    tput sgr0
-    echo '             Automate grepo (aosp repo tool) operations.'
     tput bold
     echo -n '  hg'
     tput sgr0
@@ -1886,30 +1854,6 @@ function __q_help() {
       echo "Available functions:"
       tput bold
       echo -n '  pkg_do'
-      echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      ;;
-    grepo)
-      echo "Usage: q grepo FUNCTION [ARG...]"
-      echo "Automate grepo (aosp repo tool) operations."
-      echo
-      echo "Available functions:"
-      tput bold
-      echo -n '  checkout'
-      echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
-      echo -n '  lfs_pull'
-      echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
-      echo -n '  remove_branch'
       echo
       tput sgr0
       tput setaf 6
@@ -3807,7 +3751,7 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
-      echo -n '  sud'
+      echo -n '  sudo'
       echo
       tput sgr0
       tput setaf 6
@@ -4246,23 +4190,6 @@ function __q_dump() {
     case "$2" in
     pkg_do)
       type go_pkg_do
-      ;;
-    *)
-      echo "Unknown function $2"
-      return 1
-      ;;
-    esac
-    ;;
-  grepo)
-    case "$2" in
-    checkout)
-      type grepo_checkout
-      ;;
-    lfs_pull)
-      type grepo_lfs_pull
-      ;;
-    remove_branch)
-      type grepo_remove_branch
       ;;
     *)
       echo "Unknown function $2"
@@ -4997,8 +4924,8 @@ function __q_dump() {
     ;;
   util)
     case "$2" in
-    sud)
-      type sud
+    sudo)
+      type util_sudo
       ;;
     reload)
       type reload
@@ -5085,7 +5012,7 @@ function __q_dump() {
 }
 
 function __q_compgen() {
-  local modules="ascii_art bash browser crypt debian fedora file find git go grepo hg init install keys mac media monitor mtg multiple_choice net news notes omdb path pkg python quick rust screen strings time transit util xterm_colors"
+  local modules="ascii_art bash browser crypt debian fedora file find git go hg init install keys mac media monitor mtg multiple_choice net news notes omdb path pkg python quick rust screen strings time transit util xterm_colors"
   case "${COMP_CWORD}" in
   1)
     COMPREPLY=($(compgen -W "help ${modules}" -- ${COMP_WORDS[COMP_CWORD]}))
@@ -5131,10 +5058,6 @@ function __q_compgen() {
       ;;
     go)
       COMPREPLY=($(compgen -W "help pkg_do" -- ${COMP_WORDS[COMP_CWORD]}))
-      return 0
-      ;;
-    grepo)
-      COMPREPLY=($(compgen -W "help checkout lfs_pull remove_branch" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     hg)
@@ -5226,7 +5149,7 @@ function __q_compgen() {
       return 0
       ;;
     util)
-      COMPREPLY=($(compgen -W "help sud reload markdown human_size install_heroku_cli bazel jup wait_for_file forex" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help sudo reload markdown human_size install_heroku_cli bazel jup wait_for_file forex" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     xterm_colors)
@@ -7789,208 +7712,6 @@ function __q_compgen() {
     go)
       case "${COMP_WORDS[2]}" in
       pkg_do)
-        # [ARG...]
-        local switch_names=()
-        local keyword_names=()
-        local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
-        local i=3
-        local state="EXPECT_ARG"
-        local pos=0
-        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
-          case "${state}" in
-          IDK)
-            break
-            ;;
-          EXPECT_ARG)
-            case "${COMP_WORDS[i]}" in
-            --)
-              state="IDK"
-              ;;
-            *)
-              state="EXPECT_ARG"
-              (( pos++ ))
-              ;;
-            esac
-            ;;
-          esac
-          (( i++ ))
-        done
-        COMPREPLY=()
-        if [[ "${state}" == "EXPECT_ARG" ]]; then
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          if [[ -n "${positional_types[$pos]}" ]]; then
-            state="EXPECT_VALUE_${positional_types[$pos]}"
-          else
-            return 0
-          fi
-        fi
-        case "${state}" in
-        EXPECT_VALUE_FILE)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        EXPECT_VALUE_DIRECTORY)
-          COMPREPLY+=($(compgen -A directory -- ${cur}))
-          ;;
-        EXPECT_VALUE_USER)
-          COMPREPLY+=($(compgen -A user -- ${cur}))
-          ;;
-        EXPECT_VALUE_GROUP)
-          COMPREPLY+=($(compgen -A group -- ${cur}))
-          ;;
-        EXPECT_VALUE_HOSTNAME)
-          COMPREPLY+=($(compgen -A hostname -- ${cur}))
-          ;;
-        EXPECT_VALUE_STRING)
-          ;;
-        IDK)
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        *)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        esac
-        return 0
-        ;;
-      esac
-      ;;
-    grepo)
-      case "${COMP_WORDS[2]}" in
-      checkout)
-        # [ARG...]
-        local switch_names=()
-        local keyword_names=()
-        local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
-        local i=3
-        local state="EXPECT_ARG"
-        local pos=0
-        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
-          case "${state}" in
-          IDK)
-            break
-            ;;
-          EXPECT_ARG)
-            case "${COMP_WORDS[i]}" in
-            --)
-              state="IDK"
-              ;;
-            *)
-              state="EXPECT_ARG"
-              (( pos++ ))
-              ;;
-            esac
-            ;;
-          esac
-          (( i++ ))
-        done
-        COMPREPLY=()
-        if [[ "${state}" == "EXPECT_ARG" ]]; then
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          if [[ -n "${positional_types[$pos]}" ]]; then
-            state="EXPECT_VALUE_${positional_types[$pos]}"
-          else
-            return 0
-          fi
-        fi
-        case "${state}" in
-        EXPECT_VALUE_FILE)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        EXPECT_VALUE_DIRECTORY)
-          COMPREPLY+=($(compgen -A directory -- ${cur}))
-          ;;
-        EXPECT_VALUE_USER)
-          COMPREPLY+=($(compgen -A user -- ${cur}))
-          ;;
-        EXPECT_VALUE_GROUP)
-          COMPREPLY+=($(compgen -A group -- ${cur}))
-          ;;
-        EXPECT_VALUE_HOSTNAME)
-          COMPREPLY+=($(compgen -A hostname -- ${cur}))
-          ;;
-        EXPECT_VALUE_STRING)
-          ;;
-        IDK)
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        *)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        esac
-        return 0
-        ;;
-      lfs_pull)
-        # [ARG...]
-        local switch_names=()
-        local keyword_names=()
-        local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
-        local i=3
-        local state="EXPECT_ARG"
-        local pos=0
-        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
-          case "${state}" in
-          IDK)
-            break
-            ;;
-          EXPECT_ARG)
-            case "${COMP_WORDS[i]}" in
-            --)
-              state="IDK"
-              ;;
-            *)
-              state="EXPECT_ARG"
-              (( pos++ ))
-              ;;
-            esac
-            ;;
-          esac
-          (( i++ ))
-        done
-        COMPREPLY=()
-        if [[ "${state}" == "EXPECT_ARG" ]]; then
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          if [[ -n "${positional_types[$pos]}" ]]; then
-            state="EXPECT_VALUE_${positional_types[$pos]}"
-          else
-            return 0
-          fi
-        fi
-        case "${state}" in
-        EXPECT_VALUE_FILE)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        EXPECT_VALUE_DIRECTORY)
-          COMPREPLY+=($(compgen -A directory -- ${cur}))
-          ;;
-        EXPECT_VALUE_USER)
-          COMPREPLY+=($(compgen -A user -- ${cur}))
-          ;;
-        EXPECT_VALUE_GROUP)
-          COMPREPLY+=($(compgen -A group -- ${cur}))
-          ;;
-        EXPECT_VALUE_HOSTNAME)
-          COMPREPLY+=($(compgen -A hostname -- ${cur}))
-          ;;
-        EXPECT_VALUE_STRING)
-          ;;
-        IDK)
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        *)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        esac
-        return 0
-        ;;
-      remove_branch)
         # [ARG...]
         local switch_names=()
         local keyword_names=()
@@ -16841,7 +16562,7 @@ function __q_compgen() {
       ;;
     util)
       case "${COMP_WORDS[2]}" in
-      sud)
+      sudo)
         # [ARG...]
         local switch_names=()
         local keyword_names=()
