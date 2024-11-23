@@ -23,6 +23,9 @@ _REDSHELL_INSTALL=1
 #
 # Pass --append to install the contents always at the end of the file, rather
 # than in-place. Pass --uninstall to only uninstall the file.
+#
+# On Linux, this attempts to flock DFILE. If the file is already locked, the
+# function will immediately return 254.
 function install_file() {
     local sfile
     local dfile
@@ -67,7 +70,16 @@ function install_file() {
         echo "Usage: install_file --sfile SFILE --dfile DFILE [--char CHAR] [--section SECTION] [--append] [--uninstall]" >&2
         return 2
     fi
-    
+
+    # Can we lock files?
+    if command -v flock > /dev/null; then
+        local lockfile="${dfile}.lock"
+        exec 1337<>"${lockfile}"
+        flock -x --timeout 0 1337 || return 254
+        # Unlock in the return trap by closing the fd.
+        trap "trap - RETURN ; rm -f '${lockfile}'" RETURN
+    fi
+
     [[ -z "${char}" ]] && char="###"
     [[ -z "${section}" ]] && section="REDSHELL"
 
