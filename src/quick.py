@@ -277,7 +277,7 @@ def _parse_usage(usage: str) -> tuple[str, list[Argument]]:
             s = s[m.end() :]
             n += m.end()
             prev_token = "REPEATED"
-        elif re.match(r"\s*$", s):
+        elif re.match(r"[\s\.]*$", s):
             break
         else:
             raise ValueError(f"Unexpected character {s[0]} at position {n}: {usage}")
