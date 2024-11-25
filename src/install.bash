@@ -73,10 +73,13 @@ function install_file() {
 
     # Can we lock files?
     if command -v flock > /dev/null; then
+        local lockfd=1337
         local lockfile="${dfile}.lock"
-        exec 1337<>"${lockfile}"
-        flock -x --timeout 0 1337 || return 254
-        # Unlock in the return trap by closing the fd.
+        exec "${lockfd}"<>"${lockfile}"
+        flock -x --timeout 0 "${lockfd}" || return 254
+        # Unlock in the return trap by closing the fd. It seems bash refuses to
+        # close file descriptors in the trap for some reason - it looks like
+        # they are always closed already at this point.
         trap "trap - RETURN ; rm -f '${lockfile}'" RETURN
     fi
 
