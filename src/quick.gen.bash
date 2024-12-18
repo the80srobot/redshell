@@ -876,6 +876,10 @@ function __q() {
       shift
       notes_api_perl_preview "$@"
       ;;
+    notes_api_pushd|api_pushd)
+      shift
+      notes_api_pushd "$@"
+      ;;
     *)
       if [ -n "$1" ]; then
         echo "Module notes has no function $1"
@@ -1978,6 +1982,9 @@ function __q_help() {
       echo '    '
       echo '    Pass --append to install the contents always at the end of the file, rather'
       echo '    than in-place. Pass --uninstall to only uninstall the file.'
+      echo '    '
+      echo '    On Linux, this attempts to flock DFILE. If the file is already locked, the'
+      echo '    function will immediately return 254.'
       tput bold
       echo -n '  reinstall_file'
       tput setaf 9
@@ -3075,6 +3082,13 @@ function __q_help() {
       tput sgr0
       echo '    Applies the provided perl program to matching notes to generate replacements.'
       echo '    Returns the potential replacements.'
+      tput bold
+      echo -n '  api_pushd'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      echo '    Changes to the notes repository directory. (With pushd.)'
       ;;
     omdb)
       echo "Usage: q omdb FUNCTION [ARG...]"
@@ -4692,6 +4706,9 @@ function __q_dump() {
     __nperl_apply)
       type __nperl_apply
       ;;
+    api_pushd)
+      type notes_api_pushd
+      ;;
     *)
       echo "Unknown function $2"
       return 1
@@ -5105,7 +5122,7 @@ function __q_compgen() {
       return 0
       ;;
     notes)
-      COMPREPLY=($(compgen -W "help note list sync todo undo perl api_list_notes backup api_empty_notes api_list_todos print_todo_categories api_git api_pushd api_clone api_fsck nw window api_find api_quick_title log api_match_files ls hist api_drop_note gc api_update_note api_edit_note api_perl_preview" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help note list sync todo undo perl api_list_notes backup api_empty_notes api_list_todos print_todo_categories api_git api_pushd api_clone api_fsck nw window api_find api_quick_title log api_match_files ls hist api_drop_note gc api_update_note api_edit_note api_perl_preview api_pushd" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     omdb)
@@ -13762,6 +13779,72 @@ function __q_compgen() {
         local repeated_names=()
         local repeated_positions=(1)
         local positional_types=(STRING STRING)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      api_pushd)
+        # notes_api_pushd
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
         local i=3
         local state="EXPECT_ARG"
         local pos=0

@@ -1707,5 +1707,10 @@ function __nperl_apply() {
     fi
 }
 
+# Usage: notes_api_pushd
+# Changes to the notes repository directory. (With pushd.)
+function notes_api_pushd() {
+    path_push "${NOTES_REPO}"
+}
 
 fi # _REDSHELL_NOTES
