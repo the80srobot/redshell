@@ -151,8 +151,8 @@ function bazel() {
 
         local file="bazelisk-${os}-${arch}"
         local url="https://github.com/bazelbuild/bazelisk/releases/latest/download/${file}"
-        curl -L "${url}" > "${HOME}/mbin/bazel"
-        chmod a+x "${HOME}/mbin/bazel"
+        curl -L "${url}" > "${HOME}/bin/bazel"
+        chmod a+x "${HOME}/bin/bazel"
     }
     "$(type -P bazel)" "${@}"
 }
