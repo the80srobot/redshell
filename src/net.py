@@ -37,10 +37,16 @@ def serve(port:int=8443, directory:str="", certfile:str="", keyfile:str="", user
                     self.wfile.write(b"Unauthorized")
 
     httpd = socketserver.TCPServer(("0.0.0.0", port), Handler)
+    context = None
     if certfile and keyfile:
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
         context.load_cert_chain(certfile=certfile, keyfile=keyfile)
         httpd.socket = context.wrap_socket(httpd.socket, server_side=True)
 
     print(f"Serving HTTPS on port {port} from {directory}")
-    httpd.serve_forever()
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        httpd.server_close()
