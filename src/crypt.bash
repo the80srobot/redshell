@@ -181,4 +181,75 @@ function crypt_hash() {
 
 alias h=crypt_hash
 
+# Generate a self-signed certificate.
+#
+# Usage: crypt_selfsign [NAME] [OPTIONS]
+#
+# Options are the same as for openssl req
+function crypt_selfsign() {
+    local name="cert"
+    local keyout
+    local newkey
+    local days
+    local out
+    if [[ "$1" != -* ]]; then
+        name="$1"
+        shift
+    fi
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -n|--name)
+                name="$2"
+                shift
+                ;;
+            -keyout|--keyout)
+                keyout="$2"
+                shift
+                ;;
+            -newkey|--newkey)
+                newkey="$2"
+                shift
+                ;;
+            -days|--days)
+                days="$2"
+                shift
+                ;;
+            -out|--out)
+                out="$2"
+                shift
+                ;;
+            --)
+                shift
+                break
+                ;;
+            *)
+                break
+                ;;
+        esac
+        shift
+    done
+
+    if [[ -z "${keyout}" ]]; then
+        keyout="$name.key"
+    fi
+    if [[ -z "${newkey}" ]]; then
+        newkey="rsa:2048"
+    fi
+    if [[ -z "${days}" ]]; then
+        days=365
+    fi
+    if [[ -z "${out}" ]]; then
+        out="$name.crt"
+    fi
+
+    openssl req \
+        -x509 \
+        -nodes \
+        -days "${days}" \
+        -newkey "${newkey}" \
+        -keyout "${keyout}" \
+        -out "${out}" \
+        "$@"
+}
+
 fi # _REDSHELL_CRYPT

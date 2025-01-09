@@ -6,6 +6,112 @@
 if [[ -z "${_REDSHELL_NET}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_NET=1
 
+# Hosts a folder contents over HTTPs.
+#
+# Also see net_serve.
+#
+# Usage: net_host [-l|--port PORT] [-u|--username USER] [-P|--password PASS] [--C|certfile FILE] [--keyfile FILE] [DIR]
+#
+# Options:
+#   -l, --port PORT     Port to listen on. Default is 8080.
+#   -u, --username USER Username for basic auth.
+#   -P, --password PASS Password for basic auth.
+#   --certfile FILE     Path to the certificate file, or "auto" to generate one.
+#   --keyfile FILE      Path to the key file.
+#
+# By default, the server will listen for HTTP connections. If certfile and
+# keyfile are specified, the server will listen for HTTPS connections.
+#
+# If certfile is set to "auto", the server will generate a self-signed cert.
+# Otherwise, the keyfile must be specified.
+#
+# If username and password are specified, the server will require basic auth.
+# Both or neither must be specified.
+#
+# The server will serve the contents of DIR. If DIR is not specified, the server
+# will serve the current directory.
+function net_host() {
+    local port=8080
+    local username
+    local password
+    local certfile
+    local keyfile
+    local dir="."
+
+    while [[ "${#}" -ne 0 ]]; do
+        case "${1}" in
+            -l|--port)
+                port="${2}"
+                shift
+                ;;
+            -u|--username)
+                username="${2}"
+                shift
+                ;;
+            -P|--password)
+                password="${2}"
+                shift
+                ;;
+            -C|--certfile)
+                certfile="${2}"
+                shift
+                ;;
+            --keyfile)
+                keyfile="${2}"
+                shift
+                ;;
+            *)
+                dir="${1}"
+                ;;
+        esac
+        shift
+    done
+
+    if [[ -n "${username}" && -z "${password}" ]]; then
+        >&2 echo "Username specified without password."
+        return 1
+    fi
+
+    if [[ -z "${username}" && -n "${password}" ]]; then
+        >&2 echo "Password specified without username."
+        return 1
+    fi
+
+    if [[ -n "${certfile}" && "${certfile}" != "auto" && -z "${keyfile}" ]]; then
+        >&2 echo "Certificate file specified without key file."
+        return 1
+    fi
+
+    if [[ -n "${certfile}" && "${certfile}" == "auto" ]]; then
+        certfile="$HOME/.redshell_persist/net_host.crt"
+        keyfile="$HOME/.redshell_persist/net_host.key"
+        if [[ -f "${certfile}" && -f "${keyfile}" ]]; then
+            >&2 echo "Certificate and key files already exist. Not regenerating."
+        else
+            openssl req \
+                -x509 \
+                -newkey rsa:4096 \
+                -keyout "${keyfile}" \
+                -out "${certfile}" \
+                -days 365 \
+                -nodes \
+                -subj '/CN=localhost' \
+                || return $?
+        fi
+    fi
+
+    python_func \
+        -p "${HOME}/.redshell/src/net.py" \
+        --no-venv \
+        serve \
+        --directory "${dir}" \
+        --port "${port}" \
+        --username "${username}" \
+        --password "${password}" \
+        --certfile "${certfile}" \
+        --keyfile "${keyfile}"
+}
+
 # Check if you have a usable internet connection.
 #
 # Usage: net_online
@@ -160,6 +266,11 @@ function net_ip4gw() {
 
 alias ip4gw=net_ip4gw
 
+# Serves the contents of a file or stdin over HTTP once, then exits.
+#
+# Also see net_host.
+#
+# Usage: net_serve [-l PORT] [FILE]
 function net_serve() {
     # TODO: Safari is dumb and loads twice.
     local port=8081

@@ -308,6 +308,7 @@ function python_func() {
         fi
     fi
 
+    trap "trap - INT" INT
     script="from $(basename "${path}" .py) import *
 import typing
 import shlex
@@ -411,7 +412,8 @@ except Exception as e:
             ((i++))
         done < <(echo "${script}")
     fi
-    
+
+    trap - INT
     return "${ret}"
 }
 
