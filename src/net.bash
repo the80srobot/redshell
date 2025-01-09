@@ -66,6 +66,7 @@ function net_host() {
         esac
         shift
     done
+    dir="$(path_resolve "${dir}")"
 
     if [[ -n "${username}" && -z "${password}" ]]; then
         >&2 echo "Username specified without password."
@@ -98,6 +99,10 @@ function net_host() {
                 -subj '/CN=localhost' \
                 || return $?
         fi
+
+        >&2 echo "Using certfile: ${certfile}"
+        openssl x509 -noout -sha256 -fingerprint -in "${certfile}"
+        openssl x509 -noout -sha1 -fingerprint -in "${certfile}"
     fi
 
     python_func \

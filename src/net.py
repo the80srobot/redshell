@@ -2,8 +2,11 @@ import http.server
 import ssl
 import socketserver
 import base64
+import os
 
 def serve(port:int=8443, directory:str="", certfile:str="", keyfile:str="", username:str="", password:str=""):
+    if directory:
+        os.chdir(directory)
     class Handler(http.server.SimpleHTTPRequestHandler):
         def do_AUTHHEAD(self):
             self.send_response(401)

@@ -47,6 +47,18 @@ function path_expand() {
   printf '%s\n' "${result%:}"
 }
 
+# Usage: path_resolve PATH
+#
+# Prints the absolute path of PATH, with any tilde interpolated.
+function path_resolve() {
+  local path="$(path_expand "${1}")"
+  if [[ -d "${path}" ]]; then
+    (cd "${path}" && pwd)
+  else
+    (cd "$(dirname "${path}")" && echo "$(pwd)/$(basename "${path}")")
+  fi
+}
+
 # Usage: path_push DIRECTORY
 #
 # This is like pushd, except it also updates the name of the screen window to
