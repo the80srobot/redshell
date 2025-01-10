@@ -43,7 +43,6 @@ def serve(port:int=8443, directory:str="", certfile:str="", keyfile:str="", user
         context.load_cert_chain(certfile=certfile, keyfile=keyfile)
         httpd.socket = context.wrap_socket(httpd.socket, server_side=True)
 
-    print(f"Serving HTTPS on port {port} from {directory}")
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

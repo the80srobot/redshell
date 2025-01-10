@@ -105,6 +105,14 @@ function net_host() {
         openssl x509 -noout -sha1 -fingerprint -in "${certfile}"
     fi
 
+    local proto="http"
+    [[ -n "${certfile}" ]] && proto="https"
+    >&2 echo "Serving ${dir} on:"
+    net_ip4 | xargs -I{} echo "* ${proto}://{}:${port}/" >&2
+    >&2 echo "* ${proto}://localhost:${port}/"
+    >&2 echo ""
+    >&2 echo "Press Ctrl+C to stop."
+
     python_func \
         -p "${HOME}/.redshell/src/net.py" \
         --no-venv \
