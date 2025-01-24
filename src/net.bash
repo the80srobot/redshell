@@ -262,7 +262,7 @@ function net_rtt() {
 function net_ip4() {
     which ip > /dev/null
     if [[ $? -eq 0 ]]; then
-        ip a | grep 'inet ' | perl -pe 's/.*inet (\d{1,3}\..*?) .*/$1/' | grep -v 127.0.0.1
+        ip a | grep 'inet ' | perl -pe 's/.*inet\s+([\d\.]{8,}).*$/$1/' | grep -v 127.0.0.1
     else
         ifconfig | grep 'inet ' | perl -pe 's/.*inet (\d{1,3}\..*?) .*/$1/' | grep -v 127.0.0.1
     fi
