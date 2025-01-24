@@ -126,35 +126,31 @@ function install_heroku_cli() {
 
 alias heroku_install_cli=install_heroku_cli
 
-function bazel() {
-    type -P bazel > /dev/null || {
-        >&2 echo "No bazel installation - downloading bazelisk..."
-        local os="unknown"
-        local arch="unknown"
-        case "$(uname)" in
-        Darwin)
-            os="darwin"
-            ;;
-        Linux)
-            os="linux"
-            ;;
-        esac
+function install_bazelisk() {
+    local os="unknown"
+    local arch="unknown"
+    case "$(uname)" in
+    Darwin)
+        os="darwin"
+        ;;
+    Linux)
+        os="linux"
+        ;;
+    esac
 
-        case "$(uname -m)" in
-        arm64|aarch64)
-            arch="arm64"
-            ;;
-        x86_64)
-            arch="amd64"
-            ;;
-        esac
+    case "$(uname -m)" in
+    arm64|aarch64)
+        arch="arm64"
+        ;;
+    x86_64)
+        arch="amd64"
+        ;;
+    esac
 
-        local file="bazelisk-${os}-${arch}"
-        local url="https://github.com/bazelbuild/bazelisk/releases/latest/download/${file}"
-        curl -L "${url}" > "${HOME}/bin/bazel"
-        chmod a+x "${HOME}/bin/bazel"
-    }
-    "$(type -P bazel)" "${@}"
+    local file="bazelisk-${os}-${arch}"
+    local url="https://github.com/bazelbuild/bazelisk/releases/latest/download/${file}"
+    curl -L "${url}" > "${HOME}/bin/bazel"
+    chmod a+x "${HOME}/bin/bazel"
 }
 
 function jup() {
