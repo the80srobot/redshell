@@ -10,7 +10,7 @@ _REDSHELL_NET=1
 #
 # Also see net_serve.
 #
-# Usage: net_host [-l|--port PORT] [-u|--username USER] [-P|--password PASS] [--C|certfile FILE] [--keyfile FILE] [DIR]
+# Usage: net_host [-l|--port PORT] [-u|--username USER] [-P|--password PASS] [-C|certfile FILE] [--keyfile FILE] [DIR]
 #
 # Options:
 #   -l, --port PORT     Port to listen on. Default is 8080.

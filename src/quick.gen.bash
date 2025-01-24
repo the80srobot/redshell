@@ -156,6 +156,10 @@ function __q() {
       shift
       crypt_hash "$@"
       ;;
+    crypt_selfsign|selfsign)
+      shift
+      crypt_selfsign "$@"
+      ;;
     *)
       if [ -n "$1" ]; then
         echo "Module crypt has no function $1"
@@ -624,6 +628,10 @@ function __q() {
       shift
       __q_help "net" "$@"
       ;;
+    net_host|host)
+      shift
+      net_host "$@"
+      ;;
     net_online|online)
       shift
       net_online "$@"
@@ -935,6 +943,10 @@ function __q() {
     path_expand|expand)
       shift
       path_expand "$@"
+      ;;
+    path_resolve|resolve)
+      shift
+      path_resolve "$@"
       ;;
     path_push|push)
       shift
@@ -1682,6 +1694,34 @@ function __q_help() {
       echo '    '
       echo '    hash 256 foo -> b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c'
       echo '    hash md5 foo -> d3b07384d113edec49eaa6238ad5ff00'
+      tput bold
+      echo -n '  selfsign'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' NAME'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' OPTIONS'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      echo '    Generate a self-signed certificate.'
+      echo '    '
+      echo '    '
+      echo '    Options are the same as for openssl req'
       ;;
     debian)
       echo "Usage: q debian FUNCTION [ARG...]"
@@ -2418,6 +2458,108 @@ function __q_help() {
       echo
       echo "Available functions:"
       tput bold
+      echo -n '  host'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -l|--port'
+      tput sgr0
+      tput bold
+      echo -n ' PORT'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -u|--username'
+      tput sgr0
+      tput bold
+      tput setaf 10
+      echo -n ' USER'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -P|--password'
+      tput sgr0
+      tput bold
+      echo -n ' PASS'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -C|certfile'
+      tput sgr0
+      tput bold
+      tput setaf 9
+      echo -n ' FILE'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' --keyfile'
+      tput sgr0
+      tput bold
+      tput setaf 9
+      echo -n ' FILE'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      tput setaf 1
+      echo -n ' DIR'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      echo '    Hosts a folder contents over HTTPs.'
+      echo '    '
+      echo '    Also see net_serve.'
+      echo '    '
+      echo '    '
+      echo '    Options:'
+      echo '    -l, --port PORT     Port to listen on. Default is 8080.'
+      echo '    -u, --username USER Username for basic auth.'
+      echo '    -P, --password PASS Password for basic auth.'
+      echo '    --certfile FILE     Path to the certificate file, or "auto" to generate one.'
+      echo '    --keyfile FILE      Path to the key file.'
+      echo '    '
+      echo '    By default, the server will listen for HTTP connections. If certfile and'
+      echo '    keyfile are specified, the server will listen for HTTPS connections.'
+      echo '    '
+      echo '    If certfile is set to "auto", the server will generate a self-signed cert.'
+      echo '    Otherwise, the keyfile must be specified.'
+      echo '    '
+      echo '    If username and password are specified, the server will require basic auth.'
+      echo '    Both or neither must be specified.'
+      echo '    '
+      echo '    The server will serve the contents of DIR. If DIR is not specified, the server'
+      echo '    will serve the current directory.'
+      tput bold
       echo -n '  online'
       echo
       tput sgr0
@@ -2532,10 +2674,35 @@ function __q_help() {
       echo '    Print the default gateway'"'"'s IP address.'
       tput bold
       echo -n '  serve'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -l'
+      tput sgr0
+      tput bold
+      echo -n ' PORT'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      tput setaf 9
+      echo -n ' FILE'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
       echo
       tput sgr0
       tput setaf 6
       tput sgr0
+      echo '    Serves the contents of a file or stdin over HTTP once, then exits.'
+      echo '    '
+      echo '    Also see net_host.'
       tput bold
       echo -n '  dump_url'
       echo
@@ -3179,6 +3346,17 @@ function __q_help() {
       tput setaf 6
       tput sgr0
       echo '    Expands tilde, safely, in the path.'
+      tput bold
+      echo -n '  resolve'
+      tput setaf 9
+      echo -n ' PATH'
+      tput sgr0
+      tput bold
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      echo '    Prints the absolute path of PATH, with any tilde interpolated.'
       tput bold
       echo -n '  push'
       tput setaf 1
@@ -4100,6 +4278,9 @@ function __q_dump() {
     hash)
       type crypt_hash
       ;;
+    selfsign)
+      type crypt_selfsign
+      ;;
     *)
       echo "Unknown function $2"
       return 1
@@ -4438,6 +4619,9 @@ function __q_dump() {
     ;;
   net)
     case "$2" in
+    host)
+      type net_host
+      ;;
     online)
       type net_online
       ;;
@@ -4749,6 +4933,9 @@ function __q_dump() {
     expand)
       type path_expand
       ;;
+    resolve)
+      type path_resolve
+      ;;
     push)
       type path_push
       ;;
@@ -5050,7 +5237,7 @@ function __q_compgen() {
       return 0
       ;;
     crypt)
-      COMPREPLY=($(compgen -W "help encrypt_symmetric decrypt_symmetric gen_github_keypair package payloadify downloadify hash" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help encrypt_symmetric decrypt_symmetric gen_github_keypair package payloadify downloadify hash selfsign" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     debian)
@@ -5114,7 +5301,7 @@ function __q_compgen() {
       return 0
       ;;
     net)
-      COMPREPLY=($(compgen -W "help online health ssh_fingerprint dump_cert ccurl dataurl undataurl rtt ip4 ip4gw serve dump_url wiki wifi_device wifi_name ssh_fingerprint ssh_aliases ssh_fqdn" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help host online health ssh_fingerprint dump_cert ccurl dataurl undataurl rtt ip4 ip4gw serve dump_url wiki wifi_device wifi_name ssh_fingerprint ssh_aliases ssh_fqdn" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     news)
@@ -5130,7 +5317,7 @@ function __q_compgen() {
       return 0
       ;;
     path)
-      COMPREPLY=($(compgen -W "help expand push pop" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help expand resolve push pop" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     pkg)
@@ -6515,6 +6702,72 @@ function __q_compgen() {
         ;;
       hash)
         # crypt_hash ALGO [INPUT]
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=(STRING STRING)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      selfsign)
+        # crypt_selfsign [NAME] [OPTIONS]
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
@@ -10182,6 +10435,87 @@ function __q_compgen() {
       ;;
     net)
       case "${COMP_WORDS[2]}" in
+      host)
+        # net_host [-l|--port PORT] [-u|--username USER] [-P|--password PASS] [-C|certfile FILE] [--keyfile FILE] [DIR]
+        local switch_names=()
+        local keyword_names=(-l --port -u --username -P --password -C certfile --keyfile)
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=(DIRECTORY)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            -l)
+              state="EXPECT_VALUE_STRING"
+              ;;
+            -u)
+              state="EXPECT_VALUE_USER"
+              ;;
+            -P)
+              state="EXPECT_VALUE_STRING"
+              ;;
+            -C)
+              state="EXPECT_VALUE_FILE"
+              ;;
+            --keyfile)
+              state="EXPECT_VALUE_FILE"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
       online)
         # net_online
         local switch_names=()
@@ -10852,12 +11186,12 @@ function __q_compgen() {
         return 0
         ;;
       serve)
-        # [ARG...]
+        # net_serve [-l PORT] [FILE]
         local switch_names=()
-        local keyword_names=()
+        local keyword_names=(-l)
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=()
+        local positional_types=(FILE)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -10870,6 +11204,9 @@ function __q_compgen() {
             case "${COMP_WORDS[i]}" in
             --)
               state="IDK"
+              ;;
+            -l)
+              state="EXPECT_VALUE_STRING"
               ;;
             *)
               state="EXPECT_ARG"
@@ -14247,6 +14584,72 @@ function __q_compgen() {
       case "${COMP_WORDS[2]}" in
       expand)
         # path_expand PATH
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=(FILE)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      resolve)
+        # path_resolve PATH
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
