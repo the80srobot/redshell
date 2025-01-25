@@ -42,9 +42,16 @@ function keys_path() {
 
 # Usage: keys_var KEY
 #
-# Returns the conents of a given key in pass.
+# Returns the conents of a given .var key in pass.
 function keys_var() {
     pass "Redshell/${1}.var"
+}
+
+# Usage: keys_key KEY
+#
+# Returns the contents of a given .key key in pass.
+function keys_key() {
+    pass "Redshell/${1}.key"
 }
 
 fi # _REDSHELL_KEYS
