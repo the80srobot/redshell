@@ -125,6 +125,15 @@ function net_host() {
         --keyfile "${keyfile}"
 }
 
+# Usage: net_dl URL
+#
+# Recursively downloads the URL even if it's a folder. Accepts all wget options.
+#
+# This is basically only useful if you can't remember wget options.
+function net_dl() {
+    wget -r -nH --no-parent "${@}"
+}
+
 # Check if you have a usable internet connection.
 #
 # Usage: net_online
