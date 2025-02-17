@@ -164,4 +164,18 @@ function mac_disable_powernap() {
     sudo pmset -a powernap 0
 }
 
+# Usage: mac_power_stats
+#
+# Prints out some debug information about power management.
+function mac_power_stats() {
+    echo "== Wake Requests =="
+    pmset -g log | grep "Wake Requests"
+    echo "== Wake Requests (darkwake) =="
+    pmset -g log | grep "darkwake"
+    echo "== Assertions =="
+    pmset -g assertions
+    echo "== Stats =="
+    pmset -g stats
+}
+
 fi # _REDSHELL_MAC
