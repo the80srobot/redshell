@@ -155,4 +155,13 @@ function mac_kill_crashplan() {
     sudo launchctl unload /Library/LaunchDaemons/com.crashplan.service.plist
 }
 
+# Usage: mac_disable_powernap
+#
+# Stop the computer from waking up to do random things and exhausting the
+# battery.
+function mac_disable_powernap() {
+    sudo pmset -a tcpkeepalive 0
+    sudo pmset -a powernap 0
+}
+
 fi # _REDSHELL_MAC
