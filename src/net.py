@@ -37,6 +37,7 @@ def serve(port:int=8443, directory:str="", certfile:str="", keyfile:str="", user
                     self.wfile.write(b"Unauthorized")
 
     httpd = socketserver.TCPServer(("0.0.0.0", port), Handler)
+    httpd.allow_reuse_address = True
     context = None
     if certfile and keyfile:
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
