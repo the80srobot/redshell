@@ -7,11 +7,11 @@ if [[ -z "${_REDSHELL_RUST}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_RUST=1
 
 function rustup() {
-    which rustup > /dev/null || {
+    type -P rustup > /dev/null 2>&1 || {
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
         source ~/.bash_profile
     }
-    "$(which rustup)" "${@}"
+    "$(type -P rustup)" "${@}"
 }
 
 function rust_install_goodies() {

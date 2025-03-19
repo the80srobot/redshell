@@ -20,6 +20,43 @@ function git_ssh_init() {
     git push origin master
 }
 
+# Usage: git_sparse_clone REPO [-b BRANCH] [-p PATH] [DIR ...]
+#
+# Clones a git repository with only the specified subdirectories.
+function git_sparse_clone() {
+    local repo=""
+    local path=""
+    local branch="master"
+    local subdirs=()
+    while [[ "$#" -gt 0 ]]; do
+        case "$1" in
+            -b|--branch)
+                branch="$2"
+                shift
+                ;;
+            -p|--path)
+                path="$2"
+                shift
+                ;;
+            *)
+                if [[ -z "${repo}" ]]; then
+                    repo="$1"
+                else
+                    subdirs+=("$1")
+                fi
+                ;;
+        esac
+        shift
+    done
+
+    git init "${path}"
+    cd "${path}"
+    git remote add -f origin "${repo}"
+    git sparse-checkout init
+    git sparse-checkout set "${subdirs[@]}"
+    git pull origin "${branch}"
+}
+
 function git_changed_lines() {
     local cmd="git diff HEAD"
     while [[ "$#" -gt 0 ]]; do
