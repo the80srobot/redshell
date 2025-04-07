@@ -1,34 +1,21 @@
 #!/bin/bash
 
-function setaf {
-    tput setaf $1
-}
+GHOST1=$(tput setaf 39)
+GHOST2=$(tput setaf 160)
+PACMAN=$(tput setaf 220)
+WALL=$(tput setaf 21)
+CHERRY=$(tput setaf 216)
+COLOR_88=$(tput setaf 88)
+RESET=$(tput sgr0)
 
-function setab {
-    tput setab $1
-}
-
-
-tput sgr0; tput setab 0; tput setaf 21; 
-echo -n -e "================================================."
-tput sgr0; echo; tput setab 0; tput setaf 21; 
-echo -n -e "  $(setaf 39)   .-.  $(setaf 160) .-.  $(setaf 220)   .--. $(setaf 21)                        |"
-tput sgr0; echo; tput setab 0; tput setaf 21; 
-echo -n -e "  $(setaf 39)  | OO| $(setaf 160)| OO| $(setaf 220)  / _.-' $(setaf 216).-.   .-.  .-.   .''.  $(setaf 21)|"
-tput sgr0; echo; tput setab 0; tput setaf 21; 
-echo -n -e "  $(setaf 39)  |   | $(setaf 160)|   | $(setaf 220)  \  '-. $(setaf 216)'-'   '-'  '-'   '..'  $(setaf 21)|"
-tput sgr0; echo; tput setab 0; tput setaf 21; 
-echo -n -e "  $(setaf 39)  '^^^' $(setaf 160)'^^^' $(setaf 220)   '--'  $(setaf 21)                       |"
-tput sgr0; echo; tput setab 0; tput setaf 21; 
-echo -n -e "===============. $(setaf 88) .-. $(setaf 21) .================. $(setaf 216) .-.  $(setaf 21)|"
-tput sgr0; echo; tput setab 0; tput setaf 21; 
-echo -n -e "               | $(setaf 88)|   |$(setaf 21) |                | $(setaf 216) '-'  $(setaf 21)|"
-tput sgr0; echo; tput setab 0; tput setaf 21; 
-echo -n -e "               | $(setaf 88)|   |$(setaf 21) |                |       |"
-tput sgr0; echo; tput setab 0; tput setaf 21; 
-echo -n -e "               | $(setaf 88)':-:'$(setaf 21) |                | $(setaf 216) .-.  $(setaf 21)|"
-tput sgr0; echo; tput setab 0; tput setaf 21; 
-echo -n -e "               | $(setaf 88) '-' $(setaf 21) |                | $(setaf 216) '-'  $(setaf 21)|"
-tput sgr0; echo; tput setab 0; tput setaf 21; 
-echo -n -e "==============='       '================'       |"
-tput sgr0; echo
+echo -e "${RESET}${WALL}================================================.${RESET}"
+echo -e "${WALL}  ${GHOST1}   .-.  ${GHOST2} .-.  ${PACMAN}   .--. ${WALL}                        |${RESET}"
+echo -e "${WALL}  ${GHOST1}  | OO| ${GHOST2}| OO| ${PACMAN}  / _.-' ${CHERRY}.-.   .-.  .-.   .''.  ${WALL}|${RESET}"
+echo -e "${WALL}  ${GHOST1}  |   | ${GHOST2}|   | ${PACMAN}  \\  '-. ${CHERRY}'-'   '-'  '-'   '..'  ${WALL}|${RESET}"
+echo -e "${WALL}  ${GHOST1}  '^^^' ${GHOST2}'^^^' ${PACMAN}   '--'  ${WALL}                       |${RESET}"
+echo -e "${WALL}===============. ${COLOR_88} .-. ${WALL} .================. ${CHERRY} .-.  ${WALL}|${RESET}"
+echo -e "${WALL}               | ${COLOR_88}|   |${WALL} |                | ${CHERRY} '-'  ${WALL}|${RESET}"
+echo -e "${WALL}               | ${COLOR_88}|   |${WALL} |                |       |${RESET}"
+echo -e "${WALL}               | ${COLOR_88}':-:'${WALL} |                | ${CHERRY} .-.  ${WALL}|${RESET}"
+echo -e "${WALL}               | ${COLOR_88} '-' ${WALL} |                | ${CHERRY} '-'  ${WALL}|${RESET}"
+echo -e "${WALL}==============='       '================'       |${RESET}"
