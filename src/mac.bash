@@ -119,7 +119,9 @@ function mac_install_devtools() {
         swiftdefaultappsprefpane \
         jq \
         ugrep \
-        links
+        links \
+        cpulimit \
+        pidof
 }
 
 # Kills Microsoft Defender in a way that tends to persist for an hour or so.
@@ -153,6 +155,51 @@ function mac_suppress_defender() {
 # Usage: mac_kill_crashplan
 function mac_kill_crashplan() {
     sudo launchctl unload /Library/LaunchDaemons/com.crashplan.service.plist
+}
+
+# Limits the CPU usage of processes to a certain percentage.
+#
+# Usage: mac_cpulimit LIMIT PID [PID ...]
+function mac_cpulimit() {
+    which pidof > /dev/null || {
+        echo "pidof not found. Install with brew install pidof." >&2
+        return 1
+    }
+    which cpulimit > /dev/null || {
+        echo "cpulimit not found. Install with brew install cpulimit." >&2
+        return 1
+    }
+
+    local pids=()
+    local limit="$1"
+    shift
+
+    for pid in "${@}"; do
+        if [[ -z "${pid}" ]]; then
+            continue
+        fi
+        if [[ "$pid" =~ ^[0-9]+$ ]]; then
+            pids+=("$pid")
+        else
+            pids+=($(pidof "$pid"))
+        fi
+    done
+    
+    echo "Removing previous cpu limits..." >&2
+    sudo killall -9 cpulimit
+
+    if [[ "${#pids[@]}" -eq 0 ]]; then
+        echo "No PIDs to limit - bailing." >&2
+        return
+    fi
+
+    echo "Limiting CPU usage of ${pids[@]} to ${limit}%" >&2
+    for pid in "${pids[@]}"; do
+        if [[ -z "${pid}" ]]; then
+            continue
+        fi
+        sudo nohup `which cpulimit` -l "$limit" -i -p "${pid}" &
+    done
 }
 
 # Usage: mac_disable_powernap
