@@ -20,6 +20,18 @@ function git_ssh_init() {
     git push origin master
 }
 
+function git_get_origin() {
+    git remote get-url origin | sed -e 's/.*@//' -e 's/:/\//'
+}
+
+function git_master_branch() {
+    git remote show origin | sed -n '/HEAD branch/s/.*: //p'
+}
+
+function git_cherrypick_branch() {
+    git cherry-pick $(git merge-base $(git_master_branch) "${1}").."${1}"
+}
+
 # Usage: git_sparse_clone REPO [-b BRANCH] [-p PATH] [DIR ...]
 #
 # Clones a git repository with only the specified subdirectories.
