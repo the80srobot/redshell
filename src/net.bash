@@ -410,4 +410,14 @@ function net_ssh_fqdn() {
     net_ssh_aliases | grep -w "${alias}" | cut -f2
 }
 
+# Prints a link to WhatsApp Web for the given phone number.
+#
+# Usage: net_wa_link PHONE_NUMBER
+function net_wa_link() {
+    local phone="${*}"
+    # Delete spaces and non-numeric characters.
+    phone=$(echo "${phone}" | tr -d '[:space:]' | tr -cd '[:digit:]')
+    echo "https://api.whatsapp.com/send?phone=${phone}"
+}
+
 fi # _REDSHELL_NET
