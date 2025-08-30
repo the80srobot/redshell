@@ -6,6 +6,10 @@
 if [[ -z "${_REDSHELL_UTIL}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_UTIL=1
 
+function util_ddu() {
+    ls -a | tail -n+3 | xargs du -s | sort -nr | cut -f2 | xargs du -hs
+}
+
 function util_sudo() {
     sudo bash -c "REDSHELL_SILENT=1 source ${HOME}/.bash_profile && $*"
 }
