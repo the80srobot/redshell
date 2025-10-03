@@ -7,6 +7,7 @@ if [[ -z "${_REDSHELL_MAC}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_MAC=1
 
 function mac_setup() {
+    mac_enable_ipconfig_verbose
     mac_switch_to_bash
     mac_install_devtools
 }
@@ -18,6 +19,16 @@ function brew() {
         eval "$(/opt/homebrew/bin/brew shellenv)"
     }
     "$(which brew)" "${@}"
+}
+
+function mac_enable_ipconfig_verbose() {
+    if [[ "$(uname -r | cut -d. -f1)" -ge 24 ]]; then
+        # On macOS 14 and later, Apple have decided that wifi names are super
+        # duper secret and the user must not be allowed to see what wifi they're
+        # on. This should be a one-time operation that enables net_wifi_name to
+        # work.
+        sudo ipconfig setverbose 1
+    fi
 }
 
 function mac_get_user_shell() {
