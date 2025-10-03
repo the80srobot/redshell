@@ -4,6 +4,9 @@ import socketserver
 import base64
 import os
 
+class TCPServer(socketserver.TCPServer):
+    allow_reuse_address = True
+
 def serve(port:int=8443, directory:str="", certfile:str="", keyfile:str="", username:str="", password:str=""):
     if directory:
         os.chdir(directory)
@@ -36,8 +39,7 @@ def serve(port:int=8443, directory:str="", certfile:str="", keyfile:str="", user
                     self.do_AUTHHEAD()
                     self.wfile.write(b"Unauthorized")
 
-    httpd = socketserver.TCPServer(("0.0.0.0", port), Handler)
-    httpd.allow_reuse_address = True
+    httpd = TCPServer(("0.0.0.0", port), Handler)
     context = None
     if certfile and keyfile:
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
