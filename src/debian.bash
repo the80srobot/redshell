@@ -17,9 +17,12 @@ function debian_setup() {
         python3-pip \
         ugrep \
         gh \
-        vim
+        vim \
+        ripgrep
+    
+    echo "Claude code..."
+    curl -fsSL https://claude.ai/install.sh | bash
 }
-
 
 function debian_install_or_skip() {
     local package

@@ -135,7 +135,11 @@ function mac_install_devtools() {
         ugrep \
         links \
         cpulimit \
-        pidof
+        pidof \
+        ripgrep
+    
+    echo "Claude code..."
+    curl -fsSL https://claude.ai/install.sh | bash
 }
 
 # Kills Microsoft Defender in a way that tends to persist for an hour or so.
