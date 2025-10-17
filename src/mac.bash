@@ -13,12 +13,15 @@ function mac_setup() {
 }
 
 function brew() {
-    which brew > /dev/null || {
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> ~/.bash_profile
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-    }
+    which brew > /dev/null || reinstall_brew
     "$(which brew)" "${@}"
+}
+
+function reinstall_brew() {
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') > ~/.bash_profile.brew_temp
+    reinstall_file ~/.bash_profile.brew_temp ~/.bash_profile '#' REDSHELL_BREW
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 }
 
 function mac_enable_ipconfig_verbose() {
