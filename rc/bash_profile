@@ -175,6 +175,9 @@ status() {
 
 export PATH=$HOME/bin:$PATH
 
+# Mainly Claude uses this, but also others.
+export PATH=$HOME/.local/bin:$PATH
+
 [[ -z "${REDSHELL_SILENT}" ]] && status || true
 
  [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"

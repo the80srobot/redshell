@@ -21,7 +21,7 @@ function debian_setup() {
         ripgrep
     
     echo "Claude code..."
-    curl -fsSL https://claude.ai/install.sh | bash
+    which claude || { curl -fsSL https://claude.ai/install.sh | bash ; }
 }
 
 function debian_install_or_skip() {

@@ -139,7 +139,7 @@ function mac_install_devtools() {
         ripgrep
     
     echo "Claude code..."
-    curl -fsSL https://claude.ai/install.sh | bash
+    which claude || { curl -fsSL https://claude.ai/install.sh | bash ; }
 }
 
 # Kills Microsoft Defender in a way that tends to persist for an hour or so.
