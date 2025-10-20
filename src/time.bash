@@ -156,11 +156,7 @@ function time_tz_diff() {
 }
 
 function time_ts() {
-    if [[ "$(uname)" == "Darwin" ]]; then
-        date -r "${1}" "+%Y-%m-%d %H:%M:%S"
-    else
-        date -d "@${1}" "+%Y-%m-%d %H:%M:%S"
-    fi
+    date -d "@${1}" "+%Y-%m-%d %H:%M:%S" 2>/dev/null || date -r "${1}" "+%Y-%m-%d %H:%M:%S"
 }
 
 fi # _REDSHELL_TIME
