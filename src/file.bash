@@ -28,7 +28,14 @@ function file_mtime() {
     local d
     # These two formats have to match
     [[ ! -z "${use_git}" ]] && d=`git log -1 --pretty="%ad" --date=format:"%Y-%m-%d %H:%M:%S" -- "${path}" 2>/dev/null`
-    [[ -z "${d}" ]] && d=`date -r "${path}" "+%Y-%m-%d %H:%M:%S"`
+    if [[ -z "${d}" ]]; then
+        if [[ "$(uname)" == "Darwin" ]]; then
+            d=`date -r "${path}" "+%Y-%m-%d %H:%M:%S"`
+        else
+            # GNU stat to get modification time
+            d=`date -d "@$(stat -c %Y "${path}")" "+%Y-%m-%d %H:%M:%S"`
+        fi
+    fi
     echo "${d}"
 }
 

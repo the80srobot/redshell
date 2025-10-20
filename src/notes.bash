@@ -38,12 +38,21 @@ function __elide() {
 
 function __file_mtime_and_age() {
     local path="${1}"
-    # TODO: This only works on BSD.
-    local d=`date -r "${path}" "+%Y-%m-%d %H:%M:%S"`
-    local a
+    local d
+    local ds
     local now=`date +%s`
-    local ds=`date -j -f "%Y-%m-%d %H:%M:%S" "${d}" +%s`
+
+    if [[ "$(uname)" == "Darwin" ]]; then
+        d=`date -r "${path}" "+%Y-%m-%d %H:%M:%S"`
+        ds=`date -j -f "%Y-%m-%d %H:%M:%S" "${d}" +%s`
+    else
+        # GNU: use stat to get mtime, then format it
+        ds=`stat -c %Y "${path}"`
+        d=`date -d "@${ds}" "+%Y-%m-%d %H:%M:%S"`
+    fi
+
     local age_seconds=$(( now - ds ))
+    local a
     if (( age_seconds < 60 )); then
         a="${age_seconds} s"
     elif (( age_seconds < 3600 )); then
@@ -556,22 +565,32 @@ function __date_add() {
     local ref="${1}"
     local duration="${2}"
     local d=$(__parse_age "${duration}")
-    # TODO: support GNU date
-    date -v "+${d}d" -j -f "%Y-%m-%d" "${ref}" +"%Y-%m-%d"
+    if [[ "$(uname)" == "Darwin" ]]; then
+        date -v "+${d}d" -j -f "%Y-%m-%d" "${ref}" +"%Y-%m-%d"
+    else
+        date -d "${ref} +${d} days" +"%Y-%m-%d"
+    fi
 }
 
 function __wday() {
     local ref="${1}"
-    # TODO: support GNU date
-    date -j -f "%Y-%m-%d" "${ref}" +"%w"
+    if [[ "$(uname)" == "Darwin" ]]; then
+        date -j -f "%Y-%m-%d" "${ref}" +"%w"
+    else
+        date -d "${ref}" +"%w"
+    fi
 }
 
 function __date_sub() {
-    # TODO: support GNU date
-    # d1=$(date -d "${1}" +%s) ?
-    # d1=$(date -d "${1}" +%s) ?
-    local d1=$(date -j -f "%Y-%m-%d" "${1}" +%s)
-    local d2=$(date -j -f "%Y-%m-%d" "${2}" +%s)
+    local d1
+    local d2
+    if [[ "$(uname)" == "Darwin" ]]; then
+        d1=$(date -j -f "%Y-%m-%d" "${1}" +%s)
+        d2=$(date -j -f "%Y-%m-%d" "${2}" +%s)
+    else
+        d1=$(date -d "${1}" +%s)
+        d2=$(date -d "${2}" +%s)
+    fi
     echo $(( (d1 - d2) / 86400 ))
 }
 
@@ -579,8 +598,13 @@ function __date_convert() {
     local d="${3}"
     local from="${1}"
     local to="${2}"
-    # TODO: support GNU date
-    date -j -f "${from}" "${d}" +"${to}"
+    if [[ "$(uname)" == "Darwin" ]]; then
+        date -j -f "${from}" "${d}" +"${to}"
+    else
+        # GNU date doesn't have an input format flag, it auto-detects
+        # For the specific formats we use, this should work
+        date -d "${d}" +"${to}"
+    fi
 }
 
 function __wday_number() {
@@ -951,14 +975,25 @@ function __fix_mtime_from_git() {
     local path="${1}"
 
     local git_date=`git log -1 --pretty="%ad" --date=format:"%Y-%m-%d %H:%M:%S" -- "${path}" 2>/dev/null`
-    local fs_date=`date -r "${path}" "+%Y-%m-%d %H:%M:%S"`
+    local fs_date
+
+    if [[ "$(uname)" == "Darwin" ]]; then
+        fs_date=`date -r "${path}" "+%Y-%m-%d %H:%M:%S"`
+    else
+        fs_date=`date -d "@$(stat -c %Y "${path}")" "+%Y-%m-%d %H:%M:%S"`
+    fi
 
     [[ -z "${git_date}" ]] && return 1
     if [[ "${fs_date}" == "${git_date}" ]]; then
         return 2
     else
         >&2 echo -e "\t${path}\t$(tput setaf 1)${fs_date}$(tput sgr0)\t->\t$(tput setaf 2)${git_date}$(tput sgr0)"
-        local ts=`date -j -f "%Y-%m-%d %H:%M:%S" "${git_date}" +"%Y%m%d%H%M.%S"`
+        local ts
+        if [[ "$(uname)" == "Darwin" ]]; then
+            ts=`date -j -f "%Y-%m-%d %H:%M:%S" "${git_date}" +"%Y%m%d%H%M.%S"`
+        else
+            ts=`date -d "${git_date}" +"%Y%m%d%H%M.%S"`
+        fi
         touch -m -t "${ts}" "${path}" || return 3
     fi
 }

@@ -157,7 +157,7 @@ function time_tz_diff() {
 
 function time_ts() {
     if [[ "$(uname)" == "Darwin" ]]; then
-        date -r "${1}" "+%Y-%m-%d %H:%M:%S"
+        date -j -f "%s" "${1}" "+%Y-%m-%d %H:%M:%S"
     else
         date -d "@${1}" "+%Y-%m-%d %H:%M:%S"
     fi
