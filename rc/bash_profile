@@ -186,7 +186,7 @@ fi
 
  [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
-if [[ `uname -a` == *Darwin* ]]
+if [[ `uname -a` == *Darwin* && $- == *i* ]]
 then
     # bind 'TAB:menu-complete'
     # bind '"\e[Z":menu-complete-backward'
