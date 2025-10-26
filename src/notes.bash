@@ -1740,6 +1740,15 @@ function __nperl_apply() {
     fi
 }
 
+# Usage: notes_claude
+# Opens a Claude Code session in the notes repository.
+function notes_claude() {
+    __preamble
+    notes_api_pushd
+    claude
+    popd
+}
+
 # Usage: notes_api_pushd
 # Changes to the notes repository directory. (With pushd.)
 function notes_api_pushd() {
