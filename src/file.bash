@@ -32,16 +32,28 @@ function file_mtime() {
     fi
 
     local path="${1}"
+
+    # Return empty if path is empty or doesn't exist
+    if [[ -z "${path}" || ! -e "${path}" ]]; then
+        return 1
+    fi
+
     local d
     # These two formats have to match
     [[ ! -z "${use_git}" ]] && d=`git log -1 --pretty="%ad" --date=format:"%Y-%m-%d %H:%M:%S" -- "${path}" 2>/dev/null`
     if [[ -z "${d}" ]]; then
         if [[ "$(uname)" == "Darwin" ]]; then
-            d=`date -r "${path}" "+%Y-%m-%d %H:%M:%S"`
+            d=`date -r "${path}" "+%Y-%m-%d %H:%M:%S" 2>/dev/null`
         else
-            d=`date -d "@$(stat -c %Y "${path}")" "+%Y-%m-%d %H:%M:%S"`
+            d=`date -d "@$(stat -c %Y "${path}")" "+%Y-%m-%d %H:%M:%S" 2>/dev/null`
         fi
     fi
+
+    # Return error if date is still empty
+    if [[ -z "${d}" ]]; then
+        return 1
+    fi
+
     echo "${d}"
 }
 
@@ -54,13 +66,26 @@ function file_age() {
     fi
 
     local path="${1}"
-    local d=`file_mtime "${path}"`
-    local now=`date +%s`
-    if [[ "$(uname)" == "Darwin" ]]; then
-        local ds=`date -j -f "%Y-%m-%d %H:%M:%S" "${d}" +%s`
-    else
-        local ds=`date -d "${d}" +%s`
+    local d
+    d=`file_mtime "${path}"` || return 1
+
+    # Return error if date is empty
+    if [[ -z "${d}" ]]; then
+        return 1
     fi
+
+    local now=`date +%s`
+    local ds
+    if [[ "$(uname)" == "Darwin" ]]; then
+        ds=`date -j -f "%Y-%m-%d %H:%M:%S" "${d}" +%s 2>/dev/null` || return 1
+    else
+        ds=`date -d "${d}" +%s 2>/dev/null` || return 1
+    fi
+
+    if [[ -z "${ds}" ]]; then
+        return 1
+    fi
+
     local age_seconds=$(( now - ds ))
 
     if [[ "${format}" == "seconds" ]]; then

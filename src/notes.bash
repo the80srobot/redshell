@@ -2,6 +2,7 @@
 # Copyright (c) 2024 Adam Sindelar
 
 source "keys.bash"
+source "file.bash"
 
 if [[ -z "${_REDSHELL_NOTES}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_NOTES=1
@@ -720,6 +721,13 @@ function __notes_api_list_todos_batch() {
         local path="${cols[0]:$prefix + 1}"
         local age="$(file_age "${cols[0]}")"
         local mtime="$(file_mtime "${cols[0]}")"
+
+        # Skip if file_mtime or file_age failed (file doesn't exist or is inaccessible)
+        if [[ -z "${mtime}" || -z "${age}" ]]; then
+            >&2 echo "Warning: Skipping ${cols[0]} - could not get file modification time"
+            continue
+        fi
+
         local mdate="$(__date_convert "%Y-%m-%d %H:%M:%S" "%Y-%m-%d" "${mtime}")"
         local interval="$(__when "${cols[4]}" "${mdate}")"
         local start="$(cut -f1 <<< "${interval}")"
