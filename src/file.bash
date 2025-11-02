@@ -18,6 +18,13 @@ function file_mktemp() {
     fi
 }
 
+# Usage: file_mtime [-g] PATH
+#
+# Returns the modification time of PATH in "YYYY-MM-DD HH:MM:SS" format.
+#
+# Options:
+#
+#   -g    Use git to get the last modified time if the file is tracked.
 function file_mtime() {
     if [[ "${1}" == "-g" ]]; then
         shift

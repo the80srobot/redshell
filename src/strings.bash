@@ -12,7 +12,7 @@ _REDSHELL_STRINGS=1
 #
 # URL-encodes a string. DO NOT USE with curl: prefer --data-urlencode.
 function strings_urlencode() {
-  jq -rn --arg x "${1}" '$x|@uri'
+    jq -rn --arg x "${1}" '$x|@uri'
 }
 
 # Usage: strings_strip_control
@@ -40,15 +40,15 @@ function strings_repeat() {
 
 # Usage: strings_join DELIMITER [STRING ...]
 function strings_join {
-  local d=${1-} f=${2-}
-  if shift 2; then
-    printf %s "$f" "${@/#/$d}"
-  fi
+   local d=${1-} f=${2-}
+    if shift 2; then
+      printf %s "$f" "${@/#/$d}"
+    fi
 }
 
 # Usage: strings_sgrep [-C NUM]
 function strings_sgrep() {
-  go_pkg_do https://github.com/arunsupe/semantic-grep go run w2vgrep.go -- "${@}"
+    go_pkg_do https://github.com/arunsupe/semantic-grep go run w2vgrep.go -- "${@}"
 }
 
 alias sgrep=strings_sgrep
@@ -57,15 +57,15 @@ alias sgrep=strings_sgrep
 #
 # Strips the prefix from the string if it's there.
 function strings_strip_prefix() {
-  local prefix="${1}"
-  local string="${2}"
+    local prefix="${1}"
+    local string="${2}"
 
-  if [[ "${string}" != "${prefix}"* ]]; then
-    echo "${string}"
-    return 1
-  fi
+    if [[ "${string}" != "${prefix}"* ]]; then
+        echo "${string}"
+        return 1
+    fi
 
-  echo "${string#${prefix}}"
+    echo "${string#${prefix}}"
 }
 
 # Usage: strings_trim STRING
@@ -81,5 +81,41 @@ function strings_trim() {
     printf '%s' "$var"
 }
 
+# Usage: strings_elide TEXT LIMIT [COLOR]
+#
+# Elides TEXT to LIMIT characters, inserting "(...)" in the middle if needed.
+# If COLOR is provided, it will be used to color the ellipsis.
+function strings_elide() {
+    local text="${1}"
+    local lim="${2}"
+    local color="${3}"
+    if [[ -n "${color}" ]]; then
+        local rst="\033[0m"
+    else
+        local rst=""
+    fi
+    local l="${#text}"
+    if [[ "${l}" -gt "${lim}" ]]; then
+        local llen=$(( lim - 25 ))
+        echo "${text:0:$llen}${color}(...)${rst}${text: -20}"
+    else
+        echo "${text}"
+    fi
+}
+
+# Usage: strings_strip_prefix PREFIX STRING
+#
+# Strips the prefix from the string if it's there.
+function strings_strip_prefix() {
+    local prefix="${1}"
+    local string="${2}"
+
+    if [[ "${string}" != "${prefix}"* ]]; then
+        echo "${string}"
+        return 1
+    fi
+
+    echo "${string#${prefix}}"
+}
 
 fi # _REDSHELL_STRINGS
