@@ -49,13 +49,16 @@ function __prompt() {
     echo "$(tput setaf 5)(q)$(tput sgr0) Cancel"
 }
 
-# Usage: __multiple_choice [-L|-n] INPUT [PAGE] [MSG] [ALPHABET] [CONTROLS] [CONTROL_ALPHABET]
+# Usage: __multiple_choice [-L|-n|-N] INPUT [PAGE] [MSG] [ALPHABET] [CONTROLS] [CONTROL_ALPHABET]
 function __multiple_choice() {
     local mode="-L"
     if [[ "${1}" == "-n" ]]; then
         mode="${1}"
         shift
     elif [[ "${1}" == "-L" ]]; then
+        shift
+    elif [[ "${1}" == "-N" ]]; then
+        mode="${1}"
         shift
     fi
 
@@ -109,18 +112,21 @@ Page $(( page + 1 ))/$(( max_page + 1 )) ${msg}: "
         n=$(( n + page * per_page + 1 ))
         if [[ "${mode}" == "-n" ]]; then
             echo "${n}"
+        elif [[ "${mode}" == "-N" ]]; then
+            echo "${x}"
         else
             echo "${choices}" | tail -n+${n} | head -n1 | strings_strip_control
         fi
     fi
 }
 
-# Usage: multiple_choice [-n|-L] [-i INPUT] [-p PAGE] [-m MSG] [-a ALPHABET] [-I CONTROLS] [-A CONTROL_ALPHABET]
+# Usage: multiple_choice [-n|-L|-N] [-i INPUT] [-p PAGE] [-m MSG] [-a ALPHABET] [-I CONTROLS] [-A CONTROL_ALPHABET]
 #
 # Display an interactive menu with multiple choices, and then print the selected option to stdout.
 #
 # -n: return the number of the selected option
 # -L: return the string of the selected option
+# -N: return the alphabet character of the selected option
 # -p: page number to show
 # -m: prompt message
 # -a: alphabet
@@ -145,6 +151,10 @@ function multiple_choice() {
         case "${1:1}" in
             n)
                 mode="-n"
+                shift
+            ;;
+            N)
+                mode="-N"
                 shift
             ;;
             L)
