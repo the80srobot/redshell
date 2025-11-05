@@ -23,7 +23,12 @@ function keys_path() {
         shift
     fi
 
-    local path="${REAL_HOME}/.redshell_keys/${1}.key"
+    local home="${REAL_HOME}"
+    if [[ -z "${home}" ]]; then
+        home="${HOME}"
+    fi
+
+    local path="${home}/.redshell_keys/${1}.key"
     if [[ -n "${force}" ]]; then
         rm -f "${path}"
     fi
@@ -32,9 +37,9 @@ function keys_path() {
         return 0
     fi
 
-    mkdir -p "${REAL_HOME}/.redshell_keys"
-    chmod 700 "${REAL_HOME}/.redshell_keys"
-    mkdir -p "${REAL_HOME}/.redshell_keys/$(dirname "${1}")"
+    mkdir -p "${home}/.redshell_keys"
+    chmod 700 "${home}/.redshell_keys"
+    mkdir -p "${home}/.redshell_keys/$(dirname "${1}")"
     pass "Redshell/${1}.key" > "${path}"
     chmod 600 "${path}"
     echo "${path}"
