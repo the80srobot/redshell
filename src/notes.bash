@@ -164,8 +164,6 @@ function notes_note() {
     cat "${NOTES_REPO}/${f}"
 }
 
-alias n=notes_note
-
 function notes_list() {
     __preamble
     local data="$(notes_api_list_notes -f "${@}" | sort -r -k2)"
@@ -261,11 +259,6 @@ Return the absolute path" -m "Select operation" -a "edcsf") || notes_list "${@}"
     notes_list "${@}"
 }
 
-alias nn=notes_list
-alias nnn='nn ~"quick todo"'
-alias na='nn -a'
-alias nna='nn -a ~"quick todo"'
-
 function notes_sync() {
     __preamble
     notes_api_git pull --rebase
@@ -273,9 +266,6 @@ function notes_sync() {
     notes_api_fsck
     notes_gc
 }
-
-alias nsync=notes_sync
-
 
 # Usage: notes_todo [TERM ...]
 #
@@ -357,8 +347,6 @@ Edit the file $(tput setaf 6)${path}$(tput sgr0)" -m "Select operation" -a "xXde
     notes_todo "${@}"
 }
 
-alias ntodo=notes_todo
-
 # Usage: notes_undo [-f]
 #
 # Undoes the last note change. If the last change was to a local note, it will
@@ -382,8 +370,6 @@ function notes_undo() {
 
     notes_api_git reset HEAD~ --hard
 }
-
-alias nundo=notes_undo
 
 # Usage: notes_perl PROG [TERM ...]
 #
@@ -447,8 +433,6 @@ Apply Changes"
         esac
     done
 }
-
-alias nperl=notes_perl
 
 # Usage: notes_api_list_notes [-f] [-a] [TERM ...]
 # Outputs a list of notes files that match the given terms.
@@ -1260,8 +1244,6 @@ function notes_log() {
     notes_api_git log --name-status
 }
 
-alias nlog=notes_log
-
 function __match_files_one() {
     local grep_flags="${__GREP_FLAGS}"
     local by_grep=$(notes_api_find -iname "*.md" -exec grep -${grep_flags} "${1}" {} \+)
@@ -1483,8 +1465,6 @@ function notes_ls() {
     done
 }
 
-alias nls=notes_ls
-
 # Usage: notes_hist [N]
 # Prints the N most recent notes.
 function notes_hist() {
@@ -1501,10 +1481,6 @@ function notes_hist() {
         echo -e "${cols[1]}\t${_TIME_COLOR}(${cols[2]} ago)${_SGR0}\t${cols[0]}"
     done
 }
-
-alias nhist=notes_hist
-
-
 
 # Usage: notes_api_drop_note NOTE
 #
