@@ -31,6 +31,8 @@ function keys_path() {
     local path="${home}/.redshell_keys/${1}.key"
     if [[ -n "${force}" ]]; then
         rm -f "${path}"
+    elif [[ -f "${path}" && ! -s "${path}" ]]; then
+        rm -f "${path}"
     fi
     if [[ -f "${path}" ]]; then
         echo "${path}"
