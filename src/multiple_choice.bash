@@ -83,18 +83,25 @@ function __multiple_choice() {
 Page $(( page + 1 ))/$(( max_page + 1 )) ${msg}: "
 
     read -n1 -p "${prompt}" x || return 2
+
+    # If we got an escape, it might just be the escape key, or it could be the
+    # start of an arrow key sequence.
+    if [[ "${x}" == $'\e' ]]; then
+        read -n2 -t 0.1 -s rest
+        x="${x}${rest}"
+    fi
     >&2 echo
 
-    if [[ "${x}" == "q" ]]; then
+    if [[ "${x}" == "q" || "${x}" == $'\e' ]]; then
         >&2 echo "Cancelled"
         return 3
-    elif [[ "${x}" == "p" ]]; then
+    elif [[ "${x}" == "p" || "${x}" == $'\e[D' || "${x}" == $'\e[A' ]]; then
         if [[ "${page}" -eq 0 ]]; then
             __multiple_choice "${mode}" "${input}" "${max_page}" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
         else
             __multiple_choice "${mode}" "${input}" $(( page - 1 )) "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
         fi
-    elif [[ "${x}" == "n" ]]; then
+    elif [[ "${x}" == "n" || "${x}" == $'\e[C' || "${x}" == $'\e[B' ]]; then
         if [[ "${page}" == "${max_page}" ]]; then
             __multiple_choice "${mode}" "${input}" "0" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
         else
