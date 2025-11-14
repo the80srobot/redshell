@@ -35,7 +35,7 @@ function __prompt() {
             i=$(( i + 1))
         else
             if [[ "${i}" -ge "${limit}" ]]; then
-                echo "$(tput setaf 5)(n)$(tput sgr0) Next page"
+                echo "$(tput setaf 5)(→)$(tput sgr0) Next page"
                 break
             fi
             local j=$(( i % per_page ))
@@ -45,8 +45,8 @@ function __prompt() {
         fi
     done <<< "${input}"
 
-    [[ "${page}" -ge 1 ]] && echo "$(tput setaf 5)(p)$(tput sgr0) Previous page"
-    echo "$(tput setaf 5)(q)$(tput sgr0) Cancel"
+    [[ "${page}" -ge 1 ]] && echo "$(tput setaf 5)(←)$(tput sgr0) Previous page"
+    echo "$(tput setaf 5)(ESC)$(tput sgr0) Cancel"
 }
 
 # Usage: __multiple_choice [-L|-n|-N] INPUT [PAGE] [MSG] [ALPHABET] [CONTROLS] [CONTROL_ALPHABET]
@@ -68,7 +68,7 @@ function __multiple_choice() {
     local alphabet="${4}"
     local controls="${5}"
     local control_alphabet="${6}"
-    
+
     [[ -z "${page}" ]] && page=0
     [[ -z "${msg}" ]] && msg="Pick one"
     [[ -z "${alphabet}" ]] && alphabet="1234567890"
@@ -92,16 +92,21 @@ Page $(( page + 1 ))/$(( max_page + 1 )) ${msg}: "
     fi
     >&2 echo
 
-    if [[ "${x}" == "q" || "${x}" == $'\e' ]]; then
+    local letter_nav_enabled=1
+    if [[ "${alphabet}" == *"n"* || "${alphabet}" == *"p"* || "${alphabet}" == *"q"* ]]; then
+        letter_nav_enabled="0"
+    fi
+
+    if [[ ("${x}" == "q" && "${letter_nav_enabled}" -eq 1) || "${x}" == $'\e' ]]; then
         >&2 echo "Cancelled"
         return 3
-    elif [[ "${x}" == "p" || "${x}" == $'\e[D' || "${x}" == $'\e[A' ]]; then
+    elif [[ ("${x}" == "p" && "${letter_nav_enabled}" -eq 1) || "${x}" == $'\e[D' || "${x}" == $'\e[A' ]]; then
         if [[ "${page}" -eq 0 ]]; then
             __multiple_choice "${mode}" "${input}" "${max_page}" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
         else
             __multiple_choice "${mode}" "${input}" $(( page - 1 )) "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
         fi
-    elif [[ "${x}" == "n" || "${x}" == $'\e[C' || "${x}" == $'\e[B' ]]; then
+    elif [[ ("${x}" == "n" && "${letter_nav_enabled}" -eq 1) || "${x}" == $'\e[C' || "${x}" == $'\e[B' ]]; then
         if [[ "${page}" == "${max_page}" ]]; then
             __multiple_choice "${mode}" "${input}" "0" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
         else
