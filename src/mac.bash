@@ -113,6 +113,7 @@ function mac_install_devtools() {
     echo "Installing other devtools..."
     brew_install_or_skip \
         python \
+        coreutils \
         virtualenv \
         git \
         buildifier \
