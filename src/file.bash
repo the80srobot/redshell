@@ -26,10 +26,19 @@ function file_mktemp() {
 #
 #   -g    Use git to get the last modified time if the file is tracked.
 function file_mtime() {
-    if [[ "${1}" == "-g" ]]; then
+    local use_git
+    local use_utc
+    while [[ "$1" == -* ]]; do
+        case "$1" in
+            -g)
+                use_git=1
+                ;;
+            *)
+                break
+                ;;
+        esac
         shift
-        local use_git="use_git"
-    fi
+    done
 
     local path="${1}"
 
@@ -43,9 +52,9 @@ function file_mtime() {
     [[ ! -z "${use_git}" ]] && d=`git log -1 --pretty="%ad" --date=format:"%Y-%m-%d %H:%M:%S" -- "${path}" 2>/dev/null`
     if [[ -z "${d}" ]]; then
         if [[ "$(uname)" == "Darwin" ]]; then
-            d=`date -r "${path}" "+%Y-%m-%d %H:%M:%S" 2>/dev/null`
+            d="$(date -r "${path}" "+%Y-%m-%d %H:%M:%S" 2>/dev/null)"
         else
-            d=`date -d "@$(stat -c %Y "${path}")" "+%Y-%m-%d %H:%M:%S" 2>/dev/null`
+            d="$(date -d "@$(stat -c %Y "${path}")" "+%Y-%m-%d %H:%M:%S" 2>/dev/null)"
         fi
     fi
 

@@ -159,4 +159,42 @@ function time_ts() {
     date -d "@${1}" "+%Y-%m-%d %H:%M:%S" 2>/dev/null || date -r "${1}" "+%Y-%m-%d %H:%M:%S"
 }
 
+# Usage: time_convert TIME FROM_TZ TO_TZ [FORMAT]
+function time_convert() {
+    local time="${1}"
+    local from_tz="${2}"
+    local to_tz="${3}"
+    local format="${4:-%Y-%m-%d %H:%M:%S}"
+
+    # First, convert to timestamp. Compute the difference in seconds using
+    # time_tz_diff. Then, apply that difference to the time in the target
+    # timezone.
+    local diff_secs
+    diff_secs="$(time_tz_diff "${to_tz}" "${from_tz}" 2>/dev/null \
+        | perl -pe 's/.*\((-?\d+) seconds.*/$1/')" || return $?
+    
+    # TODO: Make this bullshit work on Linux.
+
+    local epoch
+    # macOS uses -j and -f, Linux uses -d
+    if date --version &>/dev/null; then
+        # GNU date (Linux)
+        epoch="$(date -d "${time}" +%s)"
+    else
+        # BSD date (macOS)
+        epoch="$(date -f "${format}" -j "${time}" +%s)"
+    fi
+    
+    (( epoch += diff_secs ))
+    
+    # macOS uses -j -f, Linux uses -d
+    if date --version &>/dev/null; then
+        # GNU date (Linux)
+        date -d "@${epoch}" +"${format}"
+    else
+        # BSD date (macOS)
+        date -j -f "%s" "${epoch}" +"${format}"
+    fi
+}
+
 fi # _REDSHELL_TIME
