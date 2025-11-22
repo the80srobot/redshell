@@ -210,7 +210,7 @@ function multiple_choice() {
         esac
     done
 
-    __multiple_choice "${mode}" "${input}" "${max_page}" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
+    __multiple_choice "${mode}" "${input}" "${page}" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
 }
 
 fi # _REDSHELL_MULTIPLE_CHOICE
