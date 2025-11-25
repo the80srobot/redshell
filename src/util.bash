@@ -110,7 +110,7 @@ function install_heroku_cli() {
     grep -q "Darwin" <<< "${sig}" && os="darwin"
     grep -q "Linux" <<< "${sig}" && os="linux"
     grep -q "arm64" <<< "${sig}" && arch="arm64"
-    grep -q "aarch64" <<< "${sig}" && arch="arm"
+    grep -q "aarch64" <<< "${sig}" && arch="arm64"
     grep -q "x86_64" <<< "${sig}" && arch="x64"
     grep -q "i386" <<< "${sig}" && arch="x64"
 
