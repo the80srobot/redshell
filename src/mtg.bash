@@ -164,4 +164,28 @@ function mtg_card() {
     done
 }
 
+# Lists cards that are relevant for normal 60-card play.
+function __relevant_cards() {
+    jq -r '
+        .[]
+        | select(
+            .object == "card"
+            and (.lang == "en")
+            and (.layout != "token")
+            and (.games | index("paper") != null)
+            and .oversized == false
+            and .digital == false
+            # Filter out layouts that are not real cards
+            and (.layout != "art_series" and .layout != "double_faced_token"
+                 and .layout != "emblem" and .layout != "vanguard")
+            # Filter out cards that are not legal in normal formats.
+            and (.legalities.standard == "legal"
+                 or .legalities.future == "legal"
+                 or .legalities.modern == "legal"
+                 or .legalities.pioneer == "legal"
+                 or .legalities.legacy == "legal")
+        )' \
+        "$(mtg_oracle_json)"
+}
+
 fi # _REDSHELL_MTG
