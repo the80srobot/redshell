@@ -244,4 +244,10 @@ function mac_power_stats() {
     pmset -g stats
 }
 
+# macOS uses the non-existent locale LC_CTYPE=UTF-8 by default, which breaks SSH
+# sessions. This function fixes that by way of global ssh client config.
+function mac_fix_ssh_locale_config() {
+    reinstall_file "${HOME}/.redshell/rc/mac_ssh_config" ~/.ssh/config
+}
+
 fi # _REDSHELL_MAC

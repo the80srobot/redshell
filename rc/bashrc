@@ -1,0 +1,8 @@
+# Debian and macOS are both completely stupid about locales. macOS sets locales
+# that don't exist and no amount of brute force seems to stop it. Debian
+# completely implodes as soon as anything is the least bit off.
+#
+# I have no patience for this stupidity. Just always set this locale and leave
+# me alone.
+export LC_ALL=en_US.UTF-8
+unset LC_CTYPE

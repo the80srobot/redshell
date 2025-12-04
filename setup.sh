@@ -15,6 +15,7 @@ popd
 >&2 echo "Installing rc files..."
 reinstall_file rc/bash_profile ~/.bash_profile
 reinstall_file rc/screenrc ~/.screenrc
+reinstall_file rc/bashrc ~/.bashrc
 
 >&2 echo "Installing src..."
 rm -rf ~/.redshell
