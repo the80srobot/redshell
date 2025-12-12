@@ -176,6 +176,70 @@ function mac_kill_crashplan() {
     sudo launchctl unload /Library/LaunchDaemons/com.crashplan.service.plist
 }
 
+# Lists PIDs of processes using too much CPU.
+#
+# Checks both current CPU % and lifetime CPU % (accumulated CPU time divided
+# by process elapsed time). Lists processes exceeding either threshold.
+#
+# Output: tab-separated pid, lifetime cpu %, current cpu %, command name
+#
+# Usage: mac_cpu_hogs [--current PERCENT] [--lifetime PERCENT]
+function mac_cpu_hogs() {
+    local current_thresh=50
+    local lifetime_thresh=50
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --current)
+                current_thresh="$2"
+                shift 2
+                ;;
+            --lifetime)
+                lifetime_thresh="$2"
+                shift 2
+                ;;
+            *)
+                echo "Usage: mac_cpu_hogs [--current PERCENT] [--lifetime PERCENT]" >&2
+                return 1
+                ;;
+        esac
+    done
+
+    # pid, current cpu%, cputime (accumulated), etime (elapsed since start), comm
+    ps -eo pid,%cpu,cputime,etime,comm | awk -v cur_thresh="$current_thresh" -v life_thresh="$lifetime_thresh" '
+        function parse_time(t) {
+            secs = 0
+            # Handle dd-hh:mm:ss or hh:mm:ss or mm:ss
+            if (match(t, /-/)) {
+                split(t, parts, "-")
+                secs = parts[1] * 86400
+                t = parts[2]
+            }
+            n = split(t, parts, ":")
+            if (n == 3) {
+                secs += parts[1] * 3600 + parts[2] * 60 + parts[3]
+            } else if (n == 2) {
+                secs += parts[1] * 60 + parts[2]
+            } else {
+                secs += parts[1]
+            }
+            return secs
+        }
+        NR > 1 {
+            pid = $1
+            cur_cpu = $2
+            cpu_secs = parse_time($3)
+            elapsed = parse_time($4)
+            comm = $5
+
+            life_cpu = (elapsed > 0) ? (cpu_secs / elapsed * 100) : 0
+
+            if (cur_cpu >= cur_thresh || life_cpu >= life_thresh) {
+                printf "%s\t%.1f\t%.1f\t%s\n", pid, life_cpu, cur_cpu, comm
+            }
+        }'
+}
+
 # Limits the CPU usage of processes to a certain percentage.
 #
 # Usage: mac_cpulimit LIMIT PID [PID ...]

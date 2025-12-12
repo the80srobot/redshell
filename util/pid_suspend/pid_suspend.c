@@ -22,14 +22,14 @@ int main(int argc, char *argv[]) {
     }
 
     int result;
-    if (strcmp(action, "suspend") == 0) {
+    if (strcmp(action, "--suspend") == 0) {
         result = syscall(SYS_pid_suspend, pid);
         if (result == -1) {
             perror("pid_suspend failed");
             return 1;
         }
         printf("Successfully suspended process %d\n", pid);
-    } else if (strcmp(action, "resume") == 0) {
+    } else if (strcmp(action, "--resume") == 0) {
         result = syscall(SYS_pid_resume, pid);
         if (result == -1) {
             perror("pid_resume failed");
