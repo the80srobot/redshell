@@ -281,5 +281,36 @@ function util_forex() {
     
 }
 
+# Usage: util_run [--sudo] COMMAND [ARGUMENTS...]
+function util_run() {
+    local use_sudo=0
+    if [[ "$1" == "--sudo" ]]; then
+        use_sudo=1
+        shift
+    fi
+    local cmd="$1"
+    shift
+    pushd "${REDSHELL_ROOT}/util/${cmd}" > /dev/null
+    local make_output
+    make_output="$(mktemp)" || return $?
+    make > "${make_output}" 2>&1
+    local make_ret=$?
+    if [[ $make_ret -ne 0 ]]; then
+        cat "${make_output}" >&2
+        rm -f "${make_output}"
+        popd > /dev/null
+        return $make_ret
+    fi
+    rm -f "${make_output}"
+
+    if [[ $use_sudo -eq 1 ]]; then
+        sudo ./"${cmd}" "$@"
+    else
+        ./"${cmd}" "$@"
+    fi
+    local ret=$?
+    popd > /dev/null
+    return $ret
+}
 
 fi # _REDSHELL_UTIL

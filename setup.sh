@@ -21,6 +21,7 @@ reinstall_file rc/bashrc ~/.bashrc
 rm -rf ~/.redshell
 mkdir -p ~/.redshell/src
 cp -r rc ./src ~/.redshell/
+cp -r ./util ~/.redshell/
 # TODO: This should be removed later.
 cp -r rc ./asciiart ~/.redshell/
 
