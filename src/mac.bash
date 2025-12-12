@@ -6,6 +6,9 @@
 if [[ -z "${_REDSHELL_MAC}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_MAC=1
 
+source multiple_choice.bash
+source util.bash
+
 function mac_setup() {
     mac_enable_ipconfig_verbose
     mac_switch_to_bash
@@ -176,6 +179,34 @@ function mac_kill_crashplan() {
     sudo launchctl unload /Library/LaunchDaemons/com.crashplan.service.plist
 }
 
+function mac_hogs() {
+    local hogs
+    hogs="$(mac_cpu_hogs --current 20 --lifetime 5 | sort -k2 -nr)"
+    if [[ -z "${hogs}" ]]; then
+        echo "No CPU hogs found."
+        return
+    fi
+    local header
+    header="PID"$'\t'"Lifetime CPU %"$'\t'"Current CPU %"$'\t'"Command"
+    # Make sure the width of the columns in the header and the data match.
+    local cols
+    cols="$(echo -e "${header}\n${hogs}" | column -t -s $'\t')"
+    header="$(echo "${cols}" | head -n1)"
+    hogs="$(echo "${cols}" | tail -n +2)"
+
+    local choice
+    choice="$(multiple_choice \
+        -i "${hogs}" \
+        -m "Select CPU hogging tasks to suspend" \
+        -H "     ${header}")" || return $?
+    
+    local pid="$(echo "${choice}" | awk '{print $1}')"
+    >&2 echo "Suspending PID ${pid}..."
+    mac_pid_suspend --suspend "${pid}" || return $?
+    >&2 echo "PID ${pid} suspended. To resume, run 'mac_pid_suspend --resume ${pid}'."
+    mac_hogs
+}
+
 # Lists PIDs of processes using too much CPU.
 #
 # Checks both current CPU % and lifetime CPU % (accumulated CPU time divided
@@ -230,7 +261,17 @@ function mac_cpu_hogs() {
             cur_cpu = $2
             cpu_secs = parse_time($3)
             elapsed = parse_time($4)
-            comm = $5
+
+            # Ignore processes running less than 10 seconds
+            if (elapsed < 10) next
+
+            # Capture command from field 5 to end of line, then take basename
+            comm = ""
+            for (i = 5; i <= NF; i++) {
+                comm = comm (i > 5 ? " " : "") $i
+            }
+            n = split(comm, parts, "/")
+            comm = parts[n]
 
             life_cpu = (elapsed > 0) ? (cpu_secs / elapsed * 100) : 0
 
@@ -312,6 +353,11 @@ function mac_power_stats() {
 # sessions. This function fixes that by way of global ssh client config.
 function mac_fix_ssh_locale_config() {
     reinstall_file "${HOME}/.redshell/rc/mac_ssh_config" ~/.ssh/config
+}
+
+# Usage: mac_pid_suspend [--resume|--suspend] PID
+function mac_pid_suspend() {
+    util_run --sudo pid_suspend "$@"
 }
 
 fi # _REDSHELL_MAC

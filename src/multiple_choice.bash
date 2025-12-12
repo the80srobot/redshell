@@ -12,6 +12,7 @@ function __prompt() {
     local alphabet="${3}"
     local controls="${4}"
     local control_alphabet="${5}"
+    local header="${6}"
 
     local per_page="${#alphabet}"
     local offset=$(( page * per_page ))
@@ -24,6 +25,10 @@ function __prompt() {
         echo "$(tput setaf 3)(${num}):$(tput sgr0) ${line}"
         i=$(( i + 1))
     done <<< "${controls}"
+
+    if [[ -n "${header}" ]]; then
+        echo "${header}"
+    fi
 
     i=0
     while IFS= read line; do
@@ -49,7 +54,7 @@ function __prompt() {
     echo "$(tput setaf 5)(ESC)$(tput sgr0) Cancel"
 }
 
-# Usage: __multiple_choice [-L|-n|-N] INPUT [PAGE] [MSG] [ALPHABET] [CONTROLS] [CONTROL_ALPHABET]
+# Usage: __multiple_choice [-L|-n|-N] INPUT [PAGE] [MSG] [ALPHABET] [CONTROLS] [CONTROL_ALPHABET] [HEADER]
 function __multiple_choice() {
     local mode="-L"
     if [[ "${1}" == "-n" ]]; then
@@ -68,6 +73,7 @@ function __multiple_choice() {
     local alphabet="${4}"
     local controls="${5}"
     local control_alphabet="${6}"
+    local header="${7}"
 
     [[ -z "${page}" ]] && page=0
     [[ -z "${msg}" ]] && msg="Pick one"
@@ -78,7 +84,7 @@ function __multiple_choice() {
     local per_page="${#alphabet}"
     local max_page=$(( (count - 1) / per_page ))
 
-    local prompt=`__prompt "${input}" "${page}" "${alphabet}" "${controls}" "${control_alphabet}"`
+    local prompt=`__prompt "${input}" "${page}" "${alphabet}" "${controls}" "${control_alphabet}" "${header}"`
     prompt+="
 Page $(( page + 1 ))/$(( max_page + 1 )) ${msg}: "
 
@@ -102,15 +108,15 @@ Page $(( page + 1 ))/$(( max_page + 1 )) ${msg}: "
         return 3
     elif [[ ("${x}" == "p" && "${letter_nav_enabled}" -eq 1) || "${x}" == $'\e[D' || "${x}" == $'\e[A' ]]; then
         if [[ "${page}" -eq 0 ]]; then
-            __multiple_choice "${mode}" "${input}" "${max_page}" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
+            __multiple_choice "${mode}" "${input}" "${max_page}" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}" "${header}"
         else
-            __multiple_choice "${mode}" "${input}" $(( page - 1 )) "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
+            __multiple_choice "${mode}" "${input}" $(( page - 1 )) "${msg}" "${alphabet}" "${controls}" "${control_alphabet}" "${header}"
         fi
     elif [[ ("${x}" == "n" && "${letter_nav_enabled}" -eq 1) || "${x}" == $'\e[C' || "${x}" == $'\e[B' ]]; then
         if [[ "${page}" == "${max_page}" ]]; then
-            __multiple_choice "${mode}" "${input}" "0" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
+            __multiple_choice "${mode}" "${input}" "0" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}" "${header}"
         else
-            __multiple_choice "${mode}" "${input}" $(( page + 1 )) "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
+            __multiple_choice "${mode}" "${input}" $(( page + 1 )) "${msg}" "${alphabet}" "${controls}" "${control_alphabet}" "${header}"
         fi
     elif [[ "${control_alphabet}" == *"${x}"* ]]; then
         echo "${x}"
@@ -132,7 +138,7 @@ Page $(( page + 1 ))/$(( max_page + 1 )) ${msg}: "
     fi
 }
 
-# Usage: multiple_choice [-n|-L|-N] [-i INPUT] [-p PAGE] [-m MSG] [-a ALPHABET] [-I CONTROLS] [-A CONTROL_ALPHABET]
+# Usage: multiple_choice [-n|-L|-N] [-i INPUT] [-p PAGE] [-m MSG] [-a ALPHABET] [-I CONTROLS] [-A CONTROL_ALPHABET] [-H HEADER]
 #
 # Display an interactive menu with multiple choices, and then print the selected option to stdout.
 #
@@ -145,6 +151,7 @@ Page $(( page + 1 ))/$(( max_page + 1 )) ${msg}: "
 # -I: control options
 # -A: control alphabet
 # -i: input (options to pick from)
+# -H: header to show above the options
 function multiple_choice() {
     local mode="-L"
     local input
@@ -203,6 +210,11 @@ function multiple_choice() {
                 shift
                 shift
             ;;
+            H)
+                header="${2}"
+                shift
+                shift
+            ;;
             *)
                 >&2 echo "Invalid flag ${1}"
                 return 1
@@ -210,7 +222,7 @@ function multiple_choice() {
         esac
     done
 
-    __multiple_choice "${mode}" "${input}" "${page}" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}"
+    __multiple_choice "${mode}" "${input}" "${page}" "${msg}" "${alphabet}" "${controls}" "${control_alphabet}" "${header}"
 }
 
 fi # _REDSHELL_MULTIPLE_CHOICE

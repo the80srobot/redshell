@@ -313,9 +313,4 @@ function util_run() {
     return $ret
 }
 
-# Usage: util_pid_suspend [--resume|--suspend] PID
-function util_pid_suspend() {
-    util_run --sudo pid_suspend "$@"
-}
-
 fi # _REDSHELL_UTIL

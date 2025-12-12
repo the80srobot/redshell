@@ -548,6 +548,10 @@ function __q() {
       shift
       mac_kill_crashplan "$@"
       ;;
+    mac_hogs|hogs)
+      shift
+      mac_hogs "$@"
+      ;;
     mac_cpu_hogs|cpu_hogs)
       shift
       mac_cpu_hogs "$@"
@@ -2456,6 +2460,12 @@ function __q_help() {
       echo '    Stops CrashPlan from running. CrashPlan is a very poorly optimized backup'
       echo '    service. When you'"'"'re running IO intensive workloads, it can slow them down'
       echo '    massively and eat up 2-3 CPU cores.'
+      tput bold
+      echo -n '  hogs'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
       tput bold
       echo -n '  cpu_hogs'
       echo -n ' ['
@@ -4988,6 +4998,9 @@ function __q_dump() {
     kill_crashplan)
       type mac_kill_crashplan
       ;;
+    hogs)
+      type mac_hogs
+      ;;
     cpu_hogs)
       type mac_cpu_hogs
       ;;
@@ -5820,7 +5833,7 @@ function __q_compgen() {
       return 0
       ;;
     mac)
-      COMPREPLY=($(compgen -W "help setup brew reinstall_brew enable_ipconfig_verbose get_user_shell brew_bash_path switch_to_bash icloud icloud_evict brew_install_or_skip install_miniconda install_devtools kill_defender suppress_defender kill_crashplan cpu_hogs cpulimit disable_powernap power_stats fix_ssh_locale_config" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help setup brew reinstall_brew enable_ipconfig_verbose get_user_shell brew_bash_path switch_to_bash icloud icloud_evict brew_install_or_skip install_miniconda install_devtools kill_defender suppress_defender kill_crashplan hogs cpu_hogs cpulimit disable_powernap power_stats fix_ssh_locale_config" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     media)
@@ -10618,6 +10631,72 @@ function __q_compgen() {
         ;;
       kill_crashplan)
         # mac_kill_crashplan
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      hogs)
+        # [ARG...]
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
