@@ -160,6 +160,7 @@ function multiple_choice() {
     local alphabet
     local controls
     local control_alphabet
+    local header
 
     while [[ "${#}" -ne 0 ]]; do
         if [[ "${1:0:1}" != "-" ]]; then

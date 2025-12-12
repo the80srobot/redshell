@@ -10,7 +10,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
-        fprintf(stderr, "Usage: %s <suspend|resume> <pid>\n", argv[0]);
+        fprintf(stderr, "Usage: %s <--suspend|--resume|--check> <pid>\n", argv[0]);
         return 1;
     }
 
@@ -36,8 +36,25 @@ int main(int argc, char *argv[]) {
             return 1;
         }
         printf("Successfully resumed process %d\n", pid);
+    } else if (strcmp(action, "--check") == 0) {
+        /*
+         * There's no direct API to check if a process is suspended via pid_suspend.
+         * We probe by calling pid_resume - if the process is suspended, resume
+         * succeeds (returns 0), then we re-suspend it. If not suspended, resume
+         * fails with EINVAL.
+         */
+        result = syscall(SYS_pid_resume, pid);
+        if (result == 0) {
+            /* Was suspended, re-suspend it */
+            syscall(SYS_pid_suspend, pid);
+            printf("suspended\n");
+        } else {
+            /* Not suspended (or error - but most likely EINVAL meaning not suspended) */
+            printf("running\n");
+        }
+        return 0;
     } else {
-        fprintf(stderr, "Unknown action: %s (use 'suspend' or 'resume')\n", action);
+        fprintf(stderr, "Unknown action: %s (use '--suspend', '--resume', or '--check')\n", action);
         return 1;
     }
 
