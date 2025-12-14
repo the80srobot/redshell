@@ -5,7 +5,7 @@ alias la='ls -lha'
 
 BASH_PROFILE=`readlink -f ${BASH_SOURCE}`
 REAL_HOME=`dirname "${BASH_PROFILE}"`
-REDSHELL_ROOT="${REAL_HOME}/.redshell"
+export REDSHELL_ROOT="${REAL_HOME}/.redshell"
 export EDITOR=`which vim`
 
 if [[ `uname -a` == *debian* ]]
