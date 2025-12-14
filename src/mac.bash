@@ -360,4 +360,10 @@ function mac_pid_suspend() {
     util_run --sudo pid_suspend "$@"
 }
 
+function mac_setup_iterm2() {
+    brew install --cask iterm2
+    # Install the bundled plist config.
+    cp "${REDSHELL_ROOT}/rc/com.googlecode.iterm2.plist" "${HOME}/Library/Preferences/"
+}
+
 fi # _REDSHELL_MAC
