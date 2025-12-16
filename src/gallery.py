@@ -269,6 +269,22 @@ def scan(directory: str, dedupe: str = "", copy_to: str = "",
     thumb_dir.mkdir(exist_ok=True)
     mid_dir.mkdir(exist_ok=True)
 
+    # Load existing gallery data to avoid re-scanning known files
+    json_path = gallery_path / "photos.json"
+    existing_photos = {}  # original_path -> photo_data
+    existing_title = None
+    if json_path.exists() and not force_flag:
+        try:
+            with open(json_path) as f:
+                existing_data = json.load(f)
+            if isinstance(existing_data, dict):
+                existing_title = existing_data.get('title')
+                for photo in existing_data.get('photos', []):
+                    existing_photos[photo['original_path']] = photo
+            print(f"Loaded {len(existing_photos)} existing entries from gallery index")
+        except Exception as e:
+            print(f"Warning: Could not load existing gallery data: {e}", file=sys.stderr)
+
     # Deduplicate if requested (parallel hashing)
     if dedupe_flag:
         print("\nComputing hashes for deduplication...")
@@ -294,32 +310,51 @@ def scan(directory: str, dedupe: str = "", copy_to: str = "",
     photo_data = []
     date_counts = defaultdict(int)
     resize_tasks = []  # (src, dest, size) tuples
+    new_count = 0
+    skipped_count = 0
 
     for filepath in progress_wrapper(photos, desc="Metadata"):
-        gallery_filename = generate_date_filename(filepath, date_counts)
-
+        # Compute the original_path to check if already indexed
         if copy_path:
+            # When copying, we need to generate the filename first to know the path
+            gallery_filename = generate_date_filename(filepath, date_counts)
             dest_path = copy_path / gallery_filename
-            try:
-                shutil.copy2(filepath, dest_path)
-            except Exception as e:
-                print(f"Error copying {filepath}: {e}", file=sys.stderr)
-                continue
             original_path = str(dest_path.relative_to(gallery_base))
             source_for_resize = dest_path
         else:
             original_path = str(filepath.relative_to(gallery_base))
             source_for_resize = filepath
+            gallery_filename = None  # Will get from existing or generate
 
-        file_date, date_source = get_file_date(filepath)
-        photo_data.append({
-            'filename': gallery_filename,
-            'original_path': original_path,
-            'date': file_date.isoformat(),
-            'date_source': date_source,
-        })
+        # Check if this file is already indexed
+        if original_path in existing_photos and not force_flag:
+            # Use existing metadata
+            photo_entry = existing_photos[original_path]
+            photo_data.append(photo_entry)
+            gallery_filename = photo_entry['filename']
+            skipped_count += 1
+        else:
+            # New file - collect metadata
+            if gallery_filename is None:
+                gallery_filename = generate_date_filename(filepath, date_counts)
 
-        # Queue thumbnail generation tasks
+            if copy_path:
+                try:
+                    shutil.copy2(filepath, dest_path)
+                except Exception as e:
+                    print(f"Error copying {filepath}: {e}", file=sys.stderr)
+                    continue
+
+            file_date, date_source = get_file_date(filepath)
+            photo_data.append({
+                'filename': gallery_filename,
+                'original_path': original_path,
+                'date': file_date.isoformat(),
+                'date_source': date_source,
+            })
+            new_count += 1
+
+        # Always check for missing thumbnails (even for existing entries)
         thumb_path = thumb_dir / gallery_filename
         mid_path = mid_dir / gallery_filename
 
@@ -328,6 +363,9 @@ def scan(directory: str, dedupe: str = "", copy_to: str = "",
 
         if force_flag or not mid_path.exists():
             resize_tasks.append((str(source_for_resize), str(mid_path), MID_SIZE))
+
+    if skipped_count > 0:
+        print(f"  Skipped {skipped_count} already-indexed files, found {new_count} new files")
 
     # Generate thumbnails in parallel
     if resize_tasks:
@@ -349,8 +387,8 @@ def scan(directory: str, dedupe: str = "", copy_to: str = "",
     # Sort by date
     photo_data.sort(key=lambda x: x['date'])
 
-    # Default title to directory name
-    gallery_title = title if title else root_path.name
+    # Default title to: provided title > existing title > directory name
+    gallery_title = title if title else (existing_title if existing_title else root_path.name)
 
     # Write JSON index
     json_path = gallery_path / "photos.json"
