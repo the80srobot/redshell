@@ -3251,6 +3251,57 @@ function __q_help() {
       echo -n ' ['
       tput sgr0
       tput bold
+      echo -n ' -u|--username'
+      tput sgr0
+      tput bold
+      tput setaf 10
+      echo -n ' USER'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -P|--password'
+      tput sgr0
+      tput bold
+      echo -n ' PASS'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -C|--certfile'
+      tput sgr0
+      tput bold
+      tput setaf 9
+      echo -n ' FILE'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' --keyfile'
+      tput sgr0
+      tput bold
+      tput setaf 9
+      echo -n ' FILE'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
       tput setaf 1
       echo -n ' DIR'
       tput sgr0
@@ -3273,16 +3324,20 @@ function __q_help() {
       echo '    '
       echo '    '
       echo '    Options:'
-      echo '    --dedupe          Deduplicate photos by hash before indexing.'
-      echo '    --copy-to DIR     Copy photos to DIR with date-based names. If not'
+      echo '    --dedupe              Deduplicate photos by hash before indexing.'
+      echo '    --copy-to DIR         Copy photos to DIR with date-based names. If not'
       echo '    specified, photos are referenced in place.'
-      echo '    --scan-only       Generate gallery data without serving. Useful for'
+      echo '    --scan-only           Generate gallery data without serving. Useful for'
       echo '    preparing a gallery to be served later.'
-      echo '    --force           Regenerate thumbnails even if they exist.'
-      echo '    --clean           Delete all generated gallery files (.gallery/ and'
+      echo '    --force               Regenerate thumbnails even if they exist.'
+      echo '    --clean               Delete all generated gallery files (.gallery/ and'
       echo '    gallery.html) and exit.'
-      echo '    --title TITLE     Gallery title. Defaults to the directory name.'
-      echo '    -l, --port PORT   Port to serve on. Default is 8080.'
+      echo '    --title TITLE         Gallery title. Defaults to the directory name.'
+      echo '    -l, --port PORT       Port to serve on. Default is 8080.'
+      echo '    -u, --username USER   Username for basic auth.'
+      echo '    -P, --password PASS   Password for basic auth.'
+      echo '    -C, --certfile FILE   Certificate file for HTTPS, or "auto" to generate.'
+      echo '    --keyfile FILE        Key file for HTTPS.'
       echo '    '
       echo '    Examples:'
       echo '    net_gallery                     # Scan current dir and serve gallery'
@@ -13859,9 +13914,9 @@ function __q_compgen() {
         return 0
         ;;
       gallery)
-        # net_gallery [--dedupe] [--copy-to DIR] [--scan-only] [--force] [--clean] [--title TITLE] [-l|--port PORT] [DIR]
+        # net_gallery [--dedupe] [--copy-to DIR] [--scan-only] [--force] [--clean] [--title TITLE] [-l|--port PORT] [-u|--username USER] [-P|--password PASS] [-C|--certfile FILE] [--keyfile FILE] [DIR]
         local switch_names=(--dedupe --scan-only --force --clean)
-        local keyword_names=(--copy-to --title -l --port)
+        local keyword_names=(--copy-to --title -l --port -u --username -P --password -C --certfile --keyfile)
         local repeated_names=()
         local repeated_positions=()
         local positional_types=(DIRECTORY)
@@ -13898,6 +13953,18 @@ function __q_compgen() {
               ;;
             -l)
               state="EXPECT_VALUE_STRING"
+              ;;
+            -u)
+              state="EXPECT_VALUE_USER"
+              ;;
+            -P)
+              state="EXPECT_VALUE_STRING"
+              ;;
+            -C)
+              state="EXPECT_VALUE_FILE"
+              ;;
+            --keyfile)
+              state="EXPECT_VALUE_FILE"
               ;;
             *)
               state="EXPECT_ARG"

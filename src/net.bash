@@ -466,19 +466,23 @@ tqdm"
 # .gallery hidden directory. The original photos can either be left in place
 # (referenced by path) or copied to a new directory with date-based names.
 #
-# Usage: net_gallery [--dedupe] [--copy-to DIR] [--scan-only] [--force] [--clean] [--title TITLE] [-l|--port PORT] [DIR]
+# Usage: net_gallery [--dedupe] [--copy-to DIR] [--scan-only] [--force] [--clean] [--title TITLE] [-l|--port PORT] [-u|--username USER] [-P|--password PASS] [-C|--certfile FILE] [--keyfile FILE] [DIR]
 #
 # Options:
-#   --dedupe          Deduplicate photos by hash before indexing.
-#   --copy-to DIR     Copy photos to DIR with date-based names. If not
-#                     specified, photos are referenced in place.
-#   --scan-only       Generate gallery data without serving. Useful for
-#                     preparing a gallery to be served later.
-#   --force           Regenerate thumbnails even if they exist.
-#   --clean           Delete all generated gallery files (.gallery/ and
-#                     gallery.html) and exit.
-#   --title TITLE     Gallery title. Defaults to the directory name.
-#   -l, --port PORT   Port to serve on. Default is 8080.
+#   --dedupe              Deduplicate photos by hash before indexing.
+#   --copy-to DIR         Copy photos to DIR with date-based names. If not
+#                         specified, photos are referenced in place.
+#   --scan-only           Generate gallery data without serving. Useful for
+#                         preparing a gallery to be served later.
+#   --force               Regenerate thumbnails even if they exist.
+#   --clean               Delete all generated gallery files (.gallery/ and
+#                         gallery.html) and exit.
+#   --title TITLE         Gallery title. Defaults to the directory name.
+#   -l, --port PORT       Port to serve on. Default is 8080.
+#   -u, --username USER   Username for basic auth.
+#   -P, --password PASS   Password for basic auth.
+#   -C, --certfile FILE   Certificate file for HTTPS, or "auto" to generate.
+#   --keyfile FILE        Key file for HTTPS.
 #
 # Examples:
 #   net_gallery                     # Scan current dir and serve gallery
@@ -495,6 +499,10 @@ function net_gallery() {
     local force=""
     local clean=""
     local title=""
+    local username=""
+    local password=""
+    local certfile=""
+    local keyfile=""
 
     while [[ "${#}" -ne 0 ]]; do
         case "${1}" in
@@ -520,6 +528,22 @@ function net_gallery() {
                 ;;
             -l|--port)
                 port="${2}"
+                shift
+                ;;
+            -u|--username)
+                username="${2}"
+                shift
+                ;;
+            -P|--password)
+                password="${2}"
+                shift
+                ;;
+            -C|--certfile)
+                certfile="${2}"
+                shift
+                ;;
+            --keyfile)
+                keyfile="${2}"
                 shift
                 ;;
             *)
@@ -601,7 +625,14 @@ function net_gallery() {
     >&2 echo "Open http://localhost:${port}/gallery.html in your browser."
     >&2 echo ""
 
-    net_host --port "${port}" "${gallery_dir}"
+    local host_args=(--port "${port}")
+    [[ -n "${username}" ]] && host_args+=(--username "${username}")
+    [[ -n "${password}" ]] && host_args+=(--password "${password}")
+    [[ -n "${certfile}" ]] && host_args+=(--certfile "${certfile}")
+    [[ -n "${keyfile}" ]] && host_args+=(--keyfile "${keyfile}")
+    host_args+=("${gallery_dir}")
+
+    net_host "${host_args[@]}"
 }
 
 fi # _REDSHELL_NET
