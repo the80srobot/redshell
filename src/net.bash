@@ -466,7 +466,7 @@ tqdm"
 # .gallery hidden directory. The original photos can either be left in place
 # (referenced by path) or copied to a new directory with date-based names.
 #
-# Usage: net_gallery [--dedupe] [--copy-to DIR] [--scan-only] [--force] [--clean] [--title TITLE] [-l|--port PORT] [-u|--username USER] [-P|--password PASS] [-C|--certfile FILE] [--keyfile FILE] [DIR]
+# Usage: net_gallery [--dedupe] [--copy-to DIR] [--scan-only] [--serve-only] [--force] [--clean] [--title TITLE] [-l|--port PORT] [-u|--username USER] [-P|--password PASS] [-C|--certfile FILE] [--keyfile FILE] [DIR]
 #
 # Options:
 #   --dedupe              Deduplicate photos by hash before indexing.
@@ -474,6 +474,7 @@ tqdm"
 #                         specified, photos are referenced in place.
 #   --scan-only           Generate gallery data without serving. Useful for
 #                         preparing a gallery to be served later.
+#   --serve-only          Skip scanning and serve existing gallery data.
 #   --force               Regenerate thumbnails even if they exist.
 #   --clean               Delete all generated gallery files (.gallery/ and
 #                         gallery.html) and exit.
@@ -498,6 +499,7 @@ function net_gallery() {
     local scan_only=""
     local force=""
     local clean=""
+    local serve_only=""
     local title=""
     local username=""
     local password=""
@@ -518,6 +520,9 @@ function net_gallery() {
                 ;;
             --force)
                 force="True"
+                ;;
+            --serve-only)
+                serve_only="True"
                 ;;
             --clean)
                 clean="True"
@@ -587,22 +592,32 @@ function net_gallery() {
         return 0
     fi
 
-    # Ensure the gallery venv exists with pillow
-    __net_gallery_ensure_venv || return $?
+    # Skip scanning if --serve-only is set
+    if [[ -n "${serve_only}" ]]; then
+        if [[ ! -f "${gallery_dir}/.gallery/photos.json" ]]; then
+            >&2 echo "Error: No gallery data found in ${gallery_dir}/.gallery/"
+            >&2 echo "Run without --serve-only to generate gallery data first."
+            return 1
+        fi
+        >&2 echo "Skipping scan, using existing gallery data."
+    else
+        # Ensure the gallery venv exists with pillow
+        __net_gallery_ensure_venv || return $?
 
-    >&2 echo "Scanning for photos in ${dir}..."
+        >&2 echo "Scanning for photos in ${dir}..."
 
-    # Run the gallery scanner using the gallery workspace venv
-    python_func \
-        -p "${HOME}/.redshell/gallery/gallery.py" \
-        scan \
-        --directory "${dir}" \
-        --dedupe "${dedupe}" \
-        --copy_to "${copy_to}" \
-        --gallery_dir "${gallery_dir}" \
-        --force "${force}" \
-        --title "${title}" \
-        || return $?
+        # Run the gallery scanner using the gallery workspace venv
+        python_func \
+            -p "${HOME}/.redshell/gallery/gallery.py" \
+            scan \
+            --directory "${dir}" \
+            --dedupe "${dedupe}" \
+            --copy_to "${copy_to}" \
+            --gallery_dir "${gallery_dir}" \
+            --force "${force}" \
+            --title "${title}" \
+            || return $?
+    fi
 
     # Copy the gallery HTML to the gallery directory
     local gallery_html_src="${HOME}/.redshell/src/gallery.html"

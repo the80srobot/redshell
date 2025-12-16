@@ -3209,6 +3209,15 @@ function __q_help() {
       echo -n ' ['
       tput sgr0
       tput bold
+      echo -n ' --serve-only'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
       echo -n ' --force'
       tput sgr0
       tput bold
@@ -3329,6 +3338,7 @@ function __q_help() {
       echo '    specified, photos are referenced in place.'
       echo '    --scan-only           Generate gallery data without serving. Useful for'
       echo '    preparing a gallery to be served later.'
+      echo '    --serve-only          Skip scanning and serve existing gallery data.'
       echo '    --force               Regenerate thumbnails even if they exist.'
       echo '    --clean               Delete all generated gallery files (.gallery/ and'
       echo '    gallery.html) and exit.'
@@ -13914,8 +13924,8 @@ function __q_compgen() {
         return 0
         ;;
       gallery)
-        # net_gallery [--dedupe] [--copy-to DIR] [--scan-only] [--force] [--clean] [--title TITLE] [-l|--port PORT] [-u|--username USER] [-P|--password PASS] [-C|--certfile FILE] [--keyfile FILE] [DIR]
-        local switch_names=(--dedupe --scan-only --force --clean)
+        # net_gallery [--dedupe] [--copy-to DIR] [--scan-only] [--serve-only] [--force] [--clean] [--title TITLE] [-l|--port PORT] [-u|--username USER] [-P|--password PASS] [-C|--certfile FILE] [--keyfile FILE] [DIR]
+        local switch_names=(--dedupe --scan-only --serve-only --force --clean)
         local keyword_names=(--copy-to --title -l --port -u --username -P --password -C --certfile --keyfile)
         local repeated_names=()
         local repeated_positions=()
@@ -13940,6 +13950,9 @@ function __q_compgen() {
               state="EXPECT_VALUE_DIRECTORY"
               ;;
             --scan-only)
+              state="EXPECT_ARG"
+              ;;
+            --serve-only)
               state="EXPECT_ARG"
               ;;
             --force)
