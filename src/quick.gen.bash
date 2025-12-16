@@ -184,6 +184,14 @@ function __q() {
       shift
       debian_install_or_skip "$@"
       ;;
+    debian_install_imgcat|install_imgcat)
+      shift
+      debian_install_imgcat "$@"
+      ;;
+    debian_setup_mc|setup_mc)
+      shift
+      debian_setup_mc "$@"
+      ;;
     *)
       if [ -n "$1" ]; then
         echo "Module debian has no function $1"
@@ -572,6 +580,14 @@ function __q() {
       shift
       mac_fix_ssh_locale_config "$@"
       ;;
+    mac_pid_suspend|pid_suspend)
+      shift
+      mac_pid_suspend "$@"
+      ;;
+    mac_setup_iterm2|setup_iterm2)
+      shift
+      mac_setup_iterm2 "$@"
+      ;;
     *)
       if [ -n "$1" ]; then
         echo "Module mac has no function $1"
@@ -787,6 +803,10 @@ function __q() {
     net_wa_link|wa_link)
       shift
       net_wa_link "$@"
+      ;;
+    net_gallery|gallery)
+      shift
+      net_gallery "$@"
       ;;
     *)
       if [ -n "$1" ]; then
@@ -1372,10 +1392,6 @@ function __q() {
       shift
       util_run "$@"
       ;;
-    util_pid_suspend|pid_suspend)
-      shift
-      util_pid_suspend "$@"
-      ;;
     *)
       if [ -n "$1" ]; then
         echo "Module util has no function $1"
@@ -1852,6 +1868,18 @@ function __q_help() {
       tput sgr0
       tput bold
       echo -n '  install_or_skip'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      tput bold
+      echo -n '  install_imgcat'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      tput bold
+      echo -n '  setup_mc'
       echo
       tput sgr0
       tput setaf 6
@@ -2550,6 +2578,30 @@ function __q_help() {
       tput sgr0
       echo '    macOS uses the non-existent locale LC_CTYPE=UTF-8 by default, which breaks SSH'
       echo '    sessions. This function fixes that by way of global ssh client config.'
+      tput bold
+      echo -n '  pid_suspend'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' --resume|--suspend'
+      tput sgr0
+      tput bold
+      echo -n ' PID'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      tput bold
+      echo -n '  setup_iterm2'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
       ;;
     media)
       echo "Usage: q media FUNCTION [ARG...]"
@@ -2767,6 +2819,18 @@ function __q_help() {
       echo -n ' ]'
       tput sgr0
       tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -H'
+      tput sgr0
+      tput bold
+      echo -n ' HEADER'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
       echo
       tput sgr0
       tput setaf 6
@@ -2782,6 +2846,7 @@ function __q_help() {
       echo '    -I: control options'
       echo '    -A: control alphabet'
       echo '    -i: input (options to pick from)'
+      echo '    -H: header to show above the options'
       ;;
     net)
       echo "Usage: q net FUNCTION [ARG...]"
@@ -3108,6 +3173,123 @@ function __q_help() {
       tput setaf 6
       tput sgr0
       echo '    Prints a link to WhatsApp Web for the given phone number.'
+      tput bold
+      echo -n '  gallery'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' --dedupe'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' --copy-to'
+      tput sgr0
+      tput bold
+      tput setaf 1
+      echo -n ' DIR'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' --scan-only'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' --force'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' --clean'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' --title'
+      tput sgr0
+      tput bold
+      echo -n ' TITLE'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -l|--port'
+      tput sgr0
+      tput bold
+      echo -n ' PORT'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      tput setaf 1
+      echo -n ' DIR'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      echo '    Scan a directory for photos and serve a browsable gallery.'
+      echo '    '
+      echo '    This command scans a directory tree for photos, generates thumbnails and'
+      echo '    mid-size images for fast browsing, and serves an HTML gallery.'
+      echo '    '
+      echo '    The gallery data (thumbnails, mid-size images, JSON index) is stored in a'
+      echo '    .gallery hidden directory. The original photos can either be left in place'
+      echo '    (referenced by path) or copied to a new directory with date-based names.'
+      echo '    '
+      echo '    '
+      echo '    Options:'
+      echo '    --dedupe          Deduplicate photos by hash before indexing.'
+      echo '    --copy-to DIR     Copy photos to DIR with date-based names. If not'
+      echo '    specified, photos are referenced in place.'
+      echo '    --scan-only       Generate gallery data without serving. Useful for'
+      echo '    preparing a gallery to be served later.'
+      echo '    --force           Regenerate thumbnails even if they exist.'
+      echo '    --clean           Delete all generated gallery files (.gallery/ and'
+      echo '    gallery.html) and exit.'
+      echo '    --title TITLE     Gallery title. Defaults to the directory name.'
+      echo '    -l, --port PORT   Port to serve on. Default is 8080.'
+      echo '    '
+      echo '    Examples:'
+      echo '    net_gallery                     # Scan current dir and serve gallery'
+      echo '    net_gallery ~/Photos            # Scan ~/Photos and serve gallery'
+      echo '    net_gallery --dedupe ~/Backup   # Dedupe and serve photos from backup'
+      echo '    net_gallery --scan-only .       # Generate gallery data only'
+      echo '    net_gallery --copy-to ~/Clean ~/Messy  # Copy deduped photos to new dir'
       ;;
     news)
       echo "Usage: q news FUNCTION [ARG...]"
@@ -4522,24 +4704,6 @@ function __q_help() {
       tput sgr0
       tput setaf 6
       tput sgr0
-      tput bold
-      echo -n '  pid_suspend'
-      echo -n ' ['
-      tput sgr0
-      tput bold
-      echo -n ' --resume|--suspend'
-      tput sgr0
-      tput bold
-      echo -n ' PID'
-      tput sgr0
-      tput bold
-      echo -n ' ]'
-      tput sgr0
-      tput bold
-      echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
       ;;
     xterm_colors)
       echo "Usage: q xterm_colors FUNCTION [ARG...]"
@@ -4759,6 +4923,12 @@ function __q_dump() {
       ;;
     install_or_skip)
       type debian_install_or_skip
+      ;;
+    install_imgcat)
+      type debian_install_imgcat
+      ;;
+    setup_mc)
+      type debian_setup_mc
       ;;
     *)
       echo "Unknown function $2"
@@ -5016,6 +5186,12 @@ function __q_dump() {
     fix_ssh_locale_config)
       type mac_fix_ssh_locale_config
       ;;
+    pid_suspend)
+      type mac_pid_suspend
+      ;;
+    setup_iterm2)
+      type mac_setup_iterm2
+      ;;
     *)
       echo "Unknown function $2"
       return 1
@@ -5202,6 +5378,12 @@ function __q_dump() {
       ;;
     wa_link)
       type net_wa_link
+      ;;
+    __net_gallery_ensure_venv)
+      type __net_gallery_ensure_venv
+      ;;
+    gallery)
+      type net_gallery
       ;;
     *)
       echo "Unknown function $2"
@@ -5700,9 +5882,6 @@ function __q_dump() {
     run)
       type util_run
       ;;
-    pid_suspend)
-      type util_pid_suspend
-      ;;
     *)
       echo "Unknown function $2"
       return 1
@@ -5789,7 +5968,7 @@ function __q_compgen() {
       return 0
       ;;
     debian)
-      COMPREPLY=($(compgen -W "help setup install_or_skip" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help setup install_or_skip install_imgcat setup_mc" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     fedora)
@@ -5833,7 +6012,7 @@ function __q_compgen() {
       return 0
       ;;
     mac)
-      COMPREPLY=($(compgen -W "help setup brew reinstall_brew enable_ipconfig_verbose get_user_shell brew_bash_path switch_to_bash icloud icloud_evict brew_install_or_skip install_miniconda install_devtools kill_defender suppress_defender kill_crashplan hogs cpu_hogs cpulimit disable_powernap power_stats fix_ssh_locale_config" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help setup brew reinstall_brew enable_ipconfig_verbose get_user_shell brew_bash_path switch_to_bash icloud icloud_evict brew_install_or_skip install_miniconda install_devtools kill_defender suppress_defender kill_crashplan hogs cpu_hogs cpulimit disable_powernap power_stats fix_ssh_locale_config pid_suspend setup_iterm2" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     media)
@@ -5853,7 +6032,7 @@ function __q_compgen() {
       return 0
       ;;
     net)
-      COMPREPLY=($(compgen -W "help host dl online health ssh_fingerprint dump_cert ccurl dataurl undataurl rtt ip4 ip4gw serve dump_url wiki wifi_device wifi_name ssh_fingerprint ssh_aliases ssh_fqdn wa_link" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help host dl online health ssh_fingerprint dump_cert ccurl dataurl undataurl rtt ip4 ip4gw serve dump_url wiki wifi_device wifi_name ssh_fingerprint ssh_aliases ssh_fqdn wa_link gallery" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     news)
@@ -5905,7 +6084,7 @@ function __q_compgen() {
       return 0
       ;;
     util)
-      COMPREPLY=($(compgen -W "help ddu sudo reload markdown human_size install_heroku_cli install_bazelisk jup wait_for_file forex run pid_suspend" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help ddu sudo reload markdown human_size install_heroku_cli install_bazelisk jup wait_for_file forex run" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     xterm_colors)
@@ -7455,6 +7634,138 @@ function __q_compgen() {
         return 0
         ;;
       install_or_skip)
+        # [ARG...]
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      install_imgcat)
+        # [ARG...]
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      setup_mc)
         # [ARG...]
         local switch_names=()
         local keyword_names=()
@@ -11097,6 +11408,141 @@ function __q_compgen() {
         esac
         return 0
         ;;
+      pid_suspend)
+        # mac_pid_suspend [--resume|--suspend] PID
+        local switch_names=()
+        local keyword_names=(--resume --suspend)
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            --resume)
+              state="EXPECT_VALUE_STRING"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      setup_iterm2)
+        # [ARG...]
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
       esac
       ;;
     media)
@@ -11906,9 +12352,9 @@ function __q_compgen() {
     multiple_choice)
       case "${COMP_WORDS[2]}" in
       multiple_choice)
-        # multiple_choice [-n|-L|-N] [-i INPUT] [-p PAGE] [-m MSG] [-a ALPHABET] [-I CONTROLS] [-A CONTROL_ALPHABET]
+        # multiple_choice [-n|-L|-N] [-i INPUT] [-p PAGE] [-m MSG] [-a ALPHABET] [-I CONTROLS] [-A CONTROL_ALPHABET] [-H HEADER]
         local switch_names=(-n -L -N)
-        local keyword_names=(-i -p -m -a -I -A)
+        local keyword_names=(-i -p -m -a -I -A -H)
         local repeated_names=()
         local repeated_positions=()
         local positional_types=()
@@ -11944,6 +12390,9 @@ function __q_compgen() {
               state="EXPECT_VALUE_STRING"
               ;;
             -A)
+              state="EXPECT_VALUE_STRING"
+              ;;
+            -H)
               state="EXPECT_VALUE_STRING"
               ;;
             *)
@@ -13362,6 +13811,93 @@ function __q_compgen() {
             case "${COMP_WORDS[i]}" in
             --)
               state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      gallery)
+        # net_gallery [--dedupe] [--copy-to DIR] [--scan-only] [--force] [--clean] [--title TITLE] [-l|--port PORT] [DIR]
+        local switch_names=(--dedupe --scan-only --force --clean)
+        local keyword_names=(--copy-to --title -l --port)
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=(DIRECTORY)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            --dedupe)
+              state="EXPECT_ARG"
+              ;;
+            --copy-to)
+              state="EXPECT_VALUE_DIRECTORY"
+              ;;
+            --scan-only)
+              state="EXPECT_ARG"
+              ;;
+            --force)
+              state="EXPECT_ARG"
+              ;;
+            --clean)
+              state="EXPECT_ARG"
+              ;;
+            --title)
+              state="EXPECT_VALUE_STRING"
+              ;;
+            -l)
+              state="EXPECT_VALUE_STRING"
               ;;
             *)
               state="EXPECT_ARG"
@@ -19704,75 +20240,6 @@ function __q_compgen() {
               state="IDK"
               ;;
             --sudo)
-              state="EXPECT_VALUE_STRING"
-              ;;
-            *)
-              state="EXPECT_ARG"
-              (( pos++ ))
-              ;;
-            esac
-            ;;
-          esac
-          (( i++ ))
-        done
-        COMPREPLY=()
-        if [[ "${state}" == "EXPECT_ARG" ]]; then
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          if [[ -n "${positional_types[$pos]}" ]]; then
-            state="EXPECT_VALUE_${positional_types[$pos]}"
-          else
-            return 0
-          fi
-        fi
-        case "${state}" in
-        EXPECT_VALUE_FILE)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        EXPECT_VALUE_DIRECTORY)
-          COMPREPLY+=($(compgen -A directory -- ${cur}))
-          ;;
-        EXPECT_VALUE_USER)
-          COMPREPLY+=($(compgen -A user -- ${cur}))
-          ;;
-        EXPECT_VALUE_GROUP)
-          COMPREPLY+=($(compgen -A group -- ${cur}))
-          ;;
-        EXPECT_VALUE_HOSTNAME)
-          COMPREPLY+=($(compgen -A hostname -- ${cur}))
-          ;;
-        EXPECT_VALUE_STRING)
-          ;;
-        IDK)
-          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        *)
-          COMPREPLY+=($(compgen -A file -- ${cur}))
-          ;;
-        esac
-        return 0
-        ;;
-      pid_suspend)
-        # util_pid_suspend [--resume|--suspend] PID
-        local switch_names=()
-        local keyword_names=(--resume --suspend)
-        local repeated_names=()
-        local repeated_positions=()
-        local positional_types=()
-        local i=3
-        local state="EXPECT_ARG"
-        local pos=0
-        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
-          case "${state}" in
-          IDK)
-            break
-            ;;
-          EXPECT_ARG)
-            case "${COMP_WORDS[i]}" in
-            --)
-              state="IDK"
-              ;;
-            --resume)
               state="EXPECT_VALUE_STRING"
               ;;
             *)

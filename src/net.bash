@@ -420,4 +420,188 @@ function net_wa_link() {
     echo "https://api.whatsapp.com/send?phone=${phone}"
 }
 
+# Ensure the gallery virtual environment exists with pillow installed.
+# Creates ~/.redshell/gallery/ with a venv and gallery.py symlink.
+function __net_gallery_ensure_venv() {
+    local gallery_workspace="${HOME}/.redshell/gallery"
+    local gallery_src="${HOME}/.redshell/src/gallery.py"
+
+    if [[ ! -d "${gallery_workspace}" ]]; then
+        >&2 echo "Creating gallery workspace..."
+        mkdir -p "${gallery_workspace}"
+    fi
+
+    # Symlink gallery.py if not present or outdated
+    if [[ ! -L "${gallery_workspace}/gallery.py" ]] || \
+       [[ "$(readlink "${gallery_workspace}/gallery.py")" != "${gallery_src}" ]]; then
+        ln -sf "${gallery_src}" "${gallery_workspace}/gallery.py"
+    fi
+
+    # Create/update requirements.txt
+    local requirements="pillow
+tqdm"
+    if [[ ! -f "${gallery_workspace}/requirements.txt" ]] || \
+       [[ "$(cat "${gallery_workspace}/requirements.txt")" != "${requirements}" ]]; then
+        echo "${requirements}" > "${gallery_workspace}/requirements.txt"
+        # Force venv reinstall if requirements changed
+        [[ -d "${gallery_workspace}/.venv" ]] && rm -rf "${gallery_workspace}/.venv"
+    fi
+
+    # Create/activate venv and install requirements
+    pushd "${gallery_workspace}" > /dev/null
+    if [[ ! -d ".venv" ]]; then
+        >&2 echo "Setting up gallery virtualenv with pillow..."
+        python_venv -I || { popd > /dev/null; return 1; }
+        deactivate
+    fi
+    popd > /dev/null
+}
+
+# Scan a directory for photos and serve a browsable gallery.
+#
+# This command scans a directory tree for photos, generates thumbnails and
+# mid-size images for fast browsing, and serves an HTML gallery.
+#
+# The gallery data (thumbnails, mid-size images, JSON index) is stored in a
+# .gallery hidden directory. The original photos can either be left in place
+# (referenced by path) or copied to a new directory with date-based names.
+#
+# Usage: net_gallery [--dedupe] [--copy-to DIR] [--scan-only] [--force] [--clean] [--title TITLE] [-l|--port PORT] [DIR]
+#
+# Options:
+#   --dedupe          Deduplicate photos by hash before indexing.
+#   --copy-to DIR     Copy photos to DIR with date-based names. If not
+#                     specified, photos are referenced in place.
+#   --scan-only       Generate gallery data without serving. Useful for
+#                     preparing a gallery to be served later.
+#   --force           Regenerate thumbnails even if they exist.
+#   --clean           Delete all generated gallery files (.gallery/ and
+#                     gallery.html) and exit.
+#   --title TITLE     Gallery title. Defaults to the directory name.
+#   -l, --port PORT   Port to serve on. Default is 8080.
+#
+# Examples:
+#   net_gallery                     # Scan current dir and serve gallery
+#   net_gallery ~/Photos            # Scan ~/Photos and serve gallery
+#   net_gallery --dedupe ~/Backup   # Dedupe and serve photos from backup
+#   net_gallery --scan-only .       # Generate gallery data only
+#   net_gallery --copy-to ~/Clean ~/Messy  # Copy deduped photos to new dir
+function net_gallery() {
+    local dir="."
+    local port=8080
+    local dedupe=""
+    local copy_to=""
+    local scan_only=""
+    local force=""
+    local clean=""
+    local title=""
+
+    while [[ "${#}" -ne 0 ]]; do
+        case "${1}" in
+            --dedupe)
+                dedupe="True"
+                ;;
+            --copy-to)
+                copy_to="${2}"
+                shift
+                ;;
+            --scan-only)
+                scan_only="True"
+                ;;
+            --force)
+                force="True"
+                ;;
+            --clean)
+                clean="True"
+                ;;
+            --title)
+                title="${2}"
+                shift
+                ;;
+            -l|--port)
+                port="${2}"
+                shift
+                ;;
+            *)
+                dir="${1}"
+                ;;
+        esac
+        shift
+    done
+    dir="$(path_resolve "${dir}")"
+
+    # Default title to directory name
+    if [[ -z "${title}" ]]; then
+        title="$(basename "${dir}")"
+    fi
+
+    # Determine gallery directory location
+    local gallery_dir
+    if [[ -n "${copy_to}" ]]; then
+        copy_to="$(path_resolve "${copy_to}")"
+        gallery_dir="${copy_to}"
+    else
+        gallery_dir="${dir}"
+    fi
+
+    # Handle --clean: remove generated files and exit
+    if [[ -n "${clean}" ]]; then
+        local removed=""
+        if [[ -d "${gallery_dir}/.gallery" ]]; then
+            rm -rf "${gallery_dir}/.gallery"
+            >&2 echo "Removed ${gallery_dir}/.gallery/"
+            removed="1"
+        fi
+        if [[ -f "${gallery_dir}/gallery.html" ]]; then
+            rm -f "${gallery_dir}/gallery.html"
+            >&2 echo "Removed ${gallery_dir}/gallery.html"
+            removed="1"
+        fi
+        if [[ -z "${removed}" ]]; then
+            >&2 echo "No gallery files found in ${gallery_dir}"
+        fi
+        return 0
+    fi
+
+    # Ensure the gallery venv exists with pillow
+    __net_gallery_ensure_venv || return $?
+
+    >&2 echo "Scanning for photos in ${dir}..."
+
+    # Run the gallery scanner using the gallery workspace venv
+    python_func \
+        -p "${HOME}/.redshell/gallery/gallery.py" \
+        scan \
+        --directory "${dir}" \
+        --dedupe "${dedupe}" \
+        --copy_to "${copy_to}" \
+        --gallery_dir "${gallery_dir}" \
+        --force "${force}" \
+        --title "${title}" \
+        || return $?
+
+    # Copy the gallery HTML to the gallery directory
+    local gallery_html_src="${HOME}/.redshell/src/gallery.html"
+    local gallery_html_dst="${gallery_dir}/gallery.html"
+    if [[ ! -f "${gallery_html_dst}" ]] || [[ "${gallery_html_src}" -nt "${gallery_html_dst}" ]]; then
+        cp "${gallery_html_src}" "${gallery_html_dst}"
+        >&2 echo "Copied gallery.html to ${gallery_html_dst}"
+    fi
+
+    if [[ -n "${scan_only}" ]]; then
+        >&2 echo ""
+        >&2 echo "Gallery data generated. To view, run:"
+        >&2 echo "  net_host ${gallery_dir}"
+        >&2 echo "  # Then open http://localhost:8080/gallery.html"
+        return 0
+    fi
+
+    >&2 echo ""
+    >&2 echo "Starting gallery server..."
+    >&2 echo "Open http://localhost:${port}/gallery.html in your browser."
+    >&2 echo ""
+
+    net_host --port "${port}" "${gallery_dir}"
+}
+
 fi # _REDSHELL_NET

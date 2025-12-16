@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Gallery</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        .stats {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+        }
+        .nav {
+            position: sticky;
+            top: 0;
+            background: #1a1a1a;
+            padding: 10px 0;
+            margin-bottom: 20px;
+            z-index: 100;
+            border-bottom: 1px solid #333;
+        }
+        .nav-inner {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+        .nav-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+        .nav-row:last-child {
+            margin-bottom: 0;
+        }
+        .nav a, .nav span.year-btn {
+            color: #888;
+            text-decoration: none;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .nav a:hover, .nav span.year-btn:hover {
+            background: #333;
+            color: #fff;
+        }
+        .nav span.year-btn.active {
+            background: #444;
+            color: #fff;
+        }
+        .nav-months {
+            display: none;
+        }
+        .nav-months.visible {
+            display: flex;
+        }
+        .month-section {
+            margin-bottom: 40px;
+        }
+        .month-header {
+            font-size: 1.4em;
+            font-weight: 400;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #333;
+        }
+        .month-header .count {
+            font-size: 0.6em;
+            color: #666;
+            font-weight: 300;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 8px;
+        }
+        .thumb {
+            aspect-ratio: 1;
+            overflow: hidden;
+            cursor: pointer;
+            background: #2a2a2a;
+            border-radius: 4px;
+        }
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .thumb:hover {
+            opacity: 0.8;
+        }
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .lightbox-close:hover {
+            color: #ccc;
+        }
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 50px;
+            color: #fff;
+            cursor: pointer;
+            padding: 20px;
+            user-select: none;
+        }
+        .lightbox-nav:hover {
+            color: #ccc;
+        }
+        .lightbox-prev {
+            left: 10px;
+        }
+        .lightbox-next {
+            right: 10px;
+        }
+        .lightbox-info {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #888;
+            font-size: 14px;
+            text-align: center;
+        }
+        .lightbox-original {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #4a9eff;
+            font-size: 14px;
+            text-decoration: none;
+            padding: 6px 12px;
+            border: 1px solid #4a9eff;
+            border-radius: 4px;
+        }
+        .lightbox-original:hover {
+            background: #4a9eff;
+            color: #fff;
+        }
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+        .error {
+            text-align: center;
+            padding: 50px;
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="gallery-title">Photo Gallery</h1>
+    <div class="stats" id="stats">Loading...</div>
+    <nav class="nav">
+        <div class="nav-inner" id="nav"></div>
+    </nav>
+    <main id="gallery">
+        <div class="loading">Loading photos...</div>
+    </main>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <span class="lightbox-nav lightbox-prev" onclick="navigate(-1)">&#10094;</span>
+        <img id="lightbox-img" src="" alt="">
+        <span class="lightbox-nav lightbox-next" onclick="navigate(1)">&#10095;</span>
+        <a id="lightbox-original" class="lightbox-original" href="#" target="_blank">Open original</a>
+        <div class="lightbox-info" id="lightbox-info"></div>
+    </div>
+
+    <script>
+        let allPhotos = [];
+        let currentIndex = 0;
+        // Base path for .gallery directory (set by server or detected)
+        let galleryBase = '.gallery';
+
+        const monthNames = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        async function loadPhotos() {
+            try {
+                const response = await fetch(galleryBase + '/photos.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                const data = await response.json();
+                // Support both old (array) and new (object with title/photos) formats
+                if (Array.isArray(data)) {
+                    allPhotos = data;
+                } else {
+                    allPhotos = data.photos || [];
+                    if (data.title) {
+                        document.getElementById('gallery-title').textContent = data.title;
+                        document.title = data.title;
+                    }
+                }
+                renderGallery(allPhotos);
+            } catch (e) {
+                document.getElementById('gallery').innerHTML =
+                    `<div class="error">Failed to load photos: ${e.message}<br>
+                     Make sure photos.json exists in ${galleryBase}/</div>`;
+                document.getElementById('stats').textContent = 'Error loading gallery';
+            }
+        }
+
+        function parseDate(photo) {
+            // Parse ISO date string from photo data
+            if (photo.date) {
+                const d = new Date(photo.date);
+                return {
+                    year: d.getFullYear(),
+                    month: d.getMonth() + 1,
+                    day: d.getDate(),
+                    hour: d.getHours(),
+                    minute: d.getMinutes(),
+                    second: d.getSeconds()
+                };
+            }
+            // Fallback: parse from filename (YYYY-MM-DD_HHMMSS.jpg)
+            const match = photo.filename.match(/^(\d{4})-(\d{2})-(\d{2})_(\d{2})(\d{2})(\d{2})/);
+            if (match) {
+                return {
+                    year: parseInt(match[1]),
+                    month: parseInt(match[2]),
+                    day: parseInt(match[3]),
+                    hour: parseInt(match[4]),
+                    minute: parseInt(match[5]),
+                    second: parseInt(match[6])
+                };
+            }
+            return null;
+        }
+
+        // IntersectionObserver for lazy loading
+        let observer;
+
+        function setupLazyLoading() {
+            observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const thumb = entry.target;
+                        const src = thumb.dataset.src;
+                        if (src && !thumb.querySelector('img')) {
+                            const img = document.createElement('img');
+                            img.src = src;
+                            img.alt = thumb.dataset.filename;
+                            thumb.appendChild(img);
+                        }
+                        observer.unobserve(thumb);
+                    }
+                });
+            }, {
+                rootMargin: '200px'
+            });
+        }
+
+        function renderGallery(photos) {
+            // Group by year-month
+            const groups = {};
+            photos.forEach((photo, index) => {
+                const date = parseDate(photo);
+                if (date) {
+                    const key = `${date.year}-${String(date.month).padStart(2, '0')}`;
+                    if (!groups[key]) {
+                        groups[key] = [];
+                    }
+                    groups[key].push({ ...photo, index, parsedDate: date });
+                }
+            });
+
+            // Sort keys
+            const sortedKeys = Object.keys(groups).sort();
+
+            // Group by year for navigation
+            const yearGroups = {};
+            sortedKeys.forEach(key => {
+                const [year, month] = key.split('-');
+                if (!yearGroups[year]) {
+                    yearGroups[year] = [];
+                }
+                yearGroups[year].push({ key, month: parseInt(month) });
+            });
+            const sortedYears = Object.keys(yearGroups).sort();
+
+            // Render two-step navigation
+            let navHtml = '<div class="nav-row" id="nav-years">';
+            sortedYears.forEach(year => {
+                navHtml += `<span class="year-btn" data-year="${year}">${year}</span>`;
+            });
+            navHtml += '</div>';
+            navHtml += '<div class="nav-row nav-months" id="nav-months"></div>';
+            document.getElementById('nav').innerHTML = navHtml;
+
+            // Year click handlers
+            document.querySelectorAll('.year-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const year = btn.dataset.year;
+                    document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const monthsContainer = document.getElementById('nav-months');
+                    const months = yearGroups[year];
+                    monthsContainer.innerHTML = months.map(m =>
+                        `<a href="#section-${m.key}">${monthNames[m.month - 1]}</a>`
+                    ).join('');
+                    monthsContainer.classList.add('visible');
+                });
+            });
+
+            // Render gallery
+            let html = '';
+            sortedKeys.forEach(key => {
+                const [year, month] = key.split('-');
+                const monthName = monthNames[parseInt(month) - 1];
+                const groupPhotos = groups[key];
+
+                html += `<section class="month-section" id="section-${key}">`;
+                html += `<h2 class="month-header">${monthName} ${year} <span class="count">(${groupPhotos.length} photos)</span></h2>`;
+                html += `<div class="grid">`;
+
+                groupPhotos.forEach(photo => {
+                    const thumbUrl = `${galleryBase}/thumbs/${encodeURIComponent(photo.filename)}`;
+                    html += `<div class="thumb" data-src="${thumbUrl}" data-filename="${photo.filename}" data-index="${photo.index}"></div>`;
+                });
+
+                html += `</div></section>`;
+            });
+
+            document.getElementById('gallery').innerHTML = html;
+            document.getElementById('stats').textContent = `${photos.length} photos across ${sortedKeys.length} months`;
+
+            // Setup lazy loading and click handlers
+            setupLazyLoading();
+            document.querySelectorAll('.thumb').forEach(thumb => {
+                observer.observe(thumb);
+                thumb.addEventListener('click', () => {
+                    openLightbox(parseInt(thumb.dataset.index));
+                });
+            });
+        }
+
+        function openLightbox(index) {
+            currentIndex = index;
+            updateLightbox();
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function navigate(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = allPhotos.length - 1;
+            if (currentIndex >= allPhotos.length) currentIndex = 0;
+            updateLightbox();
+        }
+
+        function updateLightbox() {
+            const photo = allPhotos[currentIndex];
+            // Use mid-size image for lightbox
+            const midUrl = `${galleryBase}/mid/${encodeURIComponent(photo.filename)}`;
+            document.getElementById('lightbox-img').src = midUrl;
+
+            // Set link to original image
+            const originalUrl = encodeURIComponent(photo.original_path).replace(/%2F/g, '/');
+            document.getElementById('lightbox-original').href = originalUrl;
+
+            const date = parseDate(photo);
+            let dateStr = '';
+            if (date) {
+                dateStr = `${monthNames[date.month - 1]} ${date.day}, ${date.year}`;
+            }
+            document.getElementById('lightbox-info').innerHTML =
+                `${photo.filename}<br>${dateStr} (${currentIndex + 1} / ${allPhotos.length})`;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!document.getElementById('lightbox').classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') navigate(-1);
+            if (e.key === 'ArrowRight') navigate(1);
+        });
+
+        // Click outside to close
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target.id === 'lightbox') closeLightbox();
+        });
+
+        loadPhotos();
+    </script>
+</body>
+</html>
