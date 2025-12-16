@@ -137,9 +137,18 @@
             font-size: 40px;
             color: #fff;
             cursor: pointer;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px 15px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .lightbox:hover .lightbox-close {
+            opacity: 1;
         }
         .lightbox-close:hover {
             color: #ccc;
+            background: rgba(0, 0, 0, 0.9);
         }
         .lightbox-nav {
             position: absolute;
@@ -150,9 +159,17 @@
             cursor: pointer;
             padding: 20px;
             user-select: none;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .lightbox:hover .lightbox-nav {
+            opacity: 1;
         }
         .lightbox-nav:hover {
             color: #ccc;
+            background: rgba(0, 0, 0, 0.9);
         }
         .lightbox-prev {
             left: 10px;
@@ -165,13 +182,21 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            color: #888;
+            color: #ccc;
             font-size: 14px;
             text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px 16px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .lightbox:hover .lightbox-info {
+            opacity: 1;
         }
         .lightbox-original {
             position: absolute;
-            bottom: 60px;
+            bottom: 70px;
             left: 50%;
             transform: translateX(-50%);
             color: #4a9eff;
@@ -180,6 +205,12 @@
             padding: 6px 12px;
             border: 1px solid #4a9eff;
             border-radius: 4px;
+            background: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .lightbox:hover .lightbox-original {
+            opacity: 1;
         }
         .lightbox-original:hover {
             background: #4a9eff;
