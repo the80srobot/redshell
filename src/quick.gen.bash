@@ -1536,7 +1536,7 @@ function __q_help() {
     tput sgr0
     echo '            CalDAV calendar fetching utilities.'
     echo '                    '
-    echo '                    Passwords are managed via keys.bash and stored under CalDAV/$account in pass.'
+    echo '                    Passwords are stored under CalDAV/Accounts/$account, URLs under CalDAV/URLs/$account.'
     tput bold
     echo -n '  crypt'
     tput sgr0
@@ -1796,7 +1796,7 @@ function __q_help() {
       echo "Usage: q caldav FUNCTION [ARG...]"
       echo "CalDAV calendar fetching utilities."
       echo ""
-      echo "Passwords are managed via keys.bash and stored under CalDAV/$account in pass."
+      echo "Passwords are stored under CalDAV/Accounts/$account, URLs under CalDAV/URLs/$account."
       echo
       echo "Available functions:"
       tput bold

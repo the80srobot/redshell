@@ -3,7 +3,7 @@
 
 # CalDAV calendar fetching utilities.
 #
-# Passwords are managed via keys.bash and stored under CalDAV/$account in pass.
+# Passwords are stored under CalDAV/Accounts/$account, URLs under CalDAV/URLs/$account.
 
 if [[ -z "${_REDSHELL_CALDAV}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_CALDAV=1
@@ -12,10 +12,9 @@ _REDSHELL_CALDAV=1
 #
 # Usage: caldav_accounts
 function caldav_accounts() {
-    pass ls Redshell/CalDAV 2>/dev/null \
+    pass ls Redshell/CalDAV/Accounts 2>/dev/null \
         | sed 's/\x1b\[[0-9;]*m//g' \
         | grep '\.var$' \
-        | grep -v '^|   ' \
         | sed 's/.*-- //' \
         | sed 's/\.var$//'
 }
@@ -93,9 +92,9 @@ function caldav_fetch() {
     fi
 
     local password
-    password="$(keys_var "CalDAV/${account}")" || {
-        >&2 echo "Error: Failed to retrieve password for CalDAV/${account}"
-        >&2 echo "Set password with: keys_var CalDAV/${account} YOUR_PASSWORD"
+    password="$(keys_var "CalDAV/Accounts/${account}")" || {
+        >&2 echo "Error: Failed to retrieve password for CalDAV/Accounts/${account}"
+        >&2 echo "Set password with: keys_var CalDAV/Accounts/${account} YOUR_PASSWORD"
         return 1
     }
 
