@@ -109,7 +109,7 @@ function caldav_fetch() {
 #   -a, --account ACCOUNT  Account name for password lookup.
 #                          If omitted and exactly one account exists, uses that.
 #   -u, --username USER    Username for authentication. Defaults to account name.
-#   -d, --days DAYS        Number of days to show (from today). Defaults to 7.
+#   -d, --days DAYS        Number of days to show (from today). Defaults to 31.
 #
 # If URL is not provided, it is retrieved using: keys_var CalDAV/URLs/$account
 #
@@ -120,7 +120,7 @@ function caldav_agenda() {
     local account=""
     local username=""
     local url=""
-    local days=7
+    local days=31
 
     while [[ "${#}" -ne 0 ]]; do
         case "${1}" in
