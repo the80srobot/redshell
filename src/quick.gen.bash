@@ -121,6 +121,34 @@ function __q() {
       ;;
     esac
     ;;
+  caldav)
+    shift
+    case "$1" in
+    help|-h|--help|?)
+      shift
+      __q_help "caldav" "$@"
+      ;;
+    caldav_accounts|accounts)
+      shift
+      caldav_accounts "$@"
+      ;;
+    caldav_fetch|fetch)
+      shift
+      caldav_fetch "$@"
+      ;;
+    caldav_agenda|agenda)
+      shift
+      caldav_agenda "$@"
+      ;;
+    *)
+      if [ -n "$1" ]; then
+        echo "Module caldav has no function $1"
+      fi
+      __q_help caldav
+      return 1
+      ;;
+    esac
+    ;;
   crypt)
     shift
     case "$1" in
@@ -479,6 +507,14 @@ function __q() {
     keys_key|key)
       shift
       keys_key "$@"
+      ;;
+    keys_flush|flush)
+      shift
+      keys_flush "$@"
+      ;;
+    keys_sync|sync)
+      shift
+      keys_sync "$@"
       ;;
     *)
       if [ -n "$1" ]; then
@@ -1496,6 +1532,12 @@ function __q_help() {
     tput sgr0
     echo '           Browser automation, downloads, link generators.'
     tput bold
+    echo -n '  caldav'
+    tput sgr0
+    echo '            CalDAV calendar fetching utilities.'
+    echo '                    '
+    echo '                    Passwords are managed via keys.bash and stored under CalDAV/$account in pass.'
+    tput bold
     echo -n '  crypt'
     tput sgr0
     echo '             Encrypt/decrypt, signing, keypairs. SSH and GPG helpers.'
@@ -1539,6 +1581,15 @@ function __q_help() {
     echo -n '  keys'
     tput sgr0
     echo '              Key management utils using pass and gpg.'
+    echo '                    '
+    echo '                    All keys managed by this code are stored under the "Redshell/" folder in pass.'
+    echo '                    '
+    echo '                    We support two types of keys which are treated slightly differently:'
+    echo '                    - .key: Typically larger secrets that are exported as files, e.g. SSH keys or'
+    echo '                    certificates. You should take care to periodically expire these when not'
+    echo '                    needed, or further protect them with passwords and file permissions.'
+    echo '                    - .var keys: Small secrets used as ENV variables or arguments. They are not'
+    echo '                    cached as files during use.'
     tput bold
     echo -n '  mac'
     tput sgr0
@@ -1740,6 +1791,141 @@ function __q_help() {
       echo '    This is finnicky and relies on the browser downloading to the default'
       echo '    Downloads folder. If multiple new files are created around the same time, this'
       echo '    might behave in unpredictable ways. You'"'"'ve been warned.'
+      ;;
+    caldav)
+      echo "Usage: q caldav FUNCTION [ARG...]"
+      echo "CalDAV calendar fetching utilities."
+      echo ""
+      echo "Passwords are managed via keys.bash and stored under CalDAV/$account in pass."
+      echo
+      echo "Available functions:"
+      tput bold
+      echo -n '  accounts'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      echo '    List configured CalDAV accounts.'
+      tput bold
+      echo -n '  fetch'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -a|--account'
+      tput sgr0
+      tput bold
+      echo -n ' ACCOUNT'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -u|--username'
+      tput sgr0
+      tput bold
+      tput setaf 10
+      echo -n ' USER'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' URL'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      echo '    Fetch a CalDAV calendar and output its contents.'
+      echo '    '
+      echo '    '
+      echo '    Options:'
+      echo '    -a, --account ACCOUNT  Account name for password lookup via keys_var CalDAV/$account.'
+      echo '    If omitted and exactly one account exists, uses that.'
+      echo '    -u, --username USER    Username for authentication. Defaults to account name.'
+      echo '    '
+      echo '    The password is retrieved from pass using: keys_var CalDAV/$account'
+      echo '    If URL is not provided, it is retrieved using: keys_var CalDAV/URLs/$account'
+      echo '    '
+      echo '    Example:'
+      echo '    caldav_fetch -a fastmail -u user@fastmail.com https://caldav.fastmail.com/dav/calendars/user/...'
+      echo '    caldav_fetch -a fastmail  # URL loaded from keys_var CalDAV/URLs/fastmail'
+      tput bold
+      echo -n '  agenda'
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -a|--account'
+      tput sgr0
+      tput bold
+      echo -n ' ACCOUNT'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -u|--username'
+      tput sgr0
+      tput bold
+      tput setaf 10
+      echo -n ' USER'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' -d|--days'
+      tput sgr0
+      tput bold
+      echo -n ' DAYS'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' URL'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      echo '    Show upcoming events from a CalDAV calendar.'
+      echo '    '
+      echo '    '
+      echo '    Options:'
+      echo '    -a, --account ACCOUNT  Account name for password lookup.'
+      echo '    If omitted and exactly one account exists, uses that.'
+      echo '    -u, --username USER    Username for authentication. Defaults to account name.'
+      echo '    -d, --days DAYS        Number of days to show (from today). Defaults to 7.'
+      echo '    '
+      echo '    If URL is not provided, it is retrieved using: keys_var CalDAV/URLs/$account'
+      echo '    '
+      echo '    Example:'
+      echo '    caldav_agenda -a fastmail -d 14 https://caldav.fastmail.com/dav/calendars/user/...'
+      echo '    caldav_agenda -a fastmail  # URL loaded from keys_var CalDAV/URLs/fastmail'
       ;;
     crypt)
       echo "Usage: q crypt FUNCTION [ARG...]"
@@ -2319,6 +2505,15 @@ function __q_help() {
     keys)
       echo "Usage: q keys FUNCTION [ARG...]"
       echo "Key management utils using pass and gpg."
+      echo ""
+      echo "All keys managed by this code are stored under the "Redshell/" folder in pass."
+      echo ""
+      echo "We support two types of keys which are treated slightly differently:"
+      echo "- .key: Typically larger secrets that are exported as files, e.g. SSH keys or"
+      echo "certificates. You should take care to periodically expire these when not"
+      echo "needed, or further protect them with passwords and file permissions."
+      echo "- .var keys: Small secrets used as ENV variables or arguments. They are not"
+      echo "cached as files during use."
       echo
       echo "Available functions:"
       tput bold
@@ -2359,26 +2554,68 @@ function __q_help() {
       tput setaf 6
       tput sgr0
       echo '    Dumps the contents of the given key in a file and returns the path.'
+      echo '    '
+      echo '    If -f is given, forces regeneration of the file. The file is also regenerated'
+      echo '    if it exists but is empty.'
+      echo '    '
+      echo '    Caution: the file will persist until keys_flush is called, so be sure to'
+      echo '    manage its lifecycle appropriately.'
       tput bold
       echo -n '  var'
       echo -n ' KEY'
       tput sgr0
       tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' VALUE|--delete'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
       echo
       tput sgr0
       tput setaf 6
       tput sgr0
-      echo '    Returns the conents of a given .var key in pass.'
+      echo '    Returns the conents of a given .var key in pass. If VALUE is provided, instead'
+      echo '    the value is stored in the key. If --delete is provided, the key is removed.'
       tput bold
       echo -n '  key'
       echo -n ' KEY'
       tput sgr0
       tput bold
+      echo -n ' ['
+      tput sgr0
+      tput bold
+      echo -n ' VALUE|--delete'
+      tput sgr0
+      tput bold
+      echo -n ' ]'
+      tput sgr0
+      tput bold
       echo
       tput sgr0
       tput setaf 6
       tput sgr0
-      echo '    Returns the contents of a given .key key in pass.'
+      echo '    Returns the contents of a given .key key in pass. If VALUE is provided,'
+      echo '    instead the value is stored in the key. If --delete is provided, the key is'
+      echo '    removed.'
+      tput bold
+      echo -n '  flush'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      echo '    Removes all cached key files.'
+      tput bold
+      echo -n '  sync'
+      echo
+      tput sgr0
+      tput setaf 6
+      tput sgr0
+      echo '    Pulls the latest changes from the keys git repository and pushes any local'
+      echo '    changes.'
       ;;
     mac)
       echo "Usage: q mac FUNCTION [ARG...]"
@@ -4949,6 +5186,26 @@ function __q_dump() {
       ;;
     esac
     ;;
+  caldav)
+    case "$2" in
+    accounts)
+      type caldav_accounts
+      ;;
+    __caldav_default_account)
+      type __caldav_default_account
+      ;;
+    fetch)
+      type caldav_fetch
+      ;;
+    agenda)
+      type caldav_agenda
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
   crypt)
     case "$2" in
     encrypt_symmetric)
@@ -5179,6 +5436,12 @@ function __q_dump() {
       ;;
     key)
       type keys_key
+      ;;
+    flush)
+      type keys_flush
+      ;;
+    sync)
+      type keys_sync
       ;;
     *)
       echo "Unknown function $2"
@@ -6008,7 +6271,7 @@ function __q_dump() {
 }
 
 function __q_compgen() {
-  local modules="ascii_art bash browser crypt debian fedora file find git go hg init install kagi keys mac media monitor mtg multiple_choice net news notes omdb path pkg python quick rust screen strings time transit util xterm_colors"
+  local modules="ascii_art bash browser caldav crypt debian fedora file find git go hg init install kagi keys mac media monitor mtg multiple_choice net news notes omdb path pkg python quick rust screen strings time transit util xterm_colors"
   case "${COMP_CWORD}" in
   1)
     COMPREPLY=($(compgen -W "help ${modules}" -- ${COMP_WORDS[COMP_CWORD]}))
@@ -6026,6 +6289,10 @@ function __q_compgen() {
       ;;
     browser)
       COMPREPLY=($(compgen -W "help gdocs_id sheets_dl_link chrome_path downloads_path dl" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    caldav)
+      COMPREPLY=($(compgen -W "help accounts fetch agenda" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     crypt)
@@ -6073,7 +6340,7 @@ function __q_compgen() {
       return 0
       ;;
     keys)
-      COMPREPLY=($(compgen -W "help git path var key" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help git path var key flush sync" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     mac)
@@ -7049,6 +7316,223 @@ function __q_compgen() {
             case "${COMP_WORDS[i]}" in
             --)
               state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      esac
+      ;;
+    caldav)
+      case "${COMP_WORDS[2]}" in
+      accounts)
+        # caldav_accounts
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      fetch)
+        # caldav_fetch [-a|--account ACCOUNT] [-u|--username USER] [URL]
+        local switch_names=()
+        local keyword_names=(-a --account -u --username)
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=(STRING)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            -a)
+              state="EXPECT_VALUE_STRING"
+              ;;
+            -u)
+              state="EXPECT_VALUE_USER"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      agenda)
+        # caldav_agenda [-a|--account ACCOUNT] [-u|--username USER] [-d|--days DAYS] [URL]
+        local switch_names=()
+        local keyword_names=(-a --account -u --username -d --days)
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=(STRING)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            -a)
+              state="EXPECT_VALUE_STRING"
+              ;;
+            -u)
+              state="EXPECT_VALUE_USER"
+              ;;
+            -d)
+              state="EXPECT_VALUE_STRING"
               ;;
             *)
               state="EXPECT_ARG"
@@ -9946,12 +10430,12 @@ function __q_compgen() {
         return 0
         ;;
       var)
-        # keys_var KEY
+        # keys_var KEY [VALUE|--delete]
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(STRING)
+        local positional_types=(STRING STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0
@@ -10012,12 +10496,144 @@ function __q_compgen() {
         return 0
         ;;
       key)
-        # keys_key KEY
+        # keys_key KEY [VALUE|--delete]
         local switch_names=()
         local keyword_names=()
         local repeated_names=()
         local repeated_positions=()
-        local positional_types=(STRING)
+        local positional_types=(STRING STRING)
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      flush)
+        # keys_flush
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      sync)
+        # keys_sync
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=()
         local i=3
         local state="EXPECT_ARG"
         local pos=0
