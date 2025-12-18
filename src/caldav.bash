@@ -15,7 +15,7 @@ function caldav_accounts() {
     pass ls Redshell/CalDAV/Accounts 2>/dev/null \
         | sed 's/\x1b\[[0-9;]*m//g' \
         | grep '\.var$' \
-        | sed 's/.*-- //' \
+        | awk '{print $NF}' \
         | sed 's/\.var$//'
 }
 
