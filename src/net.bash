@@ -6,6 +6,8 @@
 if [[ -z "${_REDSHELL_NET}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_NET=1
 
+source util.bash
+
 # Hosts a folder contents over HTTPs.
 #
 # Also see net_serve.
@@ -140,6 +142,34 @@ function net_dl() {
 function net_online() {
     timeout 1 curl https://captive.apple.com 2>/dev/null \
         | grep -q '<TITLE>Success</TITLE>'
+}
+
+# Convert a CIDR notation (e.g. 24) to a netmask.
+#
+# Usage: net_cidr_to_netmask CIDR
+function net_cidr_to_netmask() {
+    local cidr="${1}"
+    local mask=""
+    local full_bytes=$((cidr / 8))
+    local partial_bits=$((cidr % 8))
+    local i
+
+    for ((i=0; i<4; i++)); do
+        if [[ $i -lt $full_bytes ]]; then
+            mask+="255"
+        elif [[ $i -eq $full_bytes ]]; then
+            local byte=0
+            for ((j=0; j<partial_bits; j++)); do
+                byte=$((byte + 2**(7-j)))
+            done
+            mask+="${byte}"
+        else
+            mask+="0"
+        fi
+        [[ $i -lt 3 ]] && mask+="."
+    done
+
+    echo "${mask}"
 }
 
 function net_health() {
@@ -649,5 +679,108 @@ function net_gallery() {
 
     net_host "${host_args[@]}"
 }
+
+### Some functions for managing static DHCP IP4 config on Debian-based systems. ###
+
+# Installs the given config for the given interface on Debian.
+#
+# Usage: net_write_static_ip4_dhcp_config_debian INTERFACE CONFIG
+function __net_write_static_ip4_dhcp_config_debian() {
+    local interface="${1}"
+    local config="${2}"
+    # Write to a temp file, then install with a guard specific to the interface.
+    local tmpfile
+    tmpfile=$(mktemp) || return 1
+    echo "${config}" > "${tmpfile}"
+    util_sudo reinstall_file \
+        "${tmpfile}" \
+        "/etc/network/interfaces.d/${interface}.cfg" \
+        '#' \
+        "GREENSHELL_"${interface^^}"_STATIC_DHCP_IP4" \
+        || return $?
+    
+    sudo systemctl restart networking
+}
+
+# Generates a static DHCP IPv4 configuration for the given interface on Debian.
+#
+# Usage: net_set_static_dhcp_ip4_debian INTERFACE IP GATEWAY DNS NETMASK
+function __net_make_static_dhcp_ip4_config_debian() {
+    local interface="${1}"
+    local ip="${2}"
+    local gateway="${3}"
+    local dns="${4}"
+    local netmask="${5}"
+
+    echo "auto ${interface}
+iface ${interface} inet static
+    address ${ip}
+    netmask ${netmask}
+    gateway ${gateway}
+    dns-nameservers ${dns}"
+}
+
+# Gets the live IPv4 configuration for the given interface on Debian.
+#
+# Prints IP, GATEWAY, DNS, NETMASK in that order.
+function __net_get_ip4_config_debian() {
+    local interface="${1}"
+    local ip gateway dns netmask
+    ip=$(ip -4 addr show dev "${interface}" \
+        | grep 'inet ' \
+        | perl -pe 's/.*inet (\d+\.\d+\.\d+\.\d+)\/(\d+).*/$1/') || return 1
+    gateway=$(ip route show dev "${interface}" default \
+        | perl -pe 's/.*default via (\d+\.\d+\.\d+\.\d+).*/$1/') || return 2
+    dns=$(grep '^nameserver ' /etc/resolv.conf \
+        | perl -pe 's/nameserver (\d+\.\d+\.\d+\.\d+)/$1 /g' \
+        | tr -d '\n') || return 3
+    netmask=$(ip -4 addr show dev "${interface}" \
+        | grep 'inet ' \
+        | perl -pe 's/.*inet (\d+\.\d+\.\d+\.\d+)\/(\d+).*/$2/') || return 4
+    # Convert CIDR to netmask
+    netmask=$(net_cidr_to_netmask "${netmask}") || return 5
+
+    printf "%s\t%s\t%s\t%s" "${ip}" "${gateway}" "${dns}" "${netmask}"
+}
+
+# Usage: __net_modified_static_dhcp4_config_debian INTERFACE [--ip IP] [--gateway GATEWAY] [--dns DNS] [--netmask NETMASK]
+function __net_modified_static_dhcp4_config_debian() {
+    local interface="${1}"
+    shift
+    local ip gateway dns netmask
+    while [[ "${#}" -ne 0 ]]; do
+        case "${1}" in
+            --ip)
+                ip="${2}"
+                shift
+                ;;
+            --gateway)
+                gateway="${2}"
+                shift
+                ;;
+            --dns)
+                dns="${2}"
+                shift
+                ;;
+            --netmask)
+                netmask="${2}"
+                shift
+                ;;
+            *)
+                >&2 echo "Unknown option: ${1}"
+                return 1
+                ;;
+        esac
+        shift
+    done
+    local current
+    current="$(__net_get_ip4_config_debian "${interface}")" || return $?
+    [[ -z "${ip}" ]] && ip="$(echo "${current}" | cut -f1)"
+    [[ -z "${gateway}" ]] && gateway="$(echo "${current}" | cut -f2)"
+    [[ -z "${dns}" ]] && dns="$(echo "${current}" | cut -f3)"
+    [[ -z "${netmask}" ]] && netmask="$(echo "${current}" | cut -f4)"
+    __net_make_static_dhcp_ip4_config_debian "${interface}" "${ip}" "${gateway}" "${dns}" "${netmask}"
+}
+
 
 fi # _REDSHELL_NET
