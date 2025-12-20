@@ -18,7 +18,9 @@ function debian_setup() {
         ugrep \
         gh \
         vim \
-        ripgrep
+        ripgrep \
+        bc \
+        ed
     
     echo "Claude code..."
     which claude || { curl -fsSL https://claude.ai/install.sh | bash ; }
