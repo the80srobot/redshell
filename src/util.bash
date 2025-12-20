@@ -11,7 +11,7 @@ function util_ddu() {
 }
 
 function util_sudo() {
-    sudo bash -c "REDSHELL_SILENT=1 source ${HOME}/.bash_profile && $*"
+    sudo bash -c "REDSHELL_SILENT=1 source ${HOME}/.bash_profile ; $*"
 }
 
 function reload() {
