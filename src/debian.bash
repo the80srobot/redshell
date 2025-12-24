@@ -20,7 +20,9 @@ function debian_setup() {
         vim \
         ripgrep \
         bc \
-        ed
+        ed \
+        psmisc \
+        htop
     
     echo "Claude code..."
     which claude || { curl -fsSL https://claude.ai/install.sh | bash ; }
