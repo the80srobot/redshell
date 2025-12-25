@@ -31,51 +31,40 @@ popd > /dev/null
 __prompt_color() {
     case "$1" in
         bmo)
-            tput setaf "36"
+            echo -ne '\033[38;5;36m'
         ;;
-
         lighthouse)
-            tput setaf "196"
+            echo -ne '\033[38;5;196m'
         ;;
-
         astronaut)
-            tput setaf "205"
+            echo -ne '\033[38;5;205m'
         ;;
-
         pacman)
-            tput setaf "226"
-            tput setab "16"
+            echo -ne '\033[38;5;226m\033[48;5;16m'
         ;;
-
         dachshund)
-            tput setaf "215"
+            echo -ne '\033[38;5;215m'
         ;;
-
         saturn)
-            tput setaf "76"
+            echo -ne '\033[38;5;76m'
         ;;
-
         drwho)
-            tput setaf "32"
+            echo -ne '\033[38;5;32m'
         ;;
-
         snufkin)
-            tput setaf "106"
+            echo -ne '\033[38;5;106m'
         ;;
-
         moose)
-            tput setaf "94"
+            echo -ne '\033[38;5;94m'
         ;;
-
         bessy)
-            tput setab 160
-            tput setaf 15
+            echo -ne '\033[48;5;160m\033[38;5;15m'
         ;;
     esac
 }
 
 __prompt_escape() {
-    echo -n "\[$(tput bold)\]"
+    echo -n "\[\033[1m\]"
     [[ -z "$VISUAL" ]] || echo -e "\[$(__prompt_color $VISUAL)\]"
 }
 
@@ -147,14 +136,14 @@ __time_info() {
     echo "(${t}) "
 }
 
-PS1_PREFIX="┌─|\[$(tput sgr0)\]\u@$(__prompt_escape)\h\[$(tput sgr0)\] \w "
-PS1_WIDGETS="\[$(tput setaf 196)\]\$(__error_info)" # Has to be first
-PS1_WIDGETS+="\[$(tput setaf 2)\]\$(__time_info)"
-PS1_WIDGETS+="\[$(tput setaf 26)\]\$(__git_info)"
-PS1_WIDGETS+="\[$(tput setaf 26)\]\$(__hg_info)"
-PS1_WIDGETS+="\[$(tput setaf 33)\]\$(__screen_info)"
-PS1_WIDGETS+="\[$(tput setaf 214)\]\$(__addr_info)"
-PS1_SUFFIX="\[$(tput sgr0)\]\n└─> "
+PS1_PREFIX="┌─|\[\033[0m\]\u@$(__prompt_escape)\h\[\033[0m\] \w "
+PS1_WIDGETS="\[\033[38;5;196m\]\$(__error_info)" # Has to be first
+PS1_WIDGETS+="\[\033[32m\]\$(__time_info)"
+PS1_WIDGETS+="\[\033[38;5;26m\]\$(__git_info)"
+PS1_WIDGETS+="\[\033[38;5;26m\]\$(__hg_info)"
+PS1_WIDGETS+="\[\033[38;5;33m\]\$(__screen_info)"
+PS1_WIDGETS+="\[\033[38;5;214m\]\$(__addr_info)"
+PS1_SUFFIX="\[\033[0m\]\n└─> "
 
 PS1="${PS1_PREFIX}${PS1_WIDGETS}${PS1_SUFFIX}"
 
