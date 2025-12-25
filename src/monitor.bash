@@ -234,49 +234,49 @@ function __parse_load_stats() {
         case "${arg}" in
             --color)
                 color="color"
-                bold="$(tput smso)"
-                norm="$(tput rmso)"
-                rst="$(tput sgr0)"
+                bold=$'\033[7m'
+                norm=$'\033[27m'
+                rst=$'\033[0m'
                 continue
             ;;
             procs)
-                [[ "${color}" ]] && tput setaf 4
+                [[ "${color}" ]] && echo -ne '\033[34m'
                 printf "%d P %d A %d T" "${proc_count}" "${awake_count}" "${thread_count}"
             ;;
             load)
-                [[ "${color}" ]] && tput setaf 5
+                [[ "${color}" ]] && echo -ne '\033[35m'
                 printf "%s %s %s" "${avg1}" "${avg5}" "${avg15}"
             ;;
             cpu)
-                [[ "${color}" ]] && tput setaf 6
+                [[ "${color}" ]] && echo -ne '\033[36m'
                 printf "%s%% U %s%% S" "${cpu_user}" "${cpu_sys}"
             ;;
             mem)
-                [[ "${color}" ]] && tput setaf 3
+                [[ "${color}" ]] && echo -ne '\033[33m'
                 printf "%s%% %s" "${phys_util}" "$(human_size -hh "${phys_mem}")"
             ;;
             net)
-                [[ "${color}" ]] && tput setaf 2
+                [[ "${color}" ]] && echo -ne '\033[32m'
                 printf "%d/%s D %d/%s U" \
                     "${packets_in}" "$(human_size -bb "${bytes_in}")" "${packets_out}" "$(human_size -bb "${bytes_out}")"
             ;;
             io)
-                [[ "${color}" ]] && tput setaf 1
+                [[ "${color}" ]] && echo -ne '\033[31m'
                 printf "%d/%s R %d/%s W" \
                     "${reads}" "$(human_size -hh "${read_bytes}")" "${writes}" "$(human_size -hh "${written_bytes}")"
             ;;
             topcpu)
-                [[ "${color}" ]] && tput setaf 6
+                [[ "${color}" ]] && echo -ne '\033[36m'
                 printf "${bold}%s.%d${norm} %s%%" \
                     "${highest_cpu_comm}" "${highest_cpu_pid}" "${highest_cpu}"
             ;;
             topmem)
-                [[ "${color}" ]] && tput setaf 3
+                [[ "${color}" ]] && echo -ne '\033[33m'
                 printf "${bold}%s.%d${norm} %s" \
                     "${highest_rss_comm}" "${highest_rss_pid}" "$(human_size -hh "${highest_mem}")"
             ;;
             topnet)
-                [[ "${color}" ]] && tput setaf 2
+                [[ "${color}" ]] && echo -ne '\033[32m'
                 printf "${bold}%s.%d${norm} %s D %s U" \
                     "${highest_net_comm}" "${highest_net_pid}" \
                     "$(human_size -bb "${highest_net_in_bytes}")" \

@@ -12,16 +12,15 @@ _REDSHELL_NOTES=1
 NOTES_ROOT="${HOME}/.mnotes"
 NOTES_REPO="${NOTES_ROOT}/notes"
 
-[[ -z "${TERM}" ]] && export TERM=xterm
-_SGR0=$(tput sgr0)
-_BOLD=$(tput bold)
-_PATH_COLOR=$(tput setaf 6)
-_SECTION_COLOR=$(tput setaf 3)
-_TIME_COLOR=$(tput setaf 3)
-_EXTRA_COLOR=$(tput setaf 4)
-_DISABLED_COLOR=$(tput setaf 8)
-_WARNING_COLOR=$(tput setaf 3)
-_ERROR_COLOR=$(tput setaf 1)
+_SGR0=$'\033[0m'
+_BOLD=$'\033[1m'
+_PATH_COLOR=$'\033[36m'
+_SECTION_COLOR=$'\033[33m'
+_TIME_COLOR=$'\033[33m'
+_EXTRA_COLOR=$'\033[34m'
+_DISABLED_COLOR=$'\033[90m'
+_WARNING_COLOR=$'\033[33m'
+_ERROR_COLOR=$'\033[31m'
 
 NOTES_MAX_TODO_LEN=90
 
@@ -305,8 +304,8 @@ function notes_todo() {
     local op
     op=$(multiple_choice -n -i "Mark done
 Mark not done
-Delete the whole line $(tput setaf 6)${path}:${lno}$(tput sgr0)
-Edit the file $(tput setaf 6)${path}$(tput sgr0)" -m "Select operation" -a "xXde") || notes_todo "${@}"
+Delete the whole line ${_PATH_COLOR}${path}:${lno}${_SGR0}
+Edit the file ${_PATH_COLOR}${path}${_SGR0}" -m "Select operation" -a "xXde") || notes_todo "${@}"
 
     local before=$(cat "${abspath}" | head -n$(( lno - 1 )))
     local after=$(cat "${abspath}" | tail -n+$(( lno + 1 )))
@@ -977,7 +976,7 @@ function __fix_mtime_from_git() {
     if [[ "${fs_date}" == "${git_date}" ]]; then
         return 2
     else
-        >&2 echo -e "\t${path}\t$(tput setaf 1)${fs_date}$(tput sgr0)\t->\t$(tput setaf 2)${git_date}$(tput sgr0)"
+        >&2 echo -e "\t${path}\t${_ERROR_COLOR}${fs_date}${_SGR0}\t->\t\033[32m${git_date}${_SGR0}"
         local ts
         if [[ "$(uname)" == "Darwin" ]]; then
             ts=`date -j -f "%Y-%m-%d %H:%M:%S" "${git_date}" +"%Y%m%d%H%M.%S"`
@@ -1079,16 +1078,13 @@ function nw() {
                 return 0
             ;;
             "")
-                tput cuu1
-                tput el
+                echo -ne '\033[A\033[K'
                 break
             ;;
             *)
             ;;
         esac
-        echo
-        tput cuu1
-        tput el
+        echo -ne '\n\033[A\033[K'
     done
 
     while true; do
@@ -1128,16 +1124,13 @@ function nw() {
                 return 0
             ;;
             "")
-                tput cuu1
-                tput el
+                echo -ne '\033[A\033[K'
                 break
             ;;
             *)
             ;;
         esac
-        echo
-        tput cuu1
-        tput el
+        echo -ne '\n\033[A\033[K'
     done
 }
 

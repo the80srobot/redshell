@@ -47,6 +47,18 @@ class ArgumentType(Enum):
     HOSTNAME = 9
 
 
+# ANSI escape codes for colors (256-color mode: \033[38;5;Nm)
+ANSI_COLORS = {
+    1: "\\033[31m",      # red
+    2: "\\033[32m",      # green
+    4: "\\033[34m",      # blue
+    6: "\\033[36m",      # cyan
+    9: "\\033[91m",      # bright red
+    10: "\\033[92m",     # bright green
+}
+ANSI_BOLD = "\\033[1m"
+ANSI_RESET = "\\033[0m"
+
 ARG_TYPE_COLORS = {
     ArgumentType.DEFAULT: None,
     ArgumentType.SWITCH: None,
@@ -477,9 +489,9 @@ def gen_help(modules: Iterable[Module]) -> Generator[str, None, None]:
             raise ValueError(
                 f"Module name {module.name} is too long for the help output"
             )
-        yield f"    tput bold"
+        yield f"    echo -ne '{ANSI_BOLD}'"
         yield f"    echo -n '  {module.name}'"
-        yield f"    tput sgr0"
+        yield f"    echo -ne '{ANSI_RESET}'"
         yield f"    echo '{' ' * pad}{doc[0]}'"
         for line in doc[1:]:
             yield f"    echo '{' ' * column}{line}'"
@@ -499,23 +511,23 @@ def gen_help(modules: Iterable[Module]) -> Generator[str, None, None]:
                 continue
 
             # Usage
-            yield f"      tput bold"
+            yield f"      echo -ne '{ANSI_BOLD}'"
             yield f"      echo -n '  {_local_name(function.name.value, module.name)}'"
             for s in __gen_usage_color(function):
                 if isinstance(s, int):
-                    yield f"      tput setaf {s}"
+                    yield f"      echo -ne '{ANSI_COLORS[s]}'"
                 else:
                     yield f"      echo -n ' {s}'"
-                    yield f"      tput sgr0"
-                    yield f"      tput bold"
+                    yield f"      echo -ne '{ANSI_RESET}'"
+                    yield f"      echo -ne '{ANSI_BOLD}'"
             yield f"      echo"
-            yield f"      tput sgr0"
+            yield f"      echo -ne '{ANSI_RESET}'"
 
             # Aliases
-            yield f"      tput setaf 6"
+            yield f"      echo -ne '{ANSI_COLORS[6]}'"
             for alias in module.func_to_alias.get(function.name.value, []):
                 yield f'      echo "    alias {alias}=\'q {module.name} {_local_name(function.name.value, module.name)}\'"'
-            yield f"      tput sgr0"
+            yield f"      echo -ne '{ANSI_RESET}'"
 
             # Description
             for line in _escape_comment(function.comment):

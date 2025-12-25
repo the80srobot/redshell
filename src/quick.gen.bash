@@ -768,6 +768,10 @@ function __q() {
       shift
       net_online "$@"
       ;;
+    net_cidr_to_netmask|cidr_to_netmask)
+      shift
+      net_cidr_to_netmask "$@"
+      ;;
     net_health|health)
       shift
       net_health "$@"
@@ -1519,67 +1523,67 @@ function __q_help() {
     echo "Run q --help MODULE for more information on a module."
     echo
     echo "Available modules:"
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  ascii_art'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '         Assorted ascii art, screen drawing and speech bubbles.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  bash'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '              Parse bash files and automate bash scripting.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  browser'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '           Browser automation, downloads, link generators.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  caldav'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '            CalDAV calendar fetching utilities.'
     echo '                    '
     echo '                    Passwords are stored under CalDAV/Accounts/$account, URLs under CalDAV/URLs/$account.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  crypt'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '             Encrypt/decrypt, signing, keypairs. SSH and GPG helpers.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  debian'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '            Debian setup and package management.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  fedora'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '            Fedora setup and package management.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  file'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '              File helpers.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  find'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '              Shorthands for find and grep.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  git'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '               Automate git and github operations.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  go'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '                Helpers for dealing with Go packages.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  hg'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '                Mercurial helpers.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  install'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '           Install a file into another file, optionally with a keyword.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  kagi'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '              Kagi search and API wrappers.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  keys'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '              Key management utils using pass and gpg.'
     echo '                    '
     echo '                    All keys managed by this code are stored under the "Redshell/" folder in pass.'
@@ -1590,85 +1594,85 @@ function __q_help() {
     echo '                    needed, or further protect them with passwords and file permissions.'
     echo '                    - .var keys: Small secrets used as ENV variables or arguments. They are not'
     echo '                    cached as files during use.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  mac'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '               Mac setup, package management and various helpers.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  media'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '             Functions for working with media, ffmpeg, youtube, etc.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  monitor'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '           System load monitoring and logging.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  mtg'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '               Stuff for Magic: The Gathering.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  multiple_choice'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '   Interactive multiple choice prompts.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  net'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '               Network and wifi helpers, netcat wrappers, etc.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  news'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '              News and weather.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  notes'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '             Note management based on git and markdown.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  omdb'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '              OMDB (Open Movie Database) helpers for bash.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  path'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '              UNIX style path helpers.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  pkg'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '               Cross-platform package management.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  python'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '            Python env management, python-shell FFI and Jupyter.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  quick'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '             Redshell function help, switch and autocomplete.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  rust'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '              Manage rust toolchain and environment.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  screen'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '            UNIX style path helpers.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  strings'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '           String helpers for bash.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  time'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '              Time and date helpers.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  transit'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '           Transit helpers.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  util'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '              Catch-all utility functions that don'"'"'t fit anywhere else.'
-    tput bold
+    echo -ne '\033[1m'
     echo -n '  xterm_colors'
-    tput sgr0
+    echo -ne '\033[0m'
     echo '      Work with the xterm color space, convert to RGB, etc.'
     return 0
   fi
@@ -1679,114 +1683,114 @@ function __q_help() {
       echo "Assorted ascii art, screen drawing and speech bubbles."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  print_speech_bubble'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  erase_lines'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  cursor_position'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  cursor_row'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  print_bmo'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  print_pedro'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  scroll_output_pedro'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  select_visual'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       ;;
     bash)
       echo "Usage: q bash FUNCTION [ARG...]"
       echo "Parse bash files and automate bash scripting."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  get_bash_functions'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       ;;
     browser)
       echo "Usage: q browser FUNCTION [ARG...]"
       echo "Browser automation, downloads, link generators."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  gdocs_id'
       echo -n ' URL'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Extracts a Google Docs ID from a URL.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  sheets_dl_link'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Usage sheets_dl_link URL [FORMAT]'
       echo '    Generates a direct download link for a Google Docs spreadsheet.'
       echo '    FORMAT is optional and defaults to "csv".'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  chrome_path'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Returns the path to the Chrome executable.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  downloads_path'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Returns the path to the Downloads folder.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  dl'
       echo -n ' URL'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Downloads a URL with the browser and returns the path to the downloaded file.'
       echo '    This is finnicky and relies on the browser downloading to the default'
       echo '    Downloads folder. If multiple new files are created around the same time, this'
@@ -1799,53 +1803,53 @@ function __q_help() {
       echo "Passwords are stored under CalDAV/Accounts/$account, URLs under CalDAV/URLs/$account."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  accounts'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    List configured CalDAV accounts.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  fetch'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -a|--account'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ACCOUNT'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -u|--username'
-      tput sgr0
-      tput bold
-      tput setaf 10
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[92m'
       echo -n ' USER'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' URL'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Fetch a CalDAV calendar and output its contents.'
       echo '    '
       echo '    '
@@ -1860,58 +1864,58 @@ function __q_help() {
       echo '    Example:'
       echo '    caldav_fetch -a fastmail -u user@fastmail.com https://caldav.fastmail.com/dav/calendars/user/...'
       echo '    caldav_fetch -a fastmail  # URL loaded from keys_var CalDAV/URLs/fastmail'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  agenda'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -a|--account'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ACCOUNT'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -u|--username'
-      tput sgr0
-      tput bold
-      tput setaf 10
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[92m'
       echo -n ' USER'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -d|--days'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' DAYS'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' URL'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Show upcoming events from a CalDAV calendar.'
       echo '    '
       echo '    '
@@ -1919,7 +1923,7 @@ function __q_help() {
       echo '    -a, --account ACCOUNT  Account name for password lookup.'
       echo '    If omitted and exactly one account exists, uses that.'
       echo '    -u, --username USER    Username for authentication. Defaults to account name.'
-      echo '    -d, --days DAYS        Number of days to show (from today). Defaults to 7.'
+      echo '    -d, --days DAYS        Number of days to show (from today). Defaults to 31.'
       echo '    '
       echo '    If URL is not provided, it is retrieved using: keys_var CalDAV/URLs/$account'
       echo '    '
@@ -1932,78 +1936,78 @@ function __q_help() {
       echo "Encrypt/decrypt, signing, keypairs. SSH and GPG helpers."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  encrypt_symmetric'
-      tput setaf 9
+      echo -ne '\033[91m'
       echo -n ' FILE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  decrypt_symmetric'
-      tput setaf 9
+      echo -ne '\033[91m'
       echo -n ' FILE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  gen_github_keypair'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  package'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  payloadify'
-      tput setaf 9
+      echo -ne '\033[91m'
       echo -n ' FILE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  downloadify'
-      tput setaf 9
+      echo -ne '\033[91m'
       echo -n ' FILE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Encrypt a file and wrap it in a base64 self-unpacking shell script.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  hash'
       echo -n ' ALGO'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' INPUT'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
       echo "    alias h='q crypt hash'"
-      tput sgr0
+      echo -ne '\033[0m'
       echo '    Print a cryptographic hash of the input.'
       echo '    '
       echo '    If no INPUT is provided, read from stdin.'
@@ -2012,30 +2016,30 @@ function __q_help() {
       echo '    '
       echo '    hash 256 foo -> b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c'
       echo '    hash md5 foo -> d3b07384d113edec49eaa6238ad5ff00'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  selfsign'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' NAME'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' OPTIONS'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Generate a self-signed certificate.'
       echo '    '
       echo '    '
@@ -2046,57 +2050,57 @@ function __q_help() {
       echo "Debian setup and package management."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  setup'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  install_or_skip'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  install_imgcat'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  setup_mc'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       ;;
     fedora)
       echo "Usage: q fedora FUNCTION [ARG...]"
       echo "Fedora setup and package management."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  setup'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  dnf_install_or_skip'
       echo -n ' package1'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' package2'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ...'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Install a package with dnf if it'"'"'s not already installed.'
       ;;
     file)
@@ -2104,115 +2108,115 @@ function __q_help() {
       echo "File helpers."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  mktemp'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' TITLE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Cross-platform version of mktemp across BSD and GNU. Creates a temp file and'
       echo '    prints its path. If TITLE is supplied, it will be used as prefix or suffix.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  mtime'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -g'
-      tput sgr0
-      tput bold
-      tput setaf 9
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[91m'
       echo -n ' PATH'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Returns the modification time of PATH in "YYYY-MM-DD HH:MM:SS" format.'
       echo '    '
       echo '    Options:'
       echo '    '
       echo '    -g    Use git to get the last modified time if the file is tracked.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  age'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -s'
-      tput sgr0
-      tput bold
-      tput setaf 9
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[91m'
       echo -n ' PATH'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       ;;
     find)
       echo "Usage: q find FUNCTION [ARG...]"
       echo "Shorthands for find and grep."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  f'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Shorthand for find'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  fcc'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  fgo'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  fjava'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  faidl'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  fd'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  replace'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Usage find_replace [DIR] GLOB NEEDLE REPLACEMENT'
       ;;
     git)
@@ -2220,135 +2224,135 @@ function __q_help() {
       echo "Automate git and github operations."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  mkproject'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  ssh_init'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  get_origin'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  master_branch'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  cherrypick_branch'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  sparse_clone'
       echo -n ' REPO'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -b'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' BRANCH'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -p'
-      tput sgr0
-      tput bold
-      tput setaf 9
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[91m'
       echo -n ' PATH'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
-      tput setaf 1
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[31m'
       echo -n ' DIR'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ...'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Clones a git repository with only the specified subdirectories.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  changed_lines'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       ;;
     go)
       echo "Usage: q go FUNCTION [ARG...]"
       echo "Helpers for dealing with Go packages."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  pkg_do'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       ;;
     hg)
       echo "Usage: q hg FUNCTION [ARG...]"
       echo "Mercurial helpers."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  root'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Fast check for mercurial. (About 100 times faster than `hg root`.) Prints the'
       echo '    root directory of the repository if the current directory is in a repository.'
       echo '    Otherwise returns 1.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  repo_name'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  branch_name'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  ps1_widget'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       ;;
     init)
       echo "Usage: q init FUNCTION [ARG...]"
@@ -2361,68 +2365,68 @@ function __q_help() {
       echo "Install a file into another file, optionally with a keyword."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  file'
       echo -n ' -s|--sfile'
-      tput sgr0
-      tput bold
-      tput setaf 9
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[91m'
       echo -n ' SFILE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -d|--dfile'
-      tput sgr0
-      tput bold
-      tput setaf 9
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[91m'
       echo -n ' DFILE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -c|--char'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' CHAR'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -k|--section'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' SECTION'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -d|--append'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --uninstall'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Installs the contents of DFILE into SFILE, guarded by a comment at the first'
       echo '    and last line. Optional arguments CHAR and SECTION control what the commend'
       echo '    guard looks like. Default CHAR is '"'"'#'"'"' and default SECTION is '"'"'REDSHELL'"'"' for:'
@@ -2439,38 +2443,38 @@ function __q_help() {
       echo '    '
       echo '    On Linux, this attempts to flock DFILE. If the file is already locked, the'
       echo '    function will immediately return 254.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  reinstall_file'
-      tput setaf 9
+      echo -ne '\033[91m'
       echo -n ' SFILE'
-      tput sgr0
-      tput bold
-      tput setaf 9
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[91m'
       echo -n ' DFILE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' CHAR'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' SECTION'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    This is a legacy form of install_file. It is kept for backwards compatibility.'
       echo '    '
       echo '    Installs the contents of DFILE into SFILE, guarded by a comment at the first'
@@ -2489,18 +2493,18 @@ function __q_help() {
       echo "Kagi search and API wrappers."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  search_json'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  summarize_json'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       ;;
     keys)
       echo "Usage: q keys FUNCTION [ARG...]"
@@ -2516,43 +2520,43 @@ function __q_help() {
       echo "cached as files during use."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  git'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ARGS'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ...'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Wraps git for use with the keys repository.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  path'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -f'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' KEY'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Dumps the contents of the given key in a file and returns the path.'
       echo '    '
       echo '    If -f is given, forces regeneration of the file. The file is also regenerated'
@@ -2560,60 +2564,60 @@ function __q_help() {
       echo '    '
       echo '    Caution: the file will persist until keys_flush is called, so be sure to'
       echo '    manage its lifecycle appropriately.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  var'
       echo -n ' KEY'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' VALUE|--delete'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Returns the conents of a given .var key in pass. If VALUE is provided, instead'
       echo '    the value is stored in the key. If --delete is provided, the key is removed.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  key'
       echo -n ' KEY'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' VALUE|--delete'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Returns the contents of a given .key key in pass. If VALUE is provided,'
       echo '    instead the value is stored in the key. If --delete is provided, the key is'
       echo '    removed.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  flush'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Removes all cached key files.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  sync'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Pulls the latest changes from the keys git repository and pushes any local'
       echo '    changes.'
       ;;
@@ -2622,250 +2626,250 @@ function __q_help() {
       echo "Mac setup, package management and various helpers."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  setup'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  brew'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  reinstall_brew'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  enable_ipconfig_verbose'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  get_user_shell'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  brew_bash_path'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  switch_to_bash'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  icloud'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  icloud_evict'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  brew_install_or_skip'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  install_miniconda'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  install_devtools'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  kill_defender'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Kills Microsoft Defender in a way that tends to persist for an hour or so.'
       echo '    This is useful for working around bugs or surviving when they push and update'
       echo '    that breaks the OS.'
       echo '    '
       echo '    Use at your own risk, and only after discussing with your IT department. This'
       echo '    action is likely to be detected.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  suppress_defender'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Keeps Microsoft Defender from restarting.'
       echo '    '
       echo '    Use at your own risk, and only after discussing with your IT department. This'
       echo '    action is likely to be detected.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  kill_crashplan'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Stops CrashPlan from running. CrashPlan is a very poorly optimized backup'
       echo '    service. When you'"'"'re running IO intensive workloads, it can slow them down'
       echo '    massively and eat up 2-3 CPU cores.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  hogs'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  cpu_hogs'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --current'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' PERCENT'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --lifetime'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' PERCENT'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Lists PIDs of processes using too much CPU.'
       echo '    '
       echo '    Checks both current CPU % and lifetime CPU % (accumulated CPU time divided'
       echo '    by process elapsed time). Lists processes exceeding either threshold.'
       echo '    '
       echo '    Output: tab-separated pid, lifetime cpu %, current cpu %, command name'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  cpulimit'
       echo -n ' LIMIT'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' PID'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' PID'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ...'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Limits the CPU usage of processes to a certain percentage.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  disable_powernap'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Stop the computer from waking up to do random things and exhausting the'
       echo '    battery.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  power_stats'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Prints out some debug information about power management.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  fix_ssh_locale_config'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    macOS uses the non-existent locale LC_CTYPE=UTF-8 by default, which breaks SSH'
       echo '    sessions. This function fixes that by way of global ssh client config.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  pid_suspend'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --resume|--suspend'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' PID'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  setup_iterm2'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       ;;
     media)
       echo "Usage: q media FUNCTION [ARG...]"
       echo "Functions for working with media, ffmpeg, youtube, etc."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  yt-dl'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' OPTIONS'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ...'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' URL'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Wrapper areound yt-dlp. Automatically ensures dependencies are installed.'
       ;;
     monitor)
@@ -2873,48 +2877,48 @@ function __q_help() {
       echo "System load monitoring and logging."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  stream_load_stats'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  load_hist'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  latest_load_stats'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  write_load_stats'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  stream_top_stats'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  stream_net_stats'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  proc_stats'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Outputs:'
       echo '    1. CPU util'
       echo '    2. Physical RAM util'
@@ -2933,39 +2937,39 @@ function __q_help() {
       echo "Stuff for Magic: The Gathering."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  oracle_json'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Fetch the latest oracle cards from Scryfall and return the path to the JSON'
       echo '    dump. The dump is cached for about two weeks.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  rules'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  card_json'
       echo -n ' NAME'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Return the JSON object for the card with the given name. (Case sensitive.)'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  card'
       echo -n ' NAME'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Print the Magic: The Gathering card with the given name. (Case sensitive.)'
       ;;
     multiple_choice)
@@ -2973,105 +2977,105 @@ function __q_help() {
       echo "Interactive multiple choice prompts."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  multiple_choice'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -n|-L|-N'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -i'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' INPUT'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -p'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' PAGE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -m'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' MSG'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -a'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ALPHABET'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -I'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' CONTROLS'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -A'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' CONTROL_ALPHABET'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -H'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' HEADER'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Display an interactive menu with multiple choices, and then print the selected option to stdout.'
       echo '    '
       echo '    -n: return the number of the selected option'
@@ -3090,85 +3094,85 @@ function __q_help() {
       echo "Network and wifi helpers, netcat wrappers, etc."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  host'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -l|--port'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' PORT'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -u|--username'
-      tput sgr0
-      tput bold
-      tput setaf 10
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[92m'
       echo -n ' USER'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -P|--password'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' PASS'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -C|certfile'
-      tput sgr0
-      tput bold
-      tput setaf 9
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[91m'
       echo -n ' FILE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --keyfile'
-      tput sgr0
-      tput bold
-      tput setaf 9
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[91m'
       echo -n ' FILE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
-      tput setaf 1
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[31m'
       echo -n ' DIR'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Hosts a folder contents over HTTPs.'
       echo '    '
       echo '    Also see net_serve.'
@@ -3192,373 +3196,383 @@ function __q_help() {
       echo '    '
       echo '    The server will serve the contents of DIR. If DIR is not specified, the server'
       echo '    will serve the current directory.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  dl'
       echo -n ' URL'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Recursively downloads the URL even if it'"'"'s a folder. Accepts all wget options.'
       echo '    '
       echo '    This is basically only useful if you can'"'"'t remember wget options.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  online'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Check if you have a usable internet connection.'
-      tput bold
+      echo -ne '\033[1m'
+      echo -n '  cidr_to_netmask'
+      echo -n ' CIDR'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo '    Convert a CIDR notation (e.g. 24) to a netmask.'
+      echo -ne '\033[1m'
       echo -n '  health'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  ssh_fingerprint'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  dump_cert'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  ccurl'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -M|--max-age'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' SECONDS'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -K|--key'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' KEY'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' CURL_ARGS'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Cached curl wrapper. Request parameters are converted to a key and used to'
       echo '    cache the response.'
       echo '    '
       echo '    Options:'
       echo '    -M, --max-age SECONDS  Maximum age of the cache in seconds. Default is 3600.'
       echo '    -K, --key KEY          Use the given key instead of the request parameters.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  dataurl'
-      tput setaf 9
+      echo -ne '\033[91m'
       echo -n ' FILE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Create a data URL from a file.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  undataurl'
       echo
-      tput sgr0
-      tput setaf 6
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
       echo "    alias undataurl='q net undataurl'"
-      tput sgr0
+      echo -ne '\033[0m'
       echo '    Decode a dataurl from stdin onto stdout.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  rtt'
-      tput setaf 4
+      echo -ne '\033[34m'
       echo -n ' HOST'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Average round-trip time to the specified host.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  ip4'
       echo
-      tput sgr0
-      tput setaf 6
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
       echo "    alias ip4='q net ip4'"
-      tput sgr0
+      echo -ne '\033[0m'
       echo '    Print the non-localhost IPv4 addresses of this machine. One address per line.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  ip4gw'
       echo
-      tput sgr0
-      tput setaf 6
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
       echo "    alias ip4gw='q net ip4gw'"
-      tput sgr0
+      echo -ne '\033[0m'
       echo '    Print the default gateway'"'"'s IP address.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  serve'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -l'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' PORT'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
-      tput setaf 9
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[91m'
       echo -n ' FILE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Serves the contents of a file or stdin over HTTP once, then exits.'
       echo '    '
       echo '    Also see net_host.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  dump_url'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  wiki'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  wifi_device'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  wifi_name'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Print the name of the currently connected wifi network.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  ssh_fingerprint'
-      tput setaf 4
+      echo -ne '\033[34m'
       echo -n ' HOST'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  ssh_aliases'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Prints the aliases and hostnames from the ssh config file.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  ssh_fqdn'
       echo -n ' ALIAS'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Based on SSH config, looks up the full hostname of the given alias.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  wa_link'
       echo -n ' PHONE_NUMBER'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Prints a link to WhatsApp Web for the given phone number.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  gallery'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --dedupe'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --copy-to'
-      tput sgr0
-      tput bold
-      tput setaf 1
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[31m'
       echo -n ' DIR'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --scan-only'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --serve-only'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --force'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --clean'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --title'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' TITLE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -l|--port'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' PORT'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -u|--username'
-      tput sgr0
-      tput bold
-      tput setaf 10
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[92m'
       echo -n ' USER'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -P|--password'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' PASS'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -C|--certfile'
-      tput sgr0
-      tput bold
-      tput setaf 9
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[91m'
       echo -n ' FILE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --keyfile'
-      tput sgr0
-      tput bold
-      tput setaf 9
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[91m'
       echo -n ' FILE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
-      tput setaf 1
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[31m'
       echo -n ' DIR'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Scan a directory for photos and serve a browsable gallery.'
       echo '    '
       echo '    This command scans a directory tree for photos, generates thumbnails and'
@@ -3598,114 +3612,114 @@ function __q_help() {
       echo "News and weather."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  all'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  stocks'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  weather'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  brutalist_report_source'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  nytimes'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  npr'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  pbs'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  register'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  cnbc'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       ;;
     notes)
       echo "Usage: q notes FUNCTION [ARG...]"
       echo "Note management based on git and markdown."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  note'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' NOTE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Saves the provided note, intelligently placing it and generating a title. If'
       echo '    run with no arguments, instead opens vim and saves whatever is entered into'
       echo '    the file.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  list'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  sync'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  todo'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' TERM'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ...'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Shows an interactive listing of matching TODOs.'
       echo '    '
       echo '    Uses the following categories:'
@@ -3724,73 +3738,73 @@ function __q_help() {
       echo '    X - 🛠️ - Technical Task'
       echo '    Z - ⏩ - Misc Quick Task'
       echo '    📥 - Inbox'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  undo'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -f'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Undoes the last note change. If the last change was to a local note, it will'
       echo '    refuse to undo it, unless -f is passed.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  perl'
       echo -n ' PROG'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' TERM'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ...'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Applies the provided perl program to matching notes to generate replacements.'
       echo '    Then allows the user to select which replacements to save.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  api_list_notes'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -f'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -a'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' TERM'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Outputs a list of notes files that match the given terms.'
       echo '    '
       echo '    Options:'
@@ -3811,47 +3825,47 @@ function __q_help() {
       echo '    10. base path'
       echo '    11. Quick-TODO-aware title'
       echo '    12. Archived (A if archived - if not)'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  backup'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Backs up the notes repository to a timestamped tarball in the notes root.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  api_empty_notes'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Lists empty notes.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  api_list_todos'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' CONTEXT'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' TERM'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ...'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Lists TODOs matching the given context and terms.'
       echo '    '
       echo '    Outputs:'
@@ -3867,90 +3881,90 @@ function __q_help() {
       echo '    9. Earliest date (if any)'
       echo '    10. Due date (if any)'
       echo '    11. Context (one letter)'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  print_todo_categories'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  api_git'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ARGS'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ...'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Forwards its args to git running with the correct key and in the notes root.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  api_pushd'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  api_clone'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Clones the git reposity.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  api_fsck'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Resets the mtime of notes files from git.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  nw'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  window'
       echo
-      tput sgr0
-      tput setaf 6
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
       echo "    alias nwin='q notes window'"
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  api_find'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Runs find automatically scoped to the right mtime by the NEND and NSTART env'
       echo '    variables.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  api_quick_title'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  log'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  api_match_files'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Returns a list of files, as absolute paths, that match a search query. The'
       echo '    query is a list of terms, separated by spaces. Each term is either a'
       echo '    pro-pattern, or an anti-pattern:'
@@ -3967,129 +3981,129 @@ function __q_help() {
       echo '    Additional flags start with a dash '"'"'-'"'"', to be supplied in any position:'
       echo '    '
       echo '    -w match only complete words (DEFAULT) -W match substrings'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  ls'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' TERM'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ...'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Prints a tree of notes, with the TERM as a filter.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  hist'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' N'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Prints the N most recent notes.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  api_drop_note'
       echo -n ' NOTE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Delete the note at the provided relative path.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  gc'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Deletes empty notes and runs git gc.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  api_update_note'
-      tput setaf 9
+      echo -ne '\033[91m'
       echo -n ' RELPATH'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' CONTENTS'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Updates the note at the given relative path with the given contents.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  api_edit_note'
-      tput setaf 9
+      echo -ne '\033[91m'
       echo -n ' PATH'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' LINE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Opens vim for the given relative note path, then updates the notes tree using'
       echo '    the result. Optional second argument is the line number to open vim at.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  api_perl_preview'
       echo -n ' PROG'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' TERM'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ...'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Applies the provided perl program to matching notes to generate replacements.'
       echo '    Returns the potential replacements.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  claude'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Opens a Claude Code session in the notes repository.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  api_pushd'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Changes to the notes repository directory. (With pushd.)'
       ;;
     omdb)
@@ -4097,48 +4111,48 @@ function __q_help() {
       echo "OMDB (Open Movie Database) helpers for bash."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  set_key'
       echo -n ' KEY'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Configure a new KEY for the OMDB API.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  register_key'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Interactive prompt to configure the API key for OMDB.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  get_key'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Prints the API key for OMDB.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  query'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -f'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' QUERY'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Query the OMDB API with the given query. Prints JSON to stdout. Results are'
       echo '    cached. Use -f to force a fresh query.'
       echo '    '
@@ -4153,16 +4167,16 @@ function __q_help() {
       echo '    '
       echo '    - t: Title of the movie.'
       echo '    - i: IMDB ID of the movie.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  guess_title'
-      tput setaf 9
+      echo -ne '\033[91m'
       echo -n ' FILE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Guess the title of the movie based on the filename.'
       ;;
     path)
@@ -4170,46 +4184,46 @@ function __q_help() {
       echo "UNIX style path helpers."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  expand'
-      tput setaf 9
+      echo -ne '\033[91m'
       echo -n ' PATH'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Expands tilde, safely, in the path.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  resolve'
-      tput setaf 9
+      echo -ne '\033[91m'
       echo -n ' PATH'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Prints the absolute path of PATH, with any tilde interpolated.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  push'
-      tput setaf 1
+      echo -ne '\033[31m'
       echo -n ' DIRECTORY'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    This is like pushd, except it also updates the name of the screen window to'
       echo '    the new path, if run from inside a screen session.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  pop'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    This is like popd, except it also updates the name of the screen window to the'
       echo '    new path, if run from inside a screen session.'
       ;;
@@ -4218,24 +4232,24 @@ function __q_help() {
       echo "Cross-platform package management."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  install_or_skip'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' PACKAGE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ...'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Install packages using the system package manager, or skip, if the package is'
       echo '    already installed.'
       ;;
@@ -4244,235 +4258,235 @@ function __q_help() {
       echo "Python env management, python-shell FFI and Jupyter."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  venv'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -I|--install-requirements'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -p|--python-path'
-      tput sgr0
-      tput bold
-      tput setaf 9
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[91m'
       echo -n ' PATH'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -q|--quiet'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' VERSION'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
       echo "    alias venv='q python venv'"
-      tput sgr0
+      echo -ne '\033[0m'
       echo '    Create a new virtualenv in the current directory, using the latest available'
       echo '    python version. If a virtualenv already exists, activate it. If -I is passed,'
       echo '    install requirements.txt. If -p is passed, use the specified Python binary. If'
       echo '    VERSION is passed, find a python binary with that version.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  pip_run'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -p|--python-path'
-      tput sgr0
-      tput bold
-      tput setaf 9
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[91m'
       echo -n ' PATH'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -P|--package'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' PACKAGE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' EXE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ARGS'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ...'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Run a Python script with the specified package installed.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  ipynb'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -I|--install-requirements'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -p|--python-path'
-      tput sgr0
-      tput bold
-      tput setaf 9
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[91m'
       echo -n ' PATH'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' VERSION'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
       echo "    alias ipynb='q python ipynb'"
-      tput sgr0
+      echo -ne '\033[0m'
       echo '    Creates a new virtualenv in the current directory (as venv) and opens a new'
       echo '    Jupyter notebook.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  detect'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Find all available Python binaries in the PATH and their versions.'
       echo '    Prints a tab-separated list: VERSION  PATH  SHORT_VERSION'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  latest'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Returns the path to the latest available Python binary.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  func'
       echo -n ' -f|--function'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' FUNCTION'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -p|--path'
-      tput sgr0
-      tput bold
-      tput setaf 9
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[91m'
       echo -n ' PATH'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -J|--json_output'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --clean'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --debug'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --quiet'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --no-venv'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ARGS'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Run a Python function from a file. Calls `q python venv` to setup the'
       echo '    environment. The function must be defined in the file and must be a top-level'
       echo '    function. The function must be defined with type hints for all arguments.'
@@ -4491,25 +4505,25 @@ function __q_help() {
       echo '    --debug: Print the Python script that was executed.'
       echo '    --quiet: Do not print any output from the virtualenv creation.'
       echo '    --no-venv: Do not create a virtualenv.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  black'
       echo -n ' ['
-      tput sgr0
-      tput bold
-      tput setaf 9
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[91m'
       echo -n ' FILES'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ...'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Run the black code formatter on the specified files.'
       ;;
     quick)
@@ -4517,227 +4531,227 @@ function __q_help() {
       echo "Redshell function help, switch and autocomplete."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  rebuild'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --src-path'
-      tput sgr0
-      tput bold
-      tput setaf 9
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -ne '\033[91m'
       echo -n ' PATH'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --skip-extra-paths'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  q'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       ;;
     rust)
       echo "Usage: q rust FUNCTION [ARG...]"
       echo "Manage rust toolchain and environment."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  rustup'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  install_goodies'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       ;;
     screen)
       echo "Usage: q screen FUNCTION [ARG...]"
       echo "UNIX style path helpers."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  session'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  window'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  rename'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  home'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  reset_dirname'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       ;;
     strings)
       echo "Usage: q strings FUNCTION [ARG...]"
       echo "String helpers for bash."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  urlencode'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Usage strings_urlencode STRING'
       echo '    '
       echo '    URL-encodes a string. DO NOT USE with curl: prefer --data-urlencode.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  strip_control'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Strips terminal escape sequences from standard input.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  repeat'
       echo -n ' STRING'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' N'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Prints STRING N times.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  join'
       echo -n ' DELIMITER'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' STRING'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ...'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  sgrep'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -C'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' NUM'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
       echo "    alias sgrep='q strings sgrep'"
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  strip_prefix'
       echo -n ' PREFIX'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' STRING'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Strips the prefix from the string if it'"'"'s there.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  trim'
       echo -n ' STRING'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Strips leading and trailing whitespace from a string.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  elide'
       echo -n ' TEXT'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' LIMIT'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' COLOR'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Elides TEXT to LIMIT characters, inserting "(...)" in the middle if needed.'
       echo '    If COLOR is provided, it will be used to color the ellipsis.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  strip_prefix'
       echo -n ' PREFIX'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' STRING'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Strips the prefix from the string if it'"'"'s there.'
       ;;
     time)
@@ -4745,140 +4759,140 @@ function __q_help() {
       echo "Time and date helpers."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  zones'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    List all time zones know to the system. (In /usr/share/zoneinfo.)'
       echo '    '
       echo '    This doesn'"'"'t include aliases declared in this package.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  get_tz'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  local'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  utc'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  in'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Usage time_in TIMEZONE [FORMAT]'
       echo '    '
       echo '    Sets the time zone to TIMEZONE and runs date with the remaining arguments.'
       echo '    Timezone resolution suppors fuzzy matching and aliases, so that cities like'
       echo '    San Francisco work as timezones.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  tz_diff'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  ts'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  convert'
       echo -n ' TIME'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' FROM_TZ'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' TO_TZ'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' FORMAT'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       ;;
     transit)
       echo "Usage: q transit FUNCTION [ARG...]"
       echo "Transit helpers."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  sbb'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       ;;
     util)
       echo "Usage: q util FUNCTION [ARG...]"
       echo "Catch-all utility functions that don't fit anywhere else."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  ddu'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  sudo'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  reload'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  markdown'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  human_size'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -b|-bb|-S|-h|-hh'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' SIZE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Convert SIZE to human-readable format.'
       echo '    '
       echo '    -b: bits'
@@ -4888,224 +4902,224 @@ function __q_help() {
       echo '    -hh: base-2 bytes, no space between number and unit'
       echo '    '
       echo '    If no mode switch is specified then normal, base-2 byte units are used.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  install_heroku_cli'
       echo
-      tput sgr0
-      tput setaf 6
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
       echo "    alias heroku_install_cli='q util install_heroku_cli'"
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  install_bazelisk'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  jup'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  wait_for_file'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  forex'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -f'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' FROM'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -t'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' TO'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -d'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' DATE'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -a'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' AMOUNT'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' -v'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  run'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' --sudo'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' COMMAND'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ['
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ARGUMENTS'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ...'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n ' ]'
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       ;;
     xterm_colors)
       echo "Usage: q xterm_colors FUNCTION [ARG...]"
       echo "Work with the xterm color space, convert to RGB, etc."
       echo
       echo "Available functions:"
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  channel_step'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Takes one RGB channel value as a 2-byte hex string and returns a decimal'
       echo '    number representing the step in XTERM_CHANNEL_STEPS that'"'"'s the closest.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  greyscale_step'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    As channel_step, but for greyscale.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  rgb_to_xterm'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Takes an RGB color as a 6-byte hex string and returns the closest xterm color.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  hue_diff'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Computes the hue difference between two RGB colors passed as 6-byte hex'
       echo '    strings. Result is in the interval [0; 765]. Contrast values greater than ~400'
       echo '    are usually legible for text, if sufficient brightness contrast also exists.'
       echo '    (Depends on terminal.)'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  brightness'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Computes the brightness of an RGB color passed as a 6-byte hex string. Result'
       echo '    is in the interval [0; 255]. Brightness contrast of ~100 is usually legible if'
       echo '    sufficient hue contrast also exists. (Depends on terminal.)'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  contrast'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Computes a contrast value between two RGB colors passed as 6-byte hex strings.'
       echo '    Result is in the interval [0; 192]. Combines hue and brightness information.'
       echo '    Contrast values over 80 are usually legible, depending on terminal.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  xterm_to_rgb'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       echo '    Takes an xterm color number as a decimal integer and returns a 6-byte hex of'
       echo '    the RGB color.'
-      tput bold
+      echo -ne '\033[1m'
       echo -n '  xterm_to_fg'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  xterm_to_bg'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  tfmt'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  color'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  shades'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
-      tput bold
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
       echo -n '  colors'
       echo
-      tput sgr0
-      tput setaf 6
-      tput sgr0
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
       ;;
     *)
       echo "Unknown module $1"
@@ -5653,6 +5667,9 @@ function __q_dump() {
     online)
       type net_online
       ;;
+    cidr_to_netmask)
+      type net_cidr_to_netmask
+      ;;
     health)
       type net_health
       ;;
@@ -5712,6 +5729,18 @@ function __q_dump() {
       ;;
     gallery)
       type net_gallery
+      ;;
+    __net_write_static_ip4_dhcp_config_debian)
+      type __net_write_static_ip4_dhcp_config_debian
+      ;;
+    __net_make_static_dhcp_ip4_config_debian)
+      type __net_make_static_dhcp_ip4_config_debian
+      ;;
+    __net_get_ip4_config_debian)
+      type __net_get_ip4_config_debian
+      ;;
+    __net_modified_static_dhcp4_config_debian)
+      type __net_modified_static_dhcp4_config_debian
       ;;
     *)
       echo "Unknown function $2"
@@ -6364,7 +6393,7 @@ function __q_compgen() {
       return 0
       ;;
     net)
-      COMPREPLY=($(compgen -W "help host dl online health ssh_fingerprint dump_cert ccurl dataurl undataurl rtt ip4 ip4gw serve dump_url wiki wifi_device wifi_name ssh_fingerprint ssh_aliases ssh_fqdn wa_link gallery" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help host dl online cidr_to_netmask health ssh_fingerprint dump_cert ccurl dataurl undataurl rtt ip4 ip4gw serve dump_url wiki wifi_device wifi_name ssh_fingerprint ssh_aliases ssh_fqdn wa_link gallery" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     news)
@@ -13280,6 +13309,72 @@ function __q_compgen() {
         local repeated_names=()
         local repeated_positions=()
         local positional_types=()
+        local i=3
+        local state="EXPECT_ARG"
+        local pos=0
+        while [[ "${i}" -lt "${COMP_CWORD}" ]]; do
+          case "${state}" in
+          IDK)
+            break
+            ;;
+          EXPECT_ARG)
+            case "${COMP_WORDS[i]}" in
+            --)
+              state="IDK"
+              ;;
+            *)
+              state="EXPECT_ARG"
+              (( pos++ ))
+              ;;
+            esac
+            ;;
+          esac
+          (( i++ ))
+        done
+        COMPREPLY=()
+        if [[ "${state}" == "EXPECT_ARG" ]]; then
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          if [[ -n "${positional_types[$pos]}" ]]; then
+            state="EXPECT_VALUE_${positional_types[$pos]}"
+          else
+            return 0
+          fi
+        fi
+        case "${state}" in
+        EXPECT_VALUE_FILE)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        EXPECT_VALUE_DIRECTORY)
+          COMPREPLY+=($(compgen -A directory -- ${cur}))
+          ;;
+        EXPECT_VALUE_USER)
+          COMPREPLY+=($(compgen -A user -- ${cur}))
+          ;;
+        EXPECT_VALUE_GROUP)
+          COMPREPLY+=($(compgen -A group -- ${cur}))
+          ;;
+        EXPECT_VALUE_HOSTNAME)
+          COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          ;;
+        EXPECT_VALUE_STRING)
+          ;;
+        IDK)
+          COMPREPLY+=($(compgen -W "${keyword_names[*]} ${switch_names[*]}" -- ${cur}))
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        *)
+          COMPREPLY+=($(compgen -A file -- ${cur}))
+          ;;
+        esac
+        return 0
+        ;;
+      cidr_to_netmask)
+        # net_cidr_to_netmask CIDR
+        local switch_names=()
+        local keyword_names=()
+        local repeated_names=()
+        local repeated_positions=()
+        local positional_types=(STRING)
         local i=3
         local state="EXPECT_ARG"
         local pos=0

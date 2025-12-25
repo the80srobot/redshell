@@ -15,7 +15,7 @@ function util_sudo() {
 }
 
 function reload() {
-    tput reset
+    echo -ne '\033c'
     history -a
     exec $(which bash) -l
 }

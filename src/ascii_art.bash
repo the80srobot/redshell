@@ -42,15 +42,11 @@ function print_speech_bubble() {
 
 function erase_lines() {
     local n="${1}"
-    local erase_cmd="el"
-    [[ "${2}" == "-q" ]] && erase_cmd=""
-    local cmd=""
+    local erase_seq='\033[K'
+    [[ "${2}" == "-q" ]] && erase_seq=""
     for (( i=0; i < n; i++ )); do
-        cmd+="cuu1
-${erase_cmd}
-"
+        echo -ne "\033[A${erase_seq}"
     done
-    tput -S <<< "${cmd}"
 }
 
 function cursor_position() {
@@ -98,15 +94,15 @@ function print_pedro() {
         fgc=$(($RANDOM % 256))
     done
 
-    local fc="$(tput setaf "${fgc}")"
-    local bc="$(tput setab "${bgc}")"
-    local clr="$(tput sgr0)"
+    local fc=$'\033[38;5;'"${fgc}"'m'
+    local bc=$'\033[48;5;'"${bgc}"'m'
+    local clr=$'\033[0m'
 
     if [[ ! -z "${1}" ]]; then
         IFS=$'\n' read -r -d '' -a  lines <<< "${1}"
     fi
 
-    local cols="$(tput cols)"
+    local cols="${COLUMNS:-80}"
     ((cols -= 30))
 
     printf "
@@ -161,16 +157,16 @@ function select_visual() {
 
     echo "Select visual identity"
     echo "(1)   None (DEFAULT)"
-    echo -e "(2)   $(__prompt_color bmo)BMO$(tput sgr0)"
-    echo -e "(3)   $(__prompt_color lighthouse)Lighthouse$(tput sgr0)"
-    echo -e "(4)   $(__prompt_color astronaut)Astronaut$(tput sgr0)"
-    echo -e "(5)   $(__prompt_color pacman)Pac-Man$(tput sgr0)"
-    echo -e "(6)   $(__prompt_color dachshund)Eddie the Sausage Dog$(tput sgr0)"
-    echo -e "(7)   $(__prompt_color saturn)Planet$(tput sgr0)"
-    echo -e "(8)   $(__prompt_color drwho)TARDIS$(tput sgr0)"
-    echo -e "(9)   $(__prompt_color snufkin)Snufkin$(tput sgr0)"
-    echo -e "(a)   $(__prompt_color moose)Moose$(tput sgr0)"
-    echo -e "(b)   $(__prompt_color bessy)Bessy$(tput sgr0)"
+    echo -e "(2)   $(__prompt_color bmo)BMO\033[0m"
+    echo -e "(3)   $(__prompt_color lighthouse)Lighthouse\033[0m"
+    echo -e "(4)   $(__prompt_color astronaut)Astronaut\033[0m"
+    echo -e "(5)   $(__prompt_color pacman)Pac-Man\033[0m"
+    echo -e "(6)   $(__prompt_color dachshund)Eddie the Sausage Dog\033[0m"
+    echo -e "(7)   $(__prompt_color saturn)Planet\033[0m"
+    echo -e "(8)   $(__prompt_color drwho)TARDIS\033[0m"
+    echo -e "(9)   $(__prompt_color snufkin)Snufkin\033[0m"
+    echo -e "(a)   $(__prompt_color moose)Moose\033[0m"
+    echo -e "(b)   $(__prompt_color bessy)Bessy\033[0m"
 
     read -n1 -p "Select 1-b or ENTER for default: " OPTION
 

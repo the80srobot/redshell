@@ -22,7 +22,7 @@ function __prompt() {
     local i=0
     [[ -z "${controls}" ]] || while IFS= read line; do
         local num="${control_alphabet:$i:1}"
-        echo "$(tput setaf 3)(${num}):$(tput sgr0) ${line}"
+        echo $'\033[33m'"(${num}):"$'\033[0m'" ${line}"
         i=$(( i + 1))
     done <<< "${controls}"
 
@@ -40,18 +40,18 @@ function __prompt() {
             i=$(( i + 1))
         else
             if [[ "${i}" -ge "${limit}" ]]; then
-                echo "$(tput setaf 5)(→)$(tput sgr0) Next page"
+                echo $'\033[35m'"(→)"$'\033[0m'" Next page"
                 break
             fi
             local j=$(( i % per_page ))
             local num="${alphabet:$j:1}"
-            echo "$(tput setaf 2)(${num}):$(tput sgr0) ${line}"
+            echo $'\033[32m'"(${num}):"$'\033[0m'" ${line}"
             i=$(( i + 1))
         fi
     done <<< "${input}"
 
-    [[ "${page}" -ge 1 ]] && echo "$(tput setaf 5)(←)$(tput sgr0) Previous page"
-    echo "$(tput setaf 5)(ESC)$(tput sgr0) Cancel"
+    [[ "${page}" -ge 1 ]] && echo $'\033[35m'"(←)"$'\033[0m'" Previous page"
+    echo $'\033[35m'"(ESC)"$'\033[0m'" Cancel"
 }
 
 # Usage: __multiple_choice [-L|-n|-N] INPUT [PAGE] [MSG] [ALPHABET] [CONTROLS] [CONTROL_ALPHABET] [HEADER]
