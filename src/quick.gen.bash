@@ -6513,6 +6513,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -6579,6 +6582,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -6645,6 +6651,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -6711,6 +6720,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -6777,6 +6789,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -6843,6 +6858,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -6909,6 +6927,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -6975,6 +6996,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -7045,6 +7069,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -7115,6 +7142,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -7181,6 +7211,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -7247,6 +7280,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -7313,6 +7349,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -7379,6 +7418,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -7449,6 +7491,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -7521,6 +7566,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -7596,6 +7644,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -7666,6 +7717,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -7732,6 +7786,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -7798,6 +7855,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -7864,6 +7924,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -7930,6 +7993,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -7996,6 +8062,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -8062,6 +8131,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -8128,6 +8200,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -8198,6 +8273,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -8264,6 +8342,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -8330,6 +8411,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -8396,6 +8480,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -8466,6 +8553,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -8532,6 +8622,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -8602,6 +8695,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -8671,6 +8767,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -8740,6 +8839,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -8810,6 +8912,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -8876,6 +8981,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -8942,6 +9050,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -9008,6 +9119,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -9074,6 +9188,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -9140,6 +9257,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -9206,6 +9326,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -9276,6 +9399,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -9342,6 +9468,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -9408,6 +9537,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -9474,6 +9606,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -9540,6 +9675,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -9612,6 +9750,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -9678,6 +9819,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -9748,6 +9892,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -9818,6 +9965,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -9884,6 +10034,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -9950,6 +10103,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -10016,6 +10172,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -10104,6 +10263,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -10170,6 +10332,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -10240,6 +10405,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -10306,6 +10474,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -10376,6 +10547,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -10445,6 +10619,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -10511,6 +10688,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -10577,6 +10757,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -10643,6 +10826,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -10709,6 +10895,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -10779,6 +10968,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -10845,6 +11037,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -10911,6 +11106,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -10977,6 +11175,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -11043,6 +11244,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -11109,6 +11313,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -11175,6 +11382,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -11241,6 +11451,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -11307,6 +11520,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -11373,6 +11589,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -11439,6 +11658,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -11505,6 +11727,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -11571,6 +11796,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -11637,6 +11865,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -11703,6 +11934,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -11769,6 +12003,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -11841,6 +12078,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -11907,6 +12147,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -11973,6 +12216,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -12039,6 +12285,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -12105,6 +12354,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -12174,6 +12426,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -12240,6 +12495,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -12310,6 +12568,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -12380,6 +12641,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -12446,6 +12710,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -12512,6 +12779,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -12578,6 +12848,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -12644,6 +12917,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -12710,6 +12986,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -12776,6 +13055,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -12846,6 +13128,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -12912,6 +13197,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -12978,6 +13266,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -13044,6 +13335,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -13138,6 +13432,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -13223,6 +13520,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -13289,6 +13589,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -13355,6 +13658,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -13421,6 +13727,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -13487,6 +13796,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -13553,6 +13865,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -13619,6 +13934,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -13694,6 +14012,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -13760,6 +14081,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -13826,6 +14150,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -13892,6 +14219,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -13958,6 +14288,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -14024,6 +14357,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -14093,6 +14429,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -14159,6 +14498,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -14225,6 +14567,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -14291,6 +14636,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -14357,6 +14705,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -14423,6 +14774,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -14489,6 +14843,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -14555,6 +14912,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -14621,6 +14981,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -14723,6 +15086,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -14793,6 +15159,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -14859,6 +15228,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -14925,6 +15297,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -14991,6 +15366,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -15057,6 +15435,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -15123,6 +15504,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -15189,6 +15573,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -15255,6 +15642,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -15321,6 +15711,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -15391,6 +15784,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -15457,6 +15853,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -15523,6 +15922,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -15589,6 +15991,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -15658,6 +16063,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -15724,6 +16132,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -15796,6 +16207,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -15862,6 +16276,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -15928,6 +16345,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -15994,6 +16414,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -16060,6 +16483,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -16126,6 +16552,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -16192,6 +16621,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -16258,6 +16690,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -16324,6 +16759,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -16390,6 +16828,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -16456,6 +16897,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -16522,6 +16966,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -16588,6 +17035,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -16654,6 +17104,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -16720,6 +17173,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -16786,6 +17242,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -16852,6 +17311,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -16918,6 +17380,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -16984,6 +17449,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -17050,6 +17518,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -17116,6 +17587,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -17182,6 +17656,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -17248,6 +17725,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -17314,6 +17794,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -17384,6 +17867,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -17450,6 +17936,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -17516,6 +18005,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -17585,6 +18077,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -17651,6 +18146,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -17721,6 +18219,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -17787,6 +18288,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -17853,6 +18357,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -17919,6 +18426,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -17989,6 +18499,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -18068,6 +18581,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -18140,6 +18656,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -18212,6 +18731,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -18278,6 +18800,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -18344,6 +18869,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -18434,6 +18962,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -18500,6 +19031,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -18576,6 +19110,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -18642,6 +19179,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -18712,6 +19252,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -18778,6 +19321,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -18848,6 +19394,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -18914,6 +19463,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -18980,6 +19532,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -19046,6 +19601,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -19112,6 +19670,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -19182,6 +19743,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -19248,6 +19812,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -19314,6 +19881,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -19380,6 +19950,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -19449,6 +20022,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -19515,6 +20091,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -19581,6 +20160,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -19647,6 +20229,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -19713,6 +20298,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -19783,6 +20371,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -19849,6 +20440,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -19915,6 +20509,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -19981,6 +20578,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -20047,6 +20647,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -20113,6 +20716,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -20179,6 +20785,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -20245,6 +20854,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -20315,6 +20927,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -20385,6 +21000,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -20451,6 +21069,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -20517,6 +21138,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -20583,6 +21207,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -20652,6 +21279,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -20718,6 +21348,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -20784,6 +21417,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -20850,6 +21486,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -20916,6 +21555,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -20997,6 +21639,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -21066,6 +21711,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -21136,6 +21784,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -21202,6 +21853,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -21268,6 +21922,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -21334,6 +21991,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -21400,6 +22060,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -21466,6 +22129,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -21532,6 +22198,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -21598,6 +22267,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -21664,6 +22336,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -21730,6 +22405,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -21796,6 +22474,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -21862,6 +22543,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
@@ -21928,6 +22612,9 @@ function __q_compgen() {
           ;;
         EXPECT_VALUE_HOSTNAME)
           COMPREPLY+=($(compgen -A hostname -- ${cur}))
+          if [[ -f ~/.ssh/config ]]; then
+            COMPREPLY+=($(compgen -W "$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')" -- ${cur}))
+          fi
           ;;
         EXPECT_VALUE_STRING)
           ;;
