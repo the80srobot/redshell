@@ -542,8 +542,161 @@ def gen_help(modules: Iterable[Module]) -> Generator[str, None, None]:
     yield "}"
 
 
+def gen_complete_helpers() -> Generator[str, None, None]:
+    """Generate helper functions for bash completion."""
+    # Helper to complete values based on type
+    yield "# Complete a value based on its type."
+    yield "# Usage: __q_complete_type TYPE CUR"
+    yield "function __q_complete_type() {"
+    yield '  local type="$1" cur="$2"'
+    yield '  case "${type}" in'
+    yield "  FILE)"
+    yield '    COMPREPLY+=($(compgen -A file -- "${cur}"))'
+    yield "    ;;"
+    yield "  DIRECTORY)"
+    yield '    COMPREPLY+=($(compgen -A directory -- "${cur}"))'
+    yield "    ;;"
+    yield "  USER)"
+    yield '    COMPREPLY+=($(compgen -A user -- "${cur}"))'
+    yield "    ;;"
+    yield "  GROUP)"
+    yield '    COMPREPLY+=($(compgen -A group -- "${cur}"))'
+    yield "    ;;"
+    yield "  HOSTNAME)"
+    yield '    COMPREPLY+=($(compgen -A hostname -- "${cur}"))'
+    yield '    if [[ -f ~/.ssh/config ]]; then'
+    yield "      COMPREPLY+=($(compgen -W \"$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{print $2}' | grep -v '[*?]')\" -- \"${cur}\"))"
+    yield "    fi"
+    yield "    ;;"
+    yield "  STRING|DEFAULT)"
+    yield "    ;;"
+    yield "  *)"
+    yield '    COMPREPLY+=($(compgen -A file -- "${cur}"))'
+    yield "    ;;"
+    yield "  esac"
+    yield "}"
+    yield ""
+    # Main completion helper - walks args and determines what to complete
+    yield "# Complete function arguments by walking COMP_WORDS to determine state."
+    yield "#"
+    yield "# At each position, we either suggest the name of the next --flag, or a"
+    yield "# value for a positional argument or the previous --flag. Multiple cases"
+    yield "# can be active at the same time; their suggestions are combined:"
+    yield "#"
+    yield "# 1. If CWORD=3 or the previous word was a SWITCH or a positional value,"
+    yield "#    we are in EXPECT_ARG state and should suggest flag names."
+    yield "#"
+    yield "# 2. If the previous word was a KEYWORD (flag that takes a value), we are"
+    yield "#    in EXPECT_VALUE state and should suggest values of the keyword's type."
+    yield "#"
+    yield "# 3. If there is a positional argument at the current position, we also"
+    yield "#    suggest values for that argument (combined with flag names from #1)."
+    yield "#"
+    yield "# Usage: __q_complete_func SWITCHES KEYWORDS KEYWORD_TYPES POSITIONAL_TYPES"
+    yield "#   SWITCHES: space-separated switch names (flags that take no value)"
+    yield "#   KEYWORDS: space-separated keyword names (flags that take a value)"
+    yield "#   KEYWORD_TYPES: colon-separated name:TYPE pairs for keywords"
+    yield "#   POSITIONAL_TYPES: space-separated types for positional args"
+    yield "function __q_complete_func() {"
+    yield '  local switches="$1" keywords="$2" keyword_types="$3" positional_types_str="$4"'
+    yield '  local cur="${COMP_WORDS[COMP_CWORD]}"'
+    yield "  local i=3 pos=0 state=EXPECT_ARG"
+    yield "  local -a positional_types=(${positional_types_str})"
+    yield ""
+    yield "  # Walk through previous args to determine current state"
+    yield '  while [[ "${i}" -lt "${COMP_CWORD}" ]]; do'
+    yield '    local word="${COMP_WORDS[i]}"'
+    yield '    case "${state}" in'
+    yield "    EXPECT_ARG)"
+    yield '      if [[ "${word}" == "--" ]]; then'
+    yield "        state=IDK"
+    yield '      elif [[ " ${keywords} " == *" ${word} "* ]]; then'
+    yield "        # This is a keyword arg, next word is its value"
+    yield "        local ktype"
+    yield '        for pair in ${keyword_types}; do'
+    yield '          if [[ "${pair%%:*}" == "${word}" ]]; then'
+    yield '            ktype="${pair#*:}"'
+    yield "            break"
+    yield "          fi"
+    yield "        done"
+    yield '        state="EXPECT_VALUE_${ktype:-STRING}"'
+    yield '      elif [[ " ${switches} " == *" ${word} "* ]]; then'
+    yield "        state=EXPECT_ARG"
+    yield '      elif [[ "${word}" != -* ]]; then'
+    yield "        # Positional argument consumed"
+    yield "        (( pos++ ))"
+    yield "        state=EXPECT_ARG"
+    yield "      else"
+    yield "        state=EXPECT_ARG"
+    yield "      fi"
+    yield "      ;;"
+    yield "    EXPECT_VALUE_*)"
+    yield "      # Value consumed, back to expecting args"
+    yield "      state=EXPECT_ARG"
+    yield "      ;;"
+    yield "    IDK)"
+    yield "      break"
+    yield "      ;;"
+    yield "    esac"
+    yield "    (( i++ ))"
+    yield "  done"
+    yield ""
+    yield "  COMPREPLY=()"
+    yield '  case "${state}" in'
+    yield "  EXPECT_ARG)"
+    yield "    # Suggest switches and keywords"
+    yield '    COMPREPLY+=($(compgen -W "${switches} ${keywords}" -- "${cur}"))'
+    yield "    # Also complete positional arg if available"
+    yield '    if [[ -n "${positional_types[$pos]}" ]]; then'
+    yield '      __q_complete_type "${positional_types[$pos]}" "${cur}"'
+    yield "    fi"
+    yield "    ;;"
+    yield "  EXPECT_VALUE_*)"
+    yield '    __q_complete_type "${state#EXPECT_VALUE_}" "${cur}"'
+    yield "    ;;"
+    yield "  IDK)"
+    yield '    COMPREPLY+=($(compgen -W "${switches} ${keywords}" -- "${cur}"))'
+    yield '    COMPREPLY+=($(compgen -A file -- "${cur}"))'
+    yield "    ;;"
+    yield "  esac"
+    yield "}"
+    yield ""
+
+
+def _build_func_completion_data(function: Function) -> tuple[str, str, str, str]:
+    """Build completion data strings for a function.
+
+    Returns: (switches, keywords, keyword_types, positional_types)
+    """
+    switches = []
+    keywords = []
+    keyword_types = []  # "name:TYPE" pairs
+    positional_types = []
+
+    for arg in function.args:
+        if arg.position is not None:
+            positional_types.append(arg.type.name)
+        elif arg.type == ArgumentType.SWITCH:
+            switches.append(arg.name)
+            switches.extend(arg.aliases)
+        else:
+            keywords.append(arg.name)
+            keywords.extend(arg.aliases)
+            keyword_types.append(f"{arg.name}:{arg.type.name}")
+            for alias in arg.aliases:
+                keyword_types.append(f"{alias}:{arg.type.name}")
+
+    return (
+        " ".join(switches),
+        " ".join(keywords),
+        " ".join(keyword_types),
+        " ".join(positional_types),
+    )
+
+
 def gen_bash_complete(modules: Iterable[Module]) -> Generator[str, None, None]:
-    cword_offset = 2
+    # First, emit the helper functions
+    yield from gen_complete_helpers()
 
     yield "function __q_compgen() {"
     yield f'  local modules="{" ".join(module.name for module in modules)}"'
@@ -555,7 +708,7 @@ def gen_bash_complete(modules: Iterable[Module]) -> Generator[str, None, None]:
     yield "    return 0"
     yield "  ;;"
 
-    # Second argument is function in a module. (One case for each module).
+    # Second argument is function in a module.
     yield "  2)"
     yield '    case "${COMP_WORDS[1]}" in'
     for module in modules:
@@ -571,148 +724,20 @@ def gen_bash_complete(modules: Iterable[Module]) -> Generator[str, None, None]:
     yield "    esac"
     yield "    ;;"
 
-    # Remaining arguments are function arguments. At each position, we are
-    # either recommending the name of the next --flag, or we are suggesting a
-    # value for a positional argument or the previous --flag.
-    #
-    # Multiple of the below cases can be active at the same time. Their
-    # suggestions are combined:
-    #
-    # 1. If CWORD=3 or the previous argument was a --flag of type SWITCH or a
-    # positional argument, then we should suggest argument names.
-    #
-    # 2. If the previous argument was a --flag of type other than SWITCH or a
-    # value for a repeated --flag argument of type other than SWITCH, then we
-    # are suggesting values for that argument.
-    #
-    # 3. If there is a valid positional argument at this position, then we are
-    # suggesting values for that argument. This is the most finnicky case.
+    # Remaining arguments - delegate to helper
     yield "  *)"
-    yield '    local cur="${COMP_WORDS[COMP_CWORD]}"'
-    yield '    local prev="${COMP_WORDS[COMP_CWORD-1]}"'
     yield '    case "${COMP_WORDS[1]}" in'
     for module in modules:
-        if not [
-            function
-            for function in module.functions
-            if not function.name.value.startswith("_")
-        ]:
+        public_funcs = [f for f in module.functions if not f.name.value.startswith("_")]
+        if not public_funcs:
             continue
         yield f"    {module.name})"
         yield '      case "${COMP_WORDS[2]}" in'
-        for function in module.functions:
-            if function.name.value.startswith("_"):
-                continue
-
-            # The code to handle a particular function's arguments starts here.
-            yield f"      {_local_name(function.name.value, module.name)})"
-            yield f"        # {function.usage}"
-
-            arg_names = []
-            switch_names = []
-            keyword_names = []
-            repeated_names = []
-            positional = []
-            repeated_positions = []
-            for arg in function.args:
-                if arg.position is not None:
-                    if arg.repeated:
-                        repeated_positions.append(len(positional))
-                    positional.append(arg)
-                    continue
-                arg_names.append(arg.name)
-                arg_names.extend(arg.aliases)
-                if arg.type == ArgumentType.SWITCH:
-                    switch_names.append(arg.name)
-                    switch_names.extend(arg.aliases)
-                else:
-                    keyword_names.append(arg.name)
-                    keyword_names.extend(arg.aliases)
-                if arg.repeated:
-                    repeated_names.append(arg.name)
-                    repeated_names.extend(arg.aliases)
-
-            # yield f'        local arg_names=({" ".join(arg_names)})'
-            yield f'        local switch_names=({" ".join(switch_names)})'
-            yield f'        local keyword_names=({" ".join(keyword_names)})'
-            yield f'        local repeated_names=({" ".join(repeated_names)})'
-            yield f'        local repeated_positions=({" ".join(str(p) for p in repeated_positions)})'
-            yield f'        local positional_types=({" ".join(arg.type.name for arg in positional)})'
-            yield f"        local i={cword_offset + 1}"
-            yield f'        local state="EXPECT_ARG"'
-            yield f"        local pos=0"
-            yield f'        while [[ "${{i}}" -lt "${{COMP_CWORD}}" ]]; do'
-            yield f'          case "${{state}}" in'
-            yield f"          IDK)"
-            yield f"            break"
-            yield f"            ;;"
-            yield f"          EXPECT_ARG)"
-            yield f'            case "${{COMP_WORDS[i]}}" in'
-            yield f"            --)"
-            yield f'              state="IDK"'
-            yield f"              ;;"
-            for arg in function.args:
-                if arg.position is None and arg.type != ArgumentType.SWITCH:
-                    yield f"            {arg.name})"
-                    yield f'              state="EXPECT_VALUE_{arg.type.name}"'
-                    yield f"              ;;"
-                if arg.position is None and arg.type == ArgumentType.SWITCH:
-                    yield f"            {arg.name})"
-                    yield f'              state="EXPECT_ARG"'
-                    yield f"              ;;"
-            yield f"            *)"
-            yield f'              state="EXPECT_ARG"'
-            yield f"              (( pos++ ))"
-            # TODO: Handle repeated positional arguments.
-            yield f"              ;;"
-            yield f"            esac"
-            yield f"            ;;"
-            yield f"          esac"
-            yield f"          (( i++ ))"
-            yield f"        done"
-
-            yield f"        COMPREPLY=()"
-            yield f'        if [[ "${{state}}" == "EXPECT_ARG" ]]; then'
-            # Arg can be any switch, keyword or the next positional argument.
-            yield f'          COMPREPLY+=($(compgen -W "${{keyword_names[*]}} ${{switch_names[*]}}" -- ${{cur}}))'
-            yield f'          if [[ -n "${{positional_types[$pos]}}" ]]; then'
-            yield f'            state="EXPECT_VALUE_${{positional_types[$pos]}}"'
-            yield f"          else"
-            yield f"            return 0"
-            yield f"          fi"
-            yield f"        fi"
-            yield f'        case "${{state}}" in'
-            yield f"        EXPECT_VALUE_FILE)"
-            yield f"          COMPREPLY+=($(compgen -A file -- ${{cur}}))"
-            yield f"          ;;"
-            yield f"        EXPECT_VALUE_DIRECTORY)"
-            yield f"          COMPREPLY+=($(compgen -A directory -- ${{cur}}))"
-            yield f"          ;;"
-            yield f"        EXPECT_VALUE_USER)"
-            yield f"          COMPREPLY+=($(compgen -A user -- ${{cur}}))"
-            yield f"          ;;"
-            yield f"        EXPECT_VALUE_GROUP)"
-            yield f"          COMPREPLY+=($(compgen -A group -- ${{cur}}))"
-            yield f"          ;;"
-            yield f"        EXPECT_VALUE_HOSTNAME)"
-            yield f"          COMPREPLY+=($(compgen -A hostname -- ${{cur}}))"
-            yield f"          if [[ -f ~/.ssh/config ]]; then"
-            yield f"            COMPREPLY+=($(compgen -W \"$(grep -i '^Host ' ~/.ssh/config 2>/dev/null | awk '{{print $2}}' | grep -v '[*?]')\" -- ${{cur}}))"
-            yield f"          fi"
-            yield f"          ;;"
-            yield f"        EXPECT_VALUE_STRING)"
-            yield f"          ;;"
-            yield f"        IDK)"
-            # Fuck it, just suggest everything.
-            yield f'          COMPREPLY+=($(compgen -W "${{keyword_names[*]}} ${{switch_names[*]}}" -- ${{cur}}))'
-            yield f"          COMPREPLY+=($(compgen -A file -- ${{cur}}))"
-            yield f"          ;;"
-            yield f"        *)"
-            # Who knows, suggest a file.
-            yield f"          COMPREPLY+=($(compgen -A file -- ${{cur}}))"
-            yield f"          ;;"
-            yield f"        esac"
-            yield f"        return 0"
+        for function in public_funcs:
+            local_name = _local_name(function.name.value, module.name)
+            switches, keywords, keyword_types, positional_types = _build_func_completion_data(function)
+            yield f"      {local_name})"
+            yield f'        __q_complete_func "{switches}" "{keywords}" "{keyword_types}" "{positional_types}"'
             yield f"        ;;"
         yield f"      esac"
         yield f"      ;;"
