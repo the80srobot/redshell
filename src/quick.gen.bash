@@ -229,30 +229,6 @@ function __q() {
       ;;
     esac
     ;;
-  fedora)
-    shift
-    case "$1" in
-    help|-h|--help|?)
-      shift
-      __q_help "fedora" "$@"
-      ;;
-    fedora_setup|setup)
-      shift
-      fedora_setup "$@"
-      ;;
-    dnf_install_or_skip)
-      shift
-      dnf_install_or_skip "$@"
-      ;;
-    *)
-      if [ -n "$1" ]; then
-        echo "Module fedora has no function $1"
-      fi
-      __q_help fedora
-      return 1
-      ;;
-    esac
-    ;;
   file)
     shift
     case "$1" in
@@ -1201,6 +1177,38 @@ function __q() {
       ;;
     esac
     ;;
+  redhat)
+    shift
+    case "$1" in
+    help|-h|--help|?)
+      shift
+      __q_help "redhat" "$@"
+      ;;
+    redhat_setup|setup)
+      shift
+      redhat_setup "$@"
+      ;;
+    dnf_install_or_skip)
+      shift
+      dnf_install_or_skip "$@"
+      ;;
+    redhat_install_imgcat|install_imgcat)
+      shift
+      redhat_install_imgcat "$@"
+      ;;
+    redhat_setup_mc|setup_mc)
+      shift
+      redhat_setup_mc "$@"
+      ;;
+    *)
+      if [ -n "$1" ]; then
+        echo "Module redhat has no function $1"
+      fi
+      __q_help redhat
+      return 1
+      ;;
+    esac
+    ;;
   rust)
     shift
     case "$1" in
@@ -1550,10 +1558,6 @@ function __q_help() {
     echo -ne '\033[0m'
     echo '            Debian setup and package management.'
     echo -ne '\033[1m'
-    echo -n '  fedora'
-    echo -ne '\033[0m'
-    echo '            Fedora setup and package management.'
-    echo -ne '\033[1m'
     echo -n '  file'
     echo -ne '\033[0m'
     echo '              File helpers.'
@@ -1646,6 +1650,10 @@ function __q_help() {
     echo -n '  quick'
     echo -ne '\033[0m'
     echo '             Redshell function help, switch and autocomplete.'
+    echo -ne '\033[1m'
+    echo -n '  redhat'
+    echo -ne '\033[0m'
+    echo '            Red Hat family (RHEL, Fedora, Rocky, Alma, CentOS) setup and package management.'
     echo -ne '\033[1m'
     echo -n '  rust'
     echo -ne '\033[0m'
@@ -2074,34 +2082,6 @@ function __q_help() {
       echo -ne '\033[0m'
       echo -ne '\033[36m'
       echo -ne '\033[0m'
-      ;;
-    fedora)
-      echo "Usage: q fedora FUNCTION [ARG...]"
-      echo "Fedora setup and package management."
-      echo
-      echo "Available functions:"
-      echo -ne '\033[1m'
-      echo -n '  setup'
-      echo
-      echo -ne '\033[0m'
-      echo -ne '\033[36m'
-      echo -ne '\033[0m'
-      echo -ne '\033[1m'
-      echo -n '  dnf_install_or_skip'
-      echo -n ' package1'
-      echo -ne '\033[0m'
-      echo -ne '\033[1m'
-      echo -n ' package2'
-      echo -ne '\033[0m'
-      echo -ne '\033[1m'
-      echo -n ' ...'
-      echo -ne '\033[0m'
-      echo -ne '\033[1m'
-      echo
-      echo -ne '\033[0m'
-      echo -ne '\033[36m'
-      echo -ne '\033[0m'
-      echo '    Install a package with dnf if it'"'"'s not already installed.'
       ;;
     file)
       echo "Usage: q file FUNCTION [ARG...]"
@@ -4566,6 +4546,43 @@ function __q_help() {
       echo -ne '\033[36m'
       echo -ne '\033[0m'
       ;;
+    redhat)
+      echo "Usage: q redhat FUNCTION [ARG...]"
+      echo "Red Hat family (RHEL, Fedora, Rocky, Alma, CentOS) setup and package management."
+      echo
+      echo "Available functions:"
+      echo -ne '\033[1m'
+      echo -n '  setup'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n '  dnf_install_or_skip'
+      echo -n ' PACKAGE'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n ' ...'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo '    Install a package with dnf if it'"'"'s not already installed.'
+      echo -ne '\033[1m'
+      echo -n '  install_imgcat'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n '  setup_mc'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      ;;
     rust)
       echo "Usage: q rust FUNCTION [ARG...]"
       echo "Manage rust toolchain and environment."
@@ -5265,20 +5282,6 @@ function __q_dump() {
       ;;
     setup_mc)
       type debian_setup_mc
-      ;;
-    *)
-      echo "Unknown function $2"
-      return 1
-      ;;
-    esac
-    ;;
-  fedora)
-    case "$2" in
-    setup)
-      type fedora_setup
-      ;;
-    dnf_install_or_skip)
-      type dnf_install_or_skip
       ;;
     *)
       echo "Unknown function $2"
@@ -6083,6 +6086,26 @@ function __q_dump() {
       ;;
     esac
     ;;
+  redhat)
+    case "$2" in
+    setup)
+      type redhat_setup
+      ;;
+    dnf_install_or_skip)
+      type dnf_install_or_skip
+      ;;
+    install_imgcat)
+      type redhat_install_imgcat
+      ;;
+    setup_mc)
+      type redhat_setup_mc
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
   rust)
     case "$2" in
     rustup)
@@ -6415,7 +6438,7 @@ function __q_complete_func() {
 }
 
 function __q_compgen() {
-  local modules="ascii_art bash browser caldav crypt debian fedora file find git go hg init install kagi keys mac media monitor mtg multiple_choice net news notes omdb path pkg python quick rust screen strings time transit util xterm_colors"
+  local modules="ascii_art bash browser caldav crypt debian file find git go hg init install kagi keys mac media monitor mtg multiple_choice net news notes omdb path pkg python quick redhat rust screen strings time transit util xterm_colors"
   case "${COMP_CWORD}" in
   1)
     COMPREPLY=($(compgen -W "help ${modules}" -- ${COMP_WORDS[COMP_CWORD]}))
@@ -6445,10 +6468,6 @@ function __q_compgen() {
       ;;
     debian)
       COMPREPLY=($(compgen -W "help setup install_or_skip install_imgcat setup_mc" -- ${COMP_WORDS[COMP_CWORD]}))
-      return 0
-      ;;
-    fedora)
-      COMPREPLY=($(compgen -W "help setup dnf_install_or_skip" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     file)
@@ -6537,6 +6556,10 @@ function __q_compgen() {
       ;;
     quick)
       COMPREPLY=($(compgen -W "help rebuild q" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
+    redhat)
+      COMPREPLY=($(compgen -W "help setup dnf_install_or_skip install_imgcat setup_mc" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     rust)
@@ -6679,16 +6702,6 @@ function __q_compgen() {
         ;;
       setup_mc)
         __q_complete_func "" "" "" ""
-        ;;
-      esac
-      ;;
-    fedora)
-      case "${COMP_WORDS[2]}" in
-      setup)
-        __q_complete_func "" "" "" ""
-        ;;
-      dnf_install_or_skip)
-        __q_complete_func "" "" "" "STRING STRING"
         ;;
       esac
       ;;
@@ -7219,6 +7232,22 @@ function __q_compgen() {
         __q_complete_func "--skip-extra-paths" "--src-path" "--src-path:FILE" ""
         ;;
       q)
+        __q_complete_func "" "" "" ""
+        ;;
+      esac
+      ;;
+    redhat)
+      case "${COMP_WORDS[2]}" in
+      setup)
+        __q_complete_func "" "" "" ""
+        ;;
+      dnf_install_or_skip)
+        __q_complete_func "" "" "" "STRING"
+        ;;
+      install_imgcat)
+        __q_complete_func "" "" "" ""
+        ;;
+      setup_mc)
         __q_complete_func "" "" "" ""
         ;;
       esac

@@ -1,18 +1,19 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
-# Fedora setup and package management.
+# Red Hat family (RHEL, Fedora, Rocky, Alma, CentOS) setup and package management.
 
-if [[ -z "${_REDSHELL_FEDORA}" || -n "${_REDSHELL_RELOAD}" ]]; then
-_REDSHELL_FEDORA=1
+if [[ -z "${_REDSHELL_REDHAT}" || -n "${_REDSHELL_RELOAD}" ]]; then
+_REDSHELL_REDHAT=1
 
-function fedora_setup() {
+function redhat_setup() {
     sudo dnf install epel-release -y || true
     dnf_install_or_skip \
+        python3-pip \
+        jq \
+        pass \
         git \
         rsync \
-        pass \
-        jq \
         gh \
         vim \
         ripgrep \
@@ -20,10 +21,13 @@ function fedora_setup() {
         ed \
         psmisc \
         htop
+
+    echo "Claude code..."
+    which claude || { curl -fsSL https://claude.ai/install.sh | bash ; }
 }
 
 # Install a package with dnf if it's not already installed.
-# Usage: dnf_install_or_skip package1 package2 ...
+# Usage: dnf_install_or_skip PACKAGE...
 function dnf_install_or_skip() {
     local package
     local installed
@@ -40,4 +44,18 @@ function dnf_install_or_skip() {
     done
 }
 
-fi # _REDSHELL_FEDORA
+function redhat_install_imgcat() {
+    curl -L https://iterm2.com/utilities/imgcat -o ~/bin/imgcat
+    chmod +x ~/bin/imgcat
+}
+
+function redhat_setup_mc() {
+    sudo dnf -y install mc
+    redhat_install_imgcat
+    local ini_path="${HOME}/.config/mc/mc.ext.ini"
+    mkdir -p "$(dirname "${ini_path}")"
+    touch "${ini_path}"
+    reinstall_file "${REDSHELL_ROOT}/rc/mc.ext.ini" "${ini_path}"
+}
+
+fi # _REDSHELL_REDHAT

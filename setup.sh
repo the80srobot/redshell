@@ -34,7 +34,7 @@ then
     mac_setup
 elif which dnf
 then
-    fedora_setup
+    redhat_setup
 elif which apt-get
 then
     debian_setup

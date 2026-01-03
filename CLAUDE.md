@@ -159,7 +159,7 @@ If `quick.py` fails to parse your function:
 
 - **macOS**: `mac.bash` handles macOS-specific setup, Homebrew, shell switching
 - **Debian/Ubuntu**: `debian.bash` contains apt-based setup
-- **Fedora**: `fedora.bash` contains dnf-based setup
+- **Red Hat family**: `redhat.bash` contains dnf-based setup (RHEL, Fedora, Rocky, Alma, CentOS)
 
 Platform detection uses `uname -a` pattern matching in conditionals.
 
