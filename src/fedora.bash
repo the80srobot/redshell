@@ -7,12 +7,19 @@ if [[ -z "${_REDSHELL_FEDORA}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_FEDORA=1
 
 function fedora_setup() {
+    sudo dnf install epel-release -y || true
     dnf_install_or_skip \
         git \
         rsync \
         pass \
         jq \
-        ugrep
+        gh \
+        vim \
+        ripgrep \
+        bc \
+        ed \
+        psmisc \
+        htop
 }
 
 # Install a package with dnf if it's not already installed.
