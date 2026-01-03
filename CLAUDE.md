@@ -52,8 +52,12 @@ The `quick.py` Python script parses all `.bash` files and generates `quick.gen.b
 
 **To regenerate** after editing functions:
 ```bash
-q quick rebuild                                    # Rebuild from installed location (~/.redshell/src)
 q quick rebuild --src-path ./src --skip-extra-paths  # Rebuild for check-in (from repo)
+```
+
+**WARNING**: Do NOT run `python3 src/quick.py` directly - it will produce no output. The script has no `__main__` block and must be invoked through the bash wrapper which uses `python_func`. If `q` is not available, source the bash files first:
+```bash
+bash -c 'for f in src/*.bash; do source "$f" 2>/dev/null || true; done; quick_rebuild --src-path ./src --skip-extra-paths'
 ```
 
 ### Function Documentation Format
@@ -153,7 +157,7 @@ If `quick.py` fails to parse your function:
 - Check the `Usage:` line format matches expected patterns
 - Verify function declaration uses `function name()` or `name() ` syntax
 - Ensure argument names match recognized types (FILE, PATH, DIR, etc.)
-- Run `python3 src/quick.py` directly to see parsing errors
+- Run `quick_rebuild` (see above) and check stderr for parsing errors
 
 ## Platform-Specific Code
 
@@ -177,3 +181,4 @@ Platform detection uses `uname -a` pattern matching in conditionals.
 - **No test suite** - Functions are tested manually
 - **Quick rebuild required** - After editing function signatures or usage, you must rebuild `quick.gen.bash`
 - **Both files must be committed** - Always commit both the source `.bash` file and regenerated `quick.gen.bash`
+- **Never run quick.py directly** - `python3 src/quick.py` does nothing; use the bash wrapper `quick_rebuild` instead
