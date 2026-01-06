@@ -6,6 +6,8 @@
 if [[ -z "${_REDSHELL_REDHAT}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_REDHAT=1
 
+source ai.bash
+
 function redhat_setup() {
     sudo dnf install epel-release -y || true
     dnf_install_or_skip \
@@ -24,6 +26,7 @@ function redhat_setup() {
 
     echo "Claude code..."
     which claude || { curl -fsSL https://claude.ai/install.sh | bash ; }
+    ai_install_claude_config
 }
 
 # Install a package with dnf if it's not already installed.

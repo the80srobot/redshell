@@ -6,6 +6,8 @@
 if [[ -z "${_REDSHELL_DEBIAN}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_DEBIAN=1
 
+source ai.bash
+
 function debian_setup() {
     sudo apt-get update
     debian_install_or_skip \
@@ -26,6 +28,7 @@ function debian_setup() {
     
     echo "Claude code..."
     which claude || { curl -fsSL https://claude.ai/install.sh | bash ; }
+    ai_install_claude_config
 }
 
 function debian_install_or_skip() {

@@ -17,6 +17,26 @@ function __q() {
     shift
     __q_dump "$@"
     ;;
+  ai)
+    shift
+    case "$1" in
+    help|-h|--help|?)
+      shift
+      __q_help "ai" "$@"
+      ;;
+    ai_install_claude_config|install_claude_config)
+      shift
+      ai_install_claude_config "$@"
+      ;;
+    *)
+      if [ -n "$1" ]; then
+        echo "Module ai has no function $1"
+      fi
+      __q_help ai
+      return 1
+      ;;
+    esac
+    ;;
   ascii_art)
     shift
     case "$1" in
@@ -1536,6 +1556,10 @@ function __q_help() {
     echo
     echo "Available modules:"
     echo -ne '\033[1m'
+    echo -n '  ai'
+    echo -ne '\033[0m'
+    echo '                AI tools setup and configuration.'
+    echo -ne '\033[1m'
     echo -n '  ascii_art'
     echo -ne '\033[0m'
     echo '         Assorted ascii art, screen drawing and speech bubbles.'
@@ -1690,6 +1714,23 @@ function __q_help() {
   fi
   if [ "$#" -eq 1 ]; then
     case "$1" in
+    ai)
+      echo "Usage: q ai FUNCTION [ARG...]"
+      echo "AI tools setup and configuration."
+      echo
+      echo "Available functions:"
+      echo -ne '\033[1m'
+      echo -n '  install_claude_config'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo '    Installs Claude Code configuration files from redshell.'
+      echo '    '
+      echo '    Copies skills to ~/.claude/skills and merges settings.json with any existing'
+      echo '    settings (new keys override existing ones). Only skills listed in'
+      echo '    _REDSHELL_CLAUDE_SKILLS are deleted/overwritten; other skills are preserved.'
+      ;;
     ascii_art)
       echo "Usage: q ascii_art FUNCTION [ARG...]"
       echo "Assorted ascii art, screen drawing and speech bubbles."
@@ -5168,6 +5209,17 @@ function __q_dump() {
     return 1
   fi
   case "$1" in
+  ai)
+    case "$2" in
+    install_claude_config)
+      type ai_install_claude_config
+      ;;
+    *)
+      echo "Unknown function $2"
+      return 1
+      ;;
+    esac
+    ;;
   ascii_art)
     case "$2" in
     print_speech_bubble)
@@ -6458,7 +6510,7 @@ function __q_complete_func() {
 }
 
 function __q_compgen() {
-  local modules="ascii_art bash browser caldav crypt debian file find git go hg init install kagi keys mac media monitor mtg multiple_choice net news notes omdb path pkg python quick redhat rust screen strings time transit util xterm_colors"
+  local modules="ai ascii_art bash browser caldav crypt debian file find git go hg init install kagi keys mac media monitor mtg multiple_choice net news notes omdb path pkg python quick redhat rust screen strings time transit util xterm_colors"
   case "${COMP_CWORD}" in
   1)
     COMPREPLY=($(compgen -W "help ${modules}" -- ${COMP_WORDS[COMP_CWORD]}))
@@ -6466,6 +6518,10 @@ function __q_compgen() {
   ;;
   2)
     case "${COMP_WORDS[1]}" in
+    ai)
+      COMPREPLY=($(compgen -W "help install_claude_config" -- ${COMP_WORDS[COMP_CWORD]}))
+      return 0
+      ;;
     ascii_art)
       COMPREPLY=($(compgen -W "help print_speech_bubble erase_lines cursor_position cursor_row print_bmo print_pedro scroll_output_pedro select_visual" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
@@ -6614,6 +6670,13 @@ function __q_compgen() {
     ;;
   *)
     case "${COMP_WORDS[1]}" in
+    ai)
+      case "${COMP_WORDS[2]}" in
+      install_claude_config)
+        __q_complete_func "" "" "" ""
+        ;;
+      esac
+      ;;
     ascii_art)
       case "${COMP_WORDS[2]}" in
       print_speech_bubble)

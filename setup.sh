@@ -25,24 +25,6 @@ cp -r ./util ~/.redshell/
 # TODO: This should be removed later.
 cp -r rc ./asciiart ~/.redshell/
 
->&2 echo "Installing Claude Code config..."
-mkdir -p ~/.claude
-# Copy skills directory
-if [[ -d rc/claude/skills ]]; then
-    rm -rf ~/.claude/skills
-    cp -r rc/claude/skills ~/.claude/
-fi
-# Merge settings.json (new keys override existing)
-if [[ -f rc/claude/settings.json ]]; then
-    if [[ -f ~/.claude/settings.json ]]; then
-        # Merge: existing settings as base, new settings override
-        jq -s '.[0] * .[1]' ~/.claude/settings.json rc/claude/settings.json > ~/.claude/settings.json.tmp
-        mv ~/.claude/settings.json.tmp ~/.claude/settings.json
-    else
-        cp rc/claude/settings.json ~/.claude/settings.json
-    fi
-fi
-
 # Create the persistent directory, if it doesn't exist yet.
 mkdir -p ~/.redshell_persist
 

@@ -8,6 +8,7 @@ _REDSHELL_MAC=1
 
 source multiple_choice.bash
 source util.bash
+source ai.bash
 
 function mac_setup() {
     mac_enable_ipconfig_verbose
@@ -144,6 +145,7 @@ function mac_install_devtools() {
     
     echo "Claude code..."
     which claude || { curl -fsSL https://claude.ai/install.sh | bash ; }
+    ai_install_claude_config
 }
 
 # Kills Microsoft Defender in a way that tends to persist for an hour or so.
