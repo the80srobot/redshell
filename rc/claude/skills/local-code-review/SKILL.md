@@ -13,12 +13,12 @@ allowed-tools: [
 
 # Local Code Review
 
-Provides code review for code on a **local** branch. Not intended for PR review.
+Provides code review for code on a **local** branch or a range of commits. Not intended for PR review.
 
 ## When to Use This Skill
 
 - When requested
-- After making extensive changes, adding new modules or features
+- After making extensive changes, adding new modules or features, atfer confirming with the user
 
 ## Instructions
 
