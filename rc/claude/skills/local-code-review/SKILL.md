@@ -39,7 +39,7 @@ Agent 2: Opus bug agent (parallel with agent 3)
 Scan for bugs. Focus only on the diff itself without reading extra context. Flag only significant bugs; ignore nitpicks and likely false positives. Do not flag issues that you cannot validate without looking at contet outside of the git diff.
 
 Agent 3: Opus bug agent (parallel with agent 2)
-Look for problems that exist in the introduced code. Include security issues, incorrect logic, etc. Only look for issues that are related to the changed code.
+Look for problems that exist in the introduced code. Include security issues, incorrect logic, etc. Only look for issues that are related to the changed code. Consult non-exhaustive checklists in `reference/`, but do not be limited by them.
 
 **Important: We only want high-signal issues.** This means:
 
@@ -91,9 +91,13 @@ Effective feedback is:
 
 ## Checklists
 
-Use checklists for consistency and thoroughness. They include:
+Use non-exhaustive checklists for consistency and thoroughness. They include:
 - [Security Checklist](reference/security-checklist.md)
-- 
+- [Common Bugs](reference/common-bugs-checklist.md)
+- [Comments Checklist](reference/comments-checklist.md)
+- [Performance Issues](reference/performance-checklist.md)
+
+**Important:** The checklists are not complete. They point out common issues, but are not a replacement for a thorough review.
 
 ## Utility Scripts
 
