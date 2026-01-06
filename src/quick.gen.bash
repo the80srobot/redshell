@@ -784,6 +784,10 @@ function __q() {
       shift
       net_ip4gw "$@"
       ;;
+    net_port_hog|port_hog)
+      shift
+      net_port_hog "$@"
+      ;;
     net_serve|serve)
       shift
       net_serve "$@"
@@ -3312,6 +3316,19 @@ function __q_help() {
       echo -ne '\033[0m'
       echo '    Print the default gateway'"'"'s IP address.'
       echo -ne '\033[1m'
+      echo -n '  port_hog'
+      echo -n ' PORT'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo '    Find the process using a TCP port.'
+      echo '    '
+      echo '    Useful when you get "address already in use" errors and need to find'
+      echo '    what'"'"'s hogging the port.'
+      echo -ne '\033[1m'
       echo -n '  serve'
       echo -n ' ['
       echo -ne '\033[0m'
@@ -5700,6 +5717,9 @@ function __q_dump() {
     ip4gw)
       type net_ip4gw
       ;;
+    port_hog)
+      type net_port_hog
+      ;;
     serve)
       type net_serve
       ;;
@@ -6527,7 +6547,7 @@ function __q_compgen() {
       return 0
       ;;
     net)
-      COMPREPLY=($(compgen -W "help host dl online cidr_to_netmask health ssh_fingerprint dump_cert ccurl dataurl undataurl rtt ip4 ip4gw serve dump_url wiki wifi_device wifi_name ssh_fingerprint ssh_aliases ssh_fqdn wa_link gallery" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help host dl online cidr_to_netmask health ssh_fingerprint dump_cert ccurl dataurl undataurl rtt ip4 ip4gw port_hog serve dump_url wiki wifi_device wifi_name ssh_fingerprint ssh_aliases ssh_fqdn wa_link gallery" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     news)
@@ -7001,6 +7021,9 @@ function __q_compgen() {
         ;;
       ip4gw)
         __q_complete_func "" "" "" ""
+        ;;
+      port_hog)
+        __q_complete_func "" "" "" "STRING"
         ;;
       serve)
         __q_complete_func "" "-l" "-l:STRING" "FILE"

@@ -318,6 +318,48 @@ function net_ip4gw() {
 
 alias ip4gw=net_ip4gw
 
+# Find the process using a TCP port.
+#
+# Useful when you get "address already in use" errors and need to find
+# what's hogging the port.
+#
+# Usage: net_port_hog PORT
+function net_port_hog() {
+    local port="${1}"
+    if [[ -z "${port}" ]]; then
+        >&2 echo "Usage: net_port_hog PORT"
+        return 1
+    fi
+
+    # Validate port is numeric
+    if ! [[ "${port}" =~ ^[0-9]+$ ]]; then
+        >&2 echo "Error: PORT must be a number"
+        return 1
+    fi
+
+    local result
+    if command -v lsof > /dev/null; then
+        # lsof works on both macOS and Linux
+        result=$(lsof -iTCP:"${port}" -sTCP:LISTEN -P -n 2>/dev/null)
+        if [[ -z "${result}" ]]; then
+            >&2 echo "No process is listening on TCP port ${port}"
+            return 1
+        fi
+        echo "${result}"
+    elif command -v ss > /dev/null; then
+        # ss is common on Linux
+        result=$(ss -tlnp "sport = :${port}" 2>/dev/null)
+        if [[ $(echo "${result}" | wc -l) -le 1 ]]; then
+            >&2 echo "No process is listening on TCP port ${port}"
+            return 1
+        fi
+        echo "${result}"
+    else
+        >&2 echo "Error: Neither lsof nor ss found"
+        return 1
+    fi
+}
+
 # Serves the contents of a file or stdin over HTTP once, then exits.
 #
 # Also see net_host.
