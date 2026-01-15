@@ -544,6 +544,10 @@ function __q() {
       shift
       mac_setup_config "$@"
       ;;
+    mac_switch_to_bash_if_installed|switch_to_bash_if_installed)
+      shift
+      mac_switch_to_bash_if_installed "$@"
+      ;;
     mac_install_packages|install_packages)
       shift
       mac_install_packages "$@"
@@ -2707,6 +2711,14 @@ function __q_help() {
       echo -ne '\033[36m'
       echo -ne '\033[0m'
       echo '    Install macOS config settings (no packages).'
+      echo -ne '\033[1m'
+      echo -n '  switch_to_bash_if_installed'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo '    Switch to Homebrew bash if it'"'"'s already installed.'
+      echo '    Does not install bash if missing.'
       echo -ne '\033[1m'
       echo -n '  install_packages'
       echo
@@ -5624,6 +5636,9 @@ function __q_dump() {
     setup_config)
       type mac_setup_config
       ;;
+    switch_to_bash_if_installed)
+      type mac_switch_to_bash_if_installed
+      ;;
     install_packages)
       type mac_install_packages
       ;;
@@ -6676,7 +6691,7 @@ function __q_compgen() {
       return 0
       ;;
     mac)
-      COMPREPLY=($(compgen -W "help setup setup_config install_packages brew reinstall_brew enable_ipconfig_verbose get_user_shell brew_bash_path switch_to_bash icloud icloud_evict brew_install_or_skip install_miniconda install_devtools kill_defender suppress_defender kill_crashplan hogs cpu_hogs cpulimit disable_powernap power_stats fix_ssh_locale_config pid_suspend setup_iterm2" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help setup setup_config switch_to_bash_if_installed install_packages brew reinstall_brew enable_ipconfig_verbose get_user_shell brew_bash_path switch_to_bash icloud icloud_evict brew_install_or_skip install_miniconda install_devtools kill_defender suppress_defender kill_crashplan hogs cpu_hogs cpulimit disable_powernap power_stats fix_ssh_locale_config pid_suspend setup_iterm2" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     media)
@@ -7021,6 +7036,9 @@ function __q_compgen() {
         __q_complete_func "" "" "" ""
         ;;
       setup_config)
+        __q_complete_func "" "" "" ""
+        ;;
+      switch_to_bash_if_installed)
         __q_complete_func "" "" "" ""
         ;;
       install_packages)

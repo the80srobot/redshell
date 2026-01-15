@@ -27,7 +27,29 @@ function mac_setup() {
 # Usage: mac_setup_config
 function mac_setup_config() {
     mac_enable_ipconfig_verbose
+    mac_switch_to_bash_if_installed
     ai_install_claude_config
+}
+
+# Switch to Homebrew bash if it's already installed.
+# Does not install bash if missing.
+# Usage: mac_switch_to_bash_if_installed
+function mac_switch_to_bash_if_installed() {
+    local brew_bash_path
+    brew_bash_path=$(mac_brew_bash_path)
+    if [[ -x "${brew_bash_path}" ]]; then
+        local user_shell
+        user_shell=$(mac_get_user_shell)
+        if [[ "${user_shell}" != "${brew_bash_path}" ]]; then
+            echo "Switching to Homebrew-installed bash."
+            sudo grep "${brew_bash_path}" -q /etc/shells || sudo bash -c "echo ${brew_bash_path} >> /etc/shells"
+            chsh -s "${brew_bash_path}"
+        else
+            echo "Already using Homebrew-installed bash."
+        fi
+    else
+        echo "Homebrew bash not installed. Run 'setup.sh --install-packages' to install."
+    fi
 }
 
 # Install macOS packages and development tools.
