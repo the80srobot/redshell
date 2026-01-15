@@ -8,7 +8,29 @@ _REDSHELL_REDHAT=1
 
 source ai.bash
 
+# Run the full Red Hat family setup (configs + packages).
+# Respects REDSHELL_CONFIG_ONLY environment variable.
+# Usage: redhat_setup
 function redhat_setup() {
+    redhat_setup_config
+    if [[ -z "${REDSHELL_CONFIG_ONLY}" ]]; then
+        redhat_install_packages
+    else
+        >&2 echo "Skipping package installation (config-only mode)."
+        >&2 echo "Run 'setup.sh --install-packages' to install packages later."
+    fi
+}
+
+# Install Red Hat config settings (no packages).
+# Usage: redhat_setup_config
+function redhat_setup_config() {
+    ai_install_claude_config
+}
+
+# Install Red Hat packages.
+# Can be run independently after config-only setup.
+# Usage: redhat_install_packages
+function redhat_install_packages() {
     sudo dnf install epel-release -y || true
     dnf_install_or_skip \
         python3-pip \
