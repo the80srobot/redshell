@@ -10,8 +10,30 @@ source multiple_choice.bash
 source util.bash
 source ai.bash
 
+# Run the full macOS setup (configs + packages).
+# Respects REDSHELL_CONFIG_ONLY environment variable.
+# Usage: mac_setup
 function mac_setup() {
+    mac_setup_config
+    if [[ -z "${REDSHELL_CONFIG_ONLY}" ]]; then
+        mac_install_packages
+    else
+        >&2 echo "Skipping package installation (config-only mode)."
+        >&2 echo "Run 'setup.sh --install-packages' to install packages later."
+    fi
+}
+
+# Install macOS config settings (no packages).
+# Usage: mac_setup_config
+function mac_setup_config() {
     mac_enable_ipconfig_verbose
+    ai_install_claude_config
+}
+
+# Install macOS packages and development tools.
+# Can be run independently after config-only setup.
+# Usage: mac_install_packages
+function mac_install_packages() {
     mac_switch_to_bash
     mac_install_devtools
 }
