@@ -228,6 +228,14 @@ function __q() {
       shift
       debian_setup "$@"
       ;;
+    debian_setup_config|setup_config)
+      shift
+      debian_setup_config "$@"
+      ;;
+    debian_install_packages|install_packages)
+      shift
+      debian_install_packages "$@"
+      ;;
     debian_install_or_skip|install_or_skip)
       shift
       debian_install_or_skip "$@"
@@ -531,6 +539,18 @@ function __q() {
     mac_setup|setup)
       shift
       mac_setup "$@"
+      ;;
+    mac_setup_config|setup_config)
+      shift
+      mac_setup_config "$@"
+      ;;
+    mac_switch_to_bash_if_installed|switch_to_bash_if_installed)
+      shift
+      mac_switch_to_bash_if_installed "$@"
+      ;;
+    mac_install_packages|install_packages)
+      shift
+      mac_install_packages "$@"
       ;;
     brew)
       shift
@@ -1211,6 +1231,14 @@ function __q() {
     redhat_setup|setup)
       shift
       redhat_setup "$@"
+      ;;
+    redhat_setup_config|setup_config)
+      shift
+      redhat_setup_config "$@"
+      ;;
+    redhat_install_packages|install_packages)
+      shift
+      redhat_install_packages "$@"
       ;;
     dnf_install_or_skip)
       shift
@@ -2109,6 +2137,23 @@ function __q_help() {
       echo -ne '\033[0m'
       echo -ne '\033[36m'
       echo -ne '\033[0m'
+      echo '    Run the full Debian setup (configs + packages).'
+      echo '    Respects REDSHELL_CONFIG_ONLY environment variable.'
+      echo -ne '\033[1m'
+      echo -n '  setup_config'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo '    Install Debian config settings (no packages).'
+      echo -ne '\033[1m'
+      echo -n '  install_packages'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo '    Install Debian packages.'
+      echo '    Can be run independently after config-only setup.'
       echo -ne '\033[1m'
       echo -n '  install_or_skip'
       echo
@@ -2657,6 +2702,31 @@ function __q_help() {
       echo -ne '\033[0m'
       echo -ne '\033[36m'
       echo -ne '\033[0m'
+      echo '    Run the full macOS setup (configs + packages).'
+      echo '    Respects REDSHELL_CONFIG_ONLY environment variable.'
+      echo -ne '\033[1m'
+      echo -n '  setup_config'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo '    Install macOS config settings (no packages).'
+      echo -ne '\033[1m'
+      echo -n '  switch_to_bash_if_installed'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo '    Switch to Homebrew bash if it'"'"'s already installed.'
+      echo '    Does not install bash if missing.'
+      echo -ne '\033[1m'
+      echo -n '  install_packages'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo '    Install macOS packages and development tools.'
+      echo '    Can be run independently after config-only setup.'
       echo -ne '\033[1m'
       echo -n '  brew'
       echo
@@ -4615,6 +4685,23 @@ function __q_help() {
       echo -ne '\033[0m'
       echo -ne '\033[36m'
       echo -ne '\033[0m'
+      echo '    Run the full Red Hat family setup (configs + packages).'
+      echo '    Respects REDSHELL_CONFIG_ONLY environment variable.'
+      echo -ne '\033[1m'
+      echo -n '  setup_config'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo '    Install Red Hat config settings (no packages).'
+      echo -ne '\033[1m'
+      echo -n '  install_packages'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo '    Install Red Hat packages.'
+      echo '    Can be run independently after config-only setup.'
       echo -ne '\033[1m'
       echo -n '  dnf_install_or_skip'
       echo -n ' PACKAGE'
@@ -5343,6 +5430,12 @@ function __q_dump() {
     setup)
       type debian_setup
       ;;
+    setup_config)
+      type debian_setup_config
+      ;;
+    install_packages)
+      type debian_install_packages
+      ;;
     install_or_skip)
       type debian_install_or_skip
       ;;
@@ -5539,6 +5632,15 @@ function __q_dump() {
     case "$2" in
     setup)
       type mac_setup
+      ;;
+    setup_config)
+      type mac_setup_config
+      ;;
+    switch_to_bash_if_installed)
+      type mac_switch_to_bash_if_installed
+      ;;
+    install_packages)
+      type mac_install_packages
       ;;
     brew)
       type brew
@@ -6163,6 +6265,12 @@ function __q_dump() {
     setup)
       type redhat_setup
       ;;
+    setup_config)
+      type redhat_setup_config
+      ;;
+    install_packages)
+      type redhat_install_packages
+      ;;
     dnf_install_or_skip)
       type dnf_install_or_skip
       ;;
@@ -6543,7 +6651,7 @@ function __q_compgen() {
       return 0
       ;;
     debian)
-      COMPREPLY=($(compgen -W "help setup install_or_skip install_imgcat setup_mc" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help setup setup_config install_packages install_or_skip install_imgcat setup_mc" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     file)
@@ -6583,7 +6691,7 @@ function __q_compgen() {
       return 0
       ;;
     mac)
-      COMPREPLY=($(compgen -W "help setup brew reinstall_brew enable_ipconfig_verbose get_user_shell brew_bash_path switch_to_bash icloud icloud_evict brew_install_or_skip install_miniconda install_devtools kill_defender suppress_defender kill_crashplan hogs cpu_hogs cpulimit disable_powernap power_stats fix_ssh_locale_config pid_suspend setup_iterm2" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help setup setup_config switch_to_bash_if_installed install_packages brew reinstall_brew enable_ipconfig_verbose get_user_shell brew_bash_path switch_to_bash icloud icloud_evict brew_install_or_skip install_miniconda install_devtools kill_defender suppress_defender kill_crashplan hogs cpu_hogs cpulimit disable_powernap power_stats fix_ssh_locale_config pid_suspend setup_iterm2" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     media)
@@ -6635,7 +6743,7 @@ function __q_compgen() {
       return 0
       ;;
     redhat)
-      COMPREPLY=($(compgen -W "help setup dnf_install_or_skip install_imgcat setup_mc" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help setup setup_config install_packages dnf_install_or_skip install_imgcat setup_mc" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     rust)
@@ -6775,6 +6883,12 @@ function __q_compgen() {
     debian)
       case "${COMP_WORDS[2]}" in
       setup)
+        __q_complete_func "" "" "" ""
+        ;;
+      setup_config)
+        __q_complete_func "" "" "" ""
+        ;;
+      install_packages)
         __q_complete_func "" "" "" ""
         ;;
       install_or_skip)
@@ -6919,6 +7033,15 @@ function __q_compgen() {
     mac)
       case "${COMP_WORDS[2]}" in
       setup)
+        __q_complete_func "" "" "" ""
+        ;;
+      setup_config)
+        __q_complete_func "" "" "" ""
+        ;;
+      switch_to_bash_if_installed)
+        __q_complete_func "" "" "" ""
+        ;;
+      install_packages)
         __q_complete_func "" "" "" ""
         ;;
       brew)
@@ -7325,6 +7448,12 @@ function __q_compgen() {
     redhat)
       case "${COMP_WORDS[2]}" in
       setup)
+        __q_complete_func "" "" "" ""
+        ;;
+      setup_config)
+        __q_complete_func "" "" "" ""
+        ;;
+      install_packages)
         __q_complete_func "" "" "" ""
         ;;
       dnf_install_or_skip)
