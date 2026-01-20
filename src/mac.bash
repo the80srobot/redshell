@@ -3,6 +3,8 @@
 
 # Mac setup, package management and various helpers.
 
+source "compat.sh"
+
 if [[ -z "${_REDSHELL_MAC}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_MAC=1
 
@@ -12,6 +14,13 @@ source ai.bash
 
 function mac_setup() {
     mac_enable_ipconfig_verbose
+}
+
+# Usage: mac_install_extras
+#
+# Install the full development environment on macOS. This includes switching to
+# Homebrew bash, installing Xcode, VS Code, and various dev packages.
+function mac_install_extras() {
     mac_switch_to_bash
     mac_install_devtools
 }
@@ -157,7 +166,7 @@ function mac_install_devtools() {
 #
 # Usage: mac_kill_defender
 function mac_kill_defender() {
-    launchctl unload /Library/LaunchAgents/com.microsoft.wdav.tray.plist 
+    launchctl unload /Library/LaunchAgents/com.microsoft.wdav.tray.plist
     sudo launchctl unload /Library/LaunchDaemons/com.microsoft.fresno.plist
     sudo launchctl unload /Library/LaunchDaemons/com.tanium.taniumclient.plist
 }
@@ -287,6 +296,7 @@ function mac_cpu_hogs() {
 #
 # Usage: mac_cpulimit LIMIT PID [PID ...]
 function mac_cpulimit() {
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
     which pidof > /dev/null || {
         echo "pidof not found. Install with brew install pidof." >&2
         return 1

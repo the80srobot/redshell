@@ -1,0 +1,182 @@
+[[ -z "${TERM}" ]] && export TERM=xterm
+
+alias l='ls -lh'
+alias la='ls -lha'
+
+REAL_HOME="${HOME}"
+export REDSHELL_ROOT="${REAL_HOME}/.redshell"
+export EDITOR="$(which vim)"
+
+if [[ "$(uname -a)" == *debian* ]]; then
+    PATH=/usr/sbin:/sbin:$PATH
+fi
+
+export HISTFILE=~/.zsh_history
+export HISTSIZE=100000
+export SAVEHIST=100000
+setopt APPEND_HISTORY
+setopt INC_APPEND_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_EXPIRE_DUPS_FIRST
+
+VISUAL="$(cat "${REAL_HOME}/.redshell_visual" 2>/dev/null | tr -d '\n')"
+
+# Source compat layer first
+source "${REAL_HOME}/.redshell/src/compat.sh"
+
+# Source all core modules
+pushd "${REAL_HOME}/.redshell/src" > /dev/null
+for f in ./*.bash; do
+    # Skip bash-only modules in zsh
+    case "$(basename "$f")" in
+        monitor.bash|notes.bash|ascii_art.bash|mtg.bash|caldav.bash|\
+        media.bash|news.bash|omdb.bash|transit.bash|browser.bash|\
+        kagi.bash|hg.bash|screen.bash|go.bash|rust.bash|\
+        multiple_choice.bash|xterm_colors.bash)
+            continue
+            ;;
+    esac
+    source "$f"
+done
+popd > /dev/null
+
+__prompt_color() {
+    case "$1" in
+        bmo)
+            echo -ne '\033[38;5;36m'
+        ;;
+        lighthouse)
+            echo -ne '\033[38;5;196m'
+        ;;
+        astronaut)
+            echo -ne '\033[38;5;205m'
+        ;;
+        pacman)
+            echo -ne '\033[38;5;226m\033[48;5;16m'
+        ;;
+        dachshund)
+            echo -ne '\033[38;5;215m'
+        ;;
+        saturn)
+            echo -ne '\033[38;5;76m'
+        ;;
+        drwho)
+            echo -ne '\033[38;5;32m'
+        ;;
+        snufkin)
+            echo -ne '\033[38;5;106m'
+        ;;
+        moose)
+            echo -ne '\033[38;5;94m'
+        ;;
+        bessy)
+            echo -ne '\033[48;5;160m\033[38;5;15m'
+        ;;
+    esac
+}
+
+__git_info() {
+    git rev-parse --is-inside-work-tree 2> /dev/null > /dev/null
+    ret=$?
+    if [[ $ret -eq 0 ]]; then
+        c=$(git status -s | wc -l | tr -d ' ')
+        b=$(git branch --show-current | tr -d '* \n')
+        h=$(git rev-parse --short HEAD)
+        echo -n "(git ${b}:${h}"
+        if [[ "$c" -ne "0" ]]; then
+            echo -n "+${c}"
+        fi
+        echo -n ") "
+        return
+    fi
+}
+
+__error_info() {
+    ret=$?
+    case "$ret" in
+        "0")
+        ;;
+        "126")
+            echo -n "(EPERM [${ret}]) "
+        ;;
+        "127")
+            echo -n "(ENOENT [${ret}]) "
+        ;;
+        "130")
+            echo -n "(EINT [${ret}]) "
+        ;;
+        *)
+            echo -n "(E [${ret}]) "
+        ;;
+    esac
+}
+
+__addr() {
+    ips="$(net_ip4)" || return 1
+    n=$(echo "$ips" | wc -l | tr -d ' ')
+    if [[ $n -eq 1 ]]; then
+        echo "${ips}"
+    else
+        first=$(echo "$ips" | head -n1)
+        k=$(( n - 1 ))
+        echo "${first} + $k"
+    fi
+}
+
+__addr_info() {
+    a=$(__addr) || return 1
+    echo "(${a}) "
+}
+
+__time_info() {
+    t=$(date +%T) || return 1
+    echo "(${t}) "
+}
+
+# Zsh prompt using precmd hook
+precmd() {
+    local error_info="$(__error_info)"
+    local time_info="$(__time_info)"
+    local git_info="$(__git_info)"
+    local addr_info="$(__addr_info)"
+    local pcolor="$(__prompt_color $VISUAL)"
+    local reset=$'\033[0m'
+    local bold=$'\033[1m'
+    local red=$'\033[38;5;196m'
+    local green=$'\033[32m'
+    local blue=$'\033[38;5;26m'
+    local cyan=$'\033[38;5;33m'
+    local orange=$'\033[38;5;214m'
+
+    PS1="┌─|${reset}%n@${bold}${pcolor}%m${reset} %~ "
+    PS1+="${red}${error_info}"
+    PS1+="${green}${time_info}"
+    PS1+="${blue}${git_info}"
+    PS1+="${orange}${addr_info}"
+    PS1+="${reset}"$'\n'"└─> "
+}
+
+vid() {
+    [[ -z "$VISUAL" ]] || "${REAL_HOME}/.redshell/asciiart/${VISUAL}.sh"
+}
+
+status() {
+    vid
+    echo "Local time: $(date)"
+    echo "This node: $(hostname) ($(uname -srm))"
+    uptime
+
+    local wifi
+    wifi=$(net_wifi_name 2> /dev/null)
+    [[ -z "${wifi}" ]] || echo "Connected to ${wifi}"
+    return 0
+}
+
+export PATH=$HOME/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
+
+if [[ ! -o interactive ]]; then
+    export REDSHELL_SILENT=1
+fi
+
+[[ -z "${REDSHELL_SILENT}" ]] && status || true

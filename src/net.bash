@@ -3,6 +3,8 @@
 
 # Network and wifi helpers, netcat wrappers, etc.
 
+source "compat.sh"
+
 if [[ -z "${_REDSHELL_NET}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_NET=1
 
@@ -214,6 +216,7 @@ function net_dump_cert() {
 #   -M, --max-age SECONDS  Maximum age of the cache in seconds. Default is 3600.
 #   -K, --key KEY          Use the given key instead of the request parameters.
 function net_ccurl() {
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
     local max_age=3600
     local key
     local curl_args=()
@@ -375,13 +378,13 @@ function net_serve() {
     fi
 
     # No path? No problem! Read stdin.
-    local path="${1}"
+    local _path="${1}"
     local cleanup=""
-    if [[ -z "${path}" ]]; then
-        path=$(mktemp)
+    if [[ -z "${_path}" ]]; then
+        _path=$(mktemp)
         cleanup="cleanup"
-        cat > "${path}"
-        >&2 echo "Staged stdin contents in ${path}"
+        cat > "${_path}"
+        >&2 echo "Staged stdin contents in ${_path}"
     fi
 
     >&2 echo "NOW: Serving on 0.0.0.0:${port}"
@@ -390,9 +393,9 @@ function net_serve() {
     local data
     local resp
 
-    mime=$(file -b --mime-type "${path}") || return 1
+    mime=$(file -b --mime-type "${_path}") || return 1
     >&2 echo "Mime-Type is: ${mime}"
-    data=$(cat "${path}") || return 2
+    data=$(cat "${_path}") || return 2
     resp=$"HTTP/1.1 200 OK
 Content-Type: ${mime}
 Server: netcat
@@ -400,7 +403,7 @@ Server: netcat
 ${data}"
     echo "${resp}" | nc -l "${port}"
 
-    [[ -z "${cleanup}" ]] || rm -f "${path}"
+    [[ -z "${cleanup}" ]] || rm -f "${_path}"
 }
 
 
@@ -564,6 +567,7 @@ tqdm"
 #   net_gallery --scan-only .       # Generate gallery data only
 #   net_gallery --copy-to ~/Clean ~/Messy  # Copy deduped photos to new dir
 function net_gallery() {
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
     local dir="."
     local port=8080
     local dedupe=""

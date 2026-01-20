@@ -3,6 +3,7 @@
 
 # Install a file into another file, optionally with a keyword.
 
+source "compat.sh"
 source "file.bash"
 
 if [[ -z "${_REDSHELL_INSTALL}" || -n "${_REDSHELL_RELOAD}" ]]; then
@@ -27,6 +28,7 @@ _REDSHELL_INSTALL=1
 # On Linux, this attempts to flock DFILE. If the file is already locked, the
 # function will immediately return 254.
 function install_file() {
+
     local sfile
     local dfile
     local char
@@ -158,10 +160,12 @@ function install_file() {
 # Subsequent calls to reinstall_file remove the old contents before intalling
 # the new contents.
 function reinstall_file() {
+
     install_file --sfile "${1}" --dfile "${2}" --char "${3}" --section "${4}"
 }
 
 function __install_file() {
+
     mkdir -p `dirname "$2"`
 
     if [[ -z "$3" ]]; then
@@ -183,6 +187,7 @@ function __install_file() {
 }
 
 function __uninstall_file() {
+
     if [[ -z "$2" ]]; then
         q="###"
     else

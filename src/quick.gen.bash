@@ -7518,6 +7518,6 @@ function __q_compgen() {
   esac
 }
 
-complete -F __q_compgen q
+[[ -z "${_REDSHELL_ZSH}" ]] && complete -F __q_compgen q
 
 fi

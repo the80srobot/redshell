@@ -12,6 +12,8 @@
 # - .var keys: Small secrets used as ENV variables or arguments. They are not
 #   cached as files during use.
 
+source "compat.sh"
+
 if [[ -z "${_REDSHELL_KEYS}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_KEYS=1
 
@@ -19,6 +21,7 @@ _REDSHELL_KEYS=1
 #
 # Usage: keys_git [ARGS ...]
 function keys_git() {
+
     GIT_SSH_COMMAND="ssh -i ~/.redshell_pass_git.key" pass git "${@}"
 }
 
@@ -32,6 +35,7 @@ function keys_git() {
 # Caution: the file will persist until keys_flush is called, so be sure to
 # manage its lifecycle appropriately.
 function keys_path() {
+
     local force
     if [[ "$1" == "-f" ]]; then
         force=1
@@ -43,23 +47,23 @@ function keys_path() {
         home="${HOME}"
     fi
 
-    local path="${home}/.redshell_keys/${1}.key"
+    local _path="${home}/.redshell_keys/${1}.key"
     if [[ -n "${force}" ]]; then
-        rm -f "${path}"
-    elif [[ -f "${path}" && ! -s "${path}" ]]; then
-        rm -f "${path}"
+        rm -f "${_path}"
+    elif [[ -f "${_path}" && ! -s "${_path}" ]]; then
+        rm -f "${_path}"
     fi
-    if [[ -f "${path}" ]]; then
-        echo "${path}"
+    if [[ -f "${_path}" ]]; then
+        echo "${_path}"
         return 0
     fi
 
     mkdir -p "${home}/.redshell_keys"
     chmod 700 "${home}/.redshell_keys"
     mkdir -p "${home}/.redshell_keys/$(dirname "${1}")"
-    pass "Redshell/${1}.key" > "${path}"
-    chmod 600 "${path}"
-    echo "${path}"
+    pass "Redshell/${1}.key" > "${_path}"
+    chmod 600 "${_path}"
+    echo "${_path}"
 }
 
 # Usage: keys_var KEY [VALUE|--delete]
@@ -67,6 +71,7 @@ function keys_path() {
 # Returns the conents of a given .var key in pass. If VALUE is provided, instead
 # the value is stored in the key. If --delete is provided, the key is removed.
 function keys_var() {
+
     if [[ -n "${2}" ]]; then
         if [[ "${2}" == "--delete" ]]; then
             pass rm "Redshell/${1}.var"
@@ -84,6 +89,7 @@ function keys_var() {
 # instead the value is stored in the key. If --delete is provided, the key is
 # removed.
 function keys_key() {
+
     if [[ -n "${2}" ]]; then
         if [[ "${2}" == "--delete" ]]; then
             pass rm "Redshell/${1}.key"
@@ -99,6 +105,7 @@ function keys_key() {
 #
 # Removes all cached key files.
 function keys_flush() {
+
     local home="${REAL_HOME}"
     if [[ -z "${home}" ]]; then
         home="${HOME}"
@@ -112,6 +119,7 @@ function keys_flush() {
 # Pulls the latest changes from the keys git repository and pushes any local
 # changes.
 function keys_sync() {
+
     keys_git pull --rebase
     keys_git push
 }

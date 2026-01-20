@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
-# String helpers for bash.
+# String helpers for bash and zsh.
 
+source "compat.sh"
 source "go.bash"
 
 if [[ -z "${_REDSHELL_STRINGS}" || -n "${_REDSHELL_RELOAD}" ]]; then
@@ -12,6 +13,7 @@ _REDSHELL_STRINGS=1
 #
 # URL-encodes a string. DO NOT USE with curl: prefer --data-urlencode.
 function strings_urlencode() {
+
     jq -rn --arg x "${1}" '$x|@uri'
 }
 
@@ -19,6 +21,7 @@ function strings_urlencode() {
 #
 # Strips terminal escape sequences from standard input.
 function strings_strip_control() {
+
     # The sed call strips escape characters from the string. The
     # additional perl one-liner deletes the literal ^(B which `tput
     # sgr0` outputs on some systems for unknown reasons. (It's not in
@@ -31,6 +34,7 @@ function strings_strip_control() {
 #
 # Prints STRING N times.
 function strings_repeat() {
+
     local c="${1}"
     local n="${2}"
     for (( i=0; i < n; i++ )); do
@@ -39,8 +43,9 @@ function strings_repeat() {
 }
 
 # Usage: strings_join DELIMITER [STRING ...]
-function strings_join {
-   local d=${1-} f=${2-}
+function strings_join() {
+
+    local d=${1-} f=${2-}
     if shift 2; then
       printf %s "$f" "${@/#/$d}"
     fi
@@ -48,6 +53,7 @@ function strings_join {
 
 # Usage: strings_sgrep [-C NUM]
 function strings_sgrep() {
+
     go_pkg_do https://github.com/arunsupe/semantic-grep go run w2vgrep.go -- "${@}"
 }
 
@@ -57,6 +63,7 @@ alias sgrep=strings_sgrep
 #
 # Strips the prefix from the string if it's there.
 function strings_strip_prefix() {
+
     local prefix="${1}"
     local string="${2}"
 
@@ -72,6 +79,7 @@ function strings_strip_prefix() {
 #
 # Strips leading and trailing whitespace from a string.
 function strings_trim() {
+
     local var="$*"
     [[ -z "${var}" ]] && var="$(cat)"
     # remove leading whitespace characters
@@ -86,6 +94,7 @@ function strings_trim() {
 # Elides TEXT to LIMIT characters, inserting "(...)" in the middle if needed.
 # If COLOR is provided, it will be used to color the ellipsis.
 function strings_elide() {
+
     local text="${1}"
     local lim="${2}"
     local color="${3}"
@@ -107,6 +116,7 @@ function strings_elide() {
 #
 # Strips the prefix from the string if it's there.
 function strings_strip_prefix() {
+
     local prefix="${1}"
     local string="${2}"
 

@@ -3,6 +3,8 @@
 
 # Python env management, python-shell FFI and Jupyter.
 
+source "compat.sh"
+
 if [[ -z "${_REDSHELL_PYTHON}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_PYTHON=1
 
@@ -175,7 +177,8 @@ alias ipynb=python_ipynb
 # Find all available Python binaries in the PATH and their versions.
 # Prints a tab-separated list: VERSION  PATH  SHORT_VERSION
 function python_detect() {
-    IFS=: read -r -d '' -a path_array <<< "${PATH}"
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
+    IFS=: read -r -d '' ${_REDSHELL_READ_ARRAY_FLAG} path_array <<< "${PATH}"
     for p in "${path_array[@]}"; do
         [[ -d "${p}" ]] || continue
         find "${p}" -maxdepth 1 -name 'python*'
@@ -198,9 +201,9 @@ function python_detect() {
 function python_latest() {
     # TODO: this is a hack to work around environments with special blessed
     # python versions, but actually it should be made user-selectable.
-    local path=~/.redshell_persist/python_path
-    if [[ -f "${path}" ]]; then
-        cat "${path}"
+    local _path=~/.redshell_persist/python_path
+    if [[ -f "${_path}" ]]; then
+        cat "${_path}"
     else
         python_detect | head -n1 | cut -f2
     fi
@@ -229,7 +232,7 @@ function python_latest() {
 function python_func() {
     local function
     local json_out="False"
-    local path="${HOME}/.redshell/functions.py"
+    local _path="${HOME}/.redshell/functions.py"
     local args="["
     local kwargs="{"
     local clean=""
@@ -244,7 +247,7 @@ function python_func() {
                 shift
                 ;;
             -p|--path)
-                path="$2"
+                _path="$2"
                 shift
                 ;;
             -J|--json-output)
@@ -293,12 +296,12 @@ function python_func() {
         return 1
     fi
 
-    if [[ -z "${path}" ]]; then
+    if [[ -z "${_path}" ]]; then
         >&2 echo "No path specified"
         return 2
     fi
 
-    pushd "$(dirname "${path}")" > /dev/null
+    pushd "$(dirname "${_path}")" > /dev/null
 
     if [[ -n "${use_venv}" ]]; then
         if [[ -n "${quiet}" ]]; then
@@ -309,7 +312,7 @@ function python_func() {
     fi
 
     trap "trap - INT" INT
-    script="from $(basename "${path}" .py) import *
+    script="from $(basename "${_path}" .py) import *
 import typing
 import shlex
 import datetime
@@ -403,7 +406,7 @@ except Exception as e:
     
     if [[ "${ret}" -ne 0 || -n "${debug}" ]]; then
         >&2 echo "Python function exited with code ${ret}"
-        >&2 echo "(function: ${function} path: ${path})"
+        >&2 echo "(function: ${function} path: ${_path})"
         >&2 echo "Script dump:"
 
         local i=1

@@ -3,12 +3,24 @@
 
 # Debian setup and package management.
 
+source "compat.sh"
+
 if [[ -z "${_REDSHELL_DEBIAN}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_DEBIAN=1
 
 source ai.bash
 
 function debian_setup() {
+
+    >&2 echo "Debian core setup complete (no packages installed)."
+    >&2 echo "Run 'q debian install_extras' to install dev packages."
+}
+
+# Usage: debian_install_extras
+#
+# Install the full development environment on Debian/Ubuntu.
+function debian_install_extras() {
+
     sudo apt-get update
     debian_install_or_skip \
         python3-venv \
@@ -25,13 +37,14 @@ function debian_setup() {
         ed \
         psmisc \
         htop
-    
+
     echo "Claude code..."
     which claude || { curl -fsSL https://claude.ai/install.sh | bash ; }
     ai_install_claude_config
 }
 
 function debian_install_or_skip() {
+
     local package
     local installed
     installed="$(dpkg-query -W -f='${Status}\t${Package}\n' | grep -v deinstall)"
@@ -46,11 +59,13 @@ function debian_install_or_skip() {
 }
 
 function debian_install_imgcat() {
+
     curl -L https://iterm2.com/utilities/imgcat -o ~/bin/imgcat
     chmod +x ~/bin/imgcat
 }
 
 function debian_setup_mc() {
+
     sudo apt-get -y install mc
     debian_install_imgcat
     local ini_path="${HOME}/.config/mc/mc.ext.ini"

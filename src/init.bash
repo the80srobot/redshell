@@ -3,6 +3,8 @@
 
 # Initialization routines.
 
+source "compat.sh"
+
 if [[ -z "${_REDSHELL_INIT}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_INIT=1
 
@@ -16,6 +18,7 @@ export EDITOR
 if [[ `uname -a` == *Darwin* ]]
 then
     function e() {
+    
         if which open && [[ -d /Applications/Visual\ Studio\ Code.app/ ]]; then
             open -a "visual studio code" "${@}"
         else
@@ -26,6 +29,7 @@ then
     alias o='open .'
 
     function wget() {
+    
         if which wget; then
             "$(which wget)" "${@}"
         else
@@ -33,11 +37,13 @@ then
         fi
     }
     function nproc() {
+    
         sysctl -n hw.logicalcpu
     }
     PATH=/opt/local/bin:$HOME/go/bin:$PATH
 else
     function e() {
+    
         "${EDITOR}" "${@}"
     }
 fi
