@@ -29,10 +29,10 @@ pushd "${REAL_HOME}/.redshell/src" > /dev/null
 for f in ./*.bash; do
     # Skip bash-only modules in zsh
     case "$(basename "$f")" in
-        monitor.bash|notes.bash|ascii_art.bash|mtg.bash|caldav.bash|\
+        monitor.bash|notes.bash|mtg.bash|caldav.bash|\
         media.bash|news.bash|omdb.bash|transit.bash|browser.bash|\
         kagi.bash|hg.bash|screen.bash|go.bash|rust.bash|\
-        multiple_choice.bash|xterm_colors.bash)
+        multiple_choice.bash)
             continue
             ;;
     esac

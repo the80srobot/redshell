@@ -3,6 +3,7 @@
 
 # Assorted ascii art, screen drawing and speech bubbles.
 
+source "compat.sh"
 source "strings.bash"
 source "xterm_colors.bash"
 
@@ -51,7 +52,8 @@ function erase_lines() {
 
 function cursor_position() {
     local pos
-    read -sdR -p $'\E[6n' pos
+    printf '\E[6n'
+    read -s -d R pos
     pos=${pos#*[} # Strip decoration characters <ESC>[
     echo "${pos}" # Return position in "row;col" format
 }
@@ -59,7 +61,8 @@ function cursor_position() {
 function cursor_row() {
     local row
     local col
-    IFS=';' read -sdR -p $'\E[6n' row col
+    printf '\E[6n'
+    IFS=';' read -s -d R row col
     echo "${row#*[}"
 }
 
@@ -87,6 +90,7 @@ function print_bmo() {
 }
 
 function print_pedro() {
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
     local bgc=$(($RANDOM % 256))
     local fgc=$(($RANDOM % 256))
     while [[ $(contrast $(xterm_to_rgb $bgc) $(xterm_to_rgb $fgc)) -lt 70 ]]; do
@@ -99,7 +103,7 @@ function print_pedro() {
     local clr=$'\033[0m'
 
     if [[ ! -z "${1}" ]]; then
-        IFS=$'\n' read -r -d '' -a  lines <<< "${1}"
+        IFS=$'\n' read -r -d '' ${_REDSHELL_READ_ARRAY_FLAG} lines <<< "${1}"
     fi
 
     local cols="${COLUMNS:-80}"
@@ -133,11 +137,11 @@ function print_pedro() {
 }
 
 function scroll_output_pedro() {
-    local path="${1}"
+    local _path="${1}"
     print_pedro
     while IFS= read -r line; do
         erase_lines 13 -q
-        print_pedro "$(tail -n 12 "${path}")"
+        print_pedro "$(tail -n 12 "${_path}")"
     done
     echo
 }
@@ -168,7 +172,12 @@ function select_visual() {
     echo -e "(a)   $(__prompt_color moose)Moose\033[0m"
     echo -e "(b)   $(__prompt_color bessy)Bessy\033[0m"
 
-    read -n1 -p "Select 1-b or ENTER for default: " OPTION
+    echo -n "Select 1-b or ENTER for default: "
+    if [[ -n "${_REDSHELL_ZSH}" ]]; then
+        read -k1 OPTION
+    else
+        read -n1 OPTION
+    fi
 
     case "$OPTION" in
         1) echo "" > "$VISUAL_CONFIG_PATH" ;;
@@ -188,7 +197,11 @@ function select_visual() {
     echo
     echo "Done"
 
-    source ~/.bash_profile
+    if [[ -n "${_REDSHELL_ZSH}" ]]; then
+        source ~/.zprofile
+    else
+        source ~/.bash_profile
+    fi
 }
 
 fi # _REDSHELL_ASCII_ART
