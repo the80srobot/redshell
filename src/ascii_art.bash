@@ -15,9 +15,9 @@ _AA_RESET=$'\033[0m'
 # Picks a random element from positional args.
 # Example: result=$(_aa_random_element "a" "b" ...)
 function _aa_random_element() {
-    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
     local idx=$(( RANDOM % $# ))
-    echo "${@:idx+1:1}"
+    shift $idx
+    echo "$1"
 }
 
 function print_speech_bubble() {
