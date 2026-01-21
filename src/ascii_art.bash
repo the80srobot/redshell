@@ -152,14 +152,28 @@ function ascii_art_bmo() {
     local green=$'\033[38;5;34m'
     local red=$'\033[38;5;160m'
 
-    local quote
-    quote=$(_aa_random_element \
-        "YOU DRIVE A HARD BURGER!" \
-        "USE THE COMBO MOVE!" \
-        "RED-HOT LIKE PIZZA SUPPER" \
-        "CHECK PLEASE!")
+    local quotes=(
+        "YOU DRIVE A HARD\nBURGER!"
+        "USE THE COMBO MOVE!"
+        "RED-HOT\nLIKE PIZZA SUPPER"
+        "CHECK PLEASE!"
+    )
+    local idx=$(( RANDOM % ${#quotes[@]} ))
+    local quote="${quotes[$idx]}"
 
-    print_speech_bubble "${quote}"
+    local w=20
+    echo -e "${bg}  $(printf '_%.0s' $(seq 1 $w))   ${clr}"
+    echo -e "${bg} /$(printf ' %.0s' $(seq 1 $w))\\  ${clr}"
+    while IFS= read -r line; do
+        local len=${#line}
+        local pad=$(( w - len ))
+        local lpad=$(( pad / 2 ))
+        local rpad=$(( pad - lpad ))
+        echo -e "${bg} |$(printf ' %.0s' $(seq 1 $lpad))${line}$(printf ' %.0s' $(seq 1 $rpad))|  ${clr}"
+    done < <(echo -e "${quote}")
+    echo -e "${bg} \\____   _____________/  ${clr}"
+    echo -e "${bg}      \\ |                ${clr}"
+    echo -e "${bg}       \\|                ${clr}"
 
     echo -e "${bg}     ._________          ${clr}"
     echo -e "${bg}    /_________/|         ${clr}"
