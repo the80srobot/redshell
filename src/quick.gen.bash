@@ -60,9 +60,49 @@ function __q() {
       shift
       cursor_row "$@"
       ;;
-    print_bmo)
+    ascii_art_astronaut|astronaut)
       shift
-      print_bmo "$@"
+      ascii_art_astronaut "$@"
+      ;;
+    ascii_art_bessy|bessy)
+      shift
+      ascii_art_bessy "$@"
+      ;;
+    ascii_art_bmo|bmo)
+      shift
+      ascii_art_bmo "$@"
+      ;;
+    ascii_art_dachshund|dachshund)
+      shift
+      ascii_art_dachshund "$@"
+      ;;
+    ascii_art_drwho|drwho)
+      shift
+      ascii_art_drwho "$@"
+      ;;
+    ascii_art_lighthouse|lighthouse)
+      shift
+      ascii_art_lighthouse "$@"
+      ;;
+    ascii_art_moose|moose)
+      shift
+      ascii_art_moose "$@"
+      ;;
+    ascii_art_pacman|pacman)
+      shift
+      ascii_art_pacman "$@"
+      ;;
+    ascii_art_saturn|saturn)
+      shift
+      ascii_art_saturn "$@"
+      ;;
+    ascii_art_snufkin|snufkin)
+      shift
+      ascii_art_snufkin "$@"
+      ;;
+    ascii_art_pedro|pedro)
+      shift
+      ascii_art_pedro "$@"
       ;;
     print_pedro)
       shift
@@ -227,6 +267,10 @@ function __q() {
     debian_setup|setup)
       shift
       debian_setup "$@"
+      ;;
+    debian_install_extras|install_extras)
+      shift
+      debian_install_extras "$@"
       ;;
     debian_install_or_skip|install_or_skip)
       shift
@@ -531,6 +575,10 @@ function __q() {
     mac_setup|setup)
       shift
       mac_setup "$@"
+      ;;
+    mac_install_extras|install_extras)
+      shift
+      mac_install_extras "$@"
       ;;
     brew)
       shift
@@ -1212,6 +1260,10 @@ function __q() {
       shift
       redhat_setup "$@"
       ;;
+    redhat_install_extras|install_extras)
+      shift
+      redhat_install_extras "$@"
+      ;;
     dnf_install_or_skip)
       shift
       dnf_install_or_skip "$@"
@@ -1693,7 +1745,7 @@ function __q_help() {
     echo -ne '\033[1m'
     echo -n '  strings'
     echo -ne '\033[0m'
-    echo '           String helpers for bash.'
+    echo '           String helpers for bash and zsh.'
     echo -ne '\033[1m'
     echo -n '  time'
     echo -ne '\033[0m'
@@ -1761,11 +1813,81 @@ function __q_help() {
       echo -ne '\033[36m'
       echo -ne '\033[0m'
       echo -ne '\033[1m'
-      echo -n '  print_bmo'
+      echo -n '  astronaut'
       echo
       echo -ne '\033[0m'
       echo -ne '\033[36m'
       echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n '  bessy'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n '  bmo'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n '  dachshund'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n '  drwho'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n '  lighthouse'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n '  moose'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n '  pacman'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n '  saturn'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n '  snufkin'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n '  pedro'
+      echo -n ' ['
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n ' TEXT'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n ' ]'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo '    Print the pedro raccoon with random contrasting colors.'
       echo -ne '\033[1m'
       echo -n '  print_pedro'
       echo
@@ -2109,6 +2231,13 @@ function __q_help() {
       echo -ne '\033[0m'
       echo -ne '\033[36m'
       echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n '  install_extras'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo '    Install the full development environment on Debian/Ubuntu.'
       echo -ne '\033[1m'
       echo -n '  install_or_skip'
       echo
@@ -2657,6 +2786,14 @@ function __q_help() {
       echo -ne '\033[0m'
       echo -ne '\033[36m'
       echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n '  install_extras'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo '    Install the full development environment on macOS. This includes switching to'
+      echo '    Homebrew bash, installing Xcode, VS Code, and various dev packages.'
       echo -ne '\033[1m'
       echo -n '  brew'
       echo
@@ -4616,6 +4753,13 @@ function __q_help() {
       echo -ne '\033[36m'
       echo -ne '\033[0m'
       echo -ne '\033[1m'
+      echo -n '  install_extras'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo '    Install the full development environment on RHEL/Fedora/Rocky/Alma/CentOS.'
+      echo -ne '\033[1m'
       echo -n '  dnf_install_or_skip'
       echo -n ' PACKAGE'
       echo -ne '\033[0m'
@@ -4697,7 +4841,7 @@ function __q_help() {
       ;;
     strings)
       echo "Usage: q strings FUNCTION [ARG...]"
-      echo "String helpers for bash."
+      echo "String helpers for bash and zsh."
       echo
       echo "Available functions:"
       echo -ne '\033[1m'
@@ -5222,6 +5366,9 @@ function __q_dump() {
     ;;
   ascii_art)
     case "$2" in
+    _aa_random_element)
+      type _aa_random_element
+      ;;
     print_speech_bubble)
       type print_speech_bubble
       ;;
@@ -5234,8 +5381,38 @@ function __q_dump() {
     cursor_row)
       type cursor_row
       ;;
-    print_bmo)
-      type print_bmo
+    astronaut)
+      type ascii_art_astronaut
+      ;;
+    bessy)
+      type ascii_art_bessy
+      ;;
+    bmo)
+      type ascii_art_bmo
+      ;;
+    dachshund)
+      type ascii_art_dachshund
+      ;;
+    drwho)
+      type ascii_art_drwho
+      ;;
+    lighthouse)
+      type ascii_art_lighthouse
+      ;;
+    moose)
+      type ascii_art_moose
+      ;;
+    pacman)
+      type ascii_art_pacman
+      ;;
+    saturn)
+      type ascii_art_saturn
+      ;;
+    snufkin)
+      type ascii_art_snufkin
+      ;;
+    pedro)
+      type ascii_art_pedro
       ;;
     print_pedro)
       type print_pedro
@@ -5342,6 +5519,9 @@ function __q_dump() {
     case "$2" in
     setup)
       type debian_setup
+      ;;
+    install_extras)
+      type debian_install_extras
       ;;
     install_or_skip)
       type debian_install_or_skip
@@ -5539,6 +5719,9 @@ function __q_dump() {
     case "$2" in
     setup)
       type mac_setup
+      ;;
+    install_extras)
+      type mac_install_extras
       ;;
     brew)
       type brew
@@ -6163,6 +6346,9 @@ function __q_dump() {
     setup)
       type redhat_setup
       ;;
+    install_extras)
+      type redhat_install_extras
+      ;;
     dnf_install_or_skip)
       type dnf_install_or_skip
       ;;
@@ -6523,7 +6709,7 @@ function __q_compgen() {
       return 0
       ;;
     ascii_art)
-      COMPREPLY=($(compgen -W "help print_speech_bubble erase_lines cursor_position cursor_row print_bmo print_pedro scroll_output_pedro select_visual" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help print_speech_bubble erase_lines cursor_position cursor_row astronaut bessy bmo dachshund drwho lighthouse moose pacman saturn snufkin pedro print_pedro scroll_output_pedro select_visual" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     bash)
@@ -6543,7 +6729,7 @@ function __q_compgen() {
       return 0
       ;;
     debian)
-      COMPREPLY=($(compgen -W "help setup install_or_skip install_imgcat setup_mc" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help setup install_extras install_or_skip install_imgcat setup_mc" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     file)
@@ -6583,7 +6769,7 @@ function __q_compgen() {
       return 0
       ;;
     mac)
-      COMPREPLY=($(compgen -W "help setup brew reinstall_brew enable_ipconfig_verbose get_user_shell brew_bash_path switch_to_bash icloud icloud_evict brew_install_or_skip install_miniconda install_devtools kill_defender suppress_defender kill_crashplan hogs cpu_hogs cpulimit disable_powernap power_stats fix_ssh_locale_config pid_suspend setup_iterm2" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help setup install_extras brew reinstall_brew enable_ipconfig_verbose get_user_shell brew_bash_path switch_to_bash icloud icloud_evict brew_install_or_skip install_miniconda install_devtools kill_defender suppress_defender kill_crashplan hogs cpu_hogs cpulimit disable_powernap power_stats fix_ssh_locale_config pid_suspend setup_iterm2" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     media)
@@ -6635,7 +6821,7 @@ function __q_compgen() {
       return 0
       ;;
     redhat)
-      COMPREPLY=($(compgen -W "help setup dnf_install_or_skip install_imgcat setup_mc" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help setup install_extras dnf_install_or_skip install_imgcat setup_mc" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     rust)
@@ -6691,8 +6877,38 @@ function __q_compgen() {
       cursor_row)
         __q_complete_func "" "" "" ""
         ;;
-      print_bmo)
+      astronaut)
         __q_complete_func "" "" "" ""
+        ;;
+      bessy)
+        __q_complete_func "" "" "" ""
+        ;;
+      bmo)
+        __q_complete_func "" "" "" ""
+        ;;
+      dachshund)
+        __q_complete_func "" "" "" ""
+        ;;
+      drwho)
+        __q_complete_func "" "" "" ""
+        ;;
+      lighthouse)
+        __q_complete_func "" "" "" ""
+        ;;
+      moose)
+        __q_complete_func "" "" "" ""
+        ;;
+      pacman)
+        __q_complete_func "" "" "" ""
+        ;;
+      saturn)
+        __q_complete_func "" "" "" ""
+        ;;
+      snufkin)
+        __q_complete_func "" "" "" ""
+        ;;
+      pedro)
+        __q_complete_func "" "" "" "STRING"
         ;;
       print_pedro)
         __q_complete_func "" "" "" ""
@@ -6775,6 +6991,9 @@ function __q_compgen() {
     debian)
       case "${COMP_WORDS[2]}" in
       setup)
+        __q_complete_func "" "" "" ""
+        ;;
+      install_extras)
         __q_complete_func "" "" "" ""
         ;;
       install_or_skip)
@@ -6919,6 +7138,9 @@ function __q_compgen() {
     mac)
       case "${COMP_WORDS[2]}" in
       setup)
+        __q_complete_func "" "" "" ""
+        ;;
+      install_extras)
         __q_complete_func "" "" "" ""
         ;;
       brew)
@@ -7325,6 +7547,9 @@ function __q_compgen() {
     redhat)
       case "${COMP_WORDS[2]}" in
       setup)
+        __q_complete_func "" "" "" ""
+        ;;
+      install_extras)
         __q_complete_func "" "" "" ""
         ;;
       dnf_install_or_skip)

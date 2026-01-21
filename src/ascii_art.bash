@@ -10,6 +10,16 @@ source "xterm_colors.bash"
 if [[ -z "${_REDSHELL_ASCII_ART}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_ASCII_ART=1
 
+_AA_RESET=$'\033[0m'
+
+# Picks a random element from positional args.
+# Example: result=$(_aa_random_element "a" "b" ...)
+function _aa_random_element() {
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
+    local idx=$(( RANDOM % $# ))
+    echo "${@:idx+1:1}"
+}
+
 function print_speech_bubble() {
     local width=0
     while IFS= read -r line; do
@@ -66,30 +76,294 @@ function cursor_row() {
     echo "${row#*[}"
 }
 
-# echo -e "${bg}     ._________          `clr`" 
-# echo -e "${bg}    /_________/|         `clr`" 
-# echo -e "${bg}    |`light`.-------.`dark`||         `clr`" 
-# echo -e "${bg}    |`light`|o   o  |`dark`||         `clr`" 
-# echo -e "${bg}    |`light`|  -    |`dark`||         `clr`" 
-# echo -e "${bg}    |`light`'-------'`dark`||         `clr`" 
-# echo -e "${bg}    | ___  .  ||         `clr`" 
-# echo -e "${bg}   /|         |\\         `clr`" 
-# echo -e "${bg}  / | $(tput setaf 226)+   $(tput setaf 27)^`dark` $(tput setaf 34)o`dark` ||\\        `clr`" 
-# echo -e "${bg}    | --   $(tput setaf 160)O`dark`  ||         `clr`" 
-# echo -e "${bg}    '---------/          `clr`" 
-# echo -e "${bg}      I     I            `clr`" 
-# clr
+function ascii_art_astronaut() {
+    local sky=$'\033[48;5;0m\033[38;5;195m'
+    local red=$'\033[38;5;196m'
+    local nasa_bg=$'\033[48;5;17m'
+    local white=$'\033[38;5;231m'
+    local reset=$'\033[0m'
 
-function print_bmo() {
-    # local bg="$(tput setab 235)$(tput setaf 50)"
-    # local light="$(tput setaf 159)"
-    # local dark="$(tput setaf 50)"
-    local bg="$(tfmt 50 235)"
-    local light="$(tfmt 159)"
-    
+    echo -e "${sky}             _..._                *       ${reset}"
+    echo -e "${sky}           .'     '.      _               ${reset}"
+    echo -e "${sky}     *    /    .-\"\"-\\   _/ \\              ${reset}"
+    echo -e "${sky}        .-|   /:.   |  |   |              ${reset}"
+    echo -e "${sky}        |  \\  |:.   /.-'-./               ${reset}"
+    echo -e "${sky}        | .-'-;:__.'    =/                ${reset}"
+    echo -e "${sky}        .'=  *${red}=${sky}|${nasa_bg}${white}NASA${sky} _.='      *          ${reset}"
+    echo -e "${sky}       /   _.  |    ;                     ${reset}"
+    echo -e "${sky}      ;-.-'|    \\   |                     ${reset}"
+    echo -e "${sky}     /   | \\    _\\  _\\                *   ${reset}"
+    echo -e "${sky}     \\__/'._;.  ==' ==\\                   ${reset}"
+    echo -e "${sky}              \\    \\   |                  ${reset}"
+    echo -e "${sky}              /    /   /                  ${reset}"
+    echo -e "${sky}              /-._/-._/                   ${reset}"
+    echo -e "${sky}              \\   \`\\  \\                   ${reset}"
+    echo -e "${sky} *             \`-._/._/                   ${reset}"
+    echo -e "${sky}            *                             ${reset}"
 }
 
-function print_pedro() {
+function ascii_art_bessy() {
+    local red=$'\033[48;5;160m\033[38;5;160m'
+    local white=$'\033[48;5;15m\033[38;5;15m'
+    local snow=$'\033[38;5;231m'
+    local rock=$'\033[38;5;244m'
+    local pole=$'\033[38;5;130m'
+    local cow=$'\033[38;5;215m'
+    local spot=$'\033[38;5;231m'
+    local leaf=$'\033[38;5;118m'
+    local flower=$'\033[38;5;231m'
+    local sky=$'\033[48;5;16m'
+    local clr=$'\033[0m'
+
+    echo -e "${sky}                                ${pole}|${red}##########${sky}                      ${clr}"
+    echo -e "${sky}                                ${pole}|${red}####${white}  ${red}####${sky}                      ${clr}"
+    echo -e "${sky}                                ${pole}|${red}##${white}      ${red}##${sky}                      ${clr}"
+    echo -e "${sky}              ${snow}_                 ${pole}|${red}####${white}  ${red}####${sky}                      ${clr}"
+    echo -e "${sky}             ${snow}/ \\_               ${pole}|${red}##########${sky}                      ${clr}"
+    echo -e "${sky}            ${snow}/    \\              ${pole}|                                ${clr}"
+    echo -e "${sky}           ${rock}/${snow}\\/\\  /${rock}\\  _          ${pole}|${cow}       /;    ;\\                 ${clr}"
+    echo -e "${sky}          ${rock}/    ${snow}\\/${rock}  \\/ \\         ${pole}|${cow}   __  \\____//                  ${clr}"
+    echo -e "${sky}        ${rock}/\\  .-   \`. \\  \\        ${pole}|${cow}  /{_\\_/   \`'\\____              ${clr}"
+    echo -e "${sky}       ${rock}/  \`-.__ ^   /\\  \\       ${pole}|${cow}  \\___ (o)  (o)   }             ${clr}"
+    echo -e "${sky}      ${rock}/ ${cow}_____________________________/          :--'             ${clr}"
+    echo -e "${sky}    ${cow},-,'\`${spot}@@@@@@@@       @@@@@@${cow}         \\_    \`__\\                ${clr}"
+    echo -e "${sky}${cow}   ;:(  ${spot}@@@@@@@@@        @@@${cow}             \\___(o'o)               ${clr}"
+    echo -e "${sky}${cow}   :: )  ${spot}@@@@          @@@@@@${cow}        ,'${spot}@@${cow}(  \`===='               ${clr}"
+    echo -e "${sky}${cow}   :: : ${spot}@@@@@${cow}:          ${spot}@@@@${cow}         \`${spot}@@@${cow}:                       ${clr}"
+    echo -e "${sky}${cow}   :: \\  ${spot}@@@@@${cow}:       ${spot}@@@@@@@${cow})    (  '${spot}@@@${cow}'                       ${clr}"
+    echo -e "${sky}${cow}   :; /\\      /      ${spot}@@@@@@@@@${cow}\\   :${spot}@@@@@${cow})                        ${clr}"
+    echo -e "${sky}${cow}   ::/  )    {_----------------:  :~\`,~~;               ${flower} __/)    ${clr}"
+    echo -e "${sky}${cow}  ;; \`; :   )                  :  / \`; ;              ${leaf}.-${flower}(__(=:   ${clr}"
+    echo -e "${sky}${cow} ;;;  : :   ;                  :  ;  ; :          ${leaf}|\\ | ${flower}    \\)    ${clr}"
+    echo -e "${sky}${cow} \`'\`  / :  :                   :  :  : :          ${leaf}\\ ||           ${clr}"
+    echo -e "${sky}${cow}     )_ \\__;                   :_ ;  \\_\\          ${leaf} \\||           ${clr}"
+    echo -e "${sky}${cow}     :__\\  \\                   \\  \\  :  \\         ${leaf}  \\|           ${clr}"
+    echo -e "${sky}${cow}         \`^'                    \`^'  \`-^-'        ${leaf}   |           ${clr}"
+}
+
+function ascii_art_bmo() {
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
+    local light=$'\033[38;5;159m'
+    local dark=$'\033[38;5;50m'
+    local bg=$'\033[48;5;235m\033[38;5;50m'
+    local clr=$'\033[0m'
+    local yellow=$'\033[38;5;226m'
+    local blue=$'\033[38;5;27m'
+    local green=$'\033[38;5;34m'
+    local red=$'\033[38;5;160m'
+
+    local quote
+    quote=$(_aa_random_element \
+        "YOU DRIVE A HARD BURGER!" \
+        "USE THE COMBO MOVE!" \
+        "RED-HOT LIKE PIZZA SUPPER" \
+        "CHECK PLEASE!")
+
+    print_speech_bubble "${quote}"
+
+    echo -e "${bg}     ._________          ${clr}"
+    echo -e "${bg}    /_________/|         ${clr}"
+    echo -e "${bg}    |${light}.-------.${dark}||         ${clr}"
+    echo -e "${bg}    |${light}|o   o  |${dark}||         ${clr}"
+    echo -e "${bg}    |${light}|  -    |${dark}||         ${clr}"
+    echo -e "${bg}    |${light}'-------'${dark}||         ${clr}"
+    echo -e "${bg}    | ___  .  ||         ${clr}"
+    echo -e "${bg}   /|         |\\         ${clr}"
+    echo -e "${bg}  / | ${yellow}+   ${blue}^${dark} ${green}o${dark} ||\\        ${clr}"
+    echo -e "${bg}    | --   ${red}O${dark}  ||         ${clr}"
+    echo -e "${bg}    '---------/          ${clr}"
+    echo -e "${bg}      I     I            ${clr}"
+    echo -e "${clr}"
+}
+
+function ascii_art_dachshund() {
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
+    local dog=$'\033[38;5;130m'
+    local nose=$'\033[38;5;236m'
+    local clr=$'\033[0m'
+
+    local quote
+    quote=$(_aa_random_element \
+        "$(printf 'Tomorrow, and tomorrow, and tomorrow,\nCreeps in this petty pace from day to day,\nTo the last syllable of recorded time;\nAnd all our yesterdays have lighted fools\nThe way to dusty death. Out, out, brief candle!\nLife'\''s but a walking shadow, a poor player\nThat struts and frets his hour upon the stage,\nAnd then is heard no more. It is a tale\nTold by an idiot, full of sound and fury,\nSignifying nothing.')" \
+        "$(printf 'Full fathom five thy father lies;\nOf his bones are coral made;\nThose are pearls that were his eyes;\nNothing of him that doth fade,\nBut doth suffer a sea-change\nInto something rich and strange.')" \
+        "$(printf 'Now is the winter of our discontent\nMade glorious summer by this sun of York;\nAnd all the clouds, that lour'\''d upon our house,\nIn the deep bosom of the ocean buried.')" \
+        "$(printf 'O Romeo, Romeo! wherefore art thou Romeo?\nDeny thy father and refuse thy name;\nOr, if thou wilt not, be but sworn my love,\nAnd I'\''ll no longer be a Capulet.')" \
+        "$(printf 'To be, or not to be, -- that is the question: --\nWhether '\''tis nobler in the mind to suffer\nThe slings and arrows of outrageous fortune,\nOr to take arms against a sea of troubles,\nAnd by opposing end them? -- To die, to sleep, --\nNo more; and by a sleep to say we end\nThe heart-ache, and the thousand natural shocks\nThat flesh is heir to, -- '\''tis a consummation\nDevoutly to be wish'\''d.')" \
+        "$(printf 'This is the excellent foppery of the world, that,\nwhen we are sick in fortune,\noften the surfeit of our own behaviour,\nwe make guilty of our disasters the sun,\nthe moon, and the stars;\nas if we were villains by necessity,\nfools by heavenly compulsion,\nknaves, thieves, and treachers\nby spherical predominance,\ndrunkards, liars, and adulterers\nby an enforced obedience of planetary influence;\nand all that we are evil in,\nby a divine thrusting on:\nan admirable evasion of whore-master man,\nto lay his goatish disposition\nto the charge of a star!')" \
+        "$(printf 'Men at some time are masters of their fates:\nThe fault, dear Brutus, is not in our stars,\nBut in ourselves, that we are underlings.')" \
+        "$(printf 'Thou, nature, art my goddess; to thy law\nMy services are bound. Wherefore should I\nStand in the plague of custom, and permit\nThe curiosity of nations to deprive me?\nFor that I am some twelve or fourteen moon-shines\nLag of a brother? Why bastard? Wherefore base?\nWhen my dimensions are as well compact,\nMy mind as generous, and my shape as true,\nAs honest madam'\''s issue? Why brand they us\nWith base? With baseness? Bastardy? Base, base?\nWho, in the lusty stealth of nature, take\nMore composition and fierce quality\nThan doth, within a dull, stale, tired bed,\nGo to the creating a whole tribe of fops,\nGot '\''tween asleep and wake? Well, then,\nLegitimate Edgar, I must have your land.\nOur father'\''s love is to the bastard Edmund\nAs to the legitimate: fine word, legitimate!\nWell, my legitimate, if this letter speed,\nAnd my invention thrive, Edmund the base\nShall top the legitimate. I grow; I prosper.\nNow, gods, stand up for bastards!')" \
+        "$(printf 'What'\''s in a name? That which we call a rose\nBy any other name would smell as sweet.')")
+
+    echo " ____________________________________________________ "
+    echo "/                                                    \\"
+    while IFS= read -r line; do
+        echo -n "| ${line}"
+        local l="${#line}"
+        local p=$((51-l))
+        for (( c=0; c<p; c++ )); do
+            echo -n " "
+        done
+        echo "|"
+    done <<< "${quote}"
+    echo "\\____________________________    ____________________/"
+    echo "                             |  /"
+    echo "                             | /"
+    echo "                             |/"
+
+    echo "${dog}                        __      "
+    echo "${dog} (\\,-------------------/()'--${nose}o  "
+    echo "${dog}  (_    ______________    /~\"   "
+    echo "${dog}   (_)_)             (_)_)      "
+    echo "${clr}"
+}
+
+function ascii_art_drwho() {
+    local blue=$'\033[38;5;27m'
+    local reset=$'\033[0m'
+    local dalek=$'\033[38;5;215m'
+
+    echo -e "${blue}         ___                                "
+    echo -e "${blue} _______(_@_)_______                          "
+    echo -e "${blue} | ${reset}POLICE      BOX${blue} |                          "
+    echo -e "${blue} |_________________|                          "
+    echo -e "${blue}  | _____ | _____ |                           "
+    echo -e "${blue}  | |###| | |###| |       ${reset}                          EXTERMINATE! EXTERMINATE!               "
+    echo -e "${blue}  | |###| | |###| |       ${reset}                        /               "
+    echo -e "${blue}  | _____ | _____ |       ${dalek}                   ___               "
+    echo -e "${blue}  | || || | || || |       ${dalek}         ())>=G==='   '.               "
+    echo -e "${blue}  | ||_|| | ||_|| |       ${dalek}                 |======|               "
+    echo -e "${blue}  | _____ |\$_____ |      ${dalek}                  |======|               "
+    echo -e "${blue}  | || || | || || |       ${dalek}             )--/]IIIIII]               "
+    echo -e "${blue}  | ||_|| | ||_|| |       ${dalek}                |_______|               "
+    echo -e "${blue}  | _____ | _____ |       ${dalek}                C O O O D               "
+    echo -e "${blue}  | || || | || || |       ${dalek}               C O  O  O D               "
+    echo -e "${blue}  | ||_|| | ||_|| |       ${dalek}              C  O  O  O  D               "
+    echo -e "${blue}  |       |       |       ${dalek}              C__O__O__O__D               "
+    echo -e "${blue}  *****************       ${dalek}             [_____________]${reset}"
+}
+
+function ascii_art_lighthouse() {
+    local sky=$'\033[48;5;233m'
+    local red=$'\033[38;5;9m'
+    local white=$'\033[38;5;255m'
+    local rock=$'\033[38;5;246m'
+    local light=$'\033[38;5;221m'
+    local water=$'\033[38;5;33m'
+    local clr=$'\033[0m'
+
+    echo -e "${sky}                                                  ${clr}"
+    echo -e "${sky}           ${red}__                                     ${clr}"
+    echo -e "${sky}          ${red}/  \\\\${light}____                                ${clr}"
+    echo -e "${sky}          ${white}| o|${light}    ---____                         ${clr}"
+    echo -e "${sky}         ${red}[IIII]${light}--___     ---____                  ${clr}"
+    echo -e "${sky}          ${white}|  |      ${light}--___       ---____           ${clr}"
+    echo -e "${sky}          ${red}|  |           ${light}--___         ---____    ${clr}"
+    echo -e "${sky}          ${white}|  |                ${light}--___           --- ${clr}"
+    echo -e "${sky}          ${red}|_:|                     ${light}--___          ${clr}"
+    echo -e "${sky}         ${rock}/    \\                         ${light}--___     ${clr}"
+    echo -e "${sky}        ${rock}/     |                              ${light}--__ ${clr}"
+    echo -e "${sky}${water} _-_-_-_${rock}|      \\\\${water}_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_ ${clr}"
+    echo -e "${sky}                                                  ${clr}"
+}
+
+function ascii_art_moose() {
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
+    local bgc=$(($RANDOM % 256))
+    local fgc=$(($RANDOM % 256))
+    while [[ $(contrast $(xterm_to_rgb $bgc) $(xterm_to_rgb $fgc)) -lt 70 ]]; do
+        bgc=$(($RANDOM % 256))
+        fgc=$(($RANDOM % 256))
+    done
+
+    local color=$'\033[38;5;'"${fgc}"'m\033[48;5;'"${bgc}"'m'
+    local clr=$'\033[0m'
+
+    echo -e "${color} ___            ___  ${clr}"
+    echo -e "${color}/   \\          /   \\ ${clr}"
+    echo -e "${color}\\_   \\        /  __/ ${clr}"
+    echo -e "${color} _\\   \\      /  /__  ${clr}"
+    echo -e "${color} \\___  \\____/   __/  ${clr}"
+    echo -e "${color}     \\_       _/     ${clr}"
+    echo -e "${color}       | @ @  \\_     ${clr}"
+    echo -e "${color}       |             ${clr}"
+    echo -e "${color}     _/     /\\       ${clr}"
+    echo -e "${color}    /o)  (o/\\ \\_     ${clr}"
+    echo -e "${color}    \\_____/ /        ${clr}"
+    echo -e "${color}      \\____/         ${clr}"
+    echo "${clr}"
+}
+
+function ascii_art_pacman() {
+    local ghost1=$'\033[38;5;39m'
+    local ghost2=$'\033[38;5;160m'
+    local pacman=$'\033[38;5;220m'
+    local wall=$'\033[38;5;21m'
+    local cherry=$'\033[38;5;216m'
+    local color88=$'\033[38;5;88m'
+    local reset=$'\033[0m'
+
+    echo -e "${reset}${wall}================================================.${reset}"
+    echo -e "${wall}  ${ghost1}   .-.  ${ghost2} .-.  ${pacman}   .--. ${wall}                        |${reset}"
+    echo -e "${wall}  ${ghost1}  | OO| ${ghost2}| OO| ${pacman}  / _.-' ${cherry}.-.   .-.  .-.   .''.  ${wall}|${reset}"
+    echo -e "${wall}  ${ghost1}  |   | ${ghost2}|   | ${pacman}  \\  '-. ${cherry}'-'   '-'  '-'   '..'  ${wall}|${reset}"
+    echo -e "${wall}  ${ghost1}  '^^^' ${ghost2}'^^^' ${pacman}   '--'  ${wall}                       |${reset}"
+    echo -e "${wall}===============. ${color88} .-. ${wall} .================. ${cherry} .-.  ${wall}|${reset}"
+    echo -e "${wall}               | ${color88}|   |${wall} |                | ${cherry} '-'  ${wall}|${reset}"
+    echo -e "${wall}               | ${color88}|   |${wall} |                |       |${reset}"
+    echo -e "${wall}               | ${color88}':-:'${wall} |                | ${cherry} .-.  ${wall}|${reset}"
+    echo -e "${wall}               | ${color88} '-' ${wall} |                | ${cherry} '-'  ${wall}|${reset}"
+    echo -e "${wall}==============='       '================'       |${reset}"
+}
+
+function ascii_art_saturn() {
+    local bg=$'\033[48;5;0m\033[38;5;195m'
+    local planet=$'\033[38;5;76m'
+    local moon=$'\033[38;5;203m'
+    local ring=$'\033[38;5;61m'
+    local clr=$'\033[0m'
+
+    echo -e "${bg}        ~+                                    ${clr}"
+    echo -e "${bg}                                              ${clr}"
+    echo -e "${bg}                 *       +                    ${clr}"
+    echo -e "${bg}            '                   |             ${clr}"
+    echo -e "${bg}        ${moon}()${planet}    ${ring}.-.${planet},=\"\`\"=.${bg}     - o -           ${clr}"
+    echo -e "${bg}              ${ring}'=${planet}/${ring}_${planet}       \\${bg}      |             ${clr}"
+    echo -e "${bg}          *    ${planet}|  ${ring}'=._${planet}    |${bg}                   ${clr}"
+    echo -e "${bg}                ${planet}\\     ${ring}\`=./${planet}\\${ring}\`,${bg}        '         ${clr}"
+    echo -e "${bg}            .    ${planet}'=.__.=' ${ring}\`='${bg}      *          ${clr}"
+    echo -e "${bg}   +                         +                ${clr}"
+    echo -e "${bg}        O      *        '       .             ${clr}"
+    echo -e "${bg}                                              ${clr}"
+    echo -e "${clr}"
+}
+
+function ascii_art_snufkin() {
+    local sky=$'\033[48;5;233m'
+    local hat=$'\033[38;5;106m'
+    local coat=$'\033[38;5;94m'
+    local rock=$'\033[38;5;195m'
+    local clr=$'\033[0m'
+    local star=$'\033[38;5;255m'
+    local feather=$'\033[38;5;202m'
+    local face=$'\033[38;5;178m'
+
+    echo -e "${sky}${hat}          .-.      ${star}*     ${clr}"
+    echo -e "${sky}${hat}       __/   (           ${clr}"
+    echo -e "${sky}${feather}     , ${hat}'-.____\\      ${star}*   ${clr}"
+    echo -e "${sky}${face}      u=='${coat}/  \\           ${clr}"
+    echo -e "${sky}${coat}         /_/  \\          ${clr}"
+    echo -e "${sky}  ${star}*${coat}    .-''   |          ${clr}"
+    echo -e "${sky}${coat}      (  ____/${rock}_____      ${clr}"
+    echo -e "${sky}${coat}      _>_/${rock}.--------      ${clr}"
+    echo -e "${sky}${coat}      \\/${rock}//               ${clr}"
+    echo -e "${sky}${rock}       //                ${clr}"
+    echo -e "${sky}${rock}      //                 ${clr}"
+    echo -e "${sky}${rock}                         ${clr}"
+}
+
+# Print the pedro raccoon with random contrasting colors.
+# Usage: ascii_art_pedro [TEXT]
+function ascii_art_pedro() {
     [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
     local bgc=$(($RANDOM % 256))
     local fgc=$(($RANDOM % 256))
@@ -136,12 +410,16 @@ function print_pedro() {
         "${fc}${bc}" "${clr}" "${lines[11]:0:${cols}}"
 }
 
+function print_pedro() {
+    ascii_art_pedro "$@"
+}
+
 function scroll_output_pedro() {
     local _path="${1}"
-    print_pedro
+    ascii_art_pedro
     while IFS= read -r line; do
         erase_lines 13 -q
-        print_pedro "$(tail -n 12 "${_path}")"
+        ascii_art_pedro "$(tail -n 12 "${_path}")"
     done
     echo
 }
