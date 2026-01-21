@@ -182,17 +182,94 @@ function ascii_art_dachshund() {
     local nose=$'\033[38;5;236m'
     local clr=$'\033[0m'
 
-    local quote
-    quote=$(_aa_random_element \
-        "$(printf 'Tomorrow, and tomorrow, and tomorrow,\nCreeps in this petty pace from day to day,\nTo the last syllable of recorded time;\nAnd all our yesterdays have lighted fools\nThe way to dusty death. Out, out, brief candle!\nLife'\''s but a walking shadow, a poor player\nThat struts and frets his hour upon the stage,\nAnd then is heard no more. It is a tale\nTold by an idiot, full of sound and fury,\nSignifying nothing.')" \
-        "$(printf 'Full fathom five thy father lies;\nOf his bones are coral made;\nThose are pearls that were his eyes;\nNothing of him that doth fade,\nBut doth suffer a sea-change\nInto something rich and strange.')" \
-        "$(printf 'Now is the winter of our discontent\nMade glorious summer by this sun of York;\nAnd all the clouds, that lour'\''d upon our house,\nIn the deep bosom of the ocean buried.')" \
-        "$(printf 'O Romeo, Romeo! wherefore art thou Romeo?\nDeny thy father and refuse thy name;\nOr, if thou wilt not, be but sworn my love,\nAnd I'\''ll no longer be a Capulet.')" \
-        "$(printf 'To be, or not to be, -- that is the question: --\nWhether '\''tis nobler in the mind to suffer\nThe slings and arrows of outrageous fortune,\nOr to take arms against a sea of troubles,\nAnd by opposing end them? -- To die, to sleep, --\nNo more; and by a sleep to say we end\nThe heart-ache, and the thousand natural shocks\nThat flesh is heir to, -- '\''tis a consummation\nDevoutly to be wish'\''d.')" \
-        "$(printf 'This is the excellent foppery of the world, that,\nwhen we are sick in fortune,\noften the surfeit of our own behaviour,\nwe make guilty of our disasters the sun,\nthe moon, and the stars;\nas if we were villains by necessity,\nfools by heavenly compulsion,\nknaves, thieves, and treachers\nby spherical predominance,\ndrunkards, liars, and adulterers\nby an enforced obedience of planetary influence;\nand all that we are evil in,\nby a divine thrusting on:\nan admirable evasion of whore-master man,\nto lay his goatish disposition\nto the charge of a star!')" \
-        "$(printf 'Men at some time are masters of their fates:\nThe fault, dear Brutus, is not in our stars,\nBut in ourselves, that we are underlings.')" \
-        "$(printf 'Thou, nature, art my goddess; to thy law\nMy services are bound. Wherefore should I\nStand in the plague of custom, and permit\nThe curiosity of nations to deprive me?\nFor that I am some twelve or fourteen moon-shines\nLag of a brother? Why bastard? Wherefore base?\nWhen my dimensions are as well compact,\nMy mind as generous, and my shape as true,\nAs honest madam'\''s issue? Why brand they us\nWith base? With baseness? Bastardy? Base, base?\nWho, in the lusty stealth of nature, take\nMore composition and fierce quality\nThan doth, within a dull, stale, tired bed,\nGo to the creating a whole tribe of fops,\nGot '\''tween asleep and wake? Well, then,\nLegitimate Edgar, I must have your land.\nOur father'\''s love is to the bastard Edmund\nAs to the legitimate: fine word, legitimate!\nWell, my legitimate, if this letter speed,\nAnd my invention thrive, Edmund the base\nShall top the legitimate. I grow; I prosper.\nNow, gods, stand up for bastards!')" \
-        "$(printf 'What'\''s in a name? That which we call a rose\nBy any other name would smell as sweet.')")
+    local quotes=(
+"Tomorrow, and tomorrow, and tomorrow,
+Creeps in this petty pace from day to day,
+To the last syllable of recorded time;
+And all our yesterdays have lighted fools
+The way to dusty death. Out, out, brief candle!
+Life's but a walking shadow, a poor player
+That struts and frets his hour upon the stage,
+And then is heard no more. It is a tale
+Told by an idiot, full of sound and fury,
+Signifying nothing."
+
+"Full fathom five thy father lies;
+Of his bones are coral made;
+Those are pearls that were his eyes;
+Nothing of him that doth fade,
+But doth suffer a sea-change
+Into something rich and strange."
+
+"Now is the winter of our discontent
+Made glorious summer by this sun of York;
+And all the clouds, that lour'd upon our house,
+In the deep bosom of the ocean buried."
+
+"O Romeo, Romeo! wherefore art thou Romeo?
+Deny thy father and refuse thy name;
+Or, if thou wilt not, be but sworn my love,
+And I'll no longer be a Capulet."
+
+"To be, or not to be, -- that is the question: --
+Whether 'tis nobler in the mind to suffer
+The slings and arrows of outrageous fortune,
+Or to take arms against a sea of troubles,
+And by opposing end them? -- To die, to sleep, --
+No more; and by a sleep to say we end
+The heart-ache, and the thousand natural shocks
+That flesh is heir to, -- 'tis a consummation
+Devoutly to be wish'd."
+
+"This is the excellent foppery of the world, that,
+when we are sick in fortune,
+often the surfeit of our own behaviour,
+we make guilty of our disasters the sun,
+the moon, and the stars;
+as if we were villains by necessity,
+fools by heavenly compulsion,
+knaves, thieves, and treachers
+by spherical predominance,
+drunkards, liars, and adulterers
+by an enforced obedience of planetary influence;
+and all that we are evil in,
+by a divine thrusting on:
+an admirable evasion of whore-master man,
+to lay his goatish disposition
+to the charge of a star!"
+
+"Men at some time are masters of their fates:
+The fault, dear Brutus, is not in our stars,
+But in ourselves, that we are underlings."
+
+"Thou, nature, art my goddess; to thy law
+My services are bound. Wherefore should I
+Stand in the plague of custom, and permit
+The curiosity of nations to deprive me?
+For that I am some twelve or fourteen moon-shines
+Lag of a brother? Why bastard? Wherefore base?
+When my dimensions are as well compact,
+My mind as generous, and my shape as true,
+As honest madam's issue? Why brand they us
+With base? With baseness? Bastardy? Base, base?
+Who, in the lusty stealth of nature, take
+More composition and fierce quality
+Than doth, within a dull, stale, tired bed,
+Go to the creating a whole tribe of fops,
+Got 'tween asleep and wake? Well, then,
+Legitimate Edgar, I must have your land.
+Our father's love is to the bastard Edmund
+As to the legitimate: fine word, legitimate!
+Well, my legitimate, if this letter speed,
+And my invention thrive, Edmund the base
+Shall top the legitimate. I grow; I prosper.
+Now, gods, stand up for bastards!"
+
+"What's in a name? That which we call a rose
+By any other name would smell as sweet."
+    )
+    local idx=$(( RANDOM % ${#quotes[@]} ))
+    local quote="${quotes[$idx]}"
 
     echo " ____________________________________________________ "
     echo "/                                                    \\"
