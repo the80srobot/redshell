@@ -281,6 +281,20 @@ Now, gods, stand up for bastards!"
 
 "What's in a name? That which we call a rose
 By any other name would smell as sweet."
+
+"Cry 'Havoc!', and let slip the dogs of war;
+That this foul deed shall smell above the earth
+With carrion men, groaning for burial."
+
+"The quality of mercy is not strain'd,
+It droppeth as the gentle rain from heaven
+Upon the place beneath. It is twice blest:
+It blesseth him that gives
+and him that takes."
+
+"I could be bounded in a nutshell, and count
+myself a king of infinite space, were it not
+that I have bad dreams."
     )
     local idx=$(( RANDOM % ${#quotes[@]} ))
     local quote="${quotes[$idx]}"
