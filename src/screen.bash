@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Adam Sindelar
 
-# UNIX style path helpers.
+# Manage screen sessions.
 
 source "strings.bash"
 
