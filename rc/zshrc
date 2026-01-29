@@ -9,6 +9,7 @@ unset LC_CTYPE
 
 # Use emacs keybindings (CTRL+R, CTRL+A, etc.) regardless of $EDITOR.
 bindkey -e
+bindkey "^[[3~" delete-char # Delete key
 
 # Load zsh completion system
 autoload -Uz compinit
