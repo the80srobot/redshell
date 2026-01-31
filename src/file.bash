@@ -3,6 +3,8 @@
 
 # File helpers.
 
+source "compat.sh"
+
 if [[ -z "${_REDSHELL_FILE}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_FILE=1
 
@@ -11,6 +13,7 @@ _REDSHELL_FILE=1
 # Cross-platform version of mktemp across BSD and GNU. Creates a temp file and
 # prints its path. If TITLE is supplied, it will be used as prefix or suffix.
 function file_mktemp() {
+
     if [[ "$(uname)" == "Darwin" ]]; then
         mktemp -t "${1}"
     else
@@ -26,6 +29,7 @@ function file_mktemp() {
 #
 #   -g    Use git to get the last modified time if the file is tracked.
 function file_mtime() {
+
     local use_git
     local use_utc
     while [[ "$1" == -* ]]; do
@@ -40,21 +44,21 @@ function file_mtime() {
         shift
     done
 
-    local path="${1}"
+    local _path="${1}"
 
     # Return empty if path is empty or doesn't exist
-    if [[ -z "${path}" || ! -e "${path}" ]]; then
+    if [[ -z "${_path}" || ! -e "${_path}" ]]; then
         return 1
     fi
 
     local d
     # These two formats have to match
-    [[ ! -z "${use_git}" ]] && d=`git log -1 --pretty="%ad" --date=format:"%Y-%m-%d %H:%M:%S" -- "${path}" 2>/dev/null`
+    [[ ! -z "${use_git}" ]] && d=`git log -1 --pretty="%ad" --date=format:"%Y-%m-%d %H:%M:%S" -- "${_path}" 2>/dev/null`
     if [[ -z "${d}" ]]; then
         if [[ "$(uname)" == "Darwin" ]]; then
-            d="$(date -r "${path}" "+%Y-%m-%d %H:%M:%S" 2>/dev/null)"
+            d="$(date -r "${_path}" "+%Y-%m-%d %H:%M:%S" 2>/dev/null)"
         else
-            d="$(date -d "@$(stat -c %Y "${path}")" "+%Y-%m-%d %H:%M:%S" 2>/dev/null)"
+            d="$(date -d "@$(stat -c %Y "${_path}")" "+%Y-%m-%d %H:%M:%S" 2>/dev/null)"
         fi
     fi
 
@@ -68,15 +72,16 @@ function file_mtime() {
 
 # Usage: file_age [-s] PATH
 function file_age() {
+
     # TODO: add a getopts to enable -g in file_mtime.
     if [[ "${1}" == "-s" ]]; then
         shift
         local format="seconds"
     fi
 
-    local path="${1}"
+    local _path="${1}"
     local d
-    d=`file_mtime "${path}"` || return 1
+    d=`file_mtime "${_path}"` || return 1
 
     # Return error if date is empty
     if [[ -z "${d}" ]]; then

@@ -3,6 +3,8 @@
 
 # Automate git and github operations.
 
+source "compat.sh"
+
 if [[ -z "${_REDSHELL_GIT}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_GIT=1
 
@@ -12,11 +14,11 @@ function mkproject() {
 
 function git_ssh_init() {
     local remote="$1"
-    local path="$2"
+    local _path="$2"
     local ssh="${GIT_SSH_COMMAND}"
     [[ -z "${ssh}" ]] && ssh="ssh"
-    "${ssh}" "${remote}" "mkdir -p ${path} && cd ${path} && git init --bare"
-    git remote add origin "${remote}:${path}"
+    "${ssh}" "${remote}" "mkdir -p ${_path} && cd ${_path} && git init --bare"
+    git remote add origin "${remote}:${_path}"
     git push origin master
 }
 
@@ -36,8 +38,9 @@ function git_cherrypick_branch() {
 #
 # Clones a git repository with only the specified subdirectories.
 function git_sparse_clone() {
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
     local repo=""
-    local path=""
+    local _path=""
     local branch="master"
     local subdirs=()
     while [[ "$#" -gt 0 ]]; do
@@ -47,7 +50,7 @@ function git_sparse_clone() {
                 shift
                 ;;
             -p|--path)
-                path="$2"
+                _path="$2"
                 shift
                 ;;
             *)
@@ -61,8 +64,8 @@ function git_sparse_clone() {
         shift
     done
 
-    git init "${path}"
-    cd "${path}"
+    git init "${_path}"
+    cd "${_path}"
     git remote add -f origin "${repo}"
     git sparse-checkout init
     git sparse-checkout set "${subdirs[@]}"

@@ -3,7 +3,8 @@
 
 # Shorthands for find and grep.
 
-. "path.bash"
+source "compat.sh"
+source "path.bash"
 
 if [[ -z "${_REDSHELL_FIND}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_FIND=1
@@ -41,28 +42,32 @@ function __f_args() {
 }
 
 function fcc() {
-    IFS=$'\t' read -r -a args <<< "$(__f_args "${@}")"
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
+    IFS=$'\t' read -r ${_REDSHELL_READ_ARRAY_FLAG} args <<< "$(__f_args "${@}")"
     find "${args[0]}" \
         \( -iname "*.c" -or -iname "*.h" -or -iname "*.cc" -or -iname "*.h" -or -iname "*.cpp" \) \
         -exec grep --color -B 2 -A 4 "${args[1]}" "${args[2]}" {} \+
 }
 
 function fgo() {
-    IFS=$'\t' read -r -a args <<< "$(__f_args "${@}")"
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
+    IFS=$'\t' read -r ${_REDSHELL_READ_ARRAY_FLAG} args <<< "$(__f_args "${@}")"
     find "${args[0]}" \
         -iname "*.go" \
         -exec grep --color -B 2 -A 4 "${args[1]}" "${args[2]}" {} \+
 }
 
 function fjava() {
-    IFS=$'\t' read -r -a args <<< "$(__f_args "${@}")"
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
+    IFS=$'\t' read -r ${_REDSHELL_READ_ARRAY_FLAG} args <<< "$(__f_args "${@}")"
     find "${args[0]}" \
         \( -iname "*.java" -or -iname "*.kt" \) \
         -exec grep --color -B 2 -A 4 "${args[1]}" "${args[2]}" {} \+
 }
 
 function faidl() {
-    IFS=$'\t' read -r -a args <<< "$(__f_args "${@}")"
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
+    IFS=$'\t' read -r ${_REDSHELL_READ_ARRAY_FLAG} args <<< "$(__f_args "${@}")"
     find "${args[0]}" \
         -iname "*.aidl" \
         -exec grep --color -B 2 -A 4 "${args[1]}" "${args[2]}" {} \+
@@ -70,9 +75,9 @@ function faidl() {
 
 function fd() {
     local needle="$1"
-    local path
-    path="$(find "." -ipath "*${1}*" | head -1)"
-    [[ -n "${path}" ]] && path_push "$(dirname "${path}")"
+    local _path
+    _path="$(find "." -ipath "*${1}*" | head -1)"
+    [[ -n "${_path}" ]] && path_push "$(dirname "${_path}")"
 }
 
 # Usage find_replace [DIR] GLOB NEEDLE REPLACEMENT

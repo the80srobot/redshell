@@ -3,6 +3,7 @@
 
 # Redshell function help, switch and autocomplete.
 
+source "compat.sh"
 source "python.bash"
 source "path.bash"
 source "strings.bash"
@@ -13,6 +14,7 @@ _REDSHELL_QUICK=1
 
 # Usage: __quick_build_all REDSHELL_PATH [EXTRA_PATH ...]
 function __quick_build_all() {
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
     local rs_path="${1}"
     local all_paths=()
     while [[ "${#}" -ne 0 ]]; do
@@ -30,6 +32,7 @@ function __quick_build_all() {
 
 # Usage: quick_rebuild [--src-path PATH] [--skip-extra-paths]
 function quick_rebuild() {
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
     local extra_paths=()
     if [[ -f "${HOME}/.redshell_persist/module_paths.txt" ]]; then
         while read -r line; do

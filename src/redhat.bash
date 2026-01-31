@@ -3,12 +3,24 @@
 
 # Red Hat family (RHEL, Fedora, Rocky, Alma, CentOS) setup and package management.
 
+source "compat.sh"
+
 if [[ -z "${_REDSHELL_REDHAT}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_REDHAT=1
 
 source ai.bash
 
 function redhat_setup() {
+
+    >&2 echo "Red Hat core setup complete (no packages installed)."
+    >&2 echo "Run 'q redhat install_extras' to install dev packages."
+}
+
+# Usage: redhat_install_extras
+#
+# Install the full development environment on RHEL/Fedora/Rocky/Alma/CentOS.
+function redhat_install_extras() {
+
     sudo dnf install epel-release -y || true
     dnf_install_or_skip \
         python3-pip \
@@ -32,6 +44,7 @@ function redhat_setup() {
 # Install a package with dnf if it's not already installed.
 # Usage: dnf_install_or_skip PACKAGE...
 function dnf_install_or_skip() {
+
     local package
     local installed
     installed="$(dnf list --installed | cut -d" " -f1 | tail -n+2)"
@@ -48,11 +61,13 @@ function dnf_install_or_skip() {
 }
 
 function redhat_install_imgcat() {
+
     curl -L https://iterm2.com/utilities/imgcat -o ~/bin/imgcat
     chmod +x ~/bin/imgcat
 }
 
 function redhat_setup_mc() {
+
     sudo dnf -y install mc
     redhat_install_imgcat
     local ini_path="${HOME}/.config/mc/mc.ext.ini"

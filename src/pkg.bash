@@ -3,6 +3,7 @@
 
 # Cross-platform package management.
 
+source "compat.sh"
 source "mac.bash"
 
 if [[ -z "${_REDSHELL_PKG}" || -n "${_REDSHELL_RELOAD}" ]]; then
@@ -13,6 +14,7 @@ _REDSHELL_PKG=1
 #
 # USAGE: pkg_install_or_skip [PACKAGE...]
 function pkg_install_or_skip() {
+
     if which brew > /dev/null; then
         brew_install_or_skip "${@}"
     elif which apt-get > /dev/null; then

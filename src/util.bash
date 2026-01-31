@@ -3,6 +3,8 @@
 
 # Catch-all utility functions that don't fit anywhere else.
 
+source "compat.sh"
+
 if [[ -z "${_REDSHELL_UTIL}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_UTIL=1
 
@@ -16,19 +18,23 @@ function util_sudo() {
 
 function reload() {
     echo -ne '\033c'
-    history -a
-    exec $(which bash) -l
+    if [[ -n "${_REDSHELL_ZSH}" ]]; then
+        fc -W
+    else
+        history -a
+    fi
+    exec "$(which "${SHELL##*/}")" -l
 }
 
 function util_markdown() {
-    local path="$HOME/.Markdown.pl"
-    if [[ ! -x "${path}" ]]; then
+    local _path="$HOME/.Markdown.pl"
+    if [[ ! -x "${_path}" ]]; then
         curl https://raw.githubusercontent.com/the80srobot/markdown/master/Markdown.pl \
-            > "${path}" || return 1
-        chmod u+x "${path}"
+            > "${_path}" || return 1
+        chmod u+x "${_path}"
     fi
     echo "<!doctype html>"
-    "${path}" "${@}"
+    "${_path}" "${@}"
 }
 
 # Usage: human_size [-b|-bb|-S|-h|-hh] SIZE
@@ -42,6 +48,7 @@ function util_markdown() {
 #
 # If no mode switch is specified then normal, base-2 byte units are used.
 function human_size() {
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
     local units
     local div
     local x
@@ -163,7 +170,7 @@ function jup() {
 }
 
 function wait_for_file() {
-    local path
+    local _path
     local timeout=60
     while [[ "$#" -gt 0 ]]; do
         case "$1" in
@@ -172,7 +179,7 @@ function wait_for_file() {
                 shift
                 ;;
             *)
-                path="$1"
+                _path="$1"
                 ;;
         esac
         shift
@@ -182,12 +189,12 @@ function wait_for_file() {
     deadline="$(date +%s)"
     (( deadline += timeout ))
     while [[ "$(date +%s)" -lt "${deadline}" ]]; do
-        if [[ -f "${path}" ]]; then
+        if [[ -f "${_path}" ]]; then
             return 0
         fi
         sleep 1
     done
-    echo "Timed out waiting for ${path} after ${timeout} s." >&2
+    echo "Timed out waiting for ${_path} after ${timeout} s." >&2
     return 1
 }
 

@@ -3,11 +3,14 @@
 
 # Encrypt/decrypt, signing, keypairs. SSH and GPG helpers.
 
+source "compat.sh"
+
 if [[ -z "${_REDSHELL_CRYPT}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_CRYPT=1
 
 # Usage: encrypt_symmetric FILE
 function encrypt_symmetric() {
+
     tar -czf "$1.tgz" "$1"
     gpg --symmetric --output "$1.tgz.gpg" "$1.tgz"
     rm -rf "$1"
@@ -17,6 +20,7 @@ function encrypt_symmetric() {
 
 # Usage: decrypt_symmetric FILE
 function decrypt_symmetric() {
+
     gpg --decrypt --output "$1.tgz" "$1"
     tar -xzf "$1.tgz"
     rm -f "$1"
@@ -25,10 +29,12 @@ function decrypt_symmetric() {
 }
 
 function gen_github_keypair() {
+
     ssh-keygen -t ed25519 -C "$1"
 }
 
 function package() {
+
     local payload_path
     local payload_name
     local encrypt
@@ -106,6 +112,7 @@ function package() {
 
 # Usage: payloadify FILE
 function payloadify() {
+
     local payload="$1"
     gpg --symmetric --output "${payload}.gpg" "${payload}"
     {
@@ -124,6 +131,7 @@ function payloadify() {
 #
 # Encrypt a file and wrap it in a base64 self-unpacking shell script.
 function downloadify() {
+
     local payload="$1"
     gpg --symmetric --output "${payload}.gpg" "${payload}"
     {
@@ -146,6 +154,7 @@ function downloadify() {
 # hash 256 foo -> b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c
 # hash md5 foo -> d3b07384d113edec49eaa6238ad5ff00
 function crypt_hash() {
+
     case "$1" in
         md5)
             which md5 2> /dev/null > /dev/null
@@ -187,6 +196,7 @@ alias h=crypt_hash
 #
 # Options are the same as for openssl req
 function crypt_selfsign() {
+
     local name="cert"
     local keyout
     local newkey

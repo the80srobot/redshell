@@ -3,6 +3,7 @@
 
 # Work with the xterm color space, convert to RGB, etc.
 
+source "compat.sh"
 source "python.bash"
 
 if [[ -z "${_REDSHELL_XTERM_COLORS}" || -n "${_REDSHELL_RELOAD}" ]]; then
@@ -132,6 +133,7 @@ function contrast() {
 # Takes an xterm color number as a decimal integer and returns a 6-byte hex of
 # the RGB color.
 function xterm_to_rgb() {
+    [[ -n "${_REDSHELL_ZSH}" ]] && emulate -L ksh
     if [[ "$1" -lt 16 ]]; then
         echo ${XTERM16[$1]}
     elif [[ "$1" -ge 232 ]]; then
