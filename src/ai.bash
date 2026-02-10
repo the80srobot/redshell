@@ -52,4 +52,11 @@ function ai_install_claude_config() {
     fi
 }
 
+# Usage: ai_q QUESTION [QUESTION...]
+#
+# Quickly runs a claude one-shot.
+function ai_q() {
+    claude -p "${*}"
+}
+
 fi # _REDSHELL_AI
