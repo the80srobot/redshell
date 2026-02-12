@@ -37,7 +37,7 @@ _q() {
             'quick:Redshell function help, switch and autocomplete.'
             'redhat:Red Hat family (RHEL, Fedora, Rocky, Alma, CentOS) setup and package management.'
             'rust:Manage rust toolchain and environment.'
-            'screen:UNIX style path helpers.'
+            'screen:Manage screen sessions.'
             'strings:String helpers for bash and zsh.'
             'time:Time and date helpers.'
             'transit:Transit helpers.'
@@ -53,6 +53,7 @@ _q() {
         ai)
             functions=(
                 'install_claude_config:Installs Claude Code configuration files from redshell.'
+                'q:Quickly runs a claude one-shot.'
             )
             _describe 'function' functions
             ;;

@@ -448,13 +448,17 @@ def gen_dump(modules: Iterable[Module]) -> Generator[str, None, None]:
     yield '    echo "Usage: q dump MODULE FUNCTION"'
     yield "    return 1"
     yield "  fi"
+    yield '  local __dump_cmd="type"'
+    yield '  if [[ -n "$ZSH_VERSION" ]]; then'
+    yield '    __dump_cmd="functions"'
+    yield '  fi'
     yield "  case \"$1\" in"
     for module in modules:
         yield f"  {module.name})"
         yield f'    case \"$2\" in'
         for function in module.functions:
             yield f"    {_local_name(function.name.value, module.name)})"
-            yield f"      type {function.name.value}"
+            yield f"      $__dump_cmd {function.name.value}"
             yield f"      ;;"
         yield f"    *)"
         yield f'      echo "Unknown function $2"'

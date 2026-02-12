@@ -28,6 +28,10 @@ function __q() {
       shift
       ai_install_claude_config "$@"
       ;;
+    ai_q|q)
+      shift
+      ai_q "$@"
+      ;;
     *)
       if [ -n "$1" ]; then
         echo "Module ai has no function $1"
@@ -1741,7 +1745,7 @@ function __q_help() {
     echo -ne '\033[1m'
     echo -n '  screen'
     echo -ne '\033[0m'
-    echo '            UNIX style path helpers.'
+    echo '            Manage screen sessions.'
     echo -ne '\033[1m'
     echo -n '  strings'
     echo -ne '\033[0m'
@@ -1782,6 +1786,28 @@ function __q_help() {
       echo '    Copies skills to ~/.claude/skills and merges settings.json with any existing'
       echo '    settings (new keys override existing ones). Only skills listed in'
       echo '    _REDSHELL_CLAUDE_SKILLS are deleted/overwritten; other skills are preserved.'
+      echo -ne '\033[1m'
+      echo -n '  q'
+      echo -n ' QUESTION'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n ' ['
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n ' QUESTION'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n ' ...'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo -n ' ]'
+      echo -ne '\033[0m'
+      echo -ne '\033[1m'
+      echo
+      echo -ne '\033[0m'
+      echo -ne '\033[36m'
+      echo -ne '\033[0m'
+      echo '    Quickly runs a claude one-shot.'
       ;;
     ascii_art)
       echo "Usage: q ascii_art FUNCTION [ARG...]"
@@ -4805,7 +4831,7 @@ function __q_help() {
       ;;
     screen)
       echo "Usage: q screen FUNCTION [ARG...]"
-      echo "UNIX style path helpers."
+      echo "Manage screen sessions."
       echo
       echo "Available functions:"
       echo -ne '\033[1m'
@@ -5352,11 +5378,18 @@ function __q_dump() {
     echo "Usage: q dump MODULE FUNCTION"
     return 1
   fi
+  local __dump_cmd="type"
+  if [[ -n "$ZSH_VERSION" ]]; then
+    __dump_cmd="functions"
+  fi
   case "$1" in
   ai)
     case "$2" in
     install_claude_config)
-      type ai_install_claude_config
+      $__dump_cmd ai_install_claude_config
+      ;;
+    q)
+      $__dump_cmd ai_q
       ;;
     *)
       echo "Unknown function $2"
@@ -5367,61 +5400,61 @@ function __q_dump() {
   ascii_art)
     case "$2" in
     _aa_random_element)
-      type _aa_random_element
+      $__dump_cmd _aa_random_element
       ;;
     print_speech_bubble)
-      type print_speech_bubble
+      $__dump_cmd print_speech_bubble
       ;;
     erase_lines)
-      type erase_lines
+      $__dump_cmd erase_lines
       ;;
     cursor_position)
-      type cursor_position
+      $__dump_cmd cursor_position
       ;;
     cursor_row)
-      type cursor_row
+      $__dump_cmd cursor_row
       ;;
     astronaut)
-      type ascii_art_astronaut
+      $__dump_cmd ascii_art_astronaut
       ;;
     bessy)
-      type ascii_art_bessy
+      $__dump_cmd ascii_art_bessy
       ;;
     bmo)
-      type ascii_art_bmo
+      $__dump_cmd ascii_art_bmo
       ;;
     dachshund)
-      type ascii_art_dachshund
+      $__dump_cmd ascii_art_dachshund
       ;;
     drwho)
-      type ascii_art_drwho
+      $__dump_cmd ascii_art_drwho
       ;;
     lighthouse)
-      type ascii_art_lighthouse
+      $__dump_cmd ascii_art_lighthouse
       ;;
     moose)
-      type ascii_art_moose
+      $__dump_cmd ascii_art_moose
       ;;
     pacman)
-      type ascii_art_pacman
+      $__dump_cmd ascii_art_pacman
       ;;
     saturn)
-      type ascii_art_saturn
+      $__dump_cmd ascii_art_saturn
       ;;
     snufkin)
-      type ascii_art_snufkin
+      $__dump_cmd ascii_art_snufkin
       ;;
     pedro)
-      type ascii_art_pedro
+      $__dump_cmd ascii_art_pedro
       ;;
     print_pedro)
-      type print_pedro
+      $__dump_cmd print_pedro
       ;;
     scroll_output_pedro)
-      type scroll_output_pedro
+      $__dump_cmd scroll_output_pedro
       ;;
     select_visual)
-      type select_visual
+      $__dump_cmd select_visual
       ;;
     *)
       echo "Unknown function $2"
@@ -5432,7 +5465,7 @@ function __q_dump() {
   bash)
     case "$2" in
     get_bash_functions)
-      type get_bash_functions
+      $__dump_cmd get_bash_functions
       ;;
     *)
       echo "Unknown function $2"
@@ -5443,19 +5476,19 @@ function __q_dump() {
   browser)
     case "$2" in
     gdocs_id)
-      type gdocs_id
+      $__dump_cmd gdocs_id
       ;;
     sheets_dl_link)
-      type sheets_dl_link
+      $__dump_cmd sheets_dl_link
       ;;
     chrome_path)
-      type chrome_path
+      $__dump_cmd chrome_path
       ;;
     downloads_path)
-      type downloads_path
+      $__dump_cmd downloads_path
       ;;
     dl)
-      type browser_dl
+      $__dump_cmd browser_dl
       ;;
     *)
       echo "Unknown function $2"
@@ -5466,16 +5499,16 @@ function __q_dump() {
   caldav)
     case "$2" in
     accounts)
-      type caldav_accounts
+      $__dump_cmd caldav_accounts
       ;;
     __caldav_default_account)
-      type __caldav_default_account
+      $__dump_cmd __caldav_default_account
       ;;
     fetch)
-      type caldav_fetch
+      $__dump_cmd caldav_fetch
       ;;
     agenda)
-      type caldav_agenda
+      $__dump_cmd caldav_agenda
       ;;
     *)
       echo "Unknown function $2"
@@ -5486,28 +5519,28 @@ function __q_dump() {
   crypt)
     case "$2" in
     encrypt_symmetric)
-      type encrypt_symmetric
+      $__dump_cmd encrypt_symmetric
       ;;
     decrypt_symmetric)
-      type decrypt_symmetric
+      $__dump_cmd decrypt_symmetric
       ;;
     gen_github_keypair)
-      type gen_github_keypair
+      $__dump_cmd gen_github_keypair
       ;;
     package)
-      type package
+      $__dump_cmd package
       ;;
     payloadify)
-      type payloadify
+      $__dump_cmd payloadify
       ;;
     downloadify)
-      type downloadify
+      $__dump_cmd downloadify
       ;;
     hash)
-      type crypt_hash
+      $__dump_cmd crypt_hash
       ;;
     selfsign)
-      type crypt_selfsign
+      $__dump_cmd crypt_selfsign
       ;;
     *)
       echo "Unknown function $2"
@@ -5518,19 +5551,19 @@ function __q_dump() {
   debian)
     case "$2" in
     setup)
-      type debian_setup
+      $__dump_cmd debian_setup
       ;;
     install_extras)
-      type debian_install_extras
+      $__dump_cmd debian_install_extras
       ;;
     install_or_skip)
-      type debian_install_or_skip
+      $__dump_cmd debian_install_or_skip
       ;;
     install_imgcat)
-      type debian_install_imgcat
+      $__dump_cmd debian_install_imgcat
       ;;
     setup_mc)
-      type debian_setup_mc
+      $__dump_cmd debian_setup_mc
       ;;
     *)
       echo "Unknown function $2"
@@ -5541,13 +5574,13 @@ function __q_dump() {
   file)
     case "$2" in
     mktemp)
-      type file_mktemp
+      $__dump_cmd file_mktemp
       ;;
     mtime)
-      type file_mtime
+      $__dump_cmd file_mtime
       ;;
     age)
-      type file_age
+      $__dump_cmd file_age
       ;;
     *)
       echo "Unknown function $2"
@@ -5558,28 +5591,28 @@ function __q_dump() {
   find)
     case "$2" in
     f)
-      type f
+      $__dump_cmd f
       ;;
     __f_args)
-      type __f_args
+      $__dump_cmd __f_args
       ;;
     fcc)
-      type fcc
+      $__dump_cmd fcc
       ;;
     fgo)
-      type fgo
+      $__dump_cmd fgo
       ;;
     fjava)
-      type fjava
+      $__dump_cmd fjava
       ;;
     faidl)
-      type faidl
+      $__dump_cmd faidl
       ;;
     fd)
-      type fd
+      $__dump_cmd fd
       ;;
     replace)
-      type find_replace
+      $__dump_cmd find_replace
       ;;
     *)
       echo "Unknown function $2"
@@ -5590,25 +5623,25 @@ function __q_dump() {
   git)
     case "$2" in
     mkproject)
-      type mkproject
+      $__dump_cmd mkproject
       ;;
     ssh_init)
-      type git_ssh_init
+      $__dump_cmd git_ssh_init
       ;;
     get_origin)
-      type git_get_origin
+      $__dump_cmd git_get_origin
       ;;
     master_branch)
-      type git_master_branch
+      $__dump_cmd git_master_branch
       ;;
     cherrypick_branch)
-      type git_cherrypick_branch
+      $__dump_cmd git_cherrypick_branch
       ;;
     sparse_clone)
-      type git_sparse_clone
+      $__dump_cmd git_sparse_clone
       ;;
     changed_lines)
-      type git_changed_lines
+      $__dump_cmd git_changed_lines
       ;;
     *)
       echo "Unknown function $2"
@@ -5619,7 +5652,7 @@ function __q_dump() {
   go)
     case "$2" in
     pkg_do)
-      type go_pkg_do
+      $__dump_cmd go_pkg_do
       ;;
     *)
       echo "Unknown function $2"
@@ -5630,16 +5663,16 @@ function __q_dump() {
   hg)
     case "$2" in
     root)
-      type hg_root
+      $__dump_cmd hg_root
       ;;
     repo_name)
-      type hg_repo_name
+      $__dump_cmd hg_repo_name
       ;;
     branch_name)
-      type hg_branch_name
+      $__dump_cmd hg_branch_name
       ;;
     ps1_widget)
-      type hg_ps1_widget
+      $__dump_cmd hg_ps1_widget
       ;;
     *)
       echo "Unknown function $2"
@@ -5658,16 +5691,16 @@ function __q_dump() {
   install)
     case "$2" in
     file)
-      type install_file
+      $__dump_cmd install_file
       ;;
     reinstall_file)
-      type reinstall_file
+      $__dump_cmd reinstall_file
       ;;
     __install_file)
-      type __install_file
+      $__dump_cmd __install_file
       ;;
     __uninstall_file)
-      type __uninstall_file
+      $__dump_cmd __uninstall_file
       ;;
     *)
       echo "Unknown function $2"
@@ -5678,10 +5711,10 @@ function __q_dump() {
   kagi)
     case "$2" in
     search_json)
-      type kagi_search_json
+      $__dump_cmd kagi_search_json
       ;;
     summarize_json)
-      type kagi_summarize_json
+      $__dump_cmd kagi_summarize_json
       ;;
     *)
       echo "Unknown function $2"
@@ -5692,22 +5725,22 @@ function __q_dump() {
   keys)
     case "$2" in
     git)
-      type keys_git
+      $__dump_cmd keys_git
       ;;
     path)
-      type keys_path
+      $__dump_cmd keys_path
       ;;
     var)
-      type keys_var
+      $__dump_cmd keys_var
       ;;
     key)
-      type keys_key
+      $__dump_cmd keys_key
       ;;
     flush)
-      type keys_flush
+      $__dump_cmd keys_flush
       ;;
     sync)
-      type keys_sync
+      $__dump_cmd keys_sync
       ;;
     *)
       echo "Unknown function $2"
@@ -5718,76 +5751,76 @@ function __q_dump() {
   mac)
     case "$2" in
     setup)
-      type mac_setup
+      $__dump_cmd mac_setup
       ;;
     install_extras)
-      type mac_install_extras
+      $__dump_cmd mac_install_extras
       ;;
     brew)
-      type brew
+      $__dump_cmd brew
       ;;
     reinstall_brew)
-      type reinstall_brew
+      $__dump_cmd reinstall_brew
       ;;
     enable_ipconfig_verbose)
-      type mac_enable_ipconfig_verbose
+      $__dump_cmd mac_enable_ipconfig_verbose
       ;;
     get_user_shell)
-      type mac_get_user_shell
+      $__dump_cmd mac_get_user_shell
       ;;
     brew_bash_path)
-      type mac_brew_bash_path
+      $__dump_cmd mac_brew_bash_path
       ;;
     switch_to_bash)
-      type mac_switch_to_bash
+      $__dump_cmd mac_switch_to_bash
       ;;
     icloud)
-      type icloud
+      $__dump_cmd icloud
       ;;
     icloud_evict)
-      type icloud_evict
+      $__dump_cmd icloud_evict
       ;;
     brew_install_or_skip)
-      type brew_install_or_skip
+      $__dump_cmd brew_install_or_skip
       ;;
     install_miniconda)
-      type mac_install_miniconda
+      $__dump_cmd mac_install_miniconda
       ;;
     install_devtools)
-      type mac_install_devtools
+      $__dump_cmd mac_install_devtools
       ;;
     kill_defender)
-      type mac_kill_defender
+      $__dump_cmd mac_kill_defender
       ;;
     suppress_defender)
-      type mac_suppress_defender
+      $__dump_cmd mac_suppress_defender
       ;;
     kill_crashplan)
-      type mac_kill_crashplan
+      $__dump_cmd mac_kill_crashplan
       ;;
     hogs)
-      type mac_hogs
+      $__dump_cmd mac_hogs
       ;;
     cpu_hogs)
-      type mac_cpu_hogs
+      $__dump_cmd mac_cpu_hogs
       ;;
     cpulimit)
-      type mac_cpulimit
+      $__dump_cmd mac_cpulimit
       ;;
     disable_powernap)
-      type mac_disable_powernap
+      $__dump_cmd mac_disable_powernap
       ;;
     power_stats)
-      type mac_power_stats
+      $__dump_cmd mac_power_stats
       ;;
     fix_ssh_locale_config)
-      type mac_fix_ssh_locale_config
+      $__dump_cmd mac_fix_ssh_locale_config
       ;;
     pid_suspend)
-      type mac_pid_suspend
+      $__dump_cmd mac_pid_suspend
       ;;
     setup_iterm2)
-      type mac_setup_iterm2
+      $__dump_cmd mac_setup_iterm2
       ;;
     *)
       echo "Unknown function $2"
@@ -5798,7 +5831,7 @@ function __q_dump() {
   media)
     case "$2" in
     yt-dl)
-      type yt-dl
+      $__dump_cmd yt-dl
       ;;
     *)
       echo "Unknown function $2"
@@ -5809,49 +5842,49 @@ function __q_dump() {
   monitor)
     case "$2" in
     __load_stats_worker)
-      type __load_stats_worker
+      $__dump_cmd __load_stats_worker
       ;;
     __stream_tick)
-      type __stream_tick
+      $__dump_cmd __stream_tick
       ;;
     stream_load_stats)
-      type stream_load_stats
+      $__dump_cmd stream_load_stats
       ;;
     __write_load_stats_worker)
-      type __write_load_stats_worker
+      $__dump_cmd __write_load_stats_worker
       ;;
     load_hist)
-      type load_hist
+      $__dump_cmd load_hist
       ;;
     latest_load_stats)
-      type latest_load_stats
+      $__dump_cmd latest_load_stats
       ;;
     __parse_load_stats)
-      type __parse_load_stats
+      $__dump_cmd __parse_load_stats
       ;;
     write_load_stats)
-      type write_load_stats
+      $__dump_cmd write_load_stats
       ;;
     stream_top_stats)
-      type stream_top_stats
+      $__dump_cmd stream_top_stats
       ;;
     __parse_top_header)
-      type __parse_top_header
+      $__dump_cmd __parse_top_header
       ;;
     __parse_units)
-      type __parse_units
+      $__dump_cmd __parse_units
       ;;
     __stream_net_stats_worker)
-      type __stream_net_stats_worker
+      $__dump_cmd __stream_net_stats_worker
       ;;
     __parse_nettop)
-      type __parse_nettop
+      $__dump_cmd __parse_nettop
       ;;
     stream_net_stats)
-      type stream_net_stats
+      $__dump_cmd stream_net_stats
       ;;
     proc_stats)
-      type proc_stats
+      $__dump_cmd proc_stats
       ;;
     *)
       echo "Unknown function $2"
@@ -5862,31 +5895,31 @@ function __q_dump() {
   mtg)
     case "$2" in
     __mtg_latest_scryfall_oracle_cards_uri)
-      type __mtg_latest_scryfall_oracle_cards_uri
+      $__dump_cmd __mtg_latest_scryfall_oracle_cards_uri
       ;;
     oracle_json)
-      type mtg_oracle_json
+      $__dump_cmd mtg_oracle_json
       ;;
     rules)
-      type mtg_rules
+      $__dump_cmd mtg_rules
       ;;
     card_json)
-      type mtg_card_json
+      $__dump_cmd mtg_card_json
       ;;
     __mtg_approx_match)
-      type __mtg_approx_match
+      $__dump_cmd __mtg_approx_match
       ;;
     __colorize_mana)
-      type __colorize_mana
+      $__dump_cmd __colorize_mana
       ;;
     __print_card)
-      type __print_card
+      $__dump_cmd __print_card
       ;;
     card)
-      type mtg_card
+      $__dump_cmd mtg_card
       ;;
     __relevant_cards)
-      type __relevant_cards
+      $__dump_cmd __relevant_cards
       ;;
     *)
       echo "Unknown function $2"
@@ -5897,13 +5930,13 @@ function __q_dump() {
   multiple_choice)
     case "$2" in
     __prompt)
-      type __prompt
+      $__dump_cmd __prompt
       ;;
     __multiple_choice)
-      type __multiple_choice
+      $__dump_cmd __multiple_choice
       ;;
     multiple_choice)
-      type multiple_choice
+      $__dump_cmd multiple_choice
       ;;
     *)
       echo "Unknown function $2"
@@ -5914,91 +5947,91 @@ function __q_dump() {
   net)
     case "$2" in
     host)
-      type net_host
+      $__dump_cmd net_host
       ;;
     dl)
-      type net_dl
+      $__dump_cmd net_dl
       ;;
     online)
-      type net_online
+      $__dump_cmd net_online
       ;;
     cidr_to_netmask)
-      type net_cidr_to_netmask
+      $__dump_cmd net_cidr_to_netmask
       ;;
     health)
-      type net_health
+      $__dump_cmd net_health
       ;;
     ssh_fingerprint)
-      type net_ssh_fingerprint
+      $__dump_cmd net_ssh_fingerprint
       ;;
     dump_cert)
-      type net_dump_cert
+      $__dump_cmd net_dump_cert
       ;;
     ccurl)
-      type net_ccurl
+      $__dump_cmd net_ccurl
       ;;
     dataurl)
-      type net_dataurl
+      $__dump_cmd net_dataurl
       ;;
     undataurl)
-      type net_undataurl
+      $__dump_cmd net_undataurl
       ;;
     rtt)
-      type net_rtt
+      $__dump_cmd net_rtt
       ;;
     ip4)
-      type net_ip4
+      $__dump_cmd net_ip4
       ;;
     ip4gw)
-      type net_ip4gw
+      $__dump_cmd net_ip4gw
       ;;
     port_hog)
-      type net_port_hog
+      $__dump_cmd net_port_hog
       ;;
     serve)
-      type net_serve
+      $__dump_cmd net_serve
       ;;
     dump_url)
-      type dump_url
+      $__dump_cmd dump_url
       ;;
     wiki)
-      type wiki
+      $__dump_cmd wiki
       ;;
     wifi_device)
-      type wifi_device
+      $__dump_cmd wifi_device
       ;;
     wifi_name)
-      type net_wifi_name
+      $__dump_cmd net_wifi_name
       ;;
     ssh_fingerprint)
-      type net_ssh_fingerprint
+      $__dump_cmd net_ssh_fingerprint
       ;;
     ssh_aliases)
-      type net_ssh_aliases
+      $__dump_cmd net_ssh_aliases
       ;;
     ssh_fqdn)
-      type net_ssh_fqdn
+      $__dump_cmd net_ssh_fqdn
       ;;
     wa_link)
-      type net_wa_link
+      $__dump_cmd net_wa_link
       ;;
     __net_gallery_ensure_venv)
-      type __net_gallery_ensure_venv
+      $__dump_cmd __net_gallery_ensure_venv
       ;;
     gallery)
-      type net_gallery
+      $__dump_cmd net_gallery
       ;;
     __net_write_static_ip4_dhcp_config_debian)
-      type __net_write_static_ip4_dhcp_config_debian
+      $__dump_cmd __net_write_static_ip4_dhcp_config_debian
       ;;
     __net_make_static_dhcp_ip4_config_debian)
-      type __net_make_static_dhcp_ip4_config_debian
+      $__dump_cmd __net_make_static_dhcp_ip4_config_debian
       ;;
     __net_get_ip4_config_debian)
-      type __net_get_ip4_config_debian
+      $__dump_cmd __net_get_ip4_config_debian
       ;;
     __net_modified_static_dhcp4_config_debian)
-      type __net_modified_static_dhcp4_config_debian
+      $__dump_cmd __net_modified_static_dhcp4_config_debian
       ;;
     *)
       echo "Unknown function $2"
@@ -6009,31 +6042,31 @@ function __q_dump() {
   news)
     case "$2" in
     all)
-      type news_all
+      $__dump_cmd news_all
       ;;
     stocks)
-      type news_stocks
+      $__dump_cmd news_stocks
       ;;
     weather)
-      type news_weather
+      $__dump_cmd news_weather
       ;;
     brutalist_report_source)
-      type news_brutalist_report_source
+      $__dump_cmd news_brutalist_report_source
       ;;
     nytimes)
-      type news_nytimes
+      $__dump_cmd news_nytimes
       ;;
     npr)
-      type news_npr
+      $__dump_cmd news_npr
       ;;
     pbs)
-      type news_pbs
+      $__dump_cmd news_pbs
       ;;
     register)
-      type news_register
+      $__dump_cmd news_register
       ;;
     cnbc)
-      type news_cnbc
+      $__dump_cmd news_cnbc
       ;;
     *)
       echo "Unknown function $2"
@@ -6044,181 +6077,181 @@ function __q_dump() {
   notes)
     case "$2" in
     __elide)
-      type __elide
+      $__dump_cmd __elide
       ;;
     __file_mtime_and_age)
-      type __file_mtime_and_age
+      $__dump_cmd __file_mtime_and_age
       ;;
     __notes_api_list_notes_batch)
-      type __notes_api_list_notes_batch
+      $__dump_cmd __notes_api_list_notes_batch
       ;;
     note)
-      type notes_note
+      $__dump_cmd notes_note
       ;;
     list)
-      type notes_list
+      $__dump_cmd notes_list
       ;;
     sync)
-      type notes_sync
+      $__dump_cmd notes_sync
       ;;
     todo)
-      type notes_todo
+      $__dump_cmd notes_todo
       ;;
     undo)
-      type notes_undo
+      $__dump_cmd notes_undo
       ;;
     perl)
-      type notes_perl
+      $__dump_cmd notes_perl
       ;;
     api_list_notes)
-      type notes_api_list_notes
+      $__dump_cmd notes_api_list_notes
       ;;
     __nonempty_wc_l)
-      type __nonempty_wc_l
+      $__dump_cmd __nonempty_wc_l
       ;;
     backup)
-      type notes_backup
+      $__dump_cmd notes_backup
       ;;
     api_empty_notes)
-      type notes_api_empty_notes
+      $__dump_cmd notes_api_empty_notes
       ;;
     __date_add)
-      type __date_add
+      $__dump_cmd __date_add
       ;;
     __wday)
-      type __wday
+      $__dump_cmd __wday
       ;;
     __date_sub)
-      type __date_sub
+      $__dump_cmd __date_sub
       ;;
     __date_convert)
-      type __date_convert
+      $__dump_cmd __date_convert
       ;;
     __wday_number)
-      type __wday_number
+      $__dump_cmd __wday_number
       ;;
     __relative_moment)
-      type __relative_moment
+      $__dump_cmd __relative_moment
       ;;
     __when)
-      type __when
+      $__dump_cmd __when
       ;;
     __notes_api_list_todos_batch)
-      type __notes_api_list_todos_batch
+      $__dump_cmd __notes_api_list_todos_batch
       ;;
     api_list_todos)
-      type notes_api_list_todos
+      $__dump_cmd notes_api_list_todos
       ;;
     print_todo_categories)
-      type print_todo_categories
+      $__dump_cmd print_todo_categories
       ;;
     __todo_context_emoji)
-      type __todo_context_emoji
+      $__dump_cmd __todo_context_emoji
       ;;
     __select_todo)
-      type __select_todo
+      $__dump_cmd __select_todo
       ;;
     api_git)
-      type notes_api_git
+      $__dump_cmd notes_api_git
       ;;
     api_pushd)
-      type notes_api_pushd
+      $__dump_cmd notes_api_pushd
       ;;
     api_clone)
-      type notes_api_clone
+      $__dump_cmd notes_api_clone
       ;;
     __fix_mtime_from_git)
-      type __fix_mtime_from_git
+      $__dump_cmd __fix_mtime_from_git
       ;;
     api_fsck)
-      type notes_api_fsck
+      $__dump_cmd notes_api_fsck
       ;;
     __date_unit)
-      type __date_unit
+      $__dump_cmd __date_unit
       ;;
     __parse_age)
-      type __parse_age
+      $__dump_cmd __parse_age
       ;;
     nw)
-      type nw
+      $__dump_cmd nw
       ;;
     window)
-      type notes_window
+      $__dump_cmd notes_window
       ;;
     api_find)
-      type notes_api_find
+      $__dump_cmd notes_api_find
       ;;
     api_quick_title)
-      type notes_api_quick_title
+      $__dump_cmd notes_api_quick_title
       ;;
     __notes_filename)
-      type __notes_filename
+      $__dump_cmd __notes_filename
       ;;
     log)
-      type notes_log
+      $__dump_cmd notes_log
       ;;
     __match_files_one)
-      type __match_files_one
+      $__dump_cmd __match_files_one
       ;;
     __match_files_all)
-      type __match_files_all
+      $__dump_cmd __match_files_all
       ;;
     __match_files_regex)
-      type __match_files_regex
+      $__dump_cmd __match_files_regex
       ;;
     api_match_files)
-      type notes_api_match_files
+      $__dump_cmd notes_api_match_files
       ;;
     __todo_title)
-      type __todo_title
+      $__dump_cmd __todo_title
       ;;
     __notes_title)
-      type __notes_title
+      $__dump_cmd __notes_title
       ;;
     __notes_category)
-      type __notes_category
+      $__dump_cmd __notes_category
       ;;
     __preamble)
-      type __preamble
+      $__dump_cmd __preamble
       ;;
     ls)
-      type notes_ls
+      $__dump_cmd notes_ls
       ;;
     hist)
-      type notes_hist
+      $__dump_cmd notes_hist
       ;;
     api_drop_note)
-      type notes_api_drop_note
+      $__dump_cmd notes_api_drop_note
       ;;
     __notes_gen)
-      type __notes_gen
+      $__dump_cmd __notes_gen
       ;;
     gc)
-      type notes_gc
+      $__dump_cmd notes_gc
       ;;
     api_update_note)
-      type notes_api_update_note
+      $__dump_cmd notes_api_update_note
       ;;
     api_edit_note)
-      type notes_api_edit_note
+      $__dump_cmd notes_api_edit_note
       ;;
     __notes_api_perl_preview_batch)
-      type __notes_api_perl_preview_batch
+      $__dump_cmd __notes_api_perl_preview_batch
       ;;
     api_perl_preview)
-      type notes_api_perl_preview
+      $__dump_cmd notes_api_perl_preview
       ;;
     __nperl_render_preview)
-      type __nperl_render_preview
+      $__dump_cmd __nperl_render_preview
       ;;
     __nperl_apply)
-      type __nperl_apply
+      $__dump_cmd __nperl_apply
       ;;
     claude)
-      type notes_claude
+      $__dump_cmd notes_claude
       ;;
     api_pushd)
-      type notes_api_pushd
+      $__dump_cmd notes_api_pushd
       ;;
     *)
       echo "Unknown function $2"
@@ -6229,25 +6262,25 @@ function __q_dump() {
   omdb)
     case "$2" in
     __omdb_key_path)
-      type __omdb_key_path
+      $__dump_cmd __omdb_key_path
       ;;
     set_key)
-      type omdb_set_key
+      $__dump_cmd omdb_set_key
       ;;
     register_key)
-      type omdb_register_key
+      $__dump_cmd omdb_register_key
       ;;
     get_key)
-      type omdb_get_key
+      $__dump_cmd omdb_get_key
       ;;
     __omdb_query_string)
-      type __omdb_query_string
+      $__dump_cmd __omdb_query_string
       ;;
     query)
-      type omdb_query
+      $__dump_cmd omdb_query
       ;;
     guess_title)
-      type omdb_guess_title
+      $__dump_cmd omdb_guess_title
       ;;
     *)
       echo "Unknown function $2"
@@ -6258,16 +6291,16 @@ function __q_dump() {
   path)
     case "$2" in
     expand)
-      type path_expand
+      $__dump_cmd path_expand
       ;;
     resolve)
-      type path_resolve
+      $__dump_cmd path_resolve
       ;;
     push)
-      type path_push
+      $__dump_cmd path_push
       ;;
     pop)
-      type path_pop
+      $__dump_cmd path_pop
       ;;
     *)
       echo "Unknown function $2"
@@ -6278,7 +6311,7 @@ function __q_dump() {
   pkg)
     case "$2" in
     install_or_skip)
-      type pkg_install_or_skip
+      $__dump_cmd pkg_install_or_skip
       ;;
     *)
       echo "Unknown function $2"
@@ -6289,34 +6322,34 @@ function __q_dump() {
   python)
     case "$2" in
     __python_ensurepip)
-      type __python_ensurepip
+      $__dump_cmd __python_ensurepip
       ;;
     __python_ensurevenv)
-      type __python_ensurevenv
+      $__dump_cmd __python_ensurevenv
       ;;
     __fix_stupid_virtualenv_behavior)
-      type __fix_stupid_virtualenv_behavior
+      $__dump_cmd __fix_stupid_virtualenv_behavior
       ;;
     venv)
-      type python_venv
+      $__dump_cmd python_venv
       ;;
     pip_run)
-      type python_pip_run
+      $__dump_cmd python_pip_run
       ;;
     ipynb)
-      type python_ipynb
+      $__dump_cmd python_ipynb
       ;;
     detect)
-      type python_detect
+      $__dump_cmd python_detect
       ;;
     latest)
-      type python_latest
+      $__dump_cmd python_latest
       ;;
     func)
-      type python_func
+      $__dump_cmd python_func
       ;;
     black)
-      type python_black
+      $__dump_cmd python_black
       ;;
     *)
       echo "Unknown function $2"
@@ -6327,13 +6360,13 @@ function __q_dump() {
   quick)
     case "$2" in
     __quick_build_all)
-      type __quick_build_all
+      $__dump_cmd __quick_build_all
       ;;
     rebuild)
-      type quick_rebuild
+      $__dump_cmd quick_rebuild
       ;;
     q)
-      type q
+      $__dump_cmd q
       ;;
     *)
       echo "Unknown function $2"
@@ -6344,19 +6377,19 @@ function __q_dump() {
   redhat)
     case "$2" in
     setup)
-      type redhat_setup
+      $__dump_cmd redhat_setup
       ;;
     install_extras)
-      type redhat_install_extras
+      $__dump_cmd redhat_install_extras
       ;;
     dnf_install_or_skip)
-      type dnf_install_or_skip
+      $__dump_cmd dnf_install_or_skip
       ;;
     install_imgcat)
-      type redhat_install_imgcat
+      $__dump_cmd redhat_install_imgcat
       ;;
     setup_mc)
-      type redhat_setup_mc
+      $__dump_cmd redhat_setup_mc
       ;;
     *)
       echo "Unknown function $2"
@@ -6367,10 +6400,10 @@ function __q_dump() {
   rust)
     case "$2" in
     rustup)
-      type rustup
+      $__dump_cmd rustup
       ;;
     install_goodies)
-      type rust_install_goodies
+      $__dump_cmd rust_install_goodies
       ;;
     *)
       echo "Unknown function $2"
@@ -6381,19 +6414,19 @@ function __q_dump() {
   screen)
     case "$2" in
     session)
-      type screen_session
+      $__dump_cmd screen_session
       ;;
     window)
-      type screen_window
+      $__dump_cmd screen_window
       ;;
     rename)
-      type screen_rename
+      $__dump_cmd screen_rename
       ;;
     home)
-      type screen_home
+      $__dump_cmd screen_home
       ;;
     reset_dirname)
-      type screen_reset_dirname
+      $__dump_cmd screen_reset_dirname
       ;;
     *)
       echo "Unknown function $2"
@@ -6404,31 +6437,31 @@ function __q_dump() {
   strings)
     case "$2" in
     urlencode)
-      type strings_urlencode
+      $__dump_cmd strings_urlencode
       ;;
     strip_control)
-      type strings_strip_control
+      $__dump_cmd strings_strip_control
       ;;
     repeat)
-      type strings_repeat
+      $__dump_cmd strings_repeat
       ;;
     join)
-      type strings_join
+      $__dump_cmd strings_join
       ;;
     sgrep)
-      type strings_sgrep
+      $__dump_cmd strings_sgrep
       ;;
     strip_prefix)
-      type strings_strip_prefix
+      $__dump_cmd strings_strip_prefix
       ;;
     trim)
-      type strings_trim
+      $__dump_cmd strings_trim
       ;;
     elide)
-      type strings_elide
+      $__dump_cmd strings_elide
       ;;
     strip_prefix)
-      type strings_strip_prefix
+      $__dump_cmd strings_strip_prefix
       ;;
     *)
       echo "Unknown function $2"
@@ -6439,34 +6472,34 @@ function __q_dump() {
   time)
     case "$2" in
     zones)
-      type time_zones
+      $__dump_cmd time_zones
       ;;
     __time_get_tz_alias)
-      type __time_get_tz_alias
+      $__dump_cmd __time_get_tz_alias
       ;;
     __time_get_tz)
-      type __time_get_tz
+      $__dump_cmd __time_get_tz
       ;;
     get_tz)
-      type time_get_tz
+      $__dump_cmd time_get_tz
       ;;
     local)
-      type time_local
+      $__dump_cmd time_local
       ;;
     utc)
-      type time_utc
+      $__dump_cmd time_utc
       ;;
     in)
-      type time_in
+      $__dump_cmd time_in
       ;;
     tz_diff)
-      type time_tz_diff
+      $__dump_cmd time_tz_diff
       ;;
     ts)
-      type time_ts
+      $__dump_cmd time_ts
       ;;
     convert)
-      type time_convert
+      $__dump_cmd time_convert
       ;;
     *)
       echo "Unknown function $2"
@@ -6477,7 +6510,7 @@ function __q_dump() {
   transit)
     case "$2" in
     sbb)
-      type transit_sbb
+      $__dump_cmd transit_sbb
       ;;
     *)
       echo "Unknown function $2"
@@ -6488,37 +6521,37 @@ function __q_dump() {
   util)
     case "$2" in
     ddu)
-      type util_ddu
+      $__dump_cmd util_ddu
       ;;
     sudo)
-      type util_sudo
+      $__dump_cmd util_sudo
       ;;
     reload)
-      type reload
+      $__dump_cmd reload
       ;;
     markdown)
-      type util_markdown
+      $__dump_cmd util_markdown
       ;;
     human_size)
-      type human_size
+      $__dump_cmd human_size
       ;;
     install_heroku_cli)
-      type install_heroku_cli
+      $__dump_cmd install_heroku_cli
       ;;
     install_bazelisk)
-      type install_bazelisk
+      $__dump_cmd install_bazelisk
       ;;
     jup)
-      type jup
+      $__dump_cmd jup
       ;;
     wait_for_file)
-      type wait_for_file
+      $__dump_cmd wait_for_file
       ;;
     forex)
-      type util_forex
+      $__dump_cmd util_forex
       ;;
     run)
-      type util_run
+      $__dump_cmd util_run
       ;;
     *)
       echo "Unknown function $2"
@@ -6529,43 +6562,43 @@ function __q_dump() {
   xterm_colors)
     case "$2" in
     channel_step)
-      type channel_step
+      $__dump_cmd channel_step
       ;;
     greyscale_step)
-      type greyscale_step
+      $__dump_cmd greyscale_step
       ;;
     rgb_to_xterm)
-      type rgb_to_xterm
+      $__dump_cmd rgb_to_xterm
       ;;
     hue_diff)
-      type hue_diff
+      $__dump_cmd hue_diff
       ;;
     brightness)
-      type brightness
+      $__dump_cmd brightness
       ;;
     contrast)
-      type contrast
+      $__dump_cmd contrast
       ;;
     xterm_to_rgb)
-      type xterm_to_rgb
+      $__dump_cmd xterm_to_rgb
       ;;
     xterm_to_fg)
-      type xterm_to_fg
+      $__dump_cmd xterm_to_fg
       ;;
     xterm_to_bg)
-      type xterm_to_bg
+      $__dump_cmd xterm_to_bg
       ;;
     tfmt)
-      type tfmt
+      $__dump_cmd tfmt
       ;;
     color)
-      type color
+      $__dump_cmd color
       ;;
     shades)
-      type shades
+      $__dump_cmd shades
       ;;
     colors)
-      type colors
+      $__dump_cmd colors
       ;;
     *)
       echo "Unknown function $2"
@@ -6705,7 +6738,7 @@ function __q_compgen() {
   2)
     case "${COMP_WORDS[1]}" in
     ai)
-      COMPREPLY=($(compgen -W "help install_claude_config" -- ${COMP_WORDS[COMP_CWORD]}))
+      COMPREPLY=($(compgen -W "help install_claude_config q" -- ${COMP_WORDS[COMP_CWORD]}))
       return 0
       ;;
     ascii_art)
@@ -6860,6 +6893,9 @@ function __q_compgen() {
       case "${COMP_WORDS[2]}" in
       install_claude_config)
         __q_complete_func "" "" "" ""
+        ;;
+      q)
+        __q_complete_func "" "" "" "STRING STRING"
         ;;
       esac
       ;;
