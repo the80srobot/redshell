@@ -26,8 +26,8 @@ function mac_install_extras() {
 }
 
 function brew() {
-    which brew > /dev/null || reinstall_brew
-    "$(which brew)" "${@}"
+    [[ -x /opt/homebrew/bin/brew ]] || reinstall_brew
+    command brew "${@}"
 }
 
 function reinstall_brew() {
