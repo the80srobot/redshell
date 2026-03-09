@@ -8,6 +8,10 @@ source "compat.sh"
 if [[ -z "${_REDSHELL_GIT}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_GIT=1
 
+function git_review() {
+    git log -p "$(git_master_branch).."
+}
+
 function mkproject() {
     gh repo create "${1}" --private --add-readme --clone
 }
