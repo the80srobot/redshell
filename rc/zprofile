@@ -139,14 +139,14 @@ precmd() {
     local time_info="$(__time_info)"
     local git_info="$(__git_info)"
     local addr_info="$(__addr_info)"
-    local pcolor="$(__prompt_color $VISUAL)"
-    local reset=$'\033[0m'
-    local bold=$'\033[1m'
-    local red=$'\033[38;5;196m'
-    local green=$'\033[32m'
-    local blue=$'\033[38;5;26m'
-    local cyan=$'\033[38;5;33m'
-    local orange=$'\033[38;5;214m'
+    local pcolor="%{$(__prompt_color $VISUAL)%}"
+    local reset=$'%{\033[0m%}'
+    local bold=$'%{\033[1m%}'
+    local red=$'%{\033[38;5;196m%}'
+    local green=$'%{\033[32m%}'
+    local blue=$'%{\033[38;5;26m%}'
+    local cyan=$'%{\033[38;5;33m%}'
+    local orange=$'%{\033[38;5;214m%}'
 
     PS1="┌─|${reset}%n@${bold}${pcolor}%m${reset} %~ "
     PS1+="${red}${error_info}"
