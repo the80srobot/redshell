@@ -9,7 +9,7 @@ if [[ -z "${_REDSHELL_GIT}" || -n "${_REDSHELL_RELOAD}" ]]; then
 _REDSHELL_GIT=1
 
 function git_review() {
-    git log -p "$(git_master_branch).." -- \
+    git log --reverse -p "$(git_master_branch).." -- \
         . \
         ':!Cargo.lock' \
         ':!package-lock.json' \
